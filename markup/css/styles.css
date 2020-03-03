@@ -1,0 +1,90 @@
+body {
+    font-family: Arial, Helvetica;
+    color: black;
+    background: white;
+    line-height: 30px;
+}
+
+a {
+    color: #76baec;
+}
+
+button{
+    background-color: #337ab7;
+    font-size: 30px;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+}
+
+.form-target {
+    font-weight: 600;
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.outer-form-container {
+
+    box-sizing: content-box;
+    box-shadow: gray;
+    border: 4px solid gray;
+    border-radius: 13px;
+    margin: 150px auto 0px;
+    width: 48%;
+    min-width: 900px;
+}
+
+.registration-form {
+
+    margin: 40px;
+}
+
+.registration-form input {
+    border: 2px solid lightgray;
+    border-radius: 8px;
+    width: 500px;
+    height: 50px;
+
+}
+
+::placeholder {
+    font-size: 30px;
+    padding: 15px 10px;
+}
+
+
+.label-field {
+
+    margin-top: 15px;
+    font-weight: 600;
+    float: left;
+    font-size: 30px;
+}
+
+.input-field {
+    max-width: 500px;
+    float: right;
+}
+
+hr {
+    height: 1px;
+    color: #c8c8c8;
+}
+
+.error-message {
+
+    margin-top: 15px;
+    color: red;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.container {
+    margin:30px auto 30px;
+}
+
+.container:after {
+    display: block;
+    clear: both;
+    content: "";
+}

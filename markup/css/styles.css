@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, Helvetica;
+    font-family: Arial, Helvetica, sans-serif;
     color: black;
     background: white;
     line-height: 33px;
@@ -7,21 +7,6 @@ body {
 
 a {
     color: #76baec;
-}
-
-button{
-    background-color: #337ab7;
-    font-size: 28px;
-    border: 0px solid;
-    color: white;
-    padding: 14px 24px;
-    border-radius: 8px;
-}
-
-.form-target {
-    font-weight: 500;
-    font-size: 44px;
-    margin-bottom: 20px;
 }
 
 .outer-form-container {
@@ -35,41 +20,61 @@ button{
     min-width: 900px;
 }
 
-.registration-form {
+.user-form {
 
-box-sizing: content-box;
+    box-sizing: content-box;
     margin: 40px;
 }
 
-.registration-form input {
+.user-form input {
     border: 2px solid lightgray;
     border-radius: 8px;
     width: 500px;
     height: 49px;
+    line-height: 49px;
 }
 
-::placeholder {
+.user-form hr {
+    border: 1px solid #999;
+}
+
+.user-form input::placeholder {
     font-size: 26px;
     padding: 20px 10px;
+    line-height: 49px;
 }
 
-.label-field {
+.user-form input::-ms-input-placeholder{
+    font-size: 26px;
+    padding: 20px 10px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.form-target {
+
+    font-weight: 500;
+    font-size: 44px;
+    margin-bottom: 28px;
+}
+
+.credential-container {
+
+    box-sizing: content-box;
+    margin: 26px auto 28px;
+}
+
+.label-container {
 
     margin-top: 10px;
     font-weight: 500;
     float: left;
     font-size: 28px;
-    width:40%;
+    width: 40%;
 }
 
-.input-field {
+.input-container {
     width: 60%;
     float: right;
-}
-
-hr {
-    height: 2px;
-    color: gray;
 }
 
 .error-message {
@@ -80,13 +85,26 @@ hr {
     font-weight: 500;
 }
 
-.container {
-
-    margin:28px auto 28px;
-}
-
-.container:after {
+.credential-container:after {
     display: block;
     clear: both;
     content: "";
+}
+
+.form-link {
+    float: right;
+    margin-top: 10px;
+    font-size: 24px;
+}
+
+.form-button{
+    float:left;
+}
+.form-button button {
+    background-color: #337ab7;
+    font-size: 28px;
+    border: 0px solid;
+    color: white;
+    padding: 14px 24px;
+    border-radius: 8px;
 }

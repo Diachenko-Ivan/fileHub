@@ -14,7 +14,7 @@ a {
     box-sizing: border-box;
     box-shadow: 0 0 20px gray;
     border: 2px solid gray;
-    border-radius: 10px;
+    border-radius: 12px;
     margin: 150px auto 0px;
     width: 34%;
     min-width: 600px;
@@ -43,7 +43,7 @@ a {
     padding: 20px 10px;
 }
 
-.form-target {
+.header {
 
     font-weight: 600;
     font-size: 30px;
@@ -66,7 +66,6 @@ a {
 .input-container {
     width: 60%;
     float: right;
-
 }
 
 .error-message {
@@ -91,9 +90,10 @@ a {
 
 .form-button{
     float:left;
+
 }
 
-.form-button button {
+button{
     background-color: #337ab7;
     font-size: 18px;
     border: 0px solid;
@@ -102,6 +102,26 @@ a {
     padding: 13px 20px;
 }
 
-.form-button button:hover {
+button:hover {
     background-color: #339ab7;
+}
+
+.file-explorer{
+    position: relative;
+    margin: 100px auto 0px;
+    width: 900px;
+    min-height: 720px;
+    background-color: #ffffff;
+    border: 2px solid gray;
+    border-radius: 8px;
+    box-shadow: 0 0 20px gray;
+}
+.user-logout{
+    position: absolute;
+    right: 20px;
+    top: -40px;
+}
+
+.user-logout li{
+    display: inline;
 }

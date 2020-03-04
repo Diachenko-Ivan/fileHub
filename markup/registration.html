@@ -3,8 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <title>Registration page</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
-<body>
 
+<body>
+<div class="wrapper">
+    <div class="outer-form-container">
+        <div class="registration-form">
+
+            <div class="form-target">
+                Registration
+            </div>
+            <hr>
+            <div class="container">
+
+                <div class="label-field">
+                    <label>Username</label>
+                </div>
+
+                <div class="input-field">
+                    <div>
+                        <input placeholder="Email" name="email"/>
+                    </div>
+                    <div class="error-message">Username can't be empty</div>
+                </div>
+
+            </div>
+
+            <div class="container">
+
+                <div class="label-field">
+                    <label>Password</label>
+                </div>
+
+                <div class="input-field">
+                    <input placeholder="Password" name="password"/>
+                    <div class="error-message">Password can't be empty and should contain letters and numbers</div>
+                </div>
+
+            </div>
+
+            <div class="container">
+
+                <div class="label-field">
+                    <label>Confirm Password</label>
+                </div>
+
+                <div class="input-field">
+                    <input placeholder="Confirm password" name="password"/>
+                    <div class="error-message">Passwords do not match</div>
+                </div>
+
+            </div>
+
+            <div class="container">
+                <div style="float:right;width:60%">
+                    <div style="float: right; margin-top: 10px; font-size:24px">
+                        <a href="#">Already have an account?</a>
+                    </div>
+                    <div style="float:left; margin-right:50px">
+                        <button>Register</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

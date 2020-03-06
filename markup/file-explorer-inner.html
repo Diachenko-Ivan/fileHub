@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>File explorer</title>
+    <title>File Explorer Inner</title>
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/bootstrap-icons.css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
-
 <body>
 
 <div class="wrapper">
@@ -23,19 +21,19 @@
 
         <main>
             <table class="content-table">
+
                 <thead>
                 <tr>
-                    <td class="directory-path"><i class="glyphicon glyphicon-folder-open"></i>/ Root</td>
+                    <td class="directory-path"><i class="glyphicon glyphicon-level-up"></i>/ Shared with me</td>
                     <td>
-                        <button class="upload-button"><i class="glyphicon glyphicon-folder-close"></i>Create Folder
-                        </button>
+                        <button class="upload-button"><i class="glyphicon glyphicon-upload"></i>Create Folder</button>
                     </td>
                     <td>
                         <button class="upload-button"><i class="glyphicon glyphicon-upload"></i>Upload File</button>
                     </td>
+
                 </tr>
                 </thead>
-
                 <tbody>
 
                 <tr>
@@ -46,7 +44,14 @@
                             class="glyphicon glyphicon-upload"></i></span>
                         <span class="delete-icon"><i class="glyphicon glyphicon-remove-circle"></i></span></td>
                 </tr>
-
+                <tr>
+                    <td class="folder-name"><span><i></i><i
+                            class="glyphicon glyphicon-book"></i>Documents</span></td>
+                    <td class="file-count">2 items</td>
+                    <td class="file-action-icons"><span class="upload-icon"><i
+                            class="glyphicon glyphicon-upload"></i></span>
+                        <span class="delete-icon"><i class="glyphicon glyphicon-remove-circle"></i></span></td>
+                </tr>
                 <tr>
                     <td class="folder-name"><span><i class="glyphicon glyphicon-menu-right"></i><i
                             class="glyphicon glyphicon-folder-close"></i>Images</span></td>
@@ -59,7 +64,7 @@
                 <tr>
                     <td class="folder-name"><span><i class="glyphicon glyphicon-menu-right"></i><i
                             class="glyphicon glyphicon-folder-close"
-                            style="size: 30px 20px"></i>Videos</span></td>
+                            ></i>Videos</span></td>
                     <td class="file-count">1 items</td>
                     <td class="file-action-icons"><span class="upload-icon"><i
                             class="glyphicon glyphicon-upload"></i></span>
@@ -74,7 +79,6 @@
                             class="glyphicon glyphicon-upload"></i></span>
                         <span class="delete-icon"><i class="glyphicon glyphicon-remove-circle"></i></span></td>
                 </tr>
-
 
                 </tbody>
             </table>

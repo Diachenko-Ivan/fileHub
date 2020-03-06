@@ -22,13 +22,11 @@
             <form>
                 <div class="credential-container">
 
-                    <div class="label-container">
-                        <label>Username</label>
-                    </div>
+                    <label for="email">Username</label>
 
                     <div class="input-container">
                         <div>
-                            <input placeholder="Email" name="email"/>
+                            <input id="email" placeholder="Email" name="email"/>
                         </div>
                         <div class="error-message">Username can't be empty</div>
                     </div>
@@ -36,13 +34,10 @@
                 </div>
 
                 <div class="credential-container">
-
-                    <div class="label-container">
-                        <label>Password</label>
-                    </div>
+                    <label for="password">Password</label>
 
                     <div class="input-container">
-                        <input type="password" placeholder="Password" name="password"/>
+                        <input id="password" type="password" placeholder="Password" name="password"/>
                         <div class="error-message">Password can't be empty and should contain letters and numbers</div>
                     </div>
 
@@ -50,12 +45,10 @@
 
                 <div class="credential-container">
 
-                    <div class="label-container">
-                        <label>Confirm Password</label>
-                    </div>
+                    <label for="repeat-password">Confirm Password</label>
 
                     <div class="input-container">
-                        <input type="password" placeholder="Confirm password" name="password"/>
+                        <input id="repeat-password" type="password" placeholder="Confirm password" name="password"/>
                         <div class="error-message">Passwords do not match</div>
                     </div>
 

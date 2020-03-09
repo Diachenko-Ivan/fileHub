@@ -1,5 +1,7 @@
+/*Common styles*/
+
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font: 14px/22px Arial, Helvetica, sans-serif;
     color: black;
     background: white;
     line-height: 33px;
@@ -14,21 +16,39 @@ a:hover {
     text-decoration: underline;
 }
 
-.outer-form-container {
-
-    box-sizing: border-box;
-    box-shadow: 0 0 20px gray;
-    border: 2px solid gray;
-    border-radius: 12px;
-    margin: 150px auto 0px;
-    width: 34%;
-    min-width: 600px;
+input:focus {
+    box-shadow: 0 0 5px #337ab7;
 }
 
-.user-form {
+button {
 
+    font-size: 18px;
+    border: 0px solid;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #339ab7;
+}
+
+.application-box{
+    box-sizing: border-box;
+    box-shadow: 0 0 20px gray;
+    background-color: #ffffff;
+    border: 2px solid gray;
+    margin: 100px auto 0px;
+}
+
+/*Styles for authentication and registration form*/
+
+.user-form{
     box-sizing: content-box;
-    margin: 28px;
+    border-radius: 12px;
+    width: 34%;
+    min-width: 600px;
+    padding: 28px;
 }
 
 .user-form input {
@@ -36,15 +56,6 @@ a:hover {
     border-radius: 7px;
     width: 100%;
     height: 33px;
-}
-
-input:focus {
-    box-shadow: 0 0 5px #337ab7;
-}
-
-.user-form hr {
-    border: 1px solid #999;
-    margin-bottom: 14px;
 }
 
 .user-form input::placeholder {
@@ -61,13 +72,6 @@ input:focus {
     border-bottom: 2px solid #999;
 }
 
-.user-form .header::after {
-
-    display: block;
-    clear: both;
-    content: "";
-}
-
 .user-form .header .form-target {
     float: left;
 }
@@ -76,29 +80,36 @@ input:focus {
     float: right;
 }
 
+.user-form .header::after {
+
+    display: block;
+    clear: both;
+    content: "";
+}
+
 .user-form .header .user-icon i {
     font-size: 30px;
 }
 
-.credential-container {
+.user-form .credential-container {
 
-    box-sizing: content-box;
+    box-sizing: border-box;
     margin: 0px auto 14px;
 }
 
-.credential-container label {
+.user-form .credential-container label {
     margin-top: 9px;
     float: left;
     font-size: 20px;
     width: 40%;
 }
 
-.input-container {
+.user-form .credential-container .input-container {
     width: 60%;
     float: right;
 }
 
-.error-message {
+.user-form .credential-container .error-message {
 
     margin-top: 6px;
     color: red;
@@ -106,49 +117,40 @@ input:focus {
     line-height: 30px;
 }
 
-.credential-container:after {
+.user-form .credential-container:after {
     display: block;
     clear: both;
     content: "";
 }
 
-.form-link {
+.user-form :last-child{
+    margin-bottom: 0px;
+}
+
+.user-form .form-link {
     float: right;
     margin-top: 8px;
     font-size: 16px;
 }
 
-.form-button {
+.user-form .form-button {
     float: left;
     padding: 13px 20px;
     background-color: #337ab7;
 }
 
-button {
+.user-form .form-button:hover {
 
-    font-size: 18px;
-    border: 0px solid;
-    border-radius: 8px;
-    color: white;
-    cursor: pointer;
-}
-
-button:hover {
     background-color: #339ab7;
 }
 
+/*Styles for file explorer*/
+
 .file-explorer-container {
     position: relative;
-    margin: 100px auto 0px;
     width: 900px;
-
-    height: 720px;
-    background-color: #ffffff;
-    border: 2px solid gray;
     border-radius: 8px;
-    box-shadow: 0 0 20px gray;
     padding: 20px;
-    box-sizing: border-box;
 }
 
 .file-explorer-container .header {
@@ -163,21 +165,21 @@ button:hover {
 
 .file-explorer-container .footer {
     font-size: 14px;
-    padding-top: 8px;
+    padding-top: 5px;
     border-top: 2px solid #999;
     text-align: center;
 }
 
-main {
+.file-explorer-container main {
     height: 600px;
     overflow: auto;
 }
 
-.logo {
+.file-explorer-container .logo {
     position: absolute;
     width: 160px;
     height: 70px;
-    top: -70px;
+    top: -65px;
     left: -2px;
 }
 
@@ -191,21 +193,21 @@ main {
 .user-logout .username {
     border-right: 1px solid black;
     padding-right: 5px;
-    height: 15px;
 }
 
-.file-explorer-container ul li {
+.file-explorer-container .user-logout li {
     display: inline;
 }
 
 .file-explorer-container .glyphicon {
     font-size: 20px;
     margin-right: 8px;
+    top: 5px;
 }
 
 .file-explorer-container .content-table .head-button {
 
-    padding: 5px 7px 5px;
+    padding: 4px 10px 10px;
     border-radius: 5px;
     font-size: 14px;
     vertical-align: middle;
@@ -213,7 +215,7 @@ main {
     margin-right: 10px;
 }
 
-.upload{
+ .upload{
     background-color: #337ab7;
 }
 
@@ -221,21 +223,17 @@ main {
     background-color: darkcyan;
 }
 
-
 .file-explorer-container .content-table {
     width: 100%;
-
 }
 
-.file-explorer-container .content-table tbody {
+.file-explorer-container .content-table tbody, thead {
     width: 100%;
 }
 
-.file-explorer-container.content-table thead {
-    margin-bottom: 10px;
-    width: 100%;
+.file-explorer-container .content-table thead tr :first-child .glyphicon-level-up {
+    color: #76baec;
 }
-
 
 .file-explorer-container .content-table .directory-path {
     width: 56%;
@@ -246,13 +244,12 @@ main {
 
 .file-explorer-container .content-table tr {
 
-    /*height: 55px;*/
     border-bottom: 1px solid #999;
     width: 100%;
     font-size: 14px;
 }
 
-.content-table tbody tr:hover {
+.file-explorer-container .content-table tbody tr:hover {
     background-color: #f4f4f4;
 }
 
@@ -270,61 +267,58 @@ main {
     padding-bottom: 11px;
 }
 
+.file-explorer-container .content-table .arrow{
+    width: 4%;
+}
 
-.file-explorer-container .arrow i {
+.file-explorer-container .arrow .glyphicon-menu-right {
     font-size: 12px;
     margin-left: 8px;
+    top: 0px;
 }
 
-.file {
-    width: 56%;
-}
-
-.file-name i {
+.file-explorer-container .content-table tr td .file-name i {
     color: black;
 }
 
-.file-name {
+.file-explorer-container .content-table tr td .file-name, .folder-name {
+    display: block;
     width: 400px;
-    /*text-overflow: ellipsis;*/
-    /*display: block;*/
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
-.file-name-editing input {
+.file-explorer-container .content-table tr td .file-name-editing input {
     border: 2px solid lightgray;
     border-radius: 5px;
     width: 70%;
-    height: 25px;
+    line-height: 25px;
     font-size: 14px;
     padding-left: 5px;
-
 }
 
-.file-count {
+.file-explorer-container .content-table tr .file-count, .file-size {
     width: 20%;
-    margin: 0px;
     text-align: center;
 }
 
-.file-action-icons {
-    text-align: right;
+.file-explorer-container .content-table tr .file-action-icons {
     width: 20%;
-    padding-top: 10px;
+    text-align: right;
 }
 
-.upload-icon {
+.file-explorer-container .content-table tr .file-action-icons .glyphicon-upload {
     color: green;
 }
 
-.download-icon {
+.file-explorer-container .content-table tr .file-action-icons .glyphicon-download {
+
     color: #76baec;
 }
 
-.glyphicon-level-up {
-    color: #76baec;
-}
+.file-explorer-container .content-table tr .file-action-icons .glyphicon-remove-circle {
 
-.delete-icon {
     color: red;
 }
 

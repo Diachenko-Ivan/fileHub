@@ -10,21 +10,22 @@
 <body>
 
 <div class="wrapper">
-    <div class="application-box file-explorer-container">
+
+    <section class="application-box file-explorer-container">
         <img alt="TeamDev" class="logo" src="../src/main/resources/teamdev.png">
-        <ul class="user-logout">
+        <ul class="user-menu">
             <li class="username"><i class="glyphicon glyphicon-user"></i>John Doe</li>
             <li><a href="#">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>
         </ul>
 
         <header class="header">File Explorer</header>
 
-        <main>
+        <div class="main">
             <table class="content-table">
 
                 <thead>
                 <tr>
-                    <th><i class="glyphicon glyphicon-level-up"></i></th>
+                    <th><a href="#"><i class="glyphicon glyphicon-level-up"></i></a></th>
                     <th class="directory-path">/ Shared with me</th>
                     <th>
                         <button class="head-button create"><i class="glyphicon glyphicon-plus"></i>Create Folder
@@ -155,15 +156,14 @@
                 </tr>
                 </tbody>
             </table>
-        </main>
+        </div>
 
 
         <footer class="footer">
             Copyright &copy 2020 <a href="#">TeamDev</a>. All rights reserved.
         </footer>
-    </div>
+    </section>
 </div>
-
 
 </body>
 </html>

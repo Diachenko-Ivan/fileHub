@@ -1,39 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>File explorer</title>
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/bootstrap-icons.css">
+    <title>File Explorer</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="css/styles.css">
 </head>
-
 <body>
-
-<div class="wrapper">
+<div class="container-fluid">
     <section class="application-box file-explorer-container">
-        <img alt="TeamDev" class="logo" src="../src/main/resources/teamdev.png">
-        <ul class="user-menu">
+
+        <img alt="TeamDev" class="logo" src="../../src/main/resources/teamdev.png">
+        <ul class="list-inline user-menu">
             <li class="username"><i class="glyphicon glyphicon-user"></i>John Doe</li>
             <li><a href="#">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>
         </ul>
 
-        <header class="header">File Explorer</header>
+        <header class="header"><h1>File Explorer</h1></header>
 
         <div class="main">
-            <table class="content-table">
+            <table class="table table-hover">
                 <thead>
                 <tr>
                     <th><i class="glyphicon glyphicon-folder-open"></i></th>
                     <th class="directory-path">/ Root</th>
-                    <th>
-                        <button class="head-button create"><i class="glyphicon glyphicon-plus"></i>
+                    <th colspan="2">
+                        <button class="btn btn-success btn-sm"><i class="glyphicon glyphicon-plus"></i>
                             Create Folder
                         </button>
-                    </th>
-                    <th>
-                        <button class="head-button upload"><i class="glyphicon glyphicon-upload"></i>
+                        <button class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-upload"></i>
                             Upload File
                         </button>
                     </th>
@@ -91,14 +87,10 @@
                 </tbody>
             </table>
         </div>
-
-
         <footer class="footer">
             Copyright &copy 2020 <a href="#">TeamDev</a>. All rights reserved.
         </footer>
     </section>
 </div>
-
-<script src="js/main.js"></script>
 </body>
 </html>

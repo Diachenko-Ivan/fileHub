@@ -44,7 +44,6 @@ button:hover {
 /*Styles for authentication and registration form*/
 
 .user-form{
-    box-sizing: content-box;
     border-radius: 12px;
     width: 34%;
     min-width: 600px;
@@ -274,7 +273,7 @@ button:hover {
 .file-explorer-container .arrow .glyphicon-menu-right {
     font-size: 12px;
     margin-left: 8px;
-    top: 0px;
+    top: 2px;
 }
 
 .file-explorer-container .content-table tr td .file-name i {
@@ -292,7 +291,7 @@ button:hover {
 .file-explorer-container .content-table tr td .file-name-editing input {
     border: 2px solid lightgray;
     border-radius: 5px;
-    width: 70%;
+    width: 62%;
     line-height: 25px;
     font-size: 14px;
     padding-left: 5px;

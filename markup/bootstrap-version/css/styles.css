@@ -1,5 +1,5 @@
 body {
-    font: 14px/26px Arial, Helvetica, sans-serif;
+    font: 14px/28px Arial, Helvetica, sans-serif;
     color: black;
     background: white;
 }
@@ -18,7 +18,29 @@ h1{
     margin: 0 0 14px;
 }
 
-.header .col-md-11{
+.logo {
+    position: absolute;
+    width: 160px;
+    height: 70px;
+    top: -65px;
+    left: -2px;
+}
+
+.application-box{
+    box-sizing: border-box;
+    box-shadow: 0 0 20px gray;
+    background-color: #ffffff;
+    border: 2px solid gray;
+    border-radius: 8px;
+    margin: 100px auto 0px;
+    padding: 20px;
+    width: 900px;
+    position: relative;
+}
+
+/*======================Styles for authentication and registration form==========================*/
+
+.user-form .header .col-xs-11{
     padding: 0;
 }
 
@@ -33,22 +55,11 @@ h1{
     float: right;
 }
 
-.application-box{
-    box-sizing: border-box;
-    box-shadow: 0 0 20px gray;
-    background-color: #ffffff;
-    border: 2px solid gray;
-    border-radius: 8px;
-    margin: 100px auto 0px;
-    padding: 20px;
-    width: 900px;
-    position: relative;
-}
-.user-form .error-message{
+.user-form .text-danger{
     color: 	#ff0000;
     font-size: 16px;
-    line-height: 30px;
 }
+
 .user-form{
     width: 34%;
     padding: 28px;
@@ -58,20 +69,21 @@ h1{
     margin-bottom: 6px;
 }
 
-.form-horizontal :last-child{
-    margin-bottom: 0;
-}
-
-.logo {
-    position: absolute;
-    width: 160px;
-    height: 70px;
-    top: -65px;
-    left: -2px;
-}
 
 /*=================================Styles for file explorer============================*/
 
+.file-explorer-container a{
+    font-size: 14px;
+}
+
+.file-explorer-container .form-control{
+    width:70%;
+    display: inline;
+}
+
+.file-explorer-container .table thead tr th:first-child i{
+    padding-bottom: 12px;
+}
 
 .file-explorer-container .glyphicon {
     font-size: 20px;
@@ -89,12 +101,13 @@ h1{
     right: 20px;
     top: -40px;
 }
+
 .file-explorer-container .user-menu li {
     border-right: 1px solid #000000;
     padding-right: 5px;
 }
 
-.file-explorer-container .user-menu :last-child{
+.file-explorer-container .user-menu li:last-child{
     border-style: none;
 }
 
@@ -102,7 +115,7 @@ h1{
     width: 4%;
 }
 
-.file-explorer-container .table-hover .directory-path {
+.file-explorer-container .directory-path {
     width: 56%;
     font-size: 22px;
     font-weight: 600;
@@ -110,7 +123,7 @@ h1{
 }
 
 .file-explorer-container .main {
-    height: 600px;
+    height: 580px;
     overflow-y: auto;
 }
 
@@ -120,7 +133,6 @@ h1{
     padding-bottom: 14px;
 }
 .file-explorer-container .footer {
-    font-size: 14px;
     padding-top: 5px;
     border-top: 2px solid #999;
     text-align: center;
@@ -137,12 +149,13 @@ h1{
     width: 20%;
     text-align: right;
 }
-.file-explorer-container .table tbody:last-child{
+
+.file-explorer-container .table tbody tr:last-child{
     border-bottom: 1px solid #ddd;
 }
 
 .file-explorer-container .table thead .btn {
-    margin-right: 25px;
+    margin-left: 20px;
     font-size: 14px;
 }
 
@@ -150,6 +163,7 @@ h1{
     width: 20%;
     text-align: center;
 }
+
 .file-explorer-container .table tr .file-action-icons .glyphicon-upload {
     color: 	#32CD32;
 }

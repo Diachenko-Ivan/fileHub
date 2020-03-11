@@ -12,45 +12,45 @@
     <div class="application-box user-form">
         <img alt="TeamDev" class="logo" src="../../src/main/resources/teamdev.png">
         <header class="row header">
-            <div class="col-md-11"><h1>Registration</h1></div>
-            <div class="col-md-1"><i class="glyphicon glyphicon-user"></i></div>
+            <div class="col-xs-11"><h1>Registration</h1></div>
+            <div class="col-xs-1"><i class="glyphicon glyphicon-user"></i></div>
         </header>
 
         <form class="form-horizontal">
             <div class="form-group">
-                <label class="col-md-5 control-label" for="email">Username</label>
+                <label class="col-xs-5 control-label" for="email">Username</label>
 
-                <div class="col-md-7">
+                <div class="col-xs-7">
                     <input class="form-control" id="email" placeholder="Email" name="email"/>
-                    <div class="error-message">Username can't be empty</div>
+                    <div class="text-danger">Username can't be empty</div>
                 </div>
 
             </div>
 
             <div class="form-group">
-                <label class="col-md-5 control-label" for="password">Password</label>
+                <label class="col-xs-5 control-label" for="password">Password</label>
 
-                <div class="col-md-7">
+                <div class="col-xs-7">
                     <input class="form-control" id="password" type="password" placeholder="Password" name="password"/>
-                    <div class="error-message">Password can't be empty and should contain letters and numbers</div>
+                    <div class="text-danger">Password can't be empty and should contain letters and numbers</div>
                 </div>
 
             </div>
 
             <div class="form-group">
 
-                <label class="col-md-5 control-label" for="repeat-password">Confirm Password</label>
+                <label class="col-xs-5 control-label" for="repeat-password">Confirm Password</label>
 
-                <div class="col-md-7">
+                <div class="col-xs-7">
                     <input class="form-control" id="repeat-password" type="password" placeholder="Confirm password" name="password"/>
-                    <div class="error-message">Passwords do not match</div>
+                    <div class="text-danger">Passwords do not match</div>
                 </div>
 
             </div>
 
             <div class="row">
-                <div class="col-md-7 col-md-offset-5">
-                    <button type="submit" style="float: left" class="btn btn-primary btn-lg">Register</button>
+                <div class="col-xs-7 col-xs-offset-5">
+                    <button data-toggle="tooltip" data-placement="top" title="Register" type="submit" style="float: left" class="btn btn-primary btn-lg">Register</button>
                     <a class="form-link" href="authentication.html" class="form-link">Already have an account?</a>
                 </div>
             </div>

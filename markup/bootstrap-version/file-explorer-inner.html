@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>File Explorer</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="css/styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -13,29 +16,29 @@
     <section class="application-box file-explorer-container">
         <img alt="TeamDev" class="logo" src="../../src/main/resources/teamdev.png">
         <ul class="list-inline user-menu">
-            <li class="username"><i data-toggle="tooltip" data-placement="top" title="Current user: John Doe" class="glyphicon glyphicon-user"></i>John Doe</li>
+            <li class="username"><i data-toggle="tooltip" data-placement="top" title="Current user: John Doe"
+                                    class="glyphicon glyphicon-user"></i>John Doe
+            </li>
             <li><a href="#">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>
         </ul>
 
         <header class="header"><h1>File Explorer</h1></header>
 
         <div class="main">
-            <table class="table table-hover">
-
-                <thead>
-                <tr>
-                    <th><a href="#"><i class="glyphicon glyphicon-level-up"></i></a></th>
-                    <th class="directory-path">/ Shared with me</th>
-                    <th colspan="2">
-                        <button data-toggle="tooltip" data-placement="top" title="Create new file" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-plus"></i>
+            <div class="content-header">
+                <i class="glyphicon glyphicon-level-up"></i>
+                <span class="directory-path">/ Shared with me</span>
+                <span class="head-buttons">
+                        <button type="button" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-plus"></i>
                             Create Folder
                         </button>
-                        <button data-toggle="tooltip" data-placement="top" title="Upload new file" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-upload"></i>
+                        <button type="button" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-upload"></i>
                             Upload File
                         </button>
-                    </th>
-                </tr>
-                </thead>
+                    </span>
+            </div>
+
+            <table class="table table-hover">
                 <tbody>
 
                 <tr>
@@ -110,7 +113,7 @@
                 <tr>
                     <td class="arrow"><i class="glyphicon glyphicon-menu-right"></i></td>
                     <td><i class="glyphicon glyphicon-folder-close"></i><span class="file-name-editing">
-                            <input class="form-control" value="Videos"></span></td>
+                            <input type="text" class="form-control" value="Videos"></span></td>
                     <td class="file-count">1 item</td>
                     <td class="file-action-icons">
                         <i class="glyphicon glyphicon-upload"></i>
@@ -133,7 +136,7 @@
                 <tr>
                     <td class="arrow"><i class="glyphicon glyphicon-menu-right"></i></td>
                     <td><span class="folder-name"><i class="glyphicon glyphicon-folder-close"></i>
-                            <a href="#">Videos</a></span></td>
+                            <a href="#">Music</a></span></td>
                     <td class="file-count">2 items</td>
                     <td class="file-action-icons">
                         <i class="glyphicon glyphicon-upload"></i>
@@ -152,11 +155,23 @@
                         <i class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
+
+                <tr>
+                    <td class="arrow"></td>
+                    <td><span class="file-name"><i class="glyphicon glyphicon-music"></i>
+                        song.mp3</span>
+                    </td>
+                    <td class="file-size">415MB</td>
+                    <td class="file-action-icons">
+                        <i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
         <footer class="footer">
-            Copyright &copy 2020 <a href="#">TeamDev</a>. All rights reserved.
+            Copyright &copy; 2020 <a href="#">TeamDev</a>. All rights reserved.
         </footer>
     </section>
 </div>

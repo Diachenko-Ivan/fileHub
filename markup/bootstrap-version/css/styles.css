@@ -3,16 +3,17 @@ body {
     color: black;
     background: white;
 }
-a{
+
+a {
     font-size: 16px;
 }
 
-h1{
+h1 {
     font-size: 30px;
     margin-top: 0;
 }
 
-.header{
+.header {
     font-size: 30px;
     border-bottom: 2px solid #999;
     margin: 0 0 14px;
@@ -26,7 +27,7 @@ h1{
     left: -2px;
 }
 
-.application-box{
+.application-box {
     box-sizing: border-box;
     box-shadow: 0 0 20px gray;
     background-color: #ffffff;
@@ -40,48 +41,48 @@ h1{
 
 /*======================Styles for authentication and registration form==========================*/
 
-.user-form .header .col-xs-11{
+.user-form .header .col-xs-11 {
     padding: 0;
 }
 
-.user-form .control-label{
+.user-form .control-label {
     text-align: left;
     font-size: 20px;
     font-weight: 500;
 }
 
-.user-form .form-link{
+.user-form .form-link {
     margin-top: 10px;
     float: right;
 }
 
-.user-form .text-danger{
-    color: 	#ff0000;
+.user-form .text-danger {
+    color: #ff0000;
     font-size: 16px;
 }
 
-.user-form{
+.user-form {
     width: 34%;
     padding: 28px;
 }
 
-.user-form .form-control{
+.user-form .form-control {
     margin-bottom: 6px;
 }
 
 
 /*=================================Styles for file explorer============================*/
 
-.file-explorer-container a{
+.file-explorer-container a {
     font-size: 14px;
 }
 
-.file-explorer-container .form-control{
-    width:70%;
+.file-explorer-container .form-control {
+    width: 70%;
     display: inline;
 }
 
-.file-explorer-container .table thead tr th:first-child i{
+.file-explorer-container .table thead tr th:first-child i {
     padding-bottom: 12px;
 }
 
@@ -90,13 +91,14 @@ h1{
     margin-right: 8px;
     top: 5px;
 }
+
 .file-explorer-container .arrow .glyphicon-menu-right {
     font-size: 12px;
     margin-left: 8px;
     top: 2px;
 }
 
-.file-explorer-container .user-menu{
+.file-explorer-container .user-menu {
     position: absolute;
     right: 20px;
     top: -40px;
@@ -107,17 +109,33 @@ h1{
     padding-right: 5px;
 }
 
-.file-explorer-container .user-menu li:last-child{
+.file-explorer-container .user-menu li:last-child {
     border-style: none;
 }
 
-.file-explorer-container .table-hover .arrow{
+.file-explorer-container .content-header {
+    padding: 10px 15px 20px;
+    position: sticky;
+    top: 0;
+}
+
+.file-explorer-container .content-header .head-buttons {
+    position: absolute;
+    left: 500px;
+}
+
+.file-explorer-container .content-header .head-buttons .btn {
+    margin-left: 30px;
+    font-size: 14px;
+}
+
+.file-explorer-container .table-hover .arrow {
     width: 4%;
 }
 
-.file-explorer-container .directory-path {
+.file-explorer-container .content-header .directory-path {
     width: 56%;
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 600;
     text-align: left;
 }
@@ -132,6 +150,7 @@ h1{
     padding-top: 14px;
     padding-bottom: 14px;
 }
+
 .file-explorer-container .footer {
     padding-top: 5px;
     border-top: 2px solid #999;
@@ -141,6 +160,7 @@ h1{
 .file-explorer-container tbody tr:hover .file-action-icons {
     opacity: 1;
 }
+
 .file-explorer-container tbody tr .file-action-icons {
     opacity: 0;
 }
@@ -150,13 +170,8 @@ h1{
     text-align: right;
 }
 
-.file-explorer-container .table tbody tr:last-child{
+.file-explorer-container .table tbody tr:last-child {
     border-bottom: 1px solid #ddd;
-}
-
-.file-explorer-container .table thead .btn {
-    margin-left: 20px;
-    font-size: 14px;
 }
 
 .file-explorer-container .table tr .file-count, .file-size {
@@ -165,7 +180,7 @@ h1{
 }
 
 .file-explorer-container .table tr .file-action-icons .glyphicon-upload {
-    color: 	#32CD32;
+    color: #32CD32;
 }
 
 .file-explorer-container .table tr .file-action-icons .glyphicon-download {

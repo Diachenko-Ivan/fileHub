@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Registration</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="css/styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -21,7 +24,7 @@
                 <label class="col-xs-5 control-label" for="email">Username</label>
 
                 <div class="col-xs-7">
-                    <input class="form-control" id="email" placeholder="Email" name="email"/>
+                    <input type="email" class="form-control" id="email" placeholder="Email" name="email"/>
                     <div class="text-danger">Username can't be empty</div>
                 </div>
 
@@ -42,7 +45,8 @@
                 <label class="col-xs-5 control-label" for="repeat-password">Confirm Password</label>
 
                 <div class="col-xs-7">
-                    <input class="form-control" id="repeat-password" type="password" placeholder="Confirm password" name="password"/>
+                    <input type="password" class="form-control" id="repeat-password" placeholder="Confirm password"
+                           name="password"/>
                     <div class="text-danger">Passwords do not match</div>
                 </div>
 
@@ -50,8 +54,10 @@
 
             <div class="row">
                 <div class="col-xs-7 col-xs-offset-5">
-                    <button data-toggle="tooltip" data-placement="top" title="Register" type="submit" style="float: left" class="btn btn-primary btn-lg">Register</button>
-                    <a class="form-link" href="authentication.html" class="form-link">Already have an account?</a>
+                    <button data-toggle="tooltip" data-placement="top" title="Register" type="submit"
+                            style="float: left" class="btn btn-primary btn-lg">Register
+                    </button>
+                    <a class="form-link" href="authentication.html">Already have an account?</a>
                 </div>
             </div>
         </form>

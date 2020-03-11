@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>File Explorer</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="css/styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -13,29 +16,30 @@
 
         <img alt="TeamDev" class="logo" src="../../src/main/resources/teamdev.png">
         <ul class="list-inline user-menu">
-            <li class="username"><i data-toggle="tooltip" data-placement="top" title="Current user: John Doe" class="glyphicon glyphicon-user"></i>John Doe</li>
+            <li class="username"><i data-toggle="tooltip" data-placement="top" title="Current user: John Doe"
+                                    class="glyphicon glyphicon-user"></i>John Doe
+            </li>
             <li><a href="#">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>
         </ul>
 
-        <header class="header"><h1>File Explorer</h1></header>
+        <header class="header"><a href="#"><h1>File Explorer</h1></a></header>
 
         <div class="main">
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th><i class="glyphicon glyphicon-folder-open"></i></th>
-                    <th class="directory-path">/ Root</th>
-                    <th colspan="2">
-                        <button class="btn btn-success btn-sm"><i class="glyphicon glyphicon-plus"></i>
-                            Create Folder
-                        </button>
-                        <button class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-upload"></i>
-                            Upload File
-                        </button>
-                    </th>
-                </tr>
-                </thead>
 
+            <div class="content-header">
+                <i class="glyphicon glyphicon-folder-open"></i>
+                <span class="directory-path">/ Root</span>
+                <span class="head-buttons">
+                <button type="button" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-plus"></i>
+                    Create Folder
+                </button>
+                <button type="button" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-upload"></i>
+                    Upload File
+                </button>
+            </span>
+            </div>
+
+            <table class="table table-hover">
                 <tbody>
 
                 <tr>

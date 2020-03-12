@@ -33,7 +33,7 @@ h1 {
     background-color: #ffffff;
     border: 2px solid gray;
     border-radius: 8px;
-    margin: 100px auto 0px;
+    margin: 100px auto 0;
     padding: 20px;
     width: 900px;
     position: relative;
@@ -129,6 +129,12 @@ h1 {
     font-size: 14px;
 }
 
+.file-explorer-container .footer {
+    padding-top: 5px;
+    border-top: 2px solid #999;
+    text-align: center;
+}
+
 .file-explorer-container .table-hover .arrow {
     width: 4%;
 }
@@ -145,16 +151,24 @@ h1 {
     overflow-y: auto;
 }
 
+
+.file-explorer-container .table {
+    width: 100%;
+    table-layout: fixed;
+}
+
 .file-explorer-container .table-hover td, th {
     vertical-align: middle;
     padding-top: 14px;
     padding-bottom: 14px;
 }
 
-.file-explorer-container .footer {
-    padding-top: 5px;
-    border-top: 2px solid #999;
-    text-align: center;
+.file-explorer-container .table tr td .file-name, .folder-name {
+    display: block;
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .file-explorer-container tbody tr:hover .file-action-icons {

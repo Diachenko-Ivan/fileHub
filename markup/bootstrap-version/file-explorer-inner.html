@@ -2,9 +2,193 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>File Explorer</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="../js/main.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+<div class="container-fluid">
+
+    <section class="application-box file-explorer-container">
+        <img data-toggle="tooltip" data-placement="top"
+             title="TeamDev" alt="TeamDev" class="logo" src="../../src/main/resources/teamdev.png">
+        <ul class="list-inline user-menu">
+            <li data-toggle="tooltip" data-placement="top" title="Current user: John Doe" class="username">
+                <i class="glyphicon glyphicon-user"></i>John Doe
+            </li>
+            <li><a href="#">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>
+        </ul>
+
+        <header class="header"><a href="#"><h1>File Explorer</h1></a></header>
+
+        <div class="main">
+            <div class="content-header">
+                <i class="glyphicon glyphicon-level-up"></i>
+                <span class="directory-path">/ Shared with me</span>
+                <span class="head-buttons">
+                        <button data-toggle="tooltip" data-placement="bottom" title="Create new folder" type="button" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-plus"></i>
+                            Create Folder
+                        </button>
+                        <button data-toggle="tooltip" data-placement="bottom" title="Upload new file" type="button" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-upload"></i>
+                            Upload File
+                        </button>
+                    </span>
+            </div>
+
+            <table class="table table-hover">
+                <tbody>
+
+                <tr>
+                    <td class="arrow"><i class="glyphicon glyphicon-menu-right"></i></td>
+                    <td><span data-toggle="tooltip" data-placement="bottom" title="Documents"  class="folder-name">
+                        <i class="glyphicon glyphicon-folder-close"></i>
+                            <a href="#">Documents</a></span></td>
+                    <td class="file-count">2 items</td>
+                    <td class="file-action-icons">
+                        <i class="glyphicon glyphicon-upload"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="arrow"></td>
+                    <td><span data-toggle="tooltip" data-placement="bottom" title="HTML_guidelines.pdf" class="file-name">
+                        <i class="glyphicon glyphicon-book"></i>
+                        HTML_guidelines.pdf</span></td>
+                    <td class="file-size">10KB</td>
+                    <td class="file-action-icons">
+                        <i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="arrow"></td>
+                    <td><span data-toggle="tooltip" data-placement="bottom" title="vacation_schedule.xls" class="file-name">
+                        <i class="glyphicon glyphicon-list-alt"></i>
+                        vacation_schedule.xls</span>
+                    </td>
+                    <td class="file-size">12KB</td>
+                    <td class="file-action-icons">
+                        <i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="arrow"><i class="glyphicon glyphicon-menu-right"></i></td>
+                    <td><span data-toggle="tooltip" data-placement="bottom" title="Images" class="folder-name">
+                        <i class="glyphicon glyphicon-folder-close"></i>
+                            <a href="#">Images</a></span></td>
+                    <td class="file-count">2 items</td>
+                    <td class="file-action-icons">
+                        <i class="glyphicon glyphicon-upload"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="arrow"></td>
+                    <td><span data-toggle="tooltip" data-placement="bottom" title="selfie.jpg" class="file-name">
+                        <i class="glyphicon glyphicon-picture"></i>
+                        selfie.jpg</span>
+                    </td>
+                    <td class="file-size">1MB</td>
+                    <td class="file-action-icons">
+                        <i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="arrow"></td>
+                    <td><span data-toggle="tooltip" data-placement="bottom" title="Montenegro.jpg" class="file-name">
+                        <i class="glyphicon glyphicon-picture"></i>
+                        Montenegro.jpg</span>
+                    </td>
+                    <td class="file-size">4MB</td>
+                    <td class="file-action-icons">
+                        <i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="arrow"><i class="glyphicon glyphicon-menu-right"></i></td>
+                    <td><i class="glyphicon glyphicon-folder-close"></i><span class="file-name-editing">
+                            <input type="text" class="form-control" value="Videos"></span></td>
+                    <td class="file-count">1 item</td>
+                    <td class="file-action-icons">
+                        <i class="glyphicon glyphicon-upload"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="arrow"></td>
+                    <td><span data-toggle="tooltip" data-placement="bottom" title="summer_party.avi" class="file-name">
+                        <i class="glyphicon glyphicon-film"></i>
+                        summer_party.avi</span>
+                    </td>
+                    <td class="file-size">415MB</td>
+                    <td class="file-action-icons">
+                        <i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="arrow"><i class="glyphicon glyphicon-menu-right"></i></td>
+                    <td><span data-toggle="tooltip" data-placement="bottom" title="Music" class="folder-name">
+                        <i class="glyphicon glyphicon-folder-close"></i>
+                            <a href="#">Music</a></span></td>
+                    <td class="file-count">2 items</td>
+                    <td class="file-action-icons">
+                        <i class="glyphicon glyphicon-upload"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="arrow"></td>
+                    <td><span data-toggle="tooltip" data-placement="bottom" title="hello.mp3" class="file-name">
+                        <i class="glyphicon glyphicon-music"></i>
+                        hello.mp3</span>
+                    </td>
+                    <td class="file-size">415MB</td>
+                    <td class="file-action-icons">
+                        <i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="arrow"></td>
+                    <td><span data-toggle="tooltip" data-placement="bottom" title="song.mp3" class="file-name">
+                        <i class="glyphicon glyphicon-music"></i>
+                        song.mp3</span>
+                    </td>
+                    <td class="file-size">415MB</td>
+                    <td class="file-action-icons">
+                        <i class="glyphicon glyphicon-download"></i>
+                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer class="footer">
+            Copyright &copy; 2020 <a data-toggle="tooltip" data-placement="bottom"
+                                     title="TeamDev" href="#">TeamDev</a>. All rights reserved.
+        </footer>
+    </section>
+</div>
 
 </body>
 </html>

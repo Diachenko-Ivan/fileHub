@@ -1,65 +1,22 @@
 body {
-    font: 14px/26px Arial, Helvetica, sans-serif;
+    font: 14px/28px Arial, Helvetica, sans-serif;
     color: black;
     background: white;
 }
-a{
+
+a {
     font-size: 16px;
 }
 
-h1{
+h1 {
     font-size: 30px;
     margin-top: 0;
 }
 
-.header{
+.header {
     font-size: 30px;
     border-bottom: 2px solid #999;
     margin: 0 0 14px;
-}
-
-.header .col-md-11{
-    padding: 0;
-}
-
-.user-form .control-label{
-    text-align: left;
-    font-size: 20px;
-    font-weight: 500;
-}
-
-.user-form .form-link{
-    margin-top: 10px;
-    float: right;
-}
-
-.application-box{
-    box-sizing: border-box;
-    box-shadow: 0 0 20px gray;
-    background-color: #ffffff;
-    border: 2px solid gray;
-    border-radius: 8px;
-    margin: 100px auto 0px;
-    padding: 20px;
-    width: 900px;
-    position: relative;
-}
-.user-form .error-message{
-    color: 	#ff0000;
-    font-size: 16px;
-    line-height: 30px;
-}
-.user-form{
-    width: 34%;
-    padding: 28px;
-}
-
-.user-form .form-control{
-    margin-bottom: 6px;
-}
-
-.form-horizontal :last-child{
-    margin-bottom: 0;
 }
 
 .logo {
@@ -70,48 +27,134 @@ h1{
     left: -2px;
 }
 
+.application-box {
+    box-sizing: border-box;
+    box-shadow: 0 0 20px gray;
+    background-color: #ffffff;
+    border: 2px solid gray;
+    border-radius: 8px;
+    margin: 100px auto 0;
+    padding: 20px;
+    width: 900px;
+    position: relative;
+}
+
+/*======================Styles for authentication and registration form==========================*/
+
+.user-form .header .col-xs-11 {
+    padding: 0;
+}
+
+.user-form .control-label {
+    text-align: left;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.user-form .form-link {
+    margin-top: 10px;
+    float: right;
+}
+
+.user-form .text-danger {
+    color: #ff0000;
+    font-size: 16px;
+}
+
+.user-form {
+    width: 34%;
+    padding: 28px;
+}
+
+.user-form .form-control {
+    margin-bottom: 6px;
+}
+
+
 /*=================================Styles for file explorer============================*/
 
+.file-explorer-container a {
+    font-size: 14px;
+}
+
+.file-explorer-container .form-control {
+    width: 70%;
+    display: inline;
+}
+
+.file-explorer-container .table thead tr th:first-child i {
+    padding-bottom: 12px;
+}
 
 .file-explorer-container .glyphicon {
     font-size: 20px;
     margin-right: 8px;
     top: 5px;
 }
+
 .file-explorer-container .arrow .glyphicon-menu-right {
     font-size: 12px;
     margin-left: 8px;
     top: 2px;
 }
 
-.file-explorer-container .user-menu{
+.file-explorer-container .user-menu {
     position: absolute;
     right: 20px;
     top: -40px;
 }
+
 .file-explorer-container .user-menu li {
     border-right: 1px solid #000000;
     padding-right: 5px;
 }
 
-.file-explorer-container .user-menu :last-child{
+.file-explorer-container .user-menu li:last-child {
     border-style: none;
 }
 
-.file-explorer-container .table-hover .arrow{
+.file-explorer-container .content-header {
+    padding: 10px 15px 20px;
+    position: sticky;
+    top: 0;
+}
+
+.file-explorer-container .content-header .head-buttons {
+    position: absolute;
+    left: 500px;
+}
+
+.file-explorer-container .content-header .head-buttons .btn {
+    margin-left: 30px;
+    font-size: 14px;
+}
+
+.file-explorer-container .footer {
+    padding-top: 5px;
+    border-top: 2px solid #999;
+    text-align: center;
+}
+
+.file-explorer-container .table-hover .arrow {
     width: 4%;
 }
 
-.file-explorer-container .table-hover .directory-path {
+.file-explorer-container .content-header .directory-path {
     width: 56%;
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 600;
     text-align: left;
 }
 
 .file-explorer-container .main {
-    height: 600px;
+    height: 580px;
     overflow-y: auto;
+}
+
+
+.file-explorer-container .table {
+    width: 100%;
+    table-layout: fixed;
 }
 
 .file-explorer-container .table-hover td, th {
@@ -119,16 +162,19 @@ h1{
     padding-top: 14px;
     padding-bottom: 14px;
 }
-.file-explorer-container .footer {
-    font-size: 14px;
-    padding-top: 5px;
-    border-top: 2px solid #999;
-    text-align: center;
+
+.file-explorer-container .table tr td .file-name, .folder-name {
+    display: block;
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .file-explorer-container tbody tr:hover .file-action-icons {
     opacity: 1;
 }
+
 .file-explorer-container tbody tr .file-action-icons {
     opacity: 0;
 }
@@ -137,21 +183,18 @@ h1{
     width: 20%;
     text-align: right;
 }
-.file-explorer-container .table tbody:last-child{
-    border-bottom: 1px solid #ddd;
-}
 
-.file-explorer-container .table thead .btn {
-    margin-right: 25px;
-    font-size: 14px;
+.file-explorer-container .table tbody tr:last-child {
+    border-bottom: 1px solid #ddd;
 }
 
 .file-explorer-container .table tr .file-count, .file-size {
     width: 20%;
     text-align: center;
 }
+
 .file-explorer-container .table tr .file-action-icons .glyphicon-upload {
-    color: 	#32CD32;
+    color: #32CD32;
 }
 
 .file-explorer-container .table tr .file-action-icons .glyphicon-download {

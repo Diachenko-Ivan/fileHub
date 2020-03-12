@@ -19,27 +19,25 @@
             <li><a href="#">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>
         </ul>
 
-        <header class="header file-explorer-header"><h1>File Explorer</h1></header>
+        <header class="header file-explorer-header"><a href="#"><h1>File Explorer</h1></a></header>
 
         <div class="main">
-            <table class="content-table">
-                <thead>
-                <tr>
-                    <th><i class="glyphicon glyphicon-folder-open"></i></th>
-                    <th class="directory-path">/ Root</th>
-                    <th>
-                        <button class="button head-button create"><i class="glyphicon glyphicon-plus"></i>
-                            Create Folder
-                        </button>
-                    </th>
-                    <th>
-                        <button class="button head-button upload"><i class="glyphicon glyphicon-upload"></i>
-                            Upload File
-                        </button>
-                    </th>
-                </tr>
-                </thead>
+            <div class="content-header">
+                <i class="glyphicon glyphicon-folder-open"></i>
+                <span class="directory-path">/ Root</span>
+                <span class="head-buttons">
+                <button type="button" class="button head-button upload">
+                    <i class="glyphicon glyphicon-upload"></i>
+                    Upload File
+                </button>
+                <button type="button" class="button head-button create">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    Create Folder
+                </button>
+            </span>
+            </div>
 
+            <table class="content-table">
                 <tbody>
 
                 <tr>

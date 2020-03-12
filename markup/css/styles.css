@@ -157,10 +157,8 @@ a:hover {
 
 .file-explorer-container .file-explorer-header {
     font-size: 22px;
-    color: #337ab7;
     padding-bottom: 8px;
     line-height: 22px;
-    border-bottom: 2px solid #999;
     margin-bottom: 8px;
 }
 
@@ -199,13 +197,35 @@ a:hover {
     top: 5px;
 }
 
-.file-explorer-container .content-table .head-button {
+
+.file-explorer-container .content-header {
+    padding: 10px 15px 20px;
+    position: sticky;
+    top: 0;
+    border-bottom: 2px solid #999;
+    z-index: 1;
+    background-color: #fff;
+}
+
+.file-explorer-container .content-header .head-buttons {
+    position: absolute;
+    left: 500px;
+}
+
+.file-explorer-container .content-header .head-button {
     padding: 4px 10px 10px;
     border-radius: 5px;
     font-size: 14px;
     float: right;
-    margin-right: 10px;
+    margin-left: 30px;
     color: #ffffff;
+}
+
+.file-explorer-container .content-header .directory-path {
+    width: 56%;
+    font-size: 22px;
+    font-weight: 600;
+    text-align: left;
 }
 
 .upload{
@@ -218,13 +238,6 @@ a:hover {
 
 .file-explorer-container .content-table {
     width: 100%;
-}
-
-.file-explorer-container .content-table .directory-path {
-    width: 56%;
-    font-size: 22px;
-    font-weight: 600;
-    text-align: left;
 }
 
 .file-explorer-container .content-table tr {

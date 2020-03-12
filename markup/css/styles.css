@@ -2,8 +2,8 @@
 
 body {
     font: 14px/28px Arial, Helvetica, sans-serif;
-    color: black;
-    background: white;
+    color: #000000;
+    background: #ffffff;
 }
 
 a {
@@ -16,7 +16,7 @@ a:hover {
 }
 
 .input{
-    border: 2px solid lightgray;
+    border: 2px solid #d3d3d3;
 }
 
 .input:focus {
@@ -50,9 +50,9 @@ a:hover {
 
 .application-box{
     box-sizing: border-box;
-    box-shadow: 0 0 20px gray;
+    box-shadow: 0 0 20px #999999;
     background-color: #ffffff;
-    border: 2px solid gray;
+    border: 2px solid #999999;
     border-radius: 8px;
     margin: 100px auto 0px;
     padding: 20px;
@@ -146,7 +146,7 @@ a:hover {
     float: left;
     padding: 13px 20px;
     background-color: #337ab7;
-    color: white;
+    color: #ffffff;
 }
 
 .user-form .form-button:hover {
@@ -200,7 +200,6 @@ a:hover {
 }
 
 .file-explorer-container .content-table .head-button {
-
     padding: 4px 10px 10px;
     border-radius: 5px;
     font-size: 14px;
@@ -263,7 +262,7 @@ a:hover {
 }
 
 .file-explorer-container .content-table tr td .file-name i {
-    color: black;
+    color: #000000;
 }
 
 .file-explorer-container .content-table tr td .file-name, .folder-name {

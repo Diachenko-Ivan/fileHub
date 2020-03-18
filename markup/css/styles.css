@@ -27,6 +27,7 @@ a:hover {
     font-size: 30px;
     border-bottom: 2px solid #999;
     margin: 0 0 14px;
+    padding-bottom: 8px;
 }
 
 .button {
@@ -80,10 +81,6 @@ a:hover {
     padding: 20px 10px;
 }
 
-.user-form .form-header {
-    font-weight: 600;
-    padding-bottom: 14px;
-}
 
 .user-form .form-header .form-target {
     float: left;
@@ -132,7 +129,7 @@ a:hover {
     content: "";
 }
 
-.user-form :last-child{
+.user-form .credential-container:last-child{
     margin-bottom: 0px;
 }
 
@@ -154,14 +151,6 @@ a:hover {
 }
 
 /*Styles for file explorer*/
-
-.file-explorer-container .file-explorer-header {
-    font-size: 22px;
-    padding-bottom: 8px;
-    line-height: 22px;
-    margin-bottom: 8px;
-}
-
 
 .file-explorer-container .footer {
     font-size: 14px;

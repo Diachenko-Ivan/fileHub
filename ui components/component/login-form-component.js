@@ -1,6 +1,7 @@
 import {Component} from "./parent-component.js";
 import {CredentialInputComponent} from "./parts/credential-input.js";
 import {FormHeader} from './parts/header.js'
+import {FormFooter} from "./parts/form-footer.js";
 
 export class LoginFormComponent extends Component {
 
@@ -10,43 +11,32 @@ export class LoginFormComponent extends Component {
 
     markup() {
         return `
-        <div class="application-box user-form">
+        <form class="application-box user-form">
             <img alt="TeamDev" class="logo" src="../src/main/resources/teamdev.png"> 
-            <div id="form-header"></div>
-            <div>
-                <div id="email-input"></div>
-                <div id="password-input"></div>
-                <div class="credential-container">
-                    <div class="input-container">
-                    <a class="form-link" href="registration.html">Don't have an account yet?</a>
-                <button class="button form-button">Log In</button></div></div>
-            </div>   
-        </div>  
+        </form>  
 `;
     }
 
     initNestedComponents() {
-        const headerContainer = this.rootContainer.querySelector('#form-header');
-        const loginInputContainer = this.rootContainer.querySelector('#email-input');
-        const passwordInputContainer = this.rootContainer.querySelector('#password-input');
+        this.header = new FormHeader(this.rootContainer, 'Login');
 
-        this.header = new FormHeader(headerContainer, 'Login');
-
-        this.loginInput = new CredentialInputComponent(loginInputContainer,
+        this.loginInput = new CredentialInputComponent(this.rootContainer,
             'email', 'text', 'email', 'Email', "Username");
 
-        this.passwordInput = new CredentialInputComponent(passwordInputContainer,
+        this.passwordInput = new CredentialInputComponent(this.rootContainer,
             'password', 'password', 'password', 'Password', 'Password');
+
+        this.footer = new FormFooter(this.rootContainer, 'Log In', 'Don\'t have an account yet?', '#');
     }
 
 
     addEventListener() {
-        document.querySelector('.form-button').addEventListener('click', () => {
+        this.footer.formButton.onClick(() => {
             this.loginInput.cleanErrorMessage();
             this.passwordInput.cleanErrorMessage();
 
-            const emailValue = document.getElementById('email').value;
-            const passwordValue = document.getElementById('password').value;
+            const emailValue = this.loginInput.inputValue;
+            const passwordValue = this.passwordInput.inputValue;
             if (!emailValue || !passwordValue) {
                 if (!emailValue) {
                     this.loginInput.showErrorMessage('Username can\'t be empty');
@@ -55,9 +45,13 @@ export class LoginFormComponent extends Component {
                     this.passwordInput.showErrorMessage('Password can\'t be empty and should contain letters and numbers');
                 }
             } else
-                alert('Successfully authorized');
+                alert(`Successfully authenticated\nEmail:${emailValue}`);
+        });
 
-        })
+        this.rootContainer.addEventListener('submit', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+        });
 
     }
 }

@@ -19,6 +19,6 @@ export class FormHeader extends Component{
 
     set headerText(value){
         this._headerText=value;
-        this.rootContainer.firstElementChild.innerText=value;
+        this.rootContainer.querySelector('.form-target').firstElementChild.innerText=value;
     }
 }

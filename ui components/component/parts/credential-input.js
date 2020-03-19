@@ -8,6 +8,7 @@ export class CredentialInputComponent extends Component {
 
     markup() {
         return `
+            <div class="credential-container">
                 <label for="${this.currentInputId}">${this.labelText}</label>
 
                 <div class="input-container">
@@ -15,6 +16,7 @@ export class CredentialInputComponent extends Component {
                     placeholder="${this.currentInputPlaceholder}" name="${this.currentInputName}"/>
                     <div class="error-message"></div>
                 </div>
+            </div>
 `;
     }
 

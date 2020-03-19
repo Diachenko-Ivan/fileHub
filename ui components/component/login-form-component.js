@@ -10,37 +10,36 @@ export class LoginFormComponent extends Component {
 
     markup() {
         return `
-        <img alt="TeamDev" class="logo" src="../src/main/resources/teamdev.png"> 
-        <div id="form-header"></div>
-        <div>
-            <div class="credential-container"></div>
-            <div class="credential-container"></div>
-            <div class="credential-container">
-                <div class="input-container">
-                <a class="form-link" href="registration.html">Don't have an account yet?</a>
-            <button class="button form-button">Log In</button></div></div>
-        </div>     
+        <div class="application-box user-form">
+            <img alt="TeamDev" class="logo" src="../src/main/resources/teamdev.png"> 
+            <div id="form-header"></div>
+            <div>
+                <div id="email-input"></div>
+                <div id="password-input"></div>
+                <div class="credential-container">
+                    <div class="input-container">
+                    <a class="form-link" href="registration.html">Don't have an account yet?</a>
+                <button class="button form-button">Log In</button></div></div>
+            </div>   
+        </div>  
 `
     }
 
     initNestedComponents() {
-        const loginInputContainer = this.rootContainer.querySelector('.credential-container:first-child');
-        const passwordInputContainer = this.rootContainer.querySelector('.credential-container:nth-child(2)');
-        const headerContainer=this.rootContainer.querySelector('#form-header');
+        const headerContainer = this.rootContainer.querySelector('#form-header');
+        const loginInputContainer = this.rootContainer.querySelector('#email-input');
+        const passwordInputContainer = this.rootContainer.querySelector('#password-input');
 
-        this.header=new FormHeader(headerContainer);
-        this.header.headerText='Login';
-        this.header.render();
+        this.header = new FormHeader(headerContainer);
+        this.header.headerText = 'Login';
 
         this.loginInput = new CredentialInputComponent(loginInputContainer);
         this.loginInput.labelText = 'Username';
-        this.loginInput.defineProperties('email', 'text', 'email', 'Email')
-        this.loginInput.render();
+        this.loginInput.defineProperties('email', 'text', 'email', 'Email');
 
         this.passwordInput = new CredentialInputComponent(passwordInputContainer);
         this.passwordInput.labelText = 'Password';
         this.passwordInput.defineProperties('password', 'password', 'password', 'Password')
-        this.passwordInput.render();
     }
 
 

@@ -4,14 +4,17 @@ export class Component {
     }
 
     init(container) {
-        this.rootContainer = document.createElement('div');
-        container.append(this.rootContainer);
+        this.container=container;
+        this.render();
+        this.initNestedComponents();
+        this.addEventListener();
     }
 
     render() {
-        this.rootContainer.innerHTML = this.markup();
-        this.initNestedComponents();
-        this.addEventListener();
+        const fakeComponent=document.createElement('div');
+        fakeComponent.innerHTML=`<div>${this.markup()}</div>`;
+        this.rootContainer = fakeComponent.querySelector('div').firstElementChild;
+        this.container.append(this.rootContainer);
     }
 
     markup() {

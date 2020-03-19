@@ -22,7 +22,7 @@ export class LoginFormComponent extends Component {
                 <button class="button form-button">Log In</button></div></div>
             </div>   
         </div>  
-`
+`;
     }
 
     initNestedComponents() {
@@ -30,16 +30,13 @@ export class LoginFormComponent extends Component {
         const loginInputContainer = this.rootContainer.querySelector('#email-input');
         const passwordInputContainer = this.rootContainer.querySelector('#password-input');
 
-        this.header = new FormHeader(headerContainer);
-        this.header.headerText = 'Login';
+        this.header = new FormHeader(headerContainer, 'Login');
 
-        this.loginInput = new CredentialInputComponent(loginInputContainer);
-        this.loginInput.labelText = 'Username';
-        this.loginInput.defineProperties('email', 'text', 'email', 'Email');
+        this.loginInput = new CredentialInputComponent(loginInputContainer,
+            'email', 'text', 'email', 'Email', "Username");
 
-        this.passwordInput = new CredentialInputComponent(passwordInputContainer);
-        this.passwordInput.labelText = 'Password';
-        this.passwordInput.defineProperties('password', 'password', 'password', 'Password')
+        this.passwordInput = new CredentialInputComponent(passwordInputContainer,
+            'password', 'password', 'password', 'Password', 'Password');
     }
 
 

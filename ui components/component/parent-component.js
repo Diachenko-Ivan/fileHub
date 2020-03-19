@@ -21,6 +21,7 @@ export class Component {
     }
 
     initNestedComponents() {
+
     }
 
     defineProperties() {

@@ -1,7 +1,7 @@
 import {Component} from "./parent-component.js";
-import {CredentialInputComponent} from "./parts/credential-input.js";
-import {FormHeader} from './parts/header.js'
-import {FormFooter} from "./parts/form-footer.js";
+import {CredentialInputComponent} from "./form-input";
+import {FormHeader} from './form-header'
+import {FormFooter} from "./form-footer";
 
 export class LoginFormComponent extends Component {
 

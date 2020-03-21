@@ -1,5 +1,5 @@
 import {Component} from "../parent-component.js";
-import {Button} from "./button.js";
+import {Button} from "../button";
 
 export class FormFooter extends Component {
 

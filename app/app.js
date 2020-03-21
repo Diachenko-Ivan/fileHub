@@ -1,5 +1,6 @@
 import {Component} from "./component/parent-component.js";
 import {LoginFormComponent} from "./component/login-form-component.js";
+import {Router} from "./router.js";
 
 export class Application extends Component {
 
@@ -8,6 +9,12 @@ export class Application extends Component {
     }
 
     initNestedComponents() {
-        new LoginFormComponent(this.rootContainer);
+        const pageMapping = {
+            '/login': () => new LoginFormComponent(this.rootContainer),
+        };
+
+        debugger
+        this.router = new Router(this.rootContainer, pageMapping);
+        this.router.defaultUrl = '/login';
     }
 }

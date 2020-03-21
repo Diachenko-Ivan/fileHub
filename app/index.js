@@ -1,4 +1,4 @@
-import {LoginFormComponent} from "./component/login-form-component.js";
+import {Application} from "./app.js";
 
-const formContainer = document.querySelector('#login-form');
-const form = new LoginFormComponent(formContainer);
+const formContainer = document.querySelector('#app');
+const application = new Application(formContainer);

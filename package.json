@@ -1,0 +1,22 @@
+{
+  "name": "file-hub",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Diachenko-Ivan/fileHub.git"
+  },
+  "author": "ivan diachenko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Diachenko-Ivan/fileHub/issues"
+  },
+  "homepage": "https://github.com/Diachenko-Ivan/fileHub#readme",
+  "devDependencies": {
+    "qunit": "^2.9.3"
+  }
+}

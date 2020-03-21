@@ -1,7 +1,7 @@
-import {Component} from "./parent-component.js";
-import {CredentialInputComponent} from "./form-input";
-import {FormHeader} from './form-header'
-import {FormFooter} from "./form-footer";
+import {Component} from "../../component/parent-component.js";
+import {CredentialInputComponent} from "../../component/form-input";
+import {FormHeader} from '../../component/form-header'
+import {FormFooter} from "../../component/form-footer";
 
 export class LoginFormComponent extends Component {
 
@@ -26,7 +26,7 @@ export class LoginFormComponent extends Component {
         this.passwordInput = new CredentialInputComponent(this.rootContainer,
             'password', 'password', 'password', 'Password', 'Password');
 
-        this.footer = new FormFooter(this.rootContainer, 'Log In', 'Don\'t have an account yet?', '#');
+        this.footer = new FormFooter(this.rootContainer, 'Log In', 'Don\'t have an account yet?', '#/registration');
     }
 
 

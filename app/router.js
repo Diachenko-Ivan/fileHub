@@ -9,7 +9,6 @@ export class Router {
     init() {
         window.addEventListener('hashchange', event => {
             const nextURL = window.location.hash.slice(1);
-            console.log(nextURL);
             this.generatePage(nextURL);
         })
     }

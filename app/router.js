@@ -1,7 +1,9 @@
+import {ErrorPage} from "./pages/error-page";
+
 export class Router {
 
     constructor(container, pageMapping) {
-        this.container=container;
+        this.container = container;
         this._pageMapping = pageMapping;
         this.init();
     }
@@ -20,15 +22,17 @@ export class Router {
 
         this._defaultUrl = url;
         if (window.location.hash === '') {
-           window.location.hash = `#${url}`;
+            window.location.hash = `#${url}`;
+        } else {
+            this.generatePage(window.location.hash.slice(1))
         }
     }
 
     generatePage(url) {
+        this.container.innerHTML = '';
         if (!this._pageMapping[url]) {
-
+            new ErrorPage(this.container, 404, 'Sorry, this page was not found.')
         } else {
-            this.container.innerHTML = '';
             this._pageMapping[url]();
         }
     }

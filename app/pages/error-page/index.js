@@ -10,7 +10,7 @@ export class ErrorPage extends Component {
 
     markup() {
         return `
-        <div class="application-box">
+        <div id="error-page" class="application-box">
             <div id="error-code"><h1></h1></div>
             <div style="color: #cc0005" id="error-message"><h4></h4></div>
         </div>`;

@@ -100,7 +100,7 @@ a:hover {
     font-size: 30px;
 }
 
-.user-form .credential-container {
+.user-form .credential-container, .form-footer-container {
     box-sizing: border-box;
     margin: 0px auto 14px;
 }
@@ -112,7 +112,7 @@ a:hover {
     width: 30%;
 }
 
-.user-form .credential-container .input-container {
+.user-form .input-container, .form-footer-button-container {
     width: 60%;
     float: right;
 }
@@ -123,13 +123,13 @@ a:hover {
     line-height: 30px;
 }
 
-.user-form .credential-container:after {
+.user-form .credential-container:after, .form-footer-container:after {
     display: block;
     clear: both;
     content: "";
 }
 
-.user-form .credential-container:last-child{
+.user-form .form-footer-container{
     margin-bottom: 0px;
 }
 

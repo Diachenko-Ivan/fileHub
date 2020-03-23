@@ -12,17 +12,16 @@ export class FormFooter extends Component {
 
     markup() {
         return `
-                <div class="credential-container">
-                    <div class="input-container">
+                <div class="form-footer-container">
+                    <div class="form-footer-button-container">
                         <a class="form-link"></a> 
-                        <div id="form-button"></div>
                     </div>
                 </div>`
     }
 
 
     initNestedComponents() {
-        const formButtonContainer = this.rootContainer.querySelector('#form-button');
+        const formButtonContainer = this.rootContainer.querySelector('.form-footer-button-container');
         this.formButton = new Button(formButtonContainer, 'form-button');
     }
 

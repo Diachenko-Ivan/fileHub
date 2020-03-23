@@ -1,6 +1,6 @@
 import {Component} from "../parent-component.js";
 
-export class CredentialInputComponent extends Component {
+export class FormInput extends Component {
 
     constructor(container, inputId, inputType, inputName, inputPlaceHolder, labelText) {
         super(container);

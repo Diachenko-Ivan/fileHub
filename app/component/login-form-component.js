@@ -1,5 +1,5 @@
 import {Component} from "./parent-component.js";
-import {CredentialInputComponent} from "./form-input";
+import {FormInput} from "./form-input";
 import {FormHeader} from './form-header'
 import {FormFooter} from "./form-footer";
 
@@ -20,10 +20,10 @@ export class LoginFormComponent extends Component {
     initNestedComponents() {
         this.header = new FormHeader(this.rootContainer, 'Login');
 
-        this.loginInput = new CredentialInputComponent(this.rootContainer,
+        this.loginInput = new FormInput(this.rootContainer,
             'email', 'text', 'email', 'Email', "Username");
 
-        this.passwordInput = new CredentialInputComponent(this.rootContainer,
+        this.passwordInput = new FormInput(this.rootContainer,
             'password', 'password', 'password', 'Password', 'Password');
 
         this.footer = new FormFooter(this.rootContainer, 'Log In', 'Don\'t have an account yet?', '#');

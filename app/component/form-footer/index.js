@@ -25,9 +25,6 @@ export class FormFooter extends Component {
         this.formButton = new Button(formButtonContainer, 'form-button');
     }
 
-    addEventListener() {
-        super.addEventListener();
-    }
 
     set formButtonText(value){
         this._buttonText=value;

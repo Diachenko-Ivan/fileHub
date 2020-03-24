@@ -1,17 +1,27 @@
 import {Component} from "../parent-component.js";
 
+/**
+ * Used for user forms as credentials input.
+ */
 export class FormInput extends Component {
-
-    constructor(container, inputId, inputType, inputName, inputPlaceHolder, labelText) {
+    /**
+     * Creates new @type {FormInput} instance.
+     * @param container
+     * @param inputPropertiesDescriptor {Object} contains properties as input attributes.
+     */
+    constructor(container, inputPropertiesDescriptor) {
         super(container);
         this.currentInput = this.rootContainer.getElementsByTagName('input')[0];
-        this.currentInputId = inputId;
-        this.currentInputType = inputType;
-        this.currentInputName = inputName;
-        this.currentInputPlaceholder = inputPlaceHolder;
-        this.labelText = labelText;
+        this.currentInputId = inputPropertiesDescriptor.inputId;
+        this.currentInputType = inputPropertiesDescriptor.inputType;
+        this.currentInputName = inputPropertiesDescriptor.inputName;
+        this.currentInputPlaceholder = inputPropertiesDescriptor.inputPlaceholder;
+        this.labelText = inputPropertiesDescriptor.labelText;
     }
 
+    /**
+     * @inheritDoc
+     */
     markup() {
         return `
             <div class="credential-container">
@@ -54,7 +64,7 @@ export class FormInput extends Component {
 
     set currentInputType(value) {
         this._inputId = value;
-        this.currentInput.setAttribute('type',value);
+        this.currentInput.setAttribute('type', value);
     }
 
     get currentInputType() {
@@ -63,7 +73,7 @@ export class FormInput extends Component {
 
     set currentInputName(value) {
         this._inputId = value;
-        this.currentInput.setAttribute('name',value);
+        this.currentInput.setAttribute('name', value);
     }
 
     get currentInputName() {
@@ -72,7 +82,7 @@ export class FormInput extends Component {
 
     set currentInputPlaceholder(value) {
         this._inputId = value;
-        this.currentInput.setAttribute('placeholder',value);
+        this.currentInput.setAttribute('placeholder', value);
     }
 
     get currentInputPlaceHolder() {

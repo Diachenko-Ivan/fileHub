@@ -21,10 +21,16 @@ export class LoginFormComponent extends Component {
         this.header = new FormHeader(this.rootContainer, 'Login');
 
         this.loginInput = new FormInput(this.rootContainer,
-            'email', 'text', 'email', 'Email', "Username");
+            {
+                inputId: 'login', inputType: 'text',
+                inputName: 'login', inputPlaceholder: 'Login', labelText: 'Username'
+            });
 
         this.passwordInput = new FormInput(this.rootContainer,
-            'password', 'password', 'password', 'Password', 'Password');
+            {
+                inputId: 'password', inputType: 'password',
+                inputName: 'password', inputPlaceholder: 'Password', labelText: 'Password'
+            });
 
         this.footer = new FormFooter(this.rootContainer, 'Log In', 'Don\'t have an account yet?', '#');
     }

@@ -5,43 +5,24 @@ export class FormFooter extends Component {
 
     constructor(container, buttonText, linkText, linkHref) {
         super(container);
-        this.formButtonText = buttonText;
-        this.linkText = linkText;
-        this.linkHref = linkHref;
+        this._formButtonText = buttonText;
+        this._linkText = linkText;
+        this._linkHref = linkHref;
+        this.render();
     }
 
     markup() {
         return `
-                <div class="credential-container">
-                    <div class="input-container">
-                        <a class="form-link"></a> 
-                        <div id="form-button"></div>
+                <div class="form-footer-container">
+                    <div class="form-footer-button-container">
+                        <a class="form-link" href="${this._linkHref}">${this._linkText}</a> 
                     </div>
                 </div>`
     }
 
 
     initNestedComponents() {
-        const formButtonContainer = this.rootContainer.querySelector('#form-button');
-        this.formButton = new Button(formButtonContainer, 'form-button');
-    }
-
-    addEventListener() {
-        super.addEventListener();
-    }
-
-    set formButtonText(value){
-        this._buttonText=value;
-        this.formButton.buttonText=value;
-    }
-
-    set linkText(value) {
-        this._linkText = value;
-        this.rootContainer.getElementsByTagName('a')[0].innerText = value;
-    }
-
-    set linkHref(value) {
-        this._linkHref = value;
-        this.rootContainer.getElementsByTagName('a')[0].setAttribute('href', value);
+        const formButtonContainer = this.rootContainer.querySelector('.form-footer-button-container');
+        this.formButton = new Button(formButtonContainer, 'form-button', this._formButtonText);
     }
 }

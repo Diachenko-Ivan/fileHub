@@ -1,24 +1,46 @@
 import {Component} from "../parent-component.js";
 
+/**
+ * Plays role of simple button.
+ */
 export class Button extends Component {
-
+    /**
+     * Event handler for button.
+     * @type {Function[]}
+     */
     handlers=[];
-    
+
+    /**
+     * Creates new {@type Button} instance.
+     * @param container outer container for button.
+     * @param className {string} value for class attribute.
+     * @param buttonText {string} value for inner button text.
+     */
     constructor(container, className, buttonText) {
         super(container);
-        this.className = className;
-        this.buttonText = buttonText;
+        this._className = className;
+        this._buttonText = buttonText;
+        this.render();
     }
 
+    /**
+     * @inheritDoc
+     */
     markup() {
-        return `
-        <button></button>`;
+        return `<button class="button ${this.className}">${this.buttonText}</button>`;
     }
 
+    /**
+     * Add custom handler for button 'onclick' event.
+     * @param handler {Function} function that is going to be executed on event.
+     */
     onClick(handler){
         this.handlers.push(handler);
     }
 
+    /**
+     *@inheritDoc
+     */
     addEventListener() {
         this.rootContainer.addEventListener('click', ()=>this.handlers.forEach(handler=>handler()));
     }

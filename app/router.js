@@ -1,13 +1,23 @@
 import {ErrorPage} from "./pages/error-page";
 
+/**
+ * Router for full application that controls page changing.
+ */
 export class Router {
-
+    /**
+     * Creates new {@type Router} instance.
+     * @param container {Element} container where pages are generated in.
+     * @param pageMapping
+     */
     constructor(container, pageMapping) {
         this.container = container;
         this._pageMapping = pageMapping;
         this.init();
     }
 
+    /**
+     * Sets event handler for hash changing.
+     */
     init() {
         window.addEventListener('hashchange', event => {
             const nextURL = window.location.hash.slice(1);
@@ -15,6 +25,10 @@ export class Router {
         })
     }
 
+    /**
+     * Sets default page for first application start.
+     * @param url {string} page url for first application load.
+     */
     set defaultUrl(url) {
         if (!this._pageMapping[url]) {
             throw new Error('This url can not be default. It does not exist.')
@@ -28,6 +42,10 @@ export class Router {
         }
     }
 
+    /**
+     * Generates new page on hash change.
+     * @param url {string} hash for concrete page.
+     */
     generatePage(url) {
         this.container.innerHTML = '';
         if (!this._pageMapping[url]) {

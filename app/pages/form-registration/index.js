@@ -3,6 +3,9 @@ import {FormInput} from "../../component/form-input";
 import {FormHeader} from '../../component/form-header'
 import {FormFooter} from "../../component/form-footer";
 
+/**
+ * User registration form.
+ */
 export class RegistrationFormComponent extends Component {
 
     constructor(...containers) {

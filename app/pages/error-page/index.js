@@ -1,7 +1,16 @@
 import {Component} from "../../component/parent-component.js";
 
+/**
+ * Represents error page for whole application.
+ */
 export class ErrorPage extends Component {
 
+    /**
+     * Creates new {@type ErrorPage} instance.
+     * @param container {Element} outer container for current component.
+     * @param errorCode error page error code.
+     * @param errorMessage error page error message.
+     */
     constructor(container, errorCode, errorMessage) {
         super(container);
         this._errorCode = errorCode;
@@ -9,6 +18,9 @@ export class ErrorPage extends Component {
         this.render();
     }
 
+    /**
+     * @inheritDoc
+     */
     markup() {
         return `
         <div id="error-page" class="application-box">

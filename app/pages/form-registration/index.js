@@ -54,16 +54,31 @@ export class RegistrationFormComponent extends Component {
 
     addEventListener() {
         this.footer.formButton.onClick(() => {
+            this.loginInput.cleanErrorMessage();
+            this.passwordInput.cleanErrorMessage();
+            this.repeatPasswordInput.cleanErrorMessage();
+
             const loginValue = this.loginInput.inputValue;
             const passwordValue = this.passwordInput.inputValue;
             const repeatPasswordValue = this.repeatPasswordInput.inputValue;
 
-            if (this.validateInputValues(loginValue, passwordValue) &&
-                this.confirmPasswordsEqual(passwordValue, repeatPasswordValue)) {
+            Promise.allSettled([this.validateLogin(loginValue), this.validatePassword(passwordValue)])
+                .then(([loginValidation
+                           , passwordValidation]) => {
+                    if (loginValidation.status === "rejected" || passwordValidation.status === 'rejected') {
+                        if (loginValidation.status === "rejected") {
+                            this.loginInput.showErrorMessage(loginValidation.reason);
+                        }
+                        if (passwordValidation.status === 'rejected') {
+                            this.passwordInput.showErrorMessage(passwordValidation.reason);
+                        }
+                    } else {
+                        if (this.confirmPasswordsEqual(passwordValue, repeatPasswordValue)) {
+                            alert('Registered');
+                        }
+                    }
 
-                alert('Registered');
-            }
-
+                })
         });
 
         this.rootContainer.addEventListener('submit', (event) => {
@@ -71,6 +86,40 @@ export class RegistrationFormComponent extends Component {
             event.stopPropagation();
         });
 
+    }
+
+    validateLogin(login) {
+        return new Promise((resolve, reject) => {
+            const loginRegexp = new RegExp(`^([a-zA-Z0-9]){4,}$`);
+            if (!login) {
+                reject('Username can\'t be empty.');
+            }
+            if (login.length < 4) {
+                reject('Minimal length 4 chars.');
+            }
+            if (!loginRegexp.test(login)) {
+                reject('Login should have uppercase' +
+                    ' or lowercase letters and digits.')
+            }
+            resolve('Login validated');
+        })
+    }
+
+    validatePassword(password) {
+        return new Promise((resolve, reject) => {
+            const passwordRegexp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[0-9a-zA-Z]{8,}$');
+            if (!password) {
+                reject('Password can\'t be empty.');
+            }
+            if (password.length < 8) {
+                reject('Minimal length 8 chars.');
+            }
+            if (!passwordRegexp.test(password)) {
+                reject('Password should have at least one uppercase' +
+                    ' and lowercase letter and digit.')
+            }
+            resolve('Password validated');
+        })
     }
 
     confirmPasswordsEqual(passwordValue, repeatPasswordValue) {
@@ -81,25 +130,6 @@ export class RegistrationFormComponent extends Component {
         return true;
     }
 
-    validateInputValues(loginValue, passwordValue) {
-        this.loginInput.cleanErrorMessage();
-        this.passwordInput.cleanErrorMessage();
-        this.repeatPasswordInput.cleanErrorMessage();
-
-        const loginRegexp = new RegExp(`^([a-zA-Z0-9]){4,}$`);
-        const passwordRegexp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[0-9a-zA-Z]{8,}$');
-
-        if (!(loginRegexp.test(loginValue) && passwordRegexp.test(passwordValue))) {
-            if (!loginRegexp.test(loginValue)) {
-                this.loginInput.showErrorMessage('Login can\'t be empty and should have uppercase' +
-                    ' or lowercase letters and digits, min length 4.');
-            }
-            if (!passwordRegexp.test(passwordValue)) {
-                this.passwordInput.showErrorMessage('Password can\'t be empty and should have at least one uppercase' +
-                    ' and lowercase letter and digit, min length 8.');
-            }
-            return false;
-        }
-        return true;
-    }
 }
+
+

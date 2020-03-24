@@ -1,7 +1,7 @@
-import {Component} from "./parent-component.js";
-import {FormInput} from "./form-input";
-import {FormHeader} from './form-header'
-import {FormFooter} from "./form-footer";
+import {Component} from "../../component/parent-component.js";
+import {FormInput} from "../../component/form-input";
+import {FormHeader} from '../../component/form-header'
+import {FormFooter} from "../../component/form-footer";
 
 export class LoginFormComponent extends Component {
 
@@ -21,19 +21,23 @@ export class LoginFormComponent extends Component {
     initNestedComponents() {
         this.header = new FormHeader(this.rootContainer, 'Login');
 
-        this.loginInput = new FormInput(this.rootContainer,
-            {
-                inputId: 'login', inputType: 'text',
-                inputName: 'login', inputPlaceholder: 'Login', labelText: 'Username'
-            });
+        this.loginInput = new FormInput(this.rootContainer, {
+            inputId: 'login',
+            inputType: 'text',
+            inputName: 'login',
+            inputPlaceholder: 'Login',
+            labelText: 'Username'
+        });
 
-        this.passwordInput = new FormInput(this.rootContainer,
-            {
-                inputId: 'password', inputType: 'password',
-                inputName: 'password', inputPlaceholder: 'Password', labelText: 'Password'
-            });
+        this.passwordInput = new FormInput(this.rootContainer, {
+            inputId: 'password',
+            inputType: 'password',
+            inputName: 'password',
+            inputPlaceholder: 'Password',
+            labelText: 'Password'
+        });
 
-        this.footer = new FormFooter(this.rootContainer, 'Log In', 'Don\'t have an account yet?', '#');
+        this.footer = new FormFooter(this.rootContainer, 'Log In', 'Don\'t have an account yet?', '#/registration');
     }
 
 

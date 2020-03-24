@@ -4,15 +4,16 @@ export class ErrorPage extends Component {
 
     constructor(container, errorCode, errorMessage) {
         super(container);
-        this.errorCode = errorCode;
-        this.errorMessage = errorMessage;
+        this._errorCode = errorCode;
+        this._errorMessage = errorMessage;
+        this.render();
     }
 
     markup() {
         return `
         <div id="error-page" class="application-box">
-            <div id="error-code"><h1></h1></div>
-            <div style="color: #cc0005" id="error-message"><h4></h4></div>
+            <div id="error-code"><h1>${this._errorCode}</h1></div>
+            <div style="color: #cc0005" id="error-message"><h4>${this._errorMessage}</h4></div>
         </div>`;
     }
 

@@ -1,5 +1,5 @@
 import {Component} from "../../component/parent-component.js";
-import {CredentialInputComponent} from "../../component/form-input";
+import {FormInput} from "../../component/form-input";
 import {FormHeader} from '../../component/form-header'
 import {FormFooter} from "../../component/form-footer";
 
@@ -7,6 +7,7 @@ export class RegistrationFormComponent extends Component {
 
     constructor(...containers) {
         super(...containers);
+        this.render()
     }
 
     markup() {
@@ -20,14 +21,29 @@ export class RegistrationFormComponent extends Component {
     initNestedComponents() {
         this.header = new FormHeader(this.rootContainer, 'Registration');
 
-        this.loginInput = new CredentialInputComponent(this.rootContainer,
-            'email', 'text', 'email', 'Email', "Username");
+        this.loginInput = new FormInput(this.rootContainer, {
+            inputId: 'login',
+            inputType: 'text',
+            inputName: 'login',
+            inputPlaceholder: 'Login',
+            labelText: 'Username'
+        });
 
-        this.passwordInput = new CredentialInputComponent(this.rootContainer,
-            'password', 'password', 'password', 'Password', 'Password');
+        this.passwordInput = new FormInput(this.rootContainer, {
+            inputId: 'password',
+            inputType: 'password',
+            inputName: 'password',
+            inputPlaceholder: 'Password',
+            labelText: 'Password'
+        });
 
-        this.repeatPasswordInput = new CredentialInputComponent(this.rootContainer,
-            'repeatPassword', 'password', 'password', 'Confirm password', 'Confirm Password');
+        this.repeatPasswordInput = new FormInput(this.rootContainer, {
+            inputId: 'repeatPassword',
+            inputType: 'password',
+            inputName: 'password',
+            inputPlaceholder: 'Confirm password',
+            labelText: 'Confirm Password'
+        });
 
         this.footer = new FormFooter(this.rootContainer, 'Register', 'Already have an account?', '#/login');
     }

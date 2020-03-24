@@ -16,9 +16,6 @@ export class Component {
      */
     init(container) {
         this.container=container;
-        this.render();
-        this.initNestedComponents();
-        this.addEventListener();
     }
 
     /**
@@ -29,6 +26,8 @@ export class Component {
         fakeComponent.innerHTML=`<div>${this.markup()}</div>`;
         this.rootContainer = fakeComponent.querySelector('div').firstElementChild;
         this.container.append(this.rootContainer);
+        this.initNestedComponents();
+        this.addEventListener();
     }
 
     /**

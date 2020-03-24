@@ -4,14 +4,15 @@ export class FormHeader extends Component{
 
     constructor(container, headerText) {
         super(container);
-        this.headerText=headerText;
+        this._headerText=headerText;
+        this.render();
     }
 
 
     markup() {
         return `
         <header class="header form-header">
-            <div class="form-target"><h1></h1></div>
+            <div class="form-target"><h1>${this._headerText}</h1></div>
             <div class="user-icon"><i class="glyphicon glyphicon-user"></i></div>
         </header>
         `

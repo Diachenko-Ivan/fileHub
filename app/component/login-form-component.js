@@ -7,6 +7,7 @@ export class LoginFormComponent extends Component {
 
     constructor(...containers) {
         super(...containers);
+        this.render();
     }
 
     markup() {

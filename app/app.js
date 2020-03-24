@@ -7,6 +7,11 @@ import {LoginFormComponent} from "./component/login-form-component.js";
 export class Application extends Component {
 
 
+    constructor(container) {
+        super(container);
+        this.render();
+    }
+
     /**
      * @inheritDoc
      */

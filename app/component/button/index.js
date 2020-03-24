@@ -18,16 +18,16 @@ export class Button extends Component {
      */
     constructor(container, className, buttonText) {
         super(container);
-        this.className = className;
-        this.buttonText = buttonText;
+        this._className = className;
+        this._buttonText = buttonText;
+        this.render();
     }
 
     /**
      * @inheritDoc
      */
     markup() {
-        return `
-        <button></button>`;
+        return `<button class="button ${this.className}">${this.buttonText}</button>`;
     }
 
     /**

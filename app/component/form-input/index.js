@@ -1,26 +1,27 @@
-import {Component} from "../parent-component.js";
+import {Component} from '../parent-component.js';
 
 /**
  * Used for user forms as credentials input.
  */
 export class FormInput extends Component {
-    /**
-     * Creates new @type {FormInput} instance.
-     * @param container
-     * @param inputPropertiesDescriptor {Object} contains properties as input attributes.
-     */
-    constructor(container, inputPropertiesDescriptor) {
-        super(container);
-        Object.assign(this, inputPropertiesDescriptor);
-        this.render();
-        this.currentInput = this.rootContainer.getElementsByTagName('input')[0];
-    }
+  /**
+   * Creates new @type {FormInput} instance.
+   *
+   * @param {Element} container outer container for current component.
+   * @param {object} inputPropertiesDescriptor contains properties as input attributes.
+   */
+  constructor(container, inputPropertiesDescriptor) {
+    super(container);
+    Object.assign(this, inputPropertiesDescriptor);
+    this.render();
+    this.currentInput = this.rootContainer.getElementsByTagName('input')[0];
+  }
 
-    /**
-     * @inheritDoc
-     */
-    markup() {
-        return `
+  /**
+   * @inheritdoc
+   */
+  markup() {
+    return `
             <div class="credential-container">
                 <label id="input-label" for="${this.inputId}">${this.labelText}</label>
 
@@ -31,19 +32,30 @@ export class FormInput extends Component {
                 </div>
             </div>
 `;
-    }
+  }
 
-    showErrorMessage(message) {
-        this.rootContainer.querySelector('.error-message').innerText = message;
-    }
+  /**
+   * Show error message under concrete input.
+   *
+   * @param {string} message error message.
+   */
+  showErrorMessage(message) {
+    this.rootContainer.querySelector('.error-message').innerText = message;
+  }
 
-    cleanErrorMessage() {
-        this.rootContainer.querySelector('.error-message').innerText = '';
-    }
+  /**
+   * Erases error message under concrete input.
+   */
+  cleanErrorMessage() {
+    this.rootContainer.querySelector('.error-message').innerText = '';
+  }
 
-    get inputValue() {
-        return this.rootContainer.getElementsByTagName('input')[0].value;
-    }
-
-
+  /**
+   * Used for getting input values.
+   *
+   * @return {string} user`s credential.
+   */
+  get inputValue() {
+    return this.rootContainer.getElementsByTagName('input')[0].value;
+  }
 }

@@ -7,8 +7,8 @@ export class FormHeader extends Component {
   /**
    *  Creates new {@type FormHeader} instance.
    *
-   * @param {Element} container outer container for form header(user form).
-   * @param {string} headerText text that is placed in header.
+   * @param {Element} container - outer container for form header(user form).
+   * @param {string} headerText - text that is placed in header.
    */
   constructor(container, headerText) {
     super(container);

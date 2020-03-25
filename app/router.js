@@ -7,8 +7,8 @@ export class Router {
   /**
    * Creates new {@type Router} instance.
    *
-   * @param {Element} container container where pages are generated in.
-   * @param {object} pageMapping set of page mappings with appropriate pages.
+   * @param {Element} container - container where pages are generated in.
+   * @param {object} pageMapping - set of page mappings with appropriate pages.
    */
   constructor(container, pageMapping) {
     this.container = container;
@@ -29,7 +29,7 @@ export class Router {
   /**
    * Sets default page for first application start.
    *
-   * @param {string} url page url for first application load.
+   * @param {string} url - page url for first application load.
    */
   set defaultUrl(url) {
     if (!this._pageMapping[url]) {
@@ -47,7 +47,7 @@ export class Router {
   /**
    * Generates new page on hash change.
    *
-   * @param {string} url hash for concrete page.
+   * @param {string} url - hash for concrete page.
    */
   generatePage(url) {
     this.container.innerHTML = '';

@@ -5,7 +5,7 @@ export class Component {
   /**
    * Creates new {@type Component} instance.
    *
-   * @param {Element} container outer container for current component.
+   * @param {Element} container - outer container for current component.
    */
   constructor(container) {
     this.init(container);
@@ -14,7 +14,7 @@ export class Component {
   /**
    * Initializes component.
    *
-   * @param {Element} container outer container for current component.
+   * @param {Element} container - outer container for current component.
    */
   init(container) {
     this.container = container;

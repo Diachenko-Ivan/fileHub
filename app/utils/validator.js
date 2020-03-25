@@ -45,8 +45,8 @@ export default class CredentialValidator {
   /**
    * Validates user`s credential value according to credential pattern.
    *
-   * @param {string} credential  user`s credential.
-   * @param {Pattern} credentialPattern pattern by which credential will be validated.
+   * @param {string} credential - user`s credential.
+   * @param {Pattern} credentialPattern - pattern by which credential will be validated.
    * @return {Promise} positive or negative result of credential validation.
    */
   validate(credential, credentialPattern) {

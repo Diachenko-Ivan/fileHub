@@ -11,7 +11,7 @@ export class RegistrationFormComponent extends Component {
   /**
    * Creates new {@type RegistrationFormComponent} instance.
    *
-   * @param {Element} container outer container for registration form.
+   * @param {Element} container - outer container for registration form.
    */
   constructor(container) {
     super(container);
@@ -103,8 +103,8 @@ export class RegistrationFormComponent extends Component {
   /**
    *  Checks the equivalence of password and repeat-password.
    *
-   * @param {string} passwordValue user`s password.
-   * @param {string} repeatPasswordValue user`s repeated password.
+   * @param {string} passwordValue - user`s password.
+   * @param {string} repeatPasswordValue - user`s repeated password.
    * @return {boolean} equality of main password and repeat-password.
    */
   confirmPasswordsEqual(passwordValue, repeatPasswordValue) {

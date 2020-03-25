@@ -14,9 +14,9 @@ export class Button extends Component {
   /**
    * Creates new {@type Button} instance.
    *
-   * @param {Element} container outer container for button.
-   * @param {string} className value for class attribute.
-   * @param {string} buttonText value for inner button text.
+   * @param {Element} container - outer container for button.
+   * @param {string} className - value for class attribute.
+   * @param {string} buttonText - value for inner button text.
    */
   constructor(container, className, buttonText) {
     super(container);
@@ -35,7 +35,7 @@ export class Button extends Component {
   /**
    * Add custom handler for button 'onclick' event.
    *
-   * @param {Function} handler function that is going to be executed on event.
+   * @param {Function} handler - function that is going to be executed on click event.
    */
   onClick(handler) {
     this.handlers.push(handler);

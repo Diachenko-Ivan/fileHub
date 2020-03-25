@@ -8,10 +8,10 @@ export class FormFooter extends Component {
   /**
    * Creates new {@type FormFooter} instance.
    *
-   * @param {Element} container outer container for form footer(user form).
-   * @param {string} buttonText text placed in button.
-   * @param {string} linkText text for link.
-   * @param {string} linkHref hash link on another form.
+   * @param {Element} container - outer container for form footer(user form).
+   * @param {string} buttonText - text placed in button.
+   * @param {string} linkText - text for link.
+   * @param {string} linkHref - hash link to another form.
    */
   constructor(container, buttonText, linkText, linkHref) {
     super(container);

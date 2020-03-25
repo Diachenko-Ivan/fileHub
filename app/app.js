@@ -10,7 +10,7 @@ export class Application extends Component {
   /**
    * Creates new {@type Application} instance.
    *
-   * @param {Element} container outer container for current component.
+   * @param {Element} container - outer container for current component.
    */
   constructor(container) {
     super(container);

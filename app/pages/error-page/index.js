@@ -7,9 +7,9 @@ export class ErrorPage extends Component {
   /**
    * Creates new {@type ErrorPage} instance.
    *
-   * @param {Element} container outer container for current component.
-   * @param {number} errorCode error page error code.
-   * @param {string} errorMessage error page error message.
+   * @param {Element} container - outer container for current component.
+   * @param {number} errorCode - error page`s error code.
+   * @param {string} errorMessage - error page`s error message.
    */
   constructor(container, errorCode, errorMessage) {
     super(container);

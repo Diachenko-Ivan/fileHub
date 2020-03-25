@@ -10,7 +10,7 @@ export class LoginFormComponent extends Component {
   /**
    * Creates new {@type LoginFormComponent} instance.
    *
-   * @param {Element} containers outer container for login form.
+   * @param {Element} containers - outer container for login form.
    */
   constructor(...containers) {
     super(...containers);

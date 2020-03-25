@@ -6,17 +6,17 @@ import {Component} from '../parent-component.js';
 export class FormInput extends Component {
   /**
    * @typedef {object} InputAttributesDescriptor
-   * @property {string} inputId id for input.
-   * @property {string} inputType type for input
-   * @property {string} inputName name for input
-   * @property {string} inputPlaceholder placeholder for input
-   * @property {string} labelText text for input label.
+   * @property {string} inputId - id for input.
+   * @property {string} inputType - type for input
+   * @property {string} inputName - name for input
+   * @property {string} inputPlaceholder - placeholder for input
+   * @property {string} labelText - text for input label.
    */
   /**
    * Creates new @type {FormInput} instance.
    *
-   * @param {Element} container outer container for current component.
-   * @param {InputAttributesDescriptor} inputPropertiesDescriptor contains properties as input attributes.
+   * @param {Element} container - outer container for current component.
+   * @param {InputAttributesDescriptor} inputPropertiesDescriptor - contains properties as input attributes.
    */
   constructor(container, inputPropertiesDescriptor) {
     super(container);
@@ -46,7 +46,7 @@ export class FormInput extends Component {
   /**
    * Show error message under concrete input.
    *
-   * @param {string} message error message.
+   * @param {string} message - error message.
    */
   showErrorMessage(message) {
     this.rootContainer.querySelector('.error-message').innerText = message;

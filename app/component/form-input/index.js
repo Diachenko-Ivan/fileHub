@@ -5,10 +5,18 @@ import {Component} from '../parent-component.js';
  */
 export class FormInput extends Component {
   /**
+   * @typedef {object} InputAttributesDescriptor
+   * @property {string} inputId id for input.
+   * @property {string} inputType type for input
+   * @property {string} inputName name for input
+   * @property {string} inputPlaceholder placeholder for input
+   * @property {string} labelText text for input label.
+   */
+  /**
    * Creates new @type {FormInput} instance.
    *
    * @param {Element} container outer container for current component.
-   * @param {object} inputPropertiesDescriptor contains properties as input attributes.
+   * @param {InputAttributesDescriptor} inputPropertiesDescriptor contains properties as input attributes.
    */
   constructor(container, inputPropertiesDescriptor) {
     super(container);
@@ -21,13 +29,14 @@ export class FormInput extends Component {
    * @inheritdoc
    */
   markup() {
+    const {inputId, labelText, inputType, inputName, inputPlaceholder} = this;
     return `
             <div class="credential-container">
-                <label id="input-label" for="${this.inputId}">${this.labelText}</label>
+                <label id="input-label" for="${inputId}">${labelText}</label>
 
                 <div class="input-container">
-                    <input type="${this.inputType}" id="${this.inputId}" 
-                    name="${this.inputName}" placeholder="${this.inputPlaceholder}" class="input form-input"/>
+                    <input type="${inputType}" id="${inputId}" 
+                    name="${inputName}" placeholder="${inputPlaceholder}" class="input form-input"/>
                     <div class="error-message"></div>
                 </div>
             </div>

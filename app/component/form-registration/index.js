@@ -3,6 +3,7 @@ import {FormInput} from '../form-input';
 import {FormHeader} from '../form-header';
 import {FormFooter} from '../form-footer';
 import CredentialValidator from '../../utils/validator.js';
+import {UserCredentials} from '../../models/user-credentials';
 
 /**
  * User registration form.
@@ -89,7 +90,7 @@ export class RegistrationFormComponent extends Component {
             }
           } else {
             if (this.confirmPasswordsEqual(passwordValue, repeatPasswordValue)) {
-              return {login: loginValue, password: passwordValue};
+              return new UserCredentials(loginValue, passwordValue);
             }
           }
           throw new TypeError('Validation failed.');

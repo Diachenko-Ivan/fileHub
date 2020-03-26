@@ -10,7 +10,7 @@ export class ValidationError {
    *   message: 'User with this login already registered.'
    * }
    *
-   * @type {object[]}
+   * @type {ValidationErrorCase[]}
    */
   errors = [];
 

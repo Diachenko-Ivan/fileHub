@@ -2,6 +2,7 @@ import {Component} from '../parent-component.js';
 import {FormInput} from '../form-input';
 import {FormHeader} from '../form-header';
 import {FormFooter} from '../form-footer';
+import CredentialValidator from '../../utils/validator.js';
 
 /**
  * User login form.
@@ -53,32 +54,32 @@ export class LoginFormComponent extends Component {
     this.footer = new FormFooter(this.rootContainer, 'Log In', 'Don\'t have an account yet?', '#/registration');
   }
 
-
   /**
-   * @inheritdoc
+   * Returns credentials if they are successfully validated. Else returns error.
+   *
+   * @return {Promise<[Promise, Promise]>} credentials if login and password successfully validated or error if not.
    */
-  addEventListener() {
-    this.footer.formButton.onClick(() => {
-      this.loginInput.cleanErrorMessage();
-      this.passwordInput.cleanErrorMessage();
+  getCredentials() {
+    this.loginInput.cleanErrorMessage();
+    this.passwordInput.cleanErrorMessage();
 
-      const emailValue = this.loginInput.inputValue;
-      const passwordValue = this.passwordInput.inputValue;
-      if (!emailValue || !passwordValue) {
-        if (!emailValue) {
-          this.loginInput.showErrorMessage('Username can\'t be empty');
-        }
-        if (!passwordValue) {
-          this.passwordInput.showErrorMessage('Password can\'t be empty and should contain letters and numbers');
-        }
-      } else {
-        alert(`Successfully authenticated\nEmail:${emailValue}`);
-      }
-    });
+    const loginValue = this.loginInput.inputValue;
+    const passwordValue = this.passwordInput.inputValue;
 
-    this.rootContainer.addEventListener('submit', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-    });
+    const validator = new CredentialValidator();
+    return Promise.allSettled([validator.validate(loginValue, validator.Pattern.LOGIN),
+      validator.validate(passwordValue, validator.Pattern.PASSWORD)])
+        .then(([loginValidation, passwordValidation]) => {
+          if (loginValidation.status === 'rejected' || passwordValidation.status === 'rejected') {
+            if (loginValidation.status === 'rejected') {
+              this.loginInput.showErrorMessage(loginValidation.reason.message);
+            }
+            if (passwordValidation.status === 'rejected') {
+              this.passwordInput.showErrorMessage(passwordValidation.reason.message);
+            }
+            throw new TypeError('Validation failed.');
+          }
+          return {login: loginValue, password: passwordValue};
+        });
   }
 }

@@ -22,7 +22,7 @@ export class LoginFormComponent extends Component {
    */
   markup() {
     return `
-        <form class="application-box user-form">
+        <form data-test="login-form" class="application-box user-form">
             <img alt="TeamDev" class="logo" src="../src/main/resources/teamdev.png"> 
         </form>  
     `;

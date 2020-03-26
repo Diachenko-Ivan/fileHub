@@ -29,7 +29,7 @@ export class Button extends Component {
    * @inheritdoc
    */
   markup() {
-    return `<button class="button ${this._className}">${this._buttonText}</button>`;
+    return `<button data-test="button" class="button ${this._className}">${this._buttonText}</button>`;
   }
 
   /**

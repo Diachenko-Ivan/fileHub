@@ -23,7 +23,7 @@ export class RegistrationFormComponent extends Component {
    */
   markup() {
     return `
-        <form class="application-box user-form">
+        <form data-test="registration-form" class="application-box user-form">
             <img alt="TeamDev" class="logo" src="../src/main/resources/teamdev.png"> 
         </form>  
 `;

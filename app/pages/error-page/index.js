@@ -23,7 +23,7 @@ export class ErrorPage extends Component {
    */
   markup() {
     return `
-        <div id="error-page" class="application-box">
+        <div data-test="error-page" class="application-box">
             <div id="error-code"><h1>${this._errorCode}</h1></div>
             <div style="color: #cc0005" id="error-message"><h4>${this._errorMessage}</h4></div>
         </div>`;

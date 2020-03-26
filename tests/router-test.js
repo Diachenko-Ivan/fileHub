@@ -16,8 +16,8 @@ export default module('Router test', function (hook) {
 
     test('should generate existing page', (assert) => {
         this.router.generatePage('/login');
-        let errorPage = document.getElementById('error-page');
-        let userForm = document.querySelector('.user-form');
+        const errorPage = document.querySelector('[data-test="error-page"]');
+        const userForm = document.querySelector('[data-test="login-form"]');
 
         assert.notOk(fixture.contains(errorPage), 'Should not show error page.');
         assert.ok(fixture.contains(userForm), 'Should show correct existing page.');
@@ -25,7 +25,7 @@ export default module('Router test', function (hook) {
 
     test('should generate error page due to wrong url', (assert) => {
         this.router.generatePage('/wrongUrl');
-        let errorPage = document.getElementById('error-page');
+        const errorPage = document.querySelector('[data-test="error-page"]');
 
         assert.ok(fixture.contains(errorPage), 'Should show 404 error page.');
     });
@@ -39,8 +39,8 @@ export default module('Router test', function (hook) {
     test('should check default hash setting.', (assert) => {
         const hashUrl = '/login';
         this.router.defaultUrl = hashUrl;
-        let expectedurlHash = window.location.hash.slice(1);
+        const expectedUrlHash = window.location.hash.slice(1);
 
-        assert.strictEqual(expectedurlHash, hashUrl, 'Should set correct hash value.');
+        assert.strictEqual(expectedUrlHash, hashUrl, 'Should set correct hash value.');
     });
 });

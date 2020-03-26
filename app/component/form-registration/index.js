@@ -1,7 +1,7 @@
-import {Component} from '../../component/parent-component.js';
-import {FormInput} from '../../component/form-input';
-import {FormHeader} from '../../component/form-header';
-import {FormFooter} from '../../component/form-footer';
+import {Component} from '../parent-component.js';
+import {FormInput} from '../form-input';
+import {FormHeader} from '../form-header';
+import {FormFooter} from '../form-footer';
 import CredentialValidator from '../../utils/validator.js';
 
 /**

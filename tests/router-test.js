@@ -1,5 +1,5 @@
 import {Router} from "../app/router.js";
-import {LoginFormComponent} from "../app/pages/from-login";
+import {LoginFormComponent} from "../app/component/form-login";
 
 const {module, test} = QUnit;
 

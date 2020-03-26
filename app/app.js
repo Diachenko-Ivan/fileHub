@@ -1,7 +1,7 @@
 import {Component} from './component/parent-component.js';
-import {LoginFormComponent} from './pages/from-login';
+import {LoginFormComponent} from './component/form-login';
 import {Router} from './router.js';
-import {RegistrationFormComponent} from './pages/form-registration';
+import {RegistrationFormComponent} from './component/form-registration';
 
 /**
  * Base component for application that stores different pages.

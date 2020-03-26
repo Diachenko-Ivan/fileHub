@@ -1,7 +1,7 @@
 import {Component} from './component/parent-component.js';
 import {LoginFormComponent} from './component/form-login';
 import {Router} from './router.js';
-import {RegistrationFormComponent} from './component/form-registration';
+import {RegistrationPage} from './pages/registration-page';
 
 /**
  * Base component for application that stores different pages.
@@ -30,7 +30,7 @@ export class Application extends Component {
   initNestedComponents() {
     const pageMapping = {
       '/login': () => new LoginFormComponent(this.rootContainer),
-      '/registration': () => new RegistrationFormComponent(this.rootContainer),
+      '/registration': () => new RegistrationPage(this.rootContainer),
     };
 
     this.router = new Router(this.rootContainer, pageMapping);

@@ -63,42 +63,39 @@ export class RegistrationFormComponent extends Component {
   }
 
   /**
-   * @inheritdoc
+   * Returns credentials if they are successfully validated. Else returns error.
+   *
+   * @return {Promise<[Promise, Promise]>} credentials if login and password successfully validated or error if not.
    */
-  addEventListener() {
+  getCredentials() {
+    this.loginInput.cleanErrorMessage();
+    this.passwordInput.cleanErrorMessage();
+    this.repeatPasswordInput.cleanErrorMessage();
+
+    const loginValue = this.loginInput.inputValue;
+    const passwordValue = this.passwordInput.inputValue;
+    const repeatPasswordValue = this.repeatPasswordInput.inputValue;
+
     const validator = new CredentialValidator();
-    this.footer.formButton.onClick(() => {
-      this.loginInput.cleanErrorMessage();
-      this.passwordInput.cleanErrorMessage();
-      this.repeatPasswordInput.cleanErrorMessage();
-
-      const loginValue = this.loginInput.inputValue;
-      const passwordValue = this.passwordInput.inputValue;
-      const repeatPasswordValue = this.repeatPasswordInput.inputValue;
-
-      Promise.allSettled([validator.validate(loginValue, validator.Pattern.LOGIN),
-        validator.validate(passwordValue, validator.Pattern.PASSWORD)])
-          .then(([loginValidation, passwordValidation]) => {
-            if (loginValidation.status === 'rejected' || passwordValidation.status === 'rejected') {
-              if (loginValidation.status === 'rejected') {
-                this.loginInput.showErrorMessage(loginValidation.reason.message);
-              }
-              if (passwordValidation.status === 'rejected') {
-                this.passwordInput.showErrorMessage(passwordValidation.reason.message);
-              }
-            } else {
-              if (this.confirmPasswordsEqual(passwordValue, repeatPasswordValue)) {
-                alert('Registered');
-              }
+    return Promise.allSettled([validator.validate(loginValue, validator.Pattern.LOGIN),
+      validator.validate(passwordValue, validator.Pattern.PASSWORD)])
+        .then(([loginValidation, passwordValidation]) => {
+          if (loginValidation.status === 'rejected' || passwordValidation.status === 'rejected') {
+            if (loginValidation.status === 'rejected') {
+              this.loginInput.showErrorMessage(loginValidation.reason.message);
             }
-          });
-    });
-
-    this.rootContainer.addEventListener('submit', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-    });
+            if (passwordValidation.status === 'rejected') {
+              this.passwordInput.showErrorMessage(passwordValidation.reason.message);
+            }
+          } else {
+            if (this.confirmPasswordsEqual(passwordValue, repeatPasswordValue)) {
+              return {login: loginValue, password: passwordValue};
+            }
+          }
+          throw new TypeError('Validation failed.');
+        });
   }
+
 
   /**
    *  Checks the equivalence of password and repeat-password.

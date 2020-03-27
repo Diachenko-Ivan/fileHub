@@ -118,14 +118,14 @@ export class RegistrationFormComponent extends Component {
    * @param {ValidationError} validationError
    */
   showServerErrors(validationError) {
-    validationError.errors.forEach(error => {
-          if (error.field === 'login') {
-            this.loginInput.showErrorMessage(error.message);
-          }
-          if (error.field === 'password') {
-            this.passwordInput.showErrorMessage(error.message);
-          }
-        }
+    validationError.errors.forEach((error) => {
+      if (error.field === 'login') {
+        this.loginInput.showErrorMessage(error.message);
+      }
+      if (error.field === 'password') {
+        this.passwordInput.showErrorMessage(error.message);
+      }
+    },
     );
   }
 }

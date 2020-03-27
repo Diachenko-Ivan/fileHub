@@ -1,10 +1,12 @@
 import {Component} from '../../component/parent-component.js';
 import {LoginFormComponent} from '../../component/form-login';
+import {ApiService} from '../../services/api-service.js';
 
 /**
  * Page which is designed for login form.
  */
 export class LoginPage extends Component {
+  apiService = new ApiService();
   /**
    * @inheritdoc
    */
@@ -36,7 +38,11 @@ export class LoginPage extends Component {
       event.stopPropagation();
 
       this.loginForm.getCredentials()
-          .then((credentials) => console.log(credentials))
+          .then((credentials) =>
+            this.apiService.login(credentials)
+                .then(() => {
+                })
+                .catch((error) => console.log(error)))
           .catch((reason) => console.log(reason));
     });
   }

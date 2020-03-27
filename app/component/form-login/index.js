@@ -3,6 +3,7 @@ import {FormInput} from '../form-input';
 import {FormHeader} from '../form-header';
 import {FormFooter} from '../form-footer';
 import CredentialValidator from '../../utils/validator.js';
+import {UserCredentials} from '../../models/user-credentials';
 
 /**
  * User login form.
@@ -79,7 +80,7 @@ export class LoginFormComponent extends Component {
             }
             throw new TypeError('Validation failed.');
           }
-          return {login: loginValue, password: passwordValue};
+          return new UserCredentials(loginValue, passwordValue);
         });
   }
 }

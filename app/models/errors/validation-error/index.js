@@ -4,6 +4,7 @@
 export class ValidationError {
   /**
    * Stores validation errors from server.
+   *
    * @example
    * {
    *   field: 'login',
@@ -21,5 +22,4 @@ export class ValidationError {
   constructor(serverResponse) {
     this.errors = serverResponse.errors;
   }
-
 }

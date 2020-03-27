@@ -42,7 +42,7 @@ export class RegistrationPage extends Component {
           .then((credentials) =>
               this.apiService.register(credentials)
                   .then(() => window.location.hash = '/login')
-                  .catch((validationError) => console.log(error)))
+                  .catch((validationError) => this.registrationForm.showServerErrors(validationError)))
           .catch((reason) => console.log(reason));
     });
   }

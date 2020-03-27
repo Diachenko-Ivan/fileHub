@@ -112,6 +112,22 @@ export class RegistrationFormComponent extends Component {
     }
     return true;
   }
+
+  /**
+   *
+   * @param {ValidationError} validationError
+   */
+  showServerErrors(validationError) {
+    validationError.errors.forEach(error => {
+          if (error.field === 'login') {
+            this.loginInput.showErrorMessage(error.message);
+          }
+          if (error.field === 'password') {
+            this.passwordInput.showErrorMessage(error.message);
+          }
+        }
+    );
+  }
 }
 
 

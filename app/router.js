@@ -7,10 +7,12 @@ export class Router {
   /**
    * Creates new {@type Router} instance.
    *
+   * @param {Window} window - current window.
    * @param {Element} container - container where pages are generated in.
    * @param {object} pageMapping - set of page mappings with appropriate pages.
    */
-  constructor(container, pageMapping) {
+  constructor(window, container, pageMapping) {
+    this._window = window;
     this.container = container;
     this._pageMapping = pageMapping;
     this.init();
@@ -20,7 +22,7 @@ export class Router {
    * Sets event handler for hash changing.
    */
   init() {
-    window.addEventListener('hashchange', (event) => {
+    this._window.addEventListener('hashchange', (event) => {
       const nextURL = window.location.hash.slice(1);
       this.generatePage(nextURL);
     });
@@ -37,10 +39,10 @@ export class Router {
     }
 
     this._defaultUrl = url;
-    if (window.location.hash === '') {
-      window.location.hash = `#${url}`;
+    if (!this._window.location.hash) {
+      this._window.location.hash = `#${url}`;
     } else {
-      this.generatePage(window.location.hash.slice(1));
+      this.generatePage(this._window.location.hash.slice(1));
     }
   }
 

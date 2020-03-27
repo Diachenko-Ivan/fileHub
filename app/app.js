@@ -35,7 +35,7 @@ export class Application extends Component {
       '/fileHub': () => new FileHubPage(this.rootContainer),
     };
 
-    this.router = new Router(this.rootContainer, pageMapping);
+    this.router = new Router(window, this.rootContainer, pageMapping);
     this.router.defaultUrl = '/login';
   }
 }

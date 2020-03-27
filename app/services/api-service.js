@@ -13,7 +13,7 @@ export class ApiService {
   login(userCredentials) {
     return new Promise(((resolve, reject) => {
       resolve();
-      reject(new GeneralServerError('No user registered with this login.'));
+      reject(new GeneralServerError('Server error happened.'));
     }));
   }
 

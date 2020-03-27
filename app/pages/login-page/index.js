@@ -40,8 +40,7 @@ export class LoginPage extends Component {
       this.loginForm.getCredentials()
           .then((credentials) =>
             this.apiService.login(credentials)
-                .then(() => {
-                })
+                .then(() => window.location.hash='/fileHub')
                 .catch((error) => console.log(error)))
           .catch((reason) => console.log(reason));
     });

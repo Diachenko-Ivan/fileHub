@@ -2,6 +2,7 @@ import {Component} from './component/parent-component.js';
 import {Router} from './router.js';
 import {RegistrationPage} from './pages/registration-page';
 import {LoginPage} from './pages/login-page';
+import {FileHubPage} from './pages/filehub-page';
 
 /**
  * Base component for application that stores different pages.
@@ -31,6 +32,7 @@ export class Application extends Component {
     const pageMapping = {
       '/login': () => new LoginPage(this.rootContainer),
       '/registration': () => new RegistrationPage(this.rootContainer),
+      '/fileHub': () => new FileHubPage(this.rootContainer),
     };
 
     this.router = new Router(this.rootContainer, pageMapping);

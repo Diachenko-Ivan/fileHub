@@ -5,26 +5,27 @@ import {GeneralServerError} from '../models/errors/server-error';
 
 export class ApiService {
   /**
+   * Tries to authenticate user and returns result of authentication.
    *
-   * @param {UserCredentials} userCredentials
-   * @return {Promise}
+   * @param {UserCredentials} userCredentials - user`s login form credentials.
+   * @return {Promise} result of login.
    */
   login(userCredentials) {
     return new Promise(((resolve, reject) => {
-      // resolve();
+      resolve();
       reject(new GeneralServerError('No user registered with this login.'));
     }));
   }
 
   /**
-   * Register new user and returns result of registration.
+   * Tries to register new user and returns result of registration.
    *
    * @param {UserCredentials} userCredentials - user`s registration form credentials.
-   * @return {Promise}
+   * @return {Promise} result of registration.
    */
   register(userCredentials) {
     return new Promise((resolve, reject) => {
-      // resolve();
+      resolve();
       reject(new ValidationError({
         errors: [new ValidationErrorCase({field: 'login', message: 'User with this login already exists.'}),
           new ValidationErrorCase({field: 'password', message: 'No special symbol.'})],

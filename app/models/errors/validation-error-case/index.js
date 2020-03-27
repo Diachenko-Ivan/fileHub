@@ -11,7 +11,7 @@ export class ValidationErrorCase {
   /**
    * Creates new {@type ValidationErrorCase} instance.
    *
-   * @param {ErrorCase} errorCase
+   * @param {ErrorCase} errorCase - object with credential field and bound error message.
    */
   constructor(errorCase) {
     this.field = errorCase.field;

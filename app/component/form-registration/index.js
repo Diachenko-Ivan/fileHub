@@ -114,8 +114,9 @@ export class RegistrationFormComponent extends Component {
   }
 
   /**
+   * Shows come server errors in the result of registration.
    *
-   * @param {ValidationError} validationError
+   * @param {ValidationError} validationError - error that is come from server.
    */
   showServerErrors(validationError) {
     validationError.errors.forEach((error) => {

@@ -18,8 +18,8 @@ export class UserCredentials {
   /**
    * Create new {@type UserCredentials} instance.
    *
-   * @param login - user`s login.
-   * @param password - user`s password.
+   * @param {string} login - user`s login.
+   * @param {string} password - user`s password.
    */
   constructor(login, password) {
     this.login = login;

@@ -80,8 +80,7 @@ export class LoginFormComponent extends Component {
             }
             throw new TypeError('Validation failed.');
           }
-          return new UserCredentials(loginValue, passwordValue
-          );
+          return new UserCredentials(loginValue, passwordValue);
         });
   }
 }

@@ -1,5 +1,3 @@
-import {ErrorPage} from './pages/error-page';
-
 /**
  * Router for full application that controls page changing.
  */
@@ -23,7 +21,7 @@ export class Router {
    */
   init() {
     this._window.addEventListener('hashchange', (event) => {
-      const nextURL = window.location.hash.slice(1);
+      const nextURL = this._window.location.hash.slice(1);
       this.generatePage(nextURL);
     });
   }
@@ -54,7 +52,7 @@ export class Router {
   generatePage(url) {
     this.container.innerHTML = '';
     if (!this._pageMapping[url]) {
-      new ErrorPage(this.container, 404, 'Sorry, this page was not found.');
+      this._pageMapping['/404']();
     } else {
       this._pageMapping[url]();
     }

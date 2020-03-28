@@ -3,6 +3,7 @@ import {Router} from './router.js';
 import {RegistrationPage} from './pages/registration-page';
 import {LoginPage} from './pages/login-page';
 import {FileHubPage} from './pages/filehub-page';
+import {ErrorPage} from './pages/error-page';
 
 const defaultUrl = '/login';
 
@@ -36,6 +37,7 @@ export class Application extends Component {
       '/login': () => new LoginPage(this.rootContainer),
       '/registration': () => new RegistrationPage(this.rootContainer),
       '/fileHub': () => new FileHubPage(this.rootContainer),
+      '/404': () => new ErrorPage(this.rootContainer, 404, 'Sorry, this page was not found.'),
     };
 
     this.router = new Router(window, this.rootContainer, pageMapping);

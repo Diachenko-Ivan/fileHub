@@ -1,4 +1,4 @@
-import {Button} from '../../app/component/button';
+import {Button} from '../../../app/component/button';
 
 const {test, module} = QUnit;
 
@@ -13,13 +13,12 @@ export default module('Button test', function (hook) {
   test('should show button', function (assert) {
     new Button(fixture, 'form-button', 'Login');
     const button = document.querySelector('[data-test="button"]');
-    assert.ok(fixture.contains(button), 'Should contain rendered button.');
+    assert.ok(button, 'Should contain rendered button.');
   });
 
-  test('should execute success click on button', function (assert) {
+  test('should call click handler on button click', function (assert) {
     const component = new Button(fixture, 'form-button', 'Login');
-    component.onClick(() =>
-        assert.step('Clicked'));
+    component.onClick(() => assert.step('Clicked'));
 
     const button = fixture.firstElementChild;
     button.click();

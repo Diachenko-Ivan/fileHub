@@ -1,7 +1,14 @@
+import {ValidationErrorCase} from '../validation-error-case';
+
 /**
  * Plays role of validation error thad is sent from server.
  */
 export class ValidationError {
+  /**
+   * @typedef ServerResponse
+   * @property {object:{field:string, message:string}[]} errors - validation errors from server.
+   * @property {number} status - server response code.
+   */
   /**
    * Stores validation errors from server.
    *
@@ -20,6 +27,7 @@ export class ValidationError {
    * @param {object} serverResponse - stores results of server response.
    */
   constructor(serverResponse) {
-    this.errors = serverResponse.errors;
+    this.errors = serverResponse.errors
+        .map(error => new ValidationErrorCase(error));
   }
 }

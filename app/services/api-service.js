@@ -27,8 +27,8 @@ export class ApiService {
     return new Promise((resolve, reject) => {
       resolve();
       reject(new ValidationError({
-        errors: [new ValidationErrorCase({field: 'login', message: 'User with this login already exists.'}),
-          new ValidationErrorCase({field: 'password', message: 'No special symbol.'})],
+        errors: [{field: 'login', message: 'User with this login already exists.'},
+          {field: 'password', message: 'No special symbol.'}],
       }));
     });
   }

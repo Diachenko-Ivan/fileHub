@@ -25,8 +25,8 @@ export class Component {
    */
   render() {
     const fakeComponent = document.createElement('div');
-    fakeComponent.innerHTML = `<div>${this.markup()}</div>`;
-    this.rootContainer = fakeComponent.querySelector('div').firstElementChild;
+    fakeComponent.innerHTML = `${this.markup()}`;
+    this.rootContainer = fakeComponent.firstElementChild;
     this.container.append(this.rootContainer);
     this.initNestedComponents();
     this.addEventListener();

@@ -22,7 +22,7 @@ export class FormInput extends Component {
     super(container);
     Object.assign(this, inputPropertiesDescriptor);
     this.render();
-    this.currentInput = this.rootContainer.getElementsByTagName('input')[0];
+    this._errorMessage = this.rootContainer.querySelector('.error-message');
   }
 
   /**
@@ -49,14 +49,14 @@ export class FormInput extends Component {
    * @param {string} message - error message.
    */
   showErrorMessage(message) {
-    this.rootContainer.querySelector('.error-message').innerText = message;
+    this._errorMessage.innerText = message;
   }
 
   /**
    * Erases error message under concrete input.
    */
   cleanErrorMessage() {
-    this.rootContainer.querySelector('.error-message').innerText = '';
+    this._errorMessage.innerText = '';
   }
 
   /**

@@ -4,10 +4,13 @@ import {RegistrationPage} from './pages/registration-page';
 import {LoginPage} from './pages/login-page';
 import {FileHubPage} from './pages/filehub-page';
 
+const defaultUrl = '/login';
+
 /**
  * Base component for application that stores different pages.
  */
 export class Application extends Component {
+
   /**
    * Creates new {@type Application} instance.
    *
@@ -36,6 +39,6 @@ export class Application extends Component {
     };
 
     this.router = new Router(window, this.rootContainer, pageMapping);
-    this.router.defaultUrl = '/login';
+    this.router.defaultUrl = defaultUrl;
   }
 }

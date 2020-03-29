@@ -4,6 +4,18 @@ import {FormHeader} from '../form-header';
 import {FormFooter} from '../form-footer';
 import CredentialValidator from '../../utils/validator.js';
 import {UserCredentials} from '../../models/user-credentials';
+import {MinLengthRule, NotEmptyRule, RegexpRule} from '../../utils/rules';
+
+/**
+ * Used for defining login input.
+ * @type {string}
+ */
+const loginField = 'login';
+/**
+ * Used for defining password input.
+ * @type {string}
+ */
+const passwordField = 'password';
 
 /**
  * User login form.
@@ -55,32 +67,65 @@ export class LoginFormComponent extends Component {
     this.footer = new FormFooter(this.rootContainer, 'Log In', 'Don\'t have an account yet?', '#/registration');
   }
 
-  /**
-   * Returns credentials if they are successfully validated. Else returns error.
-   *
-   * @return {Promise<[Promise, Promise]>} credentials if login and password successfully validated or error if not.
-   */
-  getCredentials() {
-    this.loginInput.cleanErrorMessage();
-    this.passwordInput.cleanErrorMessage();
 
-    const loginValue = this.loginInput.inputValue;
-    const passwordValue = this.passwordInput.inputValue;
-
+  addEventListener() {
     const validator = new CredentialValidator();
-    return Promise.allSettled([validator.validate(loginValue, validator.Pattern.LOGIN),
-      validator.validate(passwordValue, validator.Pattern.PASSWORD)])
-        .then(([loginValidation, passwordValidation]) => {
-          if (loginValidation.status === 'rejected' || passwordValidation.status === 'rejected') {
-            if (loginValidation.status === 'rejected') {
-              this.loginInput.showErrorMessage(loginValidation.reason.message);
-            }
-            if (passwordValidation.status === 'rejected') {
-              this.passwordInput.showErrorMessage(passwordValidation.reason.message);
-            }
-            throw new TypeError('Validation failed.');
+
+    this.rootContainer.addEventListener('submit', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    });
+
+    this.footer.formButton.onClick(() => {
+      this.loginInput.cleanErrorMessage();
+      this.passwordInput.cleanErrorMessage();
+
+      const loginValue = this.loginInput.inputValue;
+      const passwordValue = this.passwordInput.inputValue;
+      validator.validate(
+          [{
+            name: loginField, value: loginValue, rules: [
+              new NotEmptyRule('Login can`t be empty.'),
+              new MinLengthRule(4, 'Min length 4.'),
+              new RegexpRule('^([a-zA-Z0-9]){4,}$',
+                  'Login should have uppercase or lowercase letters and digits.')]
+          }, {
+            name: passwordField, value: passwordValue, rules: [
+              new NotEmptyRule('Password can`t be empty.'),
+              new MinLengthRule(8, 'Min length 8.'),
+              new RegexpRule('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[0-9a-zA-Z]{8,}$',
+                  'Password should have at least one uppercase and lowercase letter and digit.')]
+          }])
+          .then(() => {
+            this._returnCredentials(new UserCredentials(loginValue, passwordValue));
+          })
+          .catch((error) => this.showFieldErrors(error));
+    });
+  }
+
+  /**
+   * Shows errors in the result of login.
+   *
+   * @param {ValidationError} validationError - error that is received from server or after validation.
+   */
+  showFieldErrors(validationError) {
+    validationError.errors.forEach((error) => {
+          if (error.field === loginField) {
+            this.loginInput.showErrorMessage(error.message);
           }
-          return new UserCredentials(loginValue, passwordValue);
-        });
+          if (error.field === passwordField) {
+            this.passwordInput.showErrorMessage(error.message);
+          }
+        },
+    );
+  }
+
+  /**
+   * Register callback that will be invoked after success credentials validation.
+   *
+   * @param {Function} callback - callback that will be invoked.
+   */
+  onSubmit(callback) {
+    this._returnCredentials = callback;
   }
 }

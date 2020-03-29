@@ -13,7 +13,7 @@ export default class CredentialValidator {
   /**
    * Validates user`s credential value according to credential pattern.
    *
-   * @param {Credential[]} credential - user`s credential.
+   * @param {Credential[]} credentials - user`s credential.
    * @return {Promise} positive or negative result of credential validation.
    */
   validate(credentials) {
@@ -21,8 +21,7 @@ export default class CredentialValidator {
       const errors = [];
       credentials.forEach(
           (credential) => {
-            const failedRule = credential
-                .rules
+            const failedRule = credential.rules
                 .find((rule) => !rule.validate(credential.value));
             if (failedRule) {
               errors.push({field: credential.name, message: failedRule.message});

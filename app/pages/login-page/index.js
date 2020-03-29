@@ -33,16 +33,10 @@ export class LoginPage extends Component {
    * @inheritdoc
    */
   addEventListener() {
-    this.loginForm.rootContainer.addEventListener('submit', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-
-      this.loginForm.getCredentials()
-          .then((credentials) =>
-            this.apiService.login(credentials)
-                .then(() => window.location.hash='/fileHub')
-                .catch((error) => console.log(error)))
-          .catch((reason) => console.log(reason));
+      this.loginForm.onSubmit((credentials) => {
+        this.apiService.register(credentials)
+            .then(() => window.location.hash = '/fileHub')
+            .catch((validationError) => this.loginForm.showFieldErrors(validationError));
     });
   }
 }

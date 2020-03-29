@@ -7,6 +7,17 @@ import {UserCredentials} from '../../models/user-credentials';
 import {MinLengthRule, NotEmptyRule, RegexpRule} from '../../utils/rules';
 
 /**
+ * Used for defining login input.
+ * @type {string}
+ */
+const loginField = 'login';
+/**
+ * Used for defining password input.
+ * @type {string}
+ */
+const passwordField = 'password';
+
+/**
  * User registration form.
  */
 export class RegistrationFormComponent extends Component {
@@ -64,7 +75,9 @@ export class RegistrationFormComponent extends Component {
     this.footer = new FormFooter(this.rootContainer, 'Register', 'Already have an account?', '#/login');
   }
 
-
+  /**
+   * @inheritdoc
+   */
   addEventListener() {
     const validator = new CredentialValidator();
 
@@ -84,13 +97,13 @@ export class RegistrationFormComponent extends Component {
 
       validator.validate(
           [{
-            name: 'login', value: loginValue, rules: [
+            name: loginField, value: loginValue, rules: [
               new NotEmptyRule('Login can`t be empty.'),
               new MinLengthRule(4, 'Min length 4.'),
               new RegexpRule('^([a-zA-Z0-9]){4,}$',
                   'Login should have uppercase or lowercase letters and digits.')]
           }, {
-            name: 'password', value: passwordValue, rules: [
+            name: passwordField, value: passwordValue, rules: [
               new NotEmptyRule('Password can`t be empty.'),
               new MinLengthRule(8, 'Min length 8.'),
               new RegexpRule('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[0-9a-zA-Z]{8,}$',
@@ -101,7 +114,7 @@ export class RegistrationFormComponent extends Component {
               this._returnCredentials(new UserCredentials(loginValue, passwordValue));
             }
           })
-          .catch((error) => this.showServerErrors(error));
+          .catch((error) => this.showFieldErrors(error));
     });
   }
 
@@ -121,22 +134,27 @@ export class RegistrationFormComponent extends Component {
   }
 
   /**
-   * Shows server errors in the result of registration.
+   * Shows errors in the result of registration.
    *
-   * @param {ValidationError} validationError - error that is received from server.
+   * @param {ValidationError} validationError - error that is received from server or after validation.
    */
-  showServerErrors(validationError) {
+  showFieldErrors(validationError) {
     validationError.errors.forEach((error) => {
-          if (error.field === 'login') {
+          if (error.field === loginField) {
             this.loginInput.showErrorMessage(error.message);
           }
-          if (error.field === 'password') {
+          if (error.field === passwordField) {
             this.passwordInput.showErrorMessage(error.message);
           }
         },
     );
   }
 
+  /**
+   * Register callback that will be invoked after success credentials validation.
+   *
+   * @param {Function} callback - callback that will be invoked.
+   */
   onSubmit(callback) {
     this._returnCredentials = callback;
   }

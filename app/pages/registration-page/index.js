@@ -37,7 +37,7 @@ export class RegistrationPage extends Component {
     this.registrationForm.onSubmit((credentials) => {
       this.apiService.register(credentials)
           .then(() => window.location.hash = '/login')
-          .catch((validationError) => this.registrationForm.showServerErrors(validationError));
+          .catch((validationError) => this.registrationForm.showFieldErrors(validationError));
     });
   }
 }

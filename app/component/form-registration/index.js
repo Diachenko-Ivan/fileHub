@@ -4,6 +4,7 @@ import {FormHeader} from '../form-header';
 import {FormFooter} from '../form-footer';
 import CredentialValidator from '../../utils/validator.js';
 import {UserCredentials} from '../../models/user-credentials';
+import {MinLengthRule, NotEmptyRule, RegexpRule} from '../../utils/rules';
 
 /**
  * User registration form.
@@ -63,40 +64,46 @@ export class RegistrationFormComponent extends Component {
     this.footer = new FormFooter(this.rootContainer, 'Register', 'Already have an account?', '#/login');
   }
 
-  /**
-   * Returns credentials if they are successfully validated. Else returns error.
-   *
-   * @return {Promise<[Promise, Promise]>} credentials if login and password successfully validated or error if not.
-   */
-  getCredentials() {
-    this.loginInput.cleanErrorMessage();
-    this.passwordInput.cleanErrorMessage();
-    this.repeatPasswordInput.cleanErrorMessage();
 
-    const loginValue = this.loginInput.inputValue;
-    const passwordValue = this.passwordInput.inputValue;
-    const repeatPasswordValue = this.repeatPasswordInput.inputValue;
-
+  addEventListener() {
     const validator = new CredentialValidator();
-    return Promise.allSettled([validator.validate(loginValue, validator.Pattern.LOGIN),
-      validator.validate(passwordValue, validator.Pattern.PASSWORD)])
-        .then(([loginValidation, passwordValidation]) => {
-          if (loginValidation.status === 'rejected' || passwordValidation.status === 'rejected') {
-            if (loginValidation.status === 'rejected') {
-              this.loginInput.showErrorMessage(loginValidation.reason.message);
-            }
-            if (passwordValidation.status === 'rejected') {
-              this.passwordInput.showErrorMessage(passwordValidation.reason.message);
-            }
-          } else {
-            if (this.confirmPasswordsEqual(passwordValue, repeatPasswordValue)) {
-              return new UserCredentials(loginValue, passwordValue);
-            }
-          }
-          throw new TypeError('Validation failed.');
-        });
-  }
 
+    this.rootContainer.addEventListener('submit', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    });
+
+    this.footer.formButton.onClick(() => {
+      this.loginInput.cleanErrorMessage();
+      this.passwordInput.cleanErrorMessage();
+      this.repeatPasswordInput.cleanErrorMessage();
+
+      const loginValue = this.loginInput.inputValue;
+      const passwordValue = this.passwordInput.inputValue;
+      const repeatPasswordValue = this.repeatPasswordInput.inputValue;
+
+      validator.validate(
+          [{
+            name: 'login', value: loginValue, rules: [
+              new NotEmptyRule('Login can`t be empty.'),
+              new MinLengthRule(4, 'Min length 4.'),
+              new RegexpRule('^([a-zA-Z0-9]){4,}$',
+                  'Login should have uppercase or lowercase letters and digits.')]
+          }, {
+            name: 'password', value: passwordValue, rules: [
+              new NotEmptyRule('Password can`t be empty.'),
+              new MinLengthRule(8, 'Min length 8.'),
+              new RegexpRule('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[0-9a-zA-Z]{8,}$',
+                  'Password should have at least one uppercase and lowercase letter and digit.')]
+          }])
+          .then(() => {
+            if (this.confirmPasswordsEqual(passwordValue, repeatPasswordValue)) {
+              this._returnCredentials(new UserCredentials(loginValue, passwordValue));
+            }
+          })
+          .catch((error) => this.showServerErrors(error));
+    });
+  }
 
   /**
    *  Checks the equivalence of password and repeat-password.
@@ -120,14 +127,18 @@ export class RegistrationFormComponent extends Component {
    */
   showServerErrors(validationError) {
     validationError.errors.forEach((error) => {
-      if (error.field === 'login') {
-        this.loginInput.showErrorMessage(error.message);
-      }
-      if (error.field === 'password') {
-        this.passwordInput.showErrorMessage(error.message);
-      }
-    },
+          if (error.field === 'login') {
+            this.loginInput.showErrorMessage(error.message);
+          }
+          if (error.field === 'password') {
+            this.passwordInput.showErrorMessage(error.message);
+          }
+        },
     );
+  }
+
+  onSubmit(callback) {
+    this._returnCredentials = callback;
   }
 }
 

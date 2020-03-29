@@ -34,16 +34,10 @@ export class RegistrationPage extends Component {
    * @inheritdoc
    */
   addEventListener() {
-    this.registrationForm.rootContainer.addEventListener('submit', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-
-      this.registrationForm.getCredentials()
-          .then((credentials) =>
-            this.apiService.register(credentials)
-                .then(() => window.location.hash = '/login')
-                .catch((validationError) => this.registrationForm.showServerErrors(validationError)))
-          .catch((reason) => console.log(reason));
+    this.registrationForm.onSubmit((credentials) => {
+      this.apiService.register(credentials)
+          .then(() => window.location.hash = '/login')
+          .catch((validationError) => this.registrationForm.showServerErrors(validationError));
     });
   }
 }

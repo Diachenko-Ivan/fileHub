@@ -12,11 +12,11 @@
 
 <div class="wrapper">
     <div class="application-box user-form">
-        <img alt="TeamDev" class="logo" src="../src/main/resources/teamdev.png">
+        <img alt="TeamDev" class="logo" src="./images/teamdev.png">
 
-        <header class="header form-header">
-            <div class="form-target"><h1>Login</h1></div>
-            <div class="user-icon"><i class="glyphicon glyphicon-user"></i></div>
+        <header class="header">
+            <h1>Login</h1>
+            <i class="glyphicon glyphicon-user"></i>
         </header>
 
         <form>
@@ -25,8 +25,8 @@
                 <label for="email">Username</label>
 
                 <div class="input-container">
-                    <input class="input form-input" id="email" placeholder="Email" name="email"/>
-                    <div class="error-message">Username can't be empty</div>
+                    <input class="input" id="email" placeholder="Email" name="email"/>
+                    <div class="error-message"><span>Username can't be empty</span></div>
                 </div>
 
             </div>
@@ -36,17 +36,17 @@
                 <label for="password">Password</label>
 
                 <div class="input-container">
-                    <input class="input form-input" id="password" type="password" placeholder="Password"
+                    <input class="input" id="password" type="password" placeholder="Password"
                            name="password"/>
-                    <div class="error-message">Password can't be empty and should contain letters and numbers</div>
+                    <div class="error-message"><span>Password can't be empty and should contain letters and numbers</span></div>
                 </div>
 
             </div>
 
             <div class="row">
-                <div class="input-container">
+                <div class="button-link-container">
                     <a class="form-link" href="registration.html">Don't have an account yet?</a>
-                    <button class="button form-button" type="submit">Log In</button>
+                    <button class="button" type="submit">Log In</button>
                 </div>
             </div>
         </form>

@@ -15,14 +15,14 @@ a:hover {
     text-decoration: underline;
 }
 
-.input{
+.input {
     border: 2px solid #d3d3d3;
     line-height: 25px;
     font-size: 15px;
-    border-radius: 4px;
+    border-radius: 5px;
 }
 
-.input::placeholder{
+.input::placeholder {
     padding-left: 7px;
 }
 
@@ -30,7 +30,7 @@ a:hover {
     box-shadow: 0 0 5px #337ab7;
 }
 
-.header{
+.header {
     font-size: 24px;
     padding-bottom: 9px;
     margin-bottom: 14px;
@@ -39,7 +39,6 @@ a:hover {
 
 .button {
     font-size: 15px;
-    /*font-weight: 600;*/
     border: 0 solid;
     border-radius: 4px;
     cursor: pointer;
@@ -61,11 +60,11 @@ a:hover {
     left: 0;
 }
 
-.application-box{
+.application-box {
     box-sizing: border-box;
     box-shadow: 0 0 20px #999999;
     background-color: #ffffff;
-    border: 3px solid #999999;
+    border: 2px solid #999999;
     border-radius: 8px;
     margin: 100px auto 0px;
     padding: 20px;
@@ -75,7 +74,7 @@ a:hover {
 
 /*Styles for authentication and registration form*/
 
-.user-form{
+.user-form {
     width: 516px;
     padding: 18px 23px 22px;
 }
@@ -85,7 +84,7 @@ a:hover {
     margin-bottom: 5px;
 }
 
-.user-form .header i{
+.user-form .header i {
     position: absolute;
     top: 18px;
     left: 462px;
@@ -101,11 +100,11 @@ a:hover {
     margin-top: 2px;
     float: left;
     font-size: 15px;
-    /*font-weight: 600;*/
     width: 30%;
 }
 
-.user-form .row .input-container {
+.user-form .row .input-container,
+.user-form .row .button-link-container {
     width: 60%;
     float: right;
 }
@@ -122,7 +121,7 @@ a:hover {
     content: "";
 }
 
-.user-form :last-child{
+.user-form .row:last-child {
     margin-bottom: 0;
 }
 
@@ -132,7 +131,7 @@ a:hover {
     font-size: 13px;
 }
 
-.user-form .button{
+.user-form .button {
     float: left;
 }
 
@@ -174,7 +173,7 @@ a:hover {
     padding-right: 5px;
 }
 
-.file-explorer-container .user-menu :last-child{
+.file-explorer-container .user-menu :last-child {
     border-style: none;
 }
 
@@ -215,7 +214,7 @@ a:hover {
     text-align: left;
 }
 
-.upload{
+.upload {
     background-color: #337ab7;
 }
 
@@ -251,7 +250,7 @@ a:hover {
     padding-bottom: 11px;
 }
 
-.file-explorer-container .content-table .arrow{
+.file-explorer-container .content-table .arrow {
     width: 4%;
 }
 
@@ -292,7 +291,7 @@ a:hover {
 }
 
 .file-explorer-container .content-table tr .file-action-icons .glyphicon-upload {
-    color: 	#32CD32;
+    color: #32CD32;
 }
 
 .file-explorer-container .content-table tr .file-action-icons .glyphicon-download {

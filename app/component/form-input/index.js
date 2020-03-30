@@ -31,13 +31,13 @@ export class FormInput extends Component {
   markup() {
     const {inputId, labelText, inputType, inputName, inputPlaceholder} = this;
     return `
-            <div class="credential-container">
+            <div data-test="form-input" class="credential-container">
                 <label id="input-label" for="${inputId}">${labelText}</label>
 
                 <div class="input-container">
                     <input type="${inputType}" id="${inputId}" 
                     name="${inputName}" placeholder="${inputPlaceholder}" class="input form-input"/>
-                    <div class="error-message"></div>
+                    <div data-test="error-message" class="error-message"></div>
                 </div>
             </div>
 `;

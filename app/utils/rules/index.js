@@ -54,7 +54,7 @@ export class MinLengthRule extends ValidationRule {
    * @inheritdoc
    */
   validate(credentialValue) {
-    return credentialValue.length > this._minLength;
+    return credentialValue.length >= this._minLength;
   }
 }
 

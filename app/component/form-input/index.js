@@ -17,7 +17,7 @@ export class FormInput extends Component {
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     markup() {
         return `

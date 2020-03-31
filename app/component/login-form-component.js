@@ -5,11 +5,17 @@ import {FormFooter} from "./form-footer";
 
 export class LoginFormComponent extends Component {
 
+    /**
+     * @inheritdoc
+     */
     constructor(...containers) {
         super(...containers);
         this.render();
     }
 
+    /**
+     * @inheritdoc
+     */
     markup() {
         return `
         <form class="application-box user-form">
@@ -18,6 +24,9 @@ export class LoginFormComponent extends Component {
 `;
     }
 
+    /**
+     * @inheritdoc
+     */
     initNestedComponents() {
         this.header = new FormHeader(this.rootContainer, 'Login');
 
@@ -36,7 +45,9 @@ export class LoginFormComponent extends Component {
         this.footer = new FormFooter(this.rootContainer, 'Log In', 'Don\'t have an account yet?', '#');
     }
 
-
+    /**
+     * @inheritdoc
+     */
     addEventListener() {
         this.footer.formButton.onClick(() => {
             this.loginInput.cleanErrorMessage();

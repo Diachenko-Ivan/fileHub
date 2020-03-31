@@ -8,7 +8,9 @@ export class FormHeader extends Component{
         this.render();
     }
 
-
+    /**
+     * @inheritdoc
+     */
     markup() {
         return `
         <header class="header form-header">

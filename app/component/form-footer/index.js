@@ -11,6 +11,9 @@ export class FormFooter extends Component {
         this.render();
     }
 
+    /**
+     * @inheritdoc
+     */
     markup() {
         return `
                 <div class="form-footer-container">
@@ -20,7 +23,9 @@ export class FormFooter extends Component {
                 </div>`
     }
 
-
+    /**
+     * @inheritdoc
+     */
     initNestedComponents() {
         const formButtonContainer = this.rootContainer.querySelector('.form-footer-button-container');
         this.formButton = new Button(formButtonContainer, 'form-button', this._formButtonText);

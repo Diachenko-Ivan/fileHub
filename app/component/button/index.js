@@ -24,7 +24,7 @@ export class Button extends Component {
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     markup() {
         return `<button class="button ${this.className}">${this.buttonText}</button>`;
@@ -39,7 +39,7 @@ export class Button extends Component {
     }
 
     /**
-     *@inheritDoc
+     *@inheritdoc
      */
     addEventListener() {
         this.rootContainer.addEventListener('click', ()=>this.handlers.forEach(handler=>handler()));

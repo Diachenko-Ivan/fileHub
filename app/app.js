@@ -6,21 +6,23 @@ import {LoginFormComponent} from "./component/login-form-component.js";
  */
 export class Application extends Component {
 
-
+    /**
+     * @inheritdoc
+     */
     constructor(container) {
         super(container);
         this.render();
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     markup() {
         return `<div id="application"></div>`
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     initNestedComponents() {
         new LoginFormComponent(this.rootContainer);

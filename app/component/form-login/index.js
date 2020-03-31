@@ -106,10 +106,10 @@ export class LoginFormComponent extends Component {
   /**
    * Shows errors in the result of login.
    *
-   * @param {ValidationError} validationError - error that is received from server or after validation.
+   * @param {ValidationErrorCase[]} errors - errors that are received from server or after validation.
    */
-  showFieldErrors(validationError) {
-    validationError.errors.forEach((error) => {
+  showFieldErrors(errors) {
+    errors.forEach((error) => {
           if (error.field === loginField) {
             this.loginInput.showErrorMessage(error.message);
           }

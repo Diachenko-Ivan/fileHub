@@ -1,5 +1,3 @@
-import {ValidationError} from '../models/errors/validation-error';
-
 /**
  * Validator for user`s credentials.
  */
@@ -29,7 +27,7 @@ export default class CredentialValidator {
           }
       );
       if (errors.length) {
-        reject(new ValidationError({errors: errors}));
+        reject(errors);
       }
       resolve();
     });

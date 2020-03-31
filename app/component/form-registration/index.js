@@ -114,7 +114,7 @@ export class RegistrationFormComponent extends Component {
               this._returnCredentials(new UserCredentials(loginValue, passwordValue));
             }
           })
-          .catch((error) => this.showFieldErrors(error));
+          .catch((errors) => this.showFieldErrors(errors));
     });
   }
 
@@ -136,10 +136,10 @@ export class RegistrationFormComponent extends Component {
   /**
    * Shows errors in the result of registration.
    *
-   * @param {ValidationError} validationError - error that is received from server or after validation.
+   * @param {ValidationErrorCase[]} errors - errors that are received from server or after validation.
    */
-  showFieldErrors(validationError) {
-    validationError.errors.forEach((error) => {
+  showFieldErrors(errors) {
+    errors.forEach((error) => {
           if (error.field === loginField) {
             this.loginInput.showErrorMessage(error.message);
           }

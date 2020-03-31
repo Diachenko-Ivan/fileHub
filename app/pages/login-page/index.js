@@ -36,7 +36,7 @@ export class LoginPage extends Component {
       this.loginForm.onSubmit((credentials) => {
         this.apiService.register(credentials)
             .then(() => window.location.hash = '/fileHub')
-            .catch((validationError) => this.loginForm.showFieldErrors(validationError));
+            .catch((validationError) => this.loginForm.showFieldErrors(validationError.errors));
     });
   }
 }

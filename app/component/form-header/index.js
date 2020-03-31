@@ -1,4 +1,4 @@
-import {Component} from '../parent-component.js';
+import {Component} from "../parent-component.js";
 
 /**
  * Component that represents header for user forms.

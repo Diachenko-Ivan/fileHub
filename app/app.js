@@ -22,12 +22,12 @@ export class Application extends Component {
     this.render();
   }
 
-  /**
-   * @inheritdoc
-   */
-  markup() {
-    return `<div id="application"></div>`;
-  }
+    /**
+     * @inheritdoc
+     */
+    markup() {
+        return `<div id="application"></div>`
+    }
 
   /**
    * @inheritdoc

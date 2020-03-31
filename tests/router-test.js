@@ -24,22 +24,6 @@ export default module('Router test', function (hook) {
     this.router = new Router(windowMock, fixture, pageMapping);
   });
 
-  test('should generate existing page', (assert) => {
-    this.router.generatePage('/login');
-    const errorPage = document.querySelector('[data-test="error-page"]');
-    const userForm = document.querySelector('[data-test="login-form"]');
-
-    assert.notOk(fixture.contains(errorPage), 'Should not show error page.');
-    assert.ok(fixture.contains(userForm), 'Should show correct existing page.');
-  });
-
-  test('should generate error page due to wrong url', (assert) => {
-    this.router.generatePage('/wrongUrl');
-    const errorPage = document.querySelector('[data-test="error-page"]');
-
-    assert.ok(fixture.contains(errorPage), 'Should show 404 error page.');
-  });
-
   test('should throw error due to setting nonexistent default page', (assert) => {
     assert.throws(() => {
       this.router.defaultUrl = '/wrongUrl';
@@ -49,6 +33,7 @@ export default module('Router test', function (hook) {
   test('should check default hash setting.', (assert) => {
     const hashUrl = '/login';
     this.router.defaultUrl = hashUrl;
+
     const expectedUrlHash = windowMock.location.hash;
 
     assert.strictEqual(expectedUrlHash.slice(1), hashUrl, 'Should set correct hash value.');
@@ -76,10 +61,8 @@ export default module('Router test', function (hook) {
     const router = new Router(windowMock, fixture, pageMapping);
     windowMock.location.hash = `#${hashUrl}`;
 
-    const expectedUrlHash = windowMock.location.hash;
-    const userForm = document.querySelector('[data-test="login-form"]');
+    const userForm = fixture.querySelector('[data-test="login-form"]');
 
-    assert.strictEqual(expectedUrlHash.slice(1), hashUrl, 'Should set correct hash value.');
-    assert.ok(fixture.contains(userForm), 'Should show existing page.');
+    assert.ok(userForm, 'Should show existing page.');
   });
 });

@@ -26,6 +26,7 @@ export class ErrorPage extends Component {
         <div data-test="error-page" class="application-box">
             <div id="error-code"><h1>${this._errorCode}</h1></div>
             <div style="color: #cc0005" id="error-message"><h4>${this._errorMessage}</h4></div>
+            <a href="#">Go to main page.</a>
         </div>`;
   }
 }

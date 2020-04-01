@@ -1,7 +1,7 @@
 /**
  * Represents general server that is come from server.
  */
-export class GeneralServerError {
+export class GeneralServerError extends Error {
   /**
    * Server error message.
    *
@@ -15,6 +15,7 @@ export class GeneralServerError {
    * @param {string} message - error message.
    */
   constructor(message) {
+    super();
     this.message = message;
   }
 }

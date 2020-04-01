@@ -9,7 +9,7 @@ export default class CredentialValidator {
    * @property {ValidationRule[]} rules - list of rules that credential value is going to be validated by.
    */
   /**
-   * Validates user`s credential value according to credential pattern.
+   * Validates user`s credential value according to credential rules.
    *
    * @param {Credential[]} credentials - user`s credential.
    * @return {Promise} positive or negative result of credential validation.
@@ -18,13 +18,13 @@ export default class CredentialValidator {
     return new Promise((resolve, reject) => {
       const errors = [];
       credentials.forEach(
-          (credential) => {
-            const failedRule = credential.rules
-                .find((rule) => !rule.validate(credential.value));
-            if (failedRule) {
-              errors.push({field: credential.name, message: failedRule.message});
-            }
+        (credential) => {
+          const failedRule = credential.rules
+            .find((rule) => !rule.validate(credential.value));
+          if (failedRule) {
+            errors.push({field: credential.name, message: failedRule.message});
           }
+        },
       );
       if (errors.length) {
         reject(errors);

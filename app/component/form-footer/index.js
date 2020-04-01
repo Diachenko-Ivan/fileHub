@@ -21,11 +21,11 @@ export class FormFooter extends Component {
     this.render();
   }
 
-    /**
-     * @inheritdoc
-     */
-    markup() {
-        return `
+  /**
+   * @inheritdoc
+   */
+  markup() {
+    return `
                 <div class="form-footer-container">
                     <div class="form-footer-button-container">
                         <a class="form-link" href="${this._linkHref}">${this._linkText}</a> 
@@ -33,11 +33,11 @@ export class FormFooter extends Component {
                 </div>`;
   }
 
-    /**
-     * @inheritdoc
-     */
-    initNestedComponents() {
-        const formButtonContainer = this.rootContainer.querySelector('.form-footer-button-container');
-        this.formButton = new Button(formButtonContainer, 'form-button', this._formButtonText);
-    }
+  /**
+   * @inheritdoc
+   */
+  initNestedComponents() {
+    const formButtonContainer = this.rootContainer.querySelector('.form-footer-button-container');
+    this.formButton = new Button(formButtonContainer, 'form-button', this._formButtonText);
+  }
 }

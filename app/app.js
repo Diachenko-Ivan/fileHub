@@ -11,7 +11,6 @@ const defaultUrl = '/login';
  * Base component for application that stores different pages.
  */
 export class Application extends Component {
-
   /**
    * Creates new {@type Application} instance.
    *
@@ -22,12 +21,12 @@ export class Application extends Component {
     this.render();
   }
 
-    /**
-     * @inheritdoc
-     */
-    markup() {
-        return `<div id="application"></div>`
-    }
+  /**
+   * @inheritdoc
+   */
+  markup() {
+    return `<div id="application"></div>`;
+  }
 
   /**
    * @inheritdoc

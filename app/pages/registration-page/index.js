@@ -36,8 +36,8 @@ export class RegistrationPage extends Component {
   addEventListener() {
     this.registrationForm.onSubmit((credentials) => {
       this.apiService.register(credentials)
-          .then(() => window.location.hash = '/login')
-          .catch((validationError) => this.registrationForm.showFieldErrors(validationError.errors));
+        .then(() => window.location.hash = '/login')
+        .catch((validationError) => this.registrationForm.showFieldErrors(validationError.errors));
     });
   }
 }

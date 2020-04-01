@@ -4,6 +4,7 @@
 export class ValidationRule {
   /**
    * Creates new validation rule.
+   *
    * @param {string} message - message that is going to be showed if rule is failed.
    */
   constructor(message) {

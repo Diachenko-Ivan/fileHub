@@ -28,6 +28,6 @@ export class ValidationError {
    */
   constructor(serverResponse) {
     this.errors = serverResponse.errors
-        .map(error => new ValidationErrorCase(error));
+      .map((error) => new ValidationErrorCase(error));
   }
 }

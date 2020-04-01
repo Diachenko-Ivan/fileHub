@@ -1,6 +1,5 @@
 import {UserCredentials} from '../models/user-credentials';
 import {ValidationError} from '../models/errors/validation-error';
-import {ValidationErrorCase} from '../models/errors/validation-error-case';
 import {GeneralServerError} from '../models/errors/server-error';
 
 export class ApiService {

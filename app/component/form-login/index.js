@@ -8,11 +8,13 @@ import {MinLengthRule, NotEmptyRule, RegexpRule} from '../../utils/rules';
 
 /**
  * Used for defining login input.
+ *
  * @type {string}
  */
 const loginField = 'login';
 /**
  * Used for defining password input.
+ *
  * @type {string}
  */
 const passwordField = 'password';
@@ -83,23 +85,23 @@ export class LoginFormComponent extends Component {
       const loginValue = this.loginInput.inputValue;
       const passwordValue = this.passwordInput.inputValue;
       validator.validate(
-          [{
-            name: loginField, value: loginValue, rules: [
-              new NotEmptyRule('Login can`t be empty.'),
-              new MinLengthRule(4, 'Min length 4.'),
-              new RegexpRule('^([a-zA-Z0-9]){4,}$',
-                  'Login should have uppercase or lowercase letters and digits.')]
-          }, {
-            name: passwordField, value: passwordValue, rules: [
-              new NotEmptyRule('Password can`t be empty.'),
-              new MinLengthRule(8, 'Min length 8.'),
-              new RegexpRule('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[0-9a-zA-Z]{8,}$',
-                  'Password should have at least one uppercase and lowercase letter and digit.')]
-          }])
-          .then(() => {
-            this._returnCredentials(new UserCredentials(loginValue, passwordValue));
-          })
-          .catch((error) => this.showFieldErrors(error));
+        [{
+          name: loginField, value: loginValue, rules: [
+            new NotEmptyRule('Login can`t be empty.'),
+            new MinLengthRule(4, 'Min length 4.'),
+            new RegexpRule('^([a-zA-Z0-9]){4,}$',
+              'Login should have uppercase or lowercase letters and digits.')],
+        }, {
+          name: passwordField, value: passwordValue, rules: [
+            new NotEmptyRule('Password can`t be empty.'),
+            new MinLengthRule(8, 'Min length 8.'),
+            new RegexpRule('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[0-9a-zA-Z]{8,}$',
+              'Password should have at least one uppercase and lowercase letter and digit.')],
+        }])
+        .then(() => {
+          this._returnCredentials(new UserCredentials(loginValue, passwordValue));
+        })
+        .catch((error) => this.showFieldErrors(error));
     });
   }
 
@@ -110,13 +112,13 @@ export class LoginFormComponent extends Component {
    */
   showFieldErrors(errors) {
     errors.forEach((error) => {
-          if (error.field === loginField) {
-            this.loginInput.showErrorMessage(error.message);
-          }
-          if (error.field === passwordField) {
-            this.passwordInput.showErrorMessage(error.message);
-          }
-        },
+      if (error.field === loginField) {
+        this.loginInput.showErrorMessage(error.message);
+      }
+      if (error.field === passwordField) {
+        this.passwordInput.showErrorMessage(error.message);
+      }
+    },
     );
   }
 

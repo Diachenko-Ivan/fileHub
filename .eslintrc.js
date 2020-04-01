@@ -24,6 +24,7 @@ module.exports = {
     'max-len': ['error', {
       'code':120,
       'tabWidth':2,
-    }]
+    }],
+    indent: ['error', 2, {'MemberExpression': 1}]
   },
 };

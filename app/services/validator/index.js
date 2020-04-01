@@ -1,3 +1,4 @@
+import {ValidationErrorCase} from '../../models/errors/validation-error-case';
 /**
  * Validator for user`s credentials.
  */
@@ -22,7 +23,7 @@ export default class CredentialValidator {
           const failedRule = credential.rules
             .find((rule) => !rule.validate(credential.value));
           if (failedRule) {
-            errors.push({field: credential.name, message: failedRule.message});
+            errors.push(new ValidationErrorCase({field: credential.name, message: failedRule.message}));
           }
         },
       );

@@ -1,5 +1,5 @@
-import Validator from '../../app/utils/validator.js';
-import {MinLengthRule, RegexpRule} from '../../app/utils/rules';
+import Validator from '../../app/services/validator';
+import {MinLengthRule, RegexpRule} from '../../app/services/validator/rules';
 
 const {test, module} = QUnit;
 

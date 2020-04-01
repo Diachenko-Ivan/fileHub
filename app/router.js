@@ -3,11 +3,16 @@
  */
 export class Router {
   /**
+   * @typedef PageMapping
+   * @property {string} url - page url.
+   * @property {Function} page - function that returns page.
+   */
+  /**
    * Creates new {@type Router} instance.
    *
    * @param {Window} window - current window.
    * @param {Element} container - container where pages are generated in.
-   * @param {object} pageMapping - set of page mappings with appropriate pages.
+   * @param {PageMapping} pageMapping - set of page mappings with appropriate pages.
    */
   constructor(window, container, pageMapping) {
     this._window = window;

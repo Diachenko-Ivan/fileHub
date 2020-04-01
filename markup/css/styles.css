@@ -156,8 +156,8 @@ a:hover {
 
 .user-menu {
     position: absolute;
-    right: 5px;
-    top: -38px;
+    right: 9px;
+    top: -40px;
 }
 
 .user-menu li {
@@ -251,7 +251,7 @@ a:hover {
     padding: 12px 5px 11px;
 }
 
-.table .arrow .glyphicon-menu-right {
+.table .glyphicon-menu-right {
     font-size: 12px;
     margin-left: 8px;
     top: 2px;

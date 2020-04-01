@@ -16,7 +16,7 @@
         <img alt="TeamDev" class="logo" src="./images/teamdev.png">
         <ul class="user-menu">
             <li><i class="glyphicon glyphicon-user"></i>John Doe</li>
-            <li><a href="#">Log Out <i class="glyphicon glyphicon-log-out"></i></a></li>
+            <li><a title="Log out" href="#">Log Out <i class="glyphicon glyphicon-log-out"></i></a></li>
         </ul>
 
         <header class="header"><h1><a title="Home" href="#">File Explorer</a></h1></header>
@@ -25,14 +25,14 @@
             <div class="content-header">
                 <div class="path-title">
                     <i class="glyphicon glyphicon-folder-open"></i>
-                    <strong class="directory-path">/ Root</strong>
+                    <strong>/ Root</strong>
                 </div>
                 <span class="head-buttons">
-                    <button type="button" class="button">
+                    <button title="Create Folder" type="button" class="button">
                         <i class="glyphicon glyphicon-plus"></i>
                         Create Folder
                     </button>
-                    <button type="button" class="button">
+                    <button title="Upload File" type="button" class="button">
                         <i class="glyphicon glyphicon-upload"></i>
                         Upload File
                     </button>
@@ -43,34 +43,33 @@
                 <tbody>
 
                 <tr>
-                    <td class="arrow">
+                    <td>
                         <i class="glyphicon glyphicon-menu-right"></i>
                     </td>
                     <td>
                         <span class="file-name">
                             <i class="glyphicon glyphicon-folder-close"></i>
-                            <a href="#">Documents</a>
+                            <a title="Documents" href="#">Documents</a>
                         </span>
                     </td>
-                    <td class="file-size">2 items</td>
+                    <td>2 items</td>
                     <td class="file-action-icons">
                         <i id="file-upload-icon" class="glyphicon glyphicon-upload"></i>
-                        <input type="file" id="file-upload" style="display: none">
                         <i class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
 
                 <tr>
-                    <td class="arrow">
+                    <td>
                         <i class="glyphicon glyphicon-menu-right"></i>
                     </td>
                     <td>
-                        <span class="folder-name">
+                        <span class="file-name">
                             <i class="glyphicon glyphicon-folder-close"></i>
-                            <a href="#">Images</a>
+                            <a title="Images" href="#">Images</a>
                         </span>
                     </td>
-                    <td class="file-count">2 items</td>
+                    <td>2 items</td>
                     <td class="file-action-icons">
                         <i class="glyphicon glyphicon-upload"></i>
                         <i class="glyphicon glyphicon-remove-circle"></i>
@@ -78,16 +77,16 @@
                 </tr>
 
                 <tr>
-                    <td class="arrow">
+                    <td>
                         <i class="glyphicon glyphicon-menu-right"></i>
                     </td>
                     <td>
-                        <span class="folder-name">
+                        <span class="file-name">
                             <i class="glyphicon glyphicon-folder-close"></i>
-                            <a href="#">Videos</a>
+                            <a title="Videos" href="#">Videos</a>
                         </span>
                     </td>
-                    <td class="file-count">1 item</td>
+                    <td>1 item</td>
                     <td class="file-action-icons">
                         <i class="glyphicon glyphicon-upload"></i>
                         <i class="glyphicon glyphicon-remove-circle"></i>
@@ -95,34 +94,31 @@
                 </tr>
 
                 <tr>
-                    <td class="arrow">
+                    <td>
                         <i class="glyphicon glyphicon-menu-right"></i>
                     </td>
                     <td>
-                        <span class="folder-name">
+                        <span class="file-name">
                             <i class="glyphicon glyphicon-folder-close"></i>
-                            <a href="#">Music</a>
+                            <a title="Music" href="#">Music</a>
                         </span>
                     </td>
-                    <td class="file-count">2 items</td>
+                    <td>2 items</td>
                     <td class="file-action-icons">
                         <i class="glyphicon glyphicon-upload"></i>
                         <i class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
-
-
                 </tbody>
             </table>
         </div>
 
 
         <footer class="footer">
-            <p>Copyright &copy; 2020 <a href="#">TeamDev</a>. All rights reserved.</p>
+            <p>Copyright &copy; 2020 <a title="TeamDev" href="#">TeamDev</a>. All rights reserved.</p>
         </footer>
     </section>
 </div>
 
-<script src="js/main.js"></script>
 </body>
 </html>

@@ -108,25 +108,25 @@ export class RegistrationFormComponent extends Component {
       const repeatPasswordValue = this.repeatPasswordInput.inputValue;
 
       validator.validate(
-          [{
-            name: loginField, value: loginValue, rules: [
-              new NotEmptyRule('Login can`t be empty.'),
-              new MinLengthRule(4, 'Min length 4.'),
-              new RegexpRule('^([a-zA-Z0-9]){4,}$',
-                  'Login should have uppercase or lowercase letters and digits.')],
-          }, {
-            name: passwordField, value: passwordValue, rules: [
-              new NotEmptyRule('Password can`t be empty.'),
-              new MinLengthRule(8, 'Min length 8.'),
-              new RegexpRule('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[0-9a-zA-Z]{8,}$',
-                  'Password should have at least one uppercase and lowercase letter and digit.')],
-          }])
-          .then(() => {
-            if (this.confirmPasswordsEqual(passwordValue, repeatPasswordValue)) {
-              this._returnCredentials(new UserCredentials(loginValue, passwordValue));
-            }
-          })
-          .catch((errors) => this.showFieldErrors(errors));
+        [{
+          name: loginField, value: loginValue, rules: [
+            new NotEmptyRule('Login can`t be empty.'),
+            new MinLengthRule(4, 'Min length 4.'),
+            new RegexpRule('^([a-zA-Z0-9]){4,}$',
+              'Login should have uppercase or lowercase letters and digits.')],
+        }, {
+          name: passwordField, value: passwordValue, rules: [
+            new NotEmptyRule('Password can`t be empty.'),
+            new MinLengthRule(8, 'Min length 8.'),
+            new RegexpRule('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[0-9a-zA-Z]{8,}$',
+              'Password should have at least one uppercase and lowercase letter and digit.')],
+        }])
+        .then(() => {
+          if (this.confirmPasswordsEqual(passwordValue, repeatPasswordValue)) {
+            this._returnCredentials(new UserCredentials(loginValue, passwordValue));
+          }
+        })
+        .catch((errors) => this.showFieldErrors(errors));
     });
   }
 
@@ -151,15 +151,9 @@ export class RegistrationFormComponent extends Component {
    * @param {ValidationErrorCase[]} errors - errors that are received from server or after validation.
    */
   showFieldErrors(errors) {
-    errors.forEach((error) => {
-          if (error.field === loginField) {
-            this.loginInput.showErrorMessage(error.message);
-          }
-          if (error.field === passwordField) {
-            this.passwordInput.showErrorMessage(error.message);
-          }
-        },
-    );
+    const errorMap = errors.reduce((errorObj, error) => ({...errorObj, [error.field]: error.message}), {});
+    this.loginInput.showErrorMessage(errorMap[loginField] || '');
+    this.passwordInput.showErrorMessage(errorMap[passwordField] || '');
   }
 
   /**

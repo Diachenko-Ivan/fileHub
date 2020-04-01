@@ -57,7 +57,7 @@ export class Router {
   generatePage(url) {
     this.container.innerHTML = '';
     if (!url) {
-      this._pageMapping[this._defaultUrl]();
+      this._window.location.hash = `#${this._defaultUrl}`;
       return;
     }
     if (!this._pageMapping[url]) {

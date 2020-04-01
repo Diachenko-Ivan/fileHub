@@ -57,8 +57,8 @@ export class LoginFormComponent extends Component {
    * @inheritdoc
    */
   initNestedComponents() {
-    const inputs=this.rootContainer.querySelector('[data-element="inputs"]');
-    const buttonContainer=this.rootContainer.querySelector('[data-element="button-link"]');
+    const inputs = this.rootContainer.querySelector('[data-element="inputs"]');
+    const buttonContainer = this.rootContainer.querySelector('[data-element="button-link"]');
 
     this.loginInput = new FormInput(inputs, {
       inputId: 'login',
@@ -76,7 +76,7 @@ export class LoginFormComponent extends Component {
       labelText: 'Password',
     });
 
-    this.formButton = new Button(buttonContainer, 'form-button','Log In');
+    this.formButton = new Button(buttonContainer, 'form-button', 'Log In');
   }
 
   /**
@@ -123,15 +123,9 @@ export class LoginFormComponent extends Component {
    * @param {ValidationErrorCase[]} errors - errors that are received from server or after validation.
    */
   showFieldErrors(errors) {
-    errors.forEach((error) => {
-      if (error.field === loginField) {
-        this.loginInput.showErrorMessage(error.message);
-      }
-      if (error.field === passwordField) {
-        this.passwordInput.showErrorMessage(error.message);
-      }
-    },
-    );
+    const errorMap = errors.reduce((errorObj, error) => ({...errorObj, [error.field]: error.message}), {});
+    this.loginInput.showErrorMessage(errorMap[loginField] || '');
+    this.passwordInput.showErrorMessage(errorMap[passwordField] || '');
   }
 
   /**

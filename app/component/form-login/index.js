@@ -1,10 +1,9 @@
 import {Component} from '../parent-component.js';
 import {FormInput} from '../form-input';
-import {FormHeader} from '../form-header';
-import {FormFooter} from '../form-footer';
 import CredentialValidator from '../../services/validator';
 import {UserCredentials} from '../../models/user-credentials';
 import {MinLengthRule, NotEmptyRule, RegexpRule} from '../../services/validator/rules';
+import {Button} from '../button';
 
 /**
  * Used for defining login input.
@@ -40,6 +39,16 @@ export class LoginFormComponent extends Component {
     return `
         <form data-test="login-form" class="application-box user-form">
             <img alt="TeamDev" class="logo" src="../src/main/resources/teamdev.png"> 
+            <header class="header form-header">
+                <div class="form-target"><h1>Login</h1></div>
+                <div class="user-icon"><i class="glyphicon glyphicon-user"></i></div>
+            </header>
+            <div data-element="inputs"></div>
+            <div class="form-footer-container">
+                <div data-element="button-link" class="form-footer-button-container">
+                   <a class="form-link" href="#/registration">Don't have an account yet?</a> 
+                </div>
+            </div>
         </form>  
     `;
   }
@@ -48,9 +57,10 @@ export class LoginFormComponent extends Component {
    * @inheritdoc
    */
   initNestedComponents() {
-    this.header = new FormHeader(this.rootContainer, 'Login');
+    const inputs=this.rootContainer.querySelector('[data-element="inputs"]');
+    const buttonContainer=this.rootContainer.querySelector('[data-element="button-link"]');
 
-    this.loginInput = new FormInput(this.rootContainer, {
+    this.loginInput = new FormInput(inputs, {
       inputId: 'login',
       inputType: 'text',
       inputName: 'login',
@@ -58,7 +68,7 @@ export class LoginFormComponent extends Component {
       labelText: 'Username',
     });
 
-    this.passwordInput = new FormInput(this.rootContainer, {
+    this.passwordInput = new FormInput(inputs, {
       inputId: 'password',
       inputType: 'password',
       inputName: 'password',
@@ -66,10 +76,12 @@ export class LoginFormComponent extends Component {
       labelText: 'Password',
     });
 
-    this.footer = new FormFooter(this.rootContainer, 'Log In', 'Don\'t have an account yet?', '#/registration');
+    this.formButton = new Button(buttonContainer, 'form-button','Log In');
   }
 
-
+  /**
+   * @inheritdoc
+   */
   addEventListener() {
     const validator = new CredentialValidator();
 
@@ -78,7 +90,7 @@ export class LoginFormComponent extends Component {
       event.stopPropagation();
     });
 
-    this.footer.formButton.onClick(() => {
+    this.formButton.onClick(() => {
       this.loginInput.cleanErrorMessage();
       this.passwordInput.cleanErrorMessage();
 

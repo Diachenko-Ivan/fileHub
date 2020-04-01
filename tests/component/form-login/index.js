@@ -13,7 +13,7 @@ export default module('LoginForm test', function (hook) {
     new LoginFormComponent(fixture);
     const loginForm = fixture.firstElementChild;
 
-    const numOfChildElements = 5;
+    const numOfChildElements = 4;
 
     assert.ok(loginForm, 'Should contain rendered login form.');
     assert.strictEqual(numOfChildElements, loginForm.childElementCount, 'Should render correct number of child elements');

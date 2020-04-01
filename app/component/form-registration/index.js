@@ -1,10 +1,9 @@
 import {Component} from '../parent-component.js';
 import {FormInput} from '../form-input';
-import {FormHeader} from '../form-header';
-import {FormFooter} from '../form-footer';
 import CredentialValidator from '../../services/validator';
 import {UserCredentials} from '../../models/user-credentials';
 import {MinLengthRule, NotEmptyRule, RegexpRule} from '../../services/validator/rules';
+import {Button} from '../button';
 
 /**
  * Used for defining login input.
@@ -38,9 +37,19 @@ export class RegistrationFormComponent extends Component {
    */
   markup() {
     return `
-        <form data-test="registration-form" class="application-box user-form">
+       <form data-test="registration-form" class="application-box user-form">
             <img alt="TeamDev" class="logo" src="../src/main/resources/teamdev.png"> 
-        </form>  
+            <header class="header form-header">
+                <div class="form-target"><h1>Registration</h1></div>
+                <div class="user-icon"><i class="glyphicon glyphicon-user"></i></div>
+            </header>
+            <div data-element="inputs"></div>
+            <div class="form-footer-container">
+                <div data-element="button-link" class="form-footer-button-container">
+                   <a class="form-link" href="#/login">Already have an account?</a> 
+                </div>
+            </div>
+        </form>   
 `;
   }
 
@@ -48,9 +57,10 @@ export class RegistrationFormComponent extends Component {
    * @inheritdoc
    */
   initNestedComponents() {
-    this.header = new FormHeader(this.rootContainer, 'Registration');
+    const inputs = this.rootContainer.querySelector('[data-element="inputs"]');
+    const buttonContainer = this.rootContainer.querySelector('[data-element="button-link"]');
 
-    this.loginInput = new FormInput(this.rootContainer, {
+    this.loginInput = new FormInput(inputs, {
       inputId: 'login',
       inputType: 'text',
       inputName: 'login',
@@ -58,7 +68,7 @@ export class RegistrationFormComponent extends Component {
       labelText: 'Username',
     });
 
-    this.passwordInput = new FormInput(this.rootContainer, {
+    this.passwordInput = new FormInput(inputs, {
       inputId: 'password',
       inputType: 'password',
       inputName: 'password',
@@ -66,7 +76,7 @@ export class RegistrationFormComponent extends Component {
       labelText: 'Password',
     });
 
-    this.repeatPasswordInput = new FormInput(this.rootContainer, {
+    this.repeatPasswordInput = new FormInput(inputs, {
       inputId: 'repeatPassword',
       inputType: 'password',
       inputName: 'password',
@@ -74,7 +84,7 @@ export class RegistrationFormComponent extends Component {
       labelText: 'Confirm Password',
     });
 
-    this.footer = new FormFooter(this.rootContainer, 'Register', 'Already have an account?', '#/login');
+    this.formButton = new Button(buttonContainer, 'form-button', 'Register');
   }
 
   /**
@@ -88,7 +98,7 @@ export class RegistrationFormComponent extends Component {
       event.stopPropagation();
     });
 
-    this.footer.formButton.onClick(() => {
+    this.formButton.onClick(() => {
       this.loginInput.cleanErrorMessage();
       this.passwordInput.cleanErrorMessage();
       this.repeatPasswordInput.cleanErrorMessage();
@@ -98,25 +108,25 @@ export class RegistrationFormComponent extends Component {
       const repeatPasswordValue = this.repeatPasswordInput.inputValue;
 
       validator.validate(
-        [{
-          name: loginField, value: loginValue, rules: [
-            new NotEmptyRule('Login can`t be empty.'),
-            new MinLengthRule(4, 'Min length 4.'),
-            new RegexpRule('^([a-zA-Z0-9]){4,}$',
-              'Login should have uppercase or lowercase letters and digits.')],
-        }, {
-          name: passwordField, value: passwordValue, rules: [
-            new NotEmptyRule('Password can`t be empty.'),
-            new MinLengthRule(8, 'Min length 8.'),
-            new RegexpRule('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[0-9a-zA-Z]{8,}$',
-              'Password should have at least one uppercase and lowercase letter and digit.')],
-        }])
-        .then(() => {
-          if (this.confirmPasswordsEqual(passwordValue, repeatPasswordValue)) {
-            this._returnCredentials(new UserCredentials(loginValue, passwordValue));
-          }
-        })
-        .catch((errors) => this.showFieldErrors(errors));
+          [{
+            name: loginField, value: loginValue, rules: [
+              new NotEmptyRule('Login can`t be empty.'),
+              new MinLengthRule(4, 'Min length 4.'),
+              new RegexpRule('^([a-zA-Z0-9]){4,}$',
+                  'Login should have uppercase or lowercase letters and digits.')],
+          }, {
+            name: passwordField, value: passwordValue, rules: [
+              new NotEmptyRule('Password can`t be empty.'),
+              new MinLengthRule(8, 'Min length 8.'),
+              new RegexpRule('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[0-9a-zA-Z]{8,}$',
+                  'Password should have at least one uppercase and lowercase letter and digit.')],
+          }])
+          .then(() => {
+            if (this.confirmPasswordsEqual(passwordValue, repeatPasswordValue)) {
+              this._returnCredentials(new UserCredentials(loginValue, passwordValue));
+            }
+          })
+          .catch((errors) => this.showFieldErrors(errors));
     });
   }
 
@@ -142,13 +152,13 @@ export class RegistrationFormComponent extends Component {
    */
   showFieldErrors(errors) {
     errors.forEach((error) => {
-      if (error.field === loginField) {
-        this.loginInput.showErrorMessage(error.message);
-      }
-      if (error.field === passwordField) {
-        this.passwordInput.showErrorMessage(error.message);
-      }
-    },
+          if (error.field === loginField) {
+            this.loginInput.showErrorMessage(error.message);
+          }
+          if (error.field === passwordField) {
+            this.passwordInput.showErrorMessage(error.message);
+          }
+        },
     );
   }
 

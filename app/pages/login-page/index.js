@@ -19,7 +19,7 @@ export class LoginPage extends Component {
    * @inheritdoc
    */
   markup() {
-    return `<div id="registration-page"></div>`;
+    return `<div id="login-page"></div>`;
   }
 
   /**

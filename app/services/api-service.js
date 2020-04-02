@@ -20,9 +20,7 @@ export class ApiService {
       if (response.ok) {
         return response.json();
       }
-      let errorMessage;
-      response.json().then((error) => errorMessage = error.message);
-      throw new AuthenticationError(errorMessage);
+      return response.json().then((error) => throw new AuthenticationError(error.message));
     });
   }
 
@@ -41,10 +39,8 @@ export class ApiService {
         return response.json();
       }
       if (response.status === 422) {
-        let serverResponse;
-        response.json()
-          .then((responseObject) => serverResponse = responseObject);
-        throw new ValidationError(serverResponse);
+        return response.json()
+          .then((responseObject) => throw new ValidationError(responseObject));
       }
     });
   }

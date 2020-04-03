@@ -6,7 +6,6 @@ import {ApiService} from '../../services/api-service.js';
  * Page which is designed for login form.
  */
 export class LoginPage extends Component {
-  apiService = new ApiService();
   /**
    * @inheritdoc
    */
@@ -34,7 +33,7 @@ export class LoginPage extends Component {
    */
   addEventListener() {
     this.loginForm.onSubmit((credentials) => {
-      this.apiService.login(credentials)
+      ApiService.getInstance().login(credentials)
         .then(() => window.location.hash = '/fileHub')
         .catch((validationError) => this.loginForm.showFieldErrors(validationError.errors));
     });

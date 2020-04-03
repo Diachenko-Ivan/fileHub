@@ -4,6 +4,7 @@ import {RegistrationPage} from './pages/registration-page';
 import {LoginPage} from './pages/login-page';
 import {FileHubPage} from './pages/filehub-page';
 import {ErrorPage} from './pages/error-page';
+import {MockServer} from './services/mock-server.js';
 
 const defaultUrl = '/login';
 
@@ -19,6 +20,7 @@ export class Application extends Component {
   constructor(container) {
     super(container);
     this.render();
+    new MockServer();
   }
 
   /**

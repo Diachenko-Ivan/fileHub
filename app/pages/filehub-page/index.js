@@ -1,4 +1,5 @@
 import {Component} from '../../component/parent-component.js';
+import {Button} from '../../component/button';
 
 /**
  * Page for file hub explorer.
@@ -30,15 +31,7 @@ export class FileHubPage extends Component {
             <div class="content-header">
                 <i class="glyphicon glyphicon-folder-open"></i>
                 <span class="directory-path">/ Root</span>
-                <span class="head-buttons">
-                <button type="button" class="button head-button upload">
-                    <i class="glyphicon glyphicon-upload"></i>
-                    Upload File
-                </button>
-                <button type="button" class="button head-button create">
-                    <i class="glyphicon glyphicon-plus"></i>
-                    Create Folder
-                </button>
+                <span data-element="head-buttons" class="head-buttons">             
                 </span>
             </div>
             <table class="content-table">
@@ -51,4 +44,15 @@ export class FileHubPage extends Component {
         </footer>
     </section>`;
   }
+
+
+  initNestedComponents() {
+    const headButtonsContainer = this.rootContainer.querySelector('[data-element="head-buttons"]');
+
+    this.uploadFileButton = new Button(headButtonsContainer,
+      'head-button upload', '<i class="glyphicon glyphicon-upload"></i>Upload File');
+    this.createFolderButton = new Button(headButtonsContainer,
+      'head-button create', '<i class="glyphicon glyphicon-plus"></i>Create Folder');
+  }
 }
+

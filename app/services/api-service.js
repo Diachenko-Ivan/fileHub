@@ -4,6 +4,11 @@ import {GeneralServerError} from '../models/errors/server-error';
 import {AuthenticationError} from '../models/errors/authentication-error';
 
 export class ApiService {
+  /**
+   * Only copy of ApiService that is available on each page.
+   *
+   * @type {ApiService}
+   */
   static service = new ApiService();
 
   /**
@@ -18,9 +23,14 @@ export class ApiService {
       body: JSON.stringify(userCredentials),
     }).then((response) => {
       if (response.ok) {
-        return response.json();
+        response.json()
+          .then((data) => localStorage.setItem('token', data.token));
+        return 'Successfully authenticated.';
+      } else if (response.status === 401) {
+        throw new AuthenticationError('No users found with this login and password.');
+      } else if (response.status === 500) {
+        throw new GeneralServerError('Server error!');
       }
-      return response.json().then((error) => throw new AuthenticationError(error.message));
     });
   }
 
@@ -36,11 +46,14 @@ export class ApiService {
       body: JSON.stringify(userCredentials),
     }).then((response) => {
       if (response.ok) {
-        return response.json();
-      }
-      if (response.status === 422) {
+        return 'Successfully registered.';
+      } else if (response.status === 422) {
         return response.json()
-          .then((responseObject) => throw new ValidationError(responseObject));
+          .then((responseObject) => {
+            throw new ValidationError(responseObject);
+          });
+      } else if (response.status === 500) {
+        throw new GeneralServerError('Server error!');
       }
     });
   }

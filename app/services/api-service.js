@@ -3,6 +3,9 @@ import {ValidationError} from '../models/errors/validation-error';
 import {GeneralServerError} from '../models/errors/server-error';
 import {AuthenticationError} from '../models/errors/authentication-error';
 
+/**
+ * Used for fulfilling requests to server.
+ */
 export class ApiService {
   /**
    * Only copy of ApiService that is available on each page.
@@ -52,6 +55,28 @@ export class ApiService {
           .then((responseObject) => {
             throw new ValidationError(responseObject);
           });
+      } else if (response.status === 500) {
+        throw new GeneralServerError('Server error!');
+      }
+    });
+  }
+
+  /**
+   * Tries to get full file item list.
+   *
+   * @return {Promise} either object with file list or error if server is gone down.
+   */
+  getFileItemList() {
+    return fetch('/file-list', {
+      method: 'POST',
+      body: JSON.stringify({
+        token: localStorage.getItem('token')
+      })
+    }).then(response => {
+      if (response.ok) {
+        return response.json();
+      } else if (response.status === 401) {
+        window.location.hash = '/login';
       } else if (response.status === 500) {
         throw new GeneralServerError('Server error!');
       }

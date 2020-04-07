@@ -28,5 +28,19 @@ export class MockServer {
       }
       return 200;
     });
+  
+    fetchMock.post('/file-list', (url, request) => {
+      const token = JSON.parse(request.body).token;
+      if (token) {
+        return new Response(
+          new Blob([JSON.stringify({
+            fileList: [{name: 'Documents', type: 'folder', itemCount: 10},
+              {name: 'file.pdf', type: 'file', size: 100}]
+          })], {type: 'application/json'}), {
+            status: 200
+          });
+      }
+      return 401;
+    });
   }
 }

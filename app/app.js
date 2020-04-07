@@ -4,6 +4,9 @@ import {RegistrationPage} from './pages/registration-page';
 import {LoginPage} from './pages/login-page';
 import {FileHubPage} from './pages/filehub-page';
 import {ErrorPage} from './pages/error-page';
+import {StateManager} from './states/state-manager';
+import {ApiService} from './services/api-service.js';
+import {FileListState} from './states/model/file-list-state';
 
 const defaultUrl = '/login';
 
@@ -32,10 +35,13 @@ export class Application extends Component {
    * @inheritdoc
    */
   initNestedComponents() {
+    const apiService = new ApiService();
+    const stateManager = new StateManager(new FileListState(), apiService);
+
     const pageMapping = {
       '/login': () => new LoginPage(this.rootContainer),
       '/registration': () => new RegistrationPage(this.rootContainer),
-      '/fileHub': () => new FileHubPage(this.rootContainer),
+      '/fileHub': () => new FileHubPage(this.rootContainer, stateManager),
       '/404': () => new ErrorPage(this.rootContainer, 404, 'Sorry, this page was not found.'),
     };
 

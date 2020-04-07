@@ -55,11 +55,9 @@ export class FileItemList extends Component {
    * Creates new {@type FileList} component.
    *
    * @param {Element} container - outer container.
-   * @param {Item[]} items - list of file items.
    */
-  constructor(container, items) {
+  constructor(container) {
     super(container);
-    this._items = items;
     this.render();
   }
 
@@ -69,14 +67,17 @@ export class FileItemList extends Component {
   markup() {
     return `<table data-element="file-list" class="content-table">
                 <tbody>
+                   
                 </tbody>
             </table>`;
   }
 
   /**
-   * @inheritdoc
+   * Shows the list of file items.
+   *
+   * @param {Item[]} items - received from server file list.
    */
-  initNestedComponents() {
-    this._items.forEach((item) => this._fileItems.push(this._fileItem[item.type](item)));
+  renderFileList(items) {
+    items.forEach((item) => this._fileItems.push(this._fileItem[item.type](item)));
   }
 }

@@ -50,9 +50,9 @@ export class FileHubPage extends Component {
     const fileListContainer = this.rootContainer.querySelector('[data-element="main"]');
 
     this.userDetails = new UserDetails(userDetailsContainer, 'Username');
-    this.fileList = new FileItemList(fileListContainer,
-      [{name: 'Documents', type: 'folder', filesCount: 10},
-        {name:'404.html', type:'file', size:4000, mimeType:'text'}]);
+    this.fileList = new FileItemList(fileListContainer);
+    this.fileList.renderFileList([{name: 'Documents', type: 'folder', filesCount: 10},
+      {name: '404.html', type: 'file', size: 4000, mimeType: 'text'}]);
 
     this.uploadFileButton = new Button(headButtonsContainer,
       'head-button upload', '<i class="glyphicon glyphicon-upload"></i>Upload File');

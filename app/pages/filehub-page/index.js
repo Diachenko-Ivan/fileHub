@@ -1,20 +1,20 @@
-import {Component} from '../../component/parent-component.js';
 import {Button} from '../../component/button';
 import {UserDetails} from '../../component/user-details';
 import {FileItemList} from '../../component/file-list';
+import {StateAwareComponent} from '../../component/state-aware-component';
+import {FileListAction} from '../../states/actions/file-list-action';
 
 /**
  * Page for file hub explorer.
  */
-export class FileHubPage extends Component {
+export class FileHubPage extends StateAwareComponent {
   /**
    * @inheritdoc
    */
-  constructor(container) {
-    super(container);
+  constructor(container, stateManager) {
+    super(container, stateManager);
     this.render();
   }
-
 
   /**
    * @inheritdoc
@@ -36,6 +36,8 @@ export class FileHubPage extends Component {
                 <span data-element="head-buttons" class="head-buttons">             
                 </span>
             </div>
+            <div data-element="file-list">
+            </div>     
         </div>
         <footer class="footer">
             Copyright &copy; 2020 <a href="#">TeamDev</a>. All rights reserved.
@@ -43,21 +45,37 @@ export class FileHubPage extends Component {
     </section>`;
   }
 
-
+  /**
+   * @inheritdoc
+   */
   initNestedComponents() {
     const userDetailsContainer = this.rootContainer.querySelector('[data-element="user-menu"]').firstElementChild;
     const headButtonsContainer = this.rootContainer.querySelector('[data-element="head-buttons"]');
-    const fileListContainer = this.rootContainer.querySelector('[data-element="main"]');
+
+    this.fileListContainer = this.rootContainer.querySelector('[data-element="file-list"]');
 
     this.userDetails = new UserDetails(userDetailsContainer, 'Username');
-    this.fileList = new FileItemList(fileListContainer,
-      [{name: 'Documents', type: 'folder', filesCount: 10},
-        {name:'404.html', type:'file', size:4000, mimeType:'text'}]);
 
     this.uploadFileButton = new Button(headButtonsContainer,
       'head-button upload', '<i class="glyphicon glyphicon-upload"></i>Upload File');
     this.createFolderButton = new Button(headButtonsContainer,
       'head-button create', '<i class="glyphicon glyphicon-plus"></i>Create Folder');
+
+    this.dispatch(new FileListAction());
+  }
+
+  initState() {
+    this.onStateChange('isLoading', (state) => {
+      this.fileListContainer.innerHTML = '<h3>Loading...</h3>';
+    });
+    this.onStateChange('fileList', (state) => {
+      this.fileListContainer.innerHTML = '';
+      this.fileList = new FileItemList(this.fileListContainer);
+      this.fileList.renderFileList(state.fileList);
+    });
+    this.onStateChange('loadError', (state) => {
+
+    });
   }
 }
 

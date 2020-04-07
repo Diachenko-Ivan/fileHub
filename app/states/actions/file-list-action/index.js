@@ -17,9 +17,9 @@ export class FileListAction extends Action {
   async apply(stateManager, apiService) {
     stateManager.mutate(new FileListLoadingMutator(true));
     try {
-      const fileList = await apiService.getFileItemList();
-      stateManager.mutate(new FileListMutator(fileList.fileList));
-      return fileList;
+      const response = await apiService.getFileItemList();
+      stateManager.mutate(new FileListMutator(response.fileList));
+      return response.fileList;
       return {};
     } catch (e) {
       stateManager.mutate(new FileListLoadErrorMutator(e));

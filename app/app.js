@@ -7,6 +7,7 @@ import {ErrorPage} from './pages/error-page';
 import {StateManager} from './states/state-manager';
 import {ApiService} from './services/api-service.js';
 import {FileListState} from './states/model/file-list-state';
+import {MockServer} from './services/mock-server.js';
 
 const defaultUrl = '/login';
 
@@ -22,6 +23,7 @@ export class Application extends Component {
   constructor(container) {
     super(container);
     this.render();
+    new MockServer();
   }
 
   /**

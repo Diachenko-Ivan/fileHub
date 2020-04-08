@@ -15,7 +15,7 @@ export class RegistrationPage extends Component {
   constructor(container) {
     super(container);
     this.render();
-    new TitleService().setTitle('Registration - FileHub')
+    TitleService.getInstance().setTitle('Registration - FileHub')
   }
 
   /**

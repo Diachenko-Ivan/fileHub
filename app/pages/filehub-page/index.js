@@ -5,15 +5,13 @@ import {TitleService} from '../../services/title-service';
  * Page for file hub explorer.
  */
 export class FileHubPage extends Component {
-  _titleService = new TitleService();
-
   /**
    * @inheritdoc
    */
   constructor(container) {
     super(container);
     this.render();
-    this._titleService.setTitle('Root - FileHub');
+    TitleService.getInstance().setTitle('Root - FileHub');
   }
 
   /**

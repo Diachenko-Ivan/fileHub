@@ -10,4 +10,20 @@ export class TitleService {
   setTitle(title) {
     document.title = title;
   }
+
+  /**
+   * Returns singleton instance of {@type TitleService}.
+   *
+   * @return {TitleService} singleton
+   */
+  static getInstance() {
+    return titleService;
+  }
 }
+
+/**
+ * Single copy of {@type TitleService}.
+ *
+ * @type {TitleService}
+ */
+const titleService = new TitleService();

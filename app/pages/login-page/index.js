@@ -14,7 +14,7 @@ export class LoginPage extends Component {
   constructor(container) {
     super(container);
     this.render();
-    new TitleService().setTitle('Login - FileHub')
+    TitleService.getInstance().setTitle('Login - FileHub')
   }
 
   /**

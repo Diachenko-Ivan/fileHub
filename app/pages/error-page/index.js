@@ -17,7 +17,7 @@ export class ErrorPage extends Component {
     this._errorCode = errorCode;
     this._errorMessage = errorMessage;
     this.render();
-    new TitleService().setTitle('404 Page')
+    TitleService.getInstance().setTitle('404 Page')
   }
 
   /**

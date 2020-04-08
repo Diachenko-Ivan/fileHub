@@ -66,10 +66,13 @@ export class FileHubPage extends StateAwareComponent {
 
   initState() {
     this.onStateChange('isLoading', (state) => {
-      this.fileListContainer.innerHTML = '<h3>Loading...</h3>';
+      if (state.isLoading) {
+        this.fileListContainer.innerHTML = '<h3>Loading...</h3>';
+      } else {
+        this.fileListContainer.innerHTML = '';
+      }
     });
     this.onStateChange('fileList', (state) => {
-      this.fileListContainer.innerHTML = '';
       this.fileList = new FileItemList(this.fileListContainer);
       this.fileList.renderFileList(state.fileList);
     });

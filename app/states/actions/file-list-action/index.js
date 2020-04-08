@@ -18,6 +18,7 @@ export class GetFileListAction extends Action {
     stateManager.mutate(new FileListLoadingMutator(true));
     try {
       const response = await apiService.getFileItemList();
+      stateManager.mutate(new FileListLoadingMutator(false));
       stateManager.mutate(new FileListMutator(response.fileList));
       return response.fileList;
     } catch (e) {

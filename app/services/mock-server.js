@@ -41,6 +41,6 @@ export class MockServer {
         };
       }
       return 401;
-    });
+    }, {delay: 500});
   }
 }

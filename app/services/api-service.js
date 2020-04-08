@@ -2,18 +2,12 @@ import {UserCredentials} from '../models/user-credentials';
 import {ValidationError} from '../models/errors/validation-error';
 import {GeneralServerError} from '../models/errors/server-error';
 import {AuthenticationError} from '../models/errors/authentication-error';
+import {loginPageUrl} from '../config/router-config';
 
 /**
  * Used for fulfilling requests to server.
  */
 export class ApiService {
-  /**
-   * Only copy of ApiService that is available on each page.
-   *
-   * @type {ApiService}
-   */
-  static service = new ApiService();
-
   /**
    * Tries to authenticate user and returns result of authentication.
    *
@@ -29,11 +23,12 @@ export class ApiService {
         response.json()
           .then((data) => localStorage.setItem('token', data.token));
         return 'Successfully authenticated.';
-      } else if (response.status === 401) {
-        throw new AuthenticationError('No users found with this login and password.');
-      } else if (response.status === 500) {
-        throw new GeneralServerError('Server error!');
       }
+      this.handleCommonErrors(response.status, () => {
+        throw new AuthenticationError('No users found with this login and password.');
+      }, () => {
+        throw new GeneralServerError('Server error!');
+      });
     });
   }
 
@@ -68,18 +63,18 @@ export class ApiService {
    */
   getFileItemList() {
     return fetch('/file-list', {
-      method: 'POST',
-      body: JSON.stringify({
-        token: localStorage.getItem('token')
-      })
-    }).then(response => {
+        method: 'GET',
+        headers: this.authenticationHeader()
+      }
+    ).then(response => {
       if (response.ok) {
         return response.json();
-      } else if (response.status === 401) {
-        window.location.hash = '/login';
-      } else if (response.status === 500) {
-        throw new GeneralServerError('Server error!');
       }
+      this.handleCommonErrors(response.status, () => {
+        window.location.hash = loginPageUrl;
+      }, () => {
+        throw new GeneralServerError('Server error!');
+      });
     });
   }
 
@@ -87,6 +82,40 @@ export class ApiService {
    * @return {ApiService} singleton.
    */
   static getInstance() {
-    return this.service;
+    return service;
+  }
+
+  /**
+   * Returns authentication header with token.
+   *
+   * @return {{Authorization: string}}
+   */
+  authenticationHeader() {
+    return {
+      'Authorization':
+        `Bearer ${localStorage.getItem('token')}`
+    };
+  }
+
+  /**
+   * Handles 401 and 500 error.
+   *
+   * @param {number} status - error status code.
+   * @param {Function} unauthorizedErrorHandler - function that is invoked when status = 401.
+   * @param {Function} serverErrorHandler - function that is invoked when status = 500.
+   */
+  handleCommonErrors(status, unauthorizedErrorHandler, serverErrorHandler) {
+    if (status === 401) {
+      unauthorizedErrorHandler();
+    } else if (status === 500) {
+      serverErrorHandler();
+    }
   }
 }
+
+/**
+ * Only copy of ApiService that is available on each page.
+ *
+ * @type {ApiService}
+ */
+const service = new ApiService();

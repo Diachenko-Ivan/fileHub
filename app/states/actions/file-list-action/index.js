@@ -20,7 +20,6 @@ export class FileListAction extends Action {
       const response = await apiService.getFileItemList();
       stateManager.mutate(new FileListMutator(response.fileList));
       return response.fileList;
-      return {};
     } catch (e) {
       stateManager.mutate(new FileListLoadErrorMutator(e));
     }

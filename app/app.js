@@ -37,8 +37,7 @@ export class Application extends Component {
    * @inheritdoc
    */
   initNestedComponents() {
-    const apiService = new ApiService();
-    const stateManager = new StateManager(new FileListState(), apiService);
+    const stateManager = new StateManager(new FileListState(), ApiService.getInstance());
 
     const pageMapping = {
       '/login': () => new LoginPage(this.rootContainer),

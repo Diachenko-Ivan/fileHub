@@ -19,26 +19,26 @@ export class MockServer {
     fetchMock.post('/register', (url, request) => {
       const credentials = JSON.parse(request.body);
       if (credentials.login === 'admin') {
-        return new Response(
-          new Blob([JSON.stringify({
+        return {
+          body: {
             errors: [{field: 'login', message: 'User with this login already exists.'}]
-          })], {type: 'application/json'}), {
-            status: 422
-          });
+          },
+          status: 422
+        };
       }
       return 200;
     });
 
-    fetchMock.post('/file-list', (url, request) => {
-      const token = JSON.parse(request.body).token;
-      if (token) {
-        return new Response(
-          new Blob([JSON.stringify({
+    fetchMock.get('/file-list', (url, request) => {
+      const authToken = request.headers['Authorization'].split(' ')[1];
+      if (authToken !== 'null') {
+        return {
+          body: {
             fileList: [{name: 'Documents', type: 'folder', filesCount: 10},
               {name: 'file.pdf', type: 'file', mimeType: 'text', size: 100}]
-          })], {type: 'application/json'}), {
-            status: 200
-          });
+          },
+          status: 200,
+        };
       }
       return 401;
     });

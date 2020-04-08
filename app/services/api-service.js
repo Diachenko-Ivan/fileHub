@@ -97,6 +97,7 @@ export class ApiService {
   }
 
   /**
+   * Handles 401 and 500 error.
    *
    * @param {number} status - error status code.
    * @param {Function} unauthorizedErrorHandler - function that is invoked when status = 401.

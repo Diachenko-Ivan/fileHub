@@ -2,7 +2,7 @@ import {Button} from '../../component/button';
 import {UserDetails} from '../../component/user-details';
 import {FileItemList} from '../../component/file-list';
 import {StateAwareComponent} from '../../component/state-aware-component';
-import {FileListAction} from '../../states/actions/file-list-action';
+import {GetFileListAction} from '../../states/actions/file-list-action';
 
 /**
  * Page for file hub explorer.
@@ -61,7 +61,7 @@ export class FileHubPage extends StateAwareComponent {
     this.createFolderButton = new Button(headButtonsContainer,
       'head-button create', '<i class="glyphicon glyphicon-plus"></i>Create Folder');
 
-    this.dispatch(new FileListAction());
+    this.dispatch(new GetFileListAction());
   }
 
   initState() {

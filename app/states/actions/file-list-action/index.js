@@ -6,7 +6,7 @@ import {FileListMutator} from '../../mutator/file-list-mutator';
 /**
  * Action that is responsible for getting file item list.
  */
-export class FileListAction extends Action {
+export class GetFileListAction extends Action {
   constructor() {
     super();
   }

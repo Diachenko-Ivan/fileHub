@@ -7,7 +7,7 @@ export class FileListMutator extends Mutator {
   /**
    * Creates new {@type FileListMutator} instance.
    *
-   * @param {Boolean} fileList - list of files and folders from server.
+   * @param {Item[]} fileList - list of files and folders from server.
    */
   constructor(fileList) {
     super();

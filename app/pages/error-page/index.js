@@ -1,4 +1,5 @@
 import {Component} from '../../component/parent-component.js';
+import {TitleService} from '../../services/title-service';
 
 /**
  * Represents error page for whole application.
@@ -16,6 +17,7 @@ export class ErrorPage extends Component {
     this._errorCode = errorCode;
     this._errorMessage = errorMessage;
     this.render();
+    TitleService.getInstance().setTitle('404 Page')
   }
 
   /**

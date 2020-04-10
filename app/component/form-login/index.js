@@ -30,6 +30,7 @@ export class LoginFormComponent extends Component {
   constructor(...containers) {
     super(...containers);
     this.render();
+    this._authenticationErrormessage = this.rootContainer.querySelector('[data-element="auth-error-message"]');
   }
 
   /**
@@ -43,6 +44,7 @@ export class LoginFormComponent extends Component {
                 <div class="form-target"><h1>Login</h1></div>
                 <div class="user-icon"><i class="glyphicon glyphicon-user"></i></div>
             </header>
+            <div style="color: #f00; font-size: 20px" data-element="auth-error-message"></div>
             <div data-element="inputs"></div>
             <div class="form-footer-container">
                 <div data-element="button-link" class="form-footer-button-container">
@@ -93,6 +95,7 @@ export class LoginFormComponent extends Component {
     this.formButton.onClick(() => {
       this.loginInput.cleanErrorMessage();
       this.passwordInput.cleanErrorMessage();
+      this._authenticationErrormessage.innerText = '';
 
       const loginValue = this.loginInput.inputValue;
       const passwordValue = this.passwordInput.inputValue;
@@ -115,6 +118,14 @@ export class LoginFormComponent extends Component {
         })
         .catch((error) => this.showFieldErrors(error));
     });
+  }
+
+  /**
+   * Sets error message if user`s authentication failed.
+   * @param message
+   */
+  showAuthenticationError(message) {
+    this._authenticationErrormessage.innerText = message;
   }
 
   /**

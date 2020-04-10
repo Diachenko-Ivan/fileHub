@@ -1,4 +1,5 @@
 import {Component} from '../../component/parent-component.js';
+import {TitleService} from '../../services/title-service';
 
 /**
  * Page for file hub explorer.
@@ -10,8 +11,8 @@ export class FileHubPage extends Component {
   constructor(container) {
     super(container);
     this.render();
+    TitleService.getInstance().setTitle('Root - FileHub');
   }
-
 
   /**
    * @inheritdoc

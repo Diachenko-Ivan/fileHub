@@ -1,4 +1,4 @@
-import {LoginFormComponent} from '../../../app/component/login-form-component.js';
+import {LoginFormComponent} from '../../../app/component/form-login';
 
 const {test, module} = QUnit;
 
@@ -13,7 +13,7 @@ export default module('LoginForm test', function (hook) {
     new LoginFormComponent(fixture);
     const loginForm = fixture.firstElementChild;
 
-    const numOfChildElements = 5;
+    const numOfChildElements = 4;
 
     assert.ok(loginForm, 'Should contain rendered login form.');
     assert.strictEqual(numOfChildElements, loginForm.childElementCount, 'Should render correct number of child elements');

@@ -1,65 +1,50 @@
-import {Component} from "../parent-component.js";
+import {Component} from '../parent-component.js';
 
 /**
- * Plays role of simple button.
+ * Component that represents a simple button.
  */
 export class Button extends Component {
-    /**
-     * Event handler for button.
-     * @type {Function[]}
-     */
-    handlers=[];
+  /**
+   * Event handlers for button.
+   *
+   * @type {Function[]}
+   */
+  handlers = [];
 
-    /**
-     * Creates new {@type Button} instance.
-     * @param container outer container for button.
-     * @param className {string} value for class attribute.
-     * @param buttonText {string} value for inner button text.
-     */
-    constructor(container, className, buttonText) {
-        super(container);
-        this._className = className;
-        this._buttonText = buttonText;
-        this.render();
-    }
+  /**
+   * Creates new {@type Button} instance.
+   *
+   * @param {Element} container - outer container for button.
+   * @param {string} className - value for class attribute.
+   * @param {string} buttonText - value for inner button text.
+   */
+  constructor(container, className, buttonText) {
+    super(container);
+    this._className = className;
+    this._buttonText = buttonText;
+    this.render();
+  }
 
-    /**
-     * @inheritdoc
-     */
-    markup() {
-        return `<button class="button ${this.className}">${this.buttonText}</button>`;
-    }
+  /**
+   * @inheritdoc
+   */
+  markup() {
+    return `<button data-test="button" class="button ${this._className}">${this._buttonText}</button>`;
+  }
 
-    /**
-     * Add custom handler for button 'onclick' event.
-     * @param handler {Function} function that is going to be executed on event.
-     */
-    onClick(handler){
-        this.handlers.push(handler);
-    }
+  /**
+   * Add custom handler for button 'onclick' event.
+   *
+   * @param {Function} handler - function that is going to be executed on click event.
+   */
+  onClick(handler) {
+    this.handlers.push(handler);
+  }
 
-    /**
-     *@inheritdoc
-     */
-    addEventListener() {
-        this.rootContainer.addEventListener('click', ()=>this.handlers.forEach(handler=>handler()));
-    }
-
-    set className(value) {
-        this._className = value;
-        this.rootContainer.setAttribute('class',`button ${value}`);
-    }
-
-    get className() {
-        return this._className;
-    }
-
-    set buttonText(value) {
-        this._buttonText = value;
-        this.rootContainer.innerText = value;
-    }
-
-    get buttonText() {
-        return this._buttonText;
-    }
+  /**
+   *@inheritdoc
+   */
+  addEventListener() {
+    this.rootContainer.addEventListener('click', () => this.handlers.forEach((handler) => handler()));
+  }
 }

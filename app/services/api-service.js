@@ -2,7 +2,7 @@ import {UserCredentials} from '../models/user-credentials';
 import {ValidationError} from '../models/errors/validation-error';
 import {GeneralServerError} from '../models/errors/server-error';
 import {AuthenticationError} from '../models/errors/authentication-error';
-import {loginPageUrl} from '../config/router-config';
+import {LOGIN_PAGE_URL} from '../config/router-config';
 
 /**
  * Used for fulfilling requests to server.
@@ -71,7 +71,7 @@ export class ApiService {
         return response.json();
       }
       this.handleCommonErrors(response.status, () => {
-        window.location.hash = loginPageUrl;
+        window.location.hash = LOGIN_PAGE_URL;
       }, () => {
         throw new GeneralServerError('Server error!');
       });

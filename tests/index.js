@@ -14,5 +14,5 @@ import FileListLoadingMutator from './states/mutator/file-list-loading-mutator';
 import FileListMutator from './states/mutator/file-list-mutator';
 import FileListErrorMutator from './states/mutator/file-list-load-error-mutator';
 import StateManagerTest from './states/state-manager';
-
+import DirectoryPathTest from './component/directory-path'
 

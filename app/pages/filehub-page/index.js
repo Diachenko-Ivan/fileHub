@@ -3,6 +3,7 @@ import {UserDetails} from '../../component/user-details';
 import {FileItemList} from '../../component/file-list';
 import {StateAwareComponent} from '../../component/state-aware-component';
 import {GetFileListAction} from '../../states/actions/file-list-action';
+import {DirectoryPath} from '../../component/directory-path';
 
 /**
  * Page for file hub explorer.
@@ -31,8 +32,7 @@ export class FileHubPage extends StateAwareComponent {
 
         <div data-element="main" class="main">
             <div class="content-header">
-                <i class="glyphicon glyphicon-folder-open"></i>
-                <span class="directory-path">/ Root</span>
+                <span data-element="directory-path"></span>
                 <span data-element="head-buttons" class="head-buttons">             
                 </span>
             </div>
@@ -53,7 +53,9 @@ export class FileHubPage extends StateAwareComponent {
     const headButtonsContainer = this.rootContainer.querySelector('[data-element="head-buttons"]');
 
     this.fileListContainer = this.rootContainer.querySelector('[data-element="file-list"]');
+    const directoryPathContainer = this.rootContainer.querySelector('[data-element="directory-path"]');
 
+    this.directoryPath = new DirectoryPath(directoryPathContainer);
     this.userDetails = new UserDetails(userDetailsContainer, 'Username');
 
     this.uploadFileButton = new Button(headButtonsContainer,

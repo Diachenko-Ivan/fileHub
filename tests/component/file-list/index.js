@@ -10,9 +10,11 @@ export default module('FileItemList test', function (hook) {
   });
 
   test('should render file item list component.', function (assert) {
-    new FileItemList(fixture,
-      [{name: 'Documents', type: 'folder', filesCount: 10},
-        {name: '404.html', type: 'file', size: 4000, mimeType: 'text'}]);
+    const fileItemList = new FileItemList(fixture);
+
+    fileItemList.renderFileList([{name: 'Documents', type: 'folder', filesCount: 10},
+      {name: '404.html', type: 'file', size: 4000, mimeType: 'text'}]);
+
     const listTable = fixture.firstElementChild;
     const listBody = listTable.firstElementChild;
 

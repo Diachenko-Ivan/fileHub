@@ -2,6 +2,7 @@ import {Component} from '../../component/parent-component.js';
 import {Button} from '../../component/button';
 import {UserDetails} from '../../component/user-details';
 import {FileItemList} from '../../component/file-list';
+import {DirectoryPath} from '../../component/directory-path';
 
 /**
  * Page for file hub explorer.
@@ -14,7 +15,6 @@ export class FileHubPage extends Component {
     super(container);
     this.render();
   }
-
 
   /**
    * @inheritdoc
@@ -31,8 +31,7 @@ export class FileHubPage extends Component {
 
         <div data-element="main" class="main">
             <div class="content-header">
-                <i class="glyphicon glyphicon-folder-open"></i>
-                <span class="directory-path">/ Root</span>
+                <span data-element="directory-path"></span>
                 <span data-element="head-buttons" class="head-buttons">             
                 </span>
             </div>
@@ -48,7 +47,9 @@ export class FileHubPage extends Component {
     const userDetailsContainer = this.rootContainer.querySelector('[data-element="user-menu"]').firstElementChild;
     const headButtonsContainer = this.rootContainer.querySelector('[data-element="head-buttons"]');
     const fileListContainer = this.rootContainer.querySelector('[data-element="main"]');
+    const directoryPathContainer = this.rootContainer.querySelector('[data-element="directory-path"]');
 
+    this.directoryPath = new DirectoryPath(directoryPathContainer);
     this.userDetails = new UserDetails(userDetailsContainer, 'Username');
     this.fileList = new FileItemList(fileListContainer);
     this.fileList.renderFileList([{name: 'Documents', type: 'folder', filesCount: 10},

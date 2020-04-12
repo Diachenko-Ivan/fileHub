@@ -10,6 +10,7 @@ export class FileComponent extends FileItem {
    * @property {string} name - name of file.
    * @property {number} size - file size.
    * @property {string} fileIcon - image, video, document.
+   * @property {string} id - file id.
    */
   /**
    * Creates new {@type FileComponent} component.

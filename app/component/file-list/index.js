@@ -50,6 +50,7 @@ export class FileItemList extends Component {
    * @property {string} mimeType - file mime type.
    * @property {number} size - file size.
    * @property {number} filesCount - number of files in folder.
+   * @property {string} id - id of folder or file.
    */
   /**
    * Creates new {@type FileList} component.
@@ -79,5 +80,14 @@ export class FileItemList extends Component {
    */
   renderFileList(items) {
     items.forEach((item) => this._fileItems.push(this._fileItem[item.type](item)));
+  }
+
+  /**
+   * Delete the list of file items.
+   */
+  eraseFileList() {
+    this._fileItems.length = 0;
+    this.rootContainer.firstElementChild.innerHTML = '';
+    debugger
   }
 }

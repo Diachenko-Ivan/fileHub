@@ -7,7 +7,7 @@ export class LocationMutator extends Mutator {
   /**
    * Creates new {@type LocationMutator} instance.
    *
-   * @param {string} staticPart - folder from server.
+   * @param {string} staticPart - current hash value.
    * @param {{}} params - object with dynamic location parameters.
    */
   constructor(staticPart, params) {

@@ -28,22 +28,7 @@ a:hover {
     box-shadow: 0 0 5px #337ab7;
 }
 
-.header {
-    font-size: 22px;
-    padding-bottom: 13px;
-    margin-bottom: 12px;
-    border-bottom: 2px solid #999;
-}
-
-.header i {
-    position: absolute;
-    top: 17px;
-    left: 416px;
-    font-size: 24px;
-}
-
 .button {
-    font-size: 13px;
     border: 0 solid;
     border-radius: 4px;
     cursor: pointer;
@@ -100,7 +85,21 @@ a:hover {
     margin: 100px auto 0;
     width: 903px;
     position: relative;
-    padding: 20px 20px 20px;
+    padding: 20px;
+}
+
+.header {
+    font-size: 22px;
+    padding-bottom: 13px;
+    margin-bottom: 12px;
+    border-bottom: 2px solid #999;
+}
+
+.header i {
+    position: absolute;
+    top: 17px;
+    left: 416px;
+    font-size: 24px;
 }
 
 /*Styles for authentication and registration form*/
@@ -231,7 +230,7 @@ a:hover {
     background-color: #f4f4f4;
 }
 
-.table tbody tr:hover .file-action-icons {
+.table tbody tr:hover .cell-action-icons i {
     opacity: 1;
 }
 
@@ -240,21 +239,21 @@ a:hover {
     line-height: 28px;
 }
 
-.table .arrow {
+.table .cell-arrow {
     width: 32px;
 }
 
-.table .file-count {
+.table .cell-count {
     width: 101px;
 }
 
-.table .file-action-icons {
-    opacity: 0;
+.table .cell-action-icons {
     text-align: right;
     width: 118px;
 }
 
-.table .file-action-icons i {
+.table .cell-action-icons i {
+    opacity: 0;
     cursor: pointer;
 }
 
@@ -269,15 +268,15 @@ a:hover {
     width: 300px;
 }
 
-.table .file-action-icons .glyphicon-upload {
+.table .cell-action-icons .glyphicon-upload {
     color: #32cd32;
 }
 
-.table .file-action-icons .glyphicon-download {
+.table .cell-action-icons .glyphicon-download {
     color: #76baec;
 }
 
-.table .file-action-icons .glyphicon-remove-circle {
+.table .cell-action-icons .glyphicon-remove-circle {
     color: #f00;
 }
 

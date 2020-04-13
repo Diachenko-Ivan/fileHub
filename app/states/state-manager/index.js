@@ -32,7 +32,17 @@ export class StateManager extends EventTarget {
    * @param {Function} handler - function that is invoked when 'stateChange' event happened.
    */
   onStateChanged(property, handler) {
-    this.addEventListener(`stateChange.${property}`, () => handler(this.state));
+    this.addEventListener(`stateChange.${property}`, handler);
+  }
+
+  /**
+   * Removes state change event listener.
+   *
+   * @param {string} property - property whose event listener is deleted.
+   * @param {Function} listener - function that is deleted.
+   */
+  removeStateChangedListener(property, listener) {
+    this.removeEventListener(`stateChange.${property}`, listener);
   }
 
   /**

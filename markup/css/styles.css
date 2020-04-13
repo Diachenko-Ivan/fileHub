@@ -1,7 +1,7 @@
 /*Common styles*/
 
 body {
-    font: 14px/28px Arial, Helvetica, sans-serif;
+    font: 14px/18px Arial, Helvetica, sans-serif;
     color: #000;
     background: #fff;
 }
@@ -20,10 +20,8 @@ a:hover {
     line-height: 23px;
     border-radius: 5px;
     box-sizing: border-box;
-}
-
-.input::placeholder {
-    padding-left: 7px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .input:focus {
@@ -32,9 +30,16 @@ a:hover {
 
 .header {
     font-size: 22px;
-    padding-bottom: 7px;
+    padding-bottom: 13px;
     margin-bottom: 12px;
     border-bottom: 2px solid #999;
+}
+
+.header i {
+    position: absolute;
+    top: 17px;
+    left: 416px;
+    font-size: 24px;
 }
 
 .button {
@@ -42,13 +47,15 @@ a:hover {
     border: 0 solid;
     border-radius: 4px;
     cursor: pointer;
-    padding: 8px 14px;
+    padding: 4px 14px;
     background-color: #337ab7;
     color: #fff;
-    max-width: 150px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+    line-height: 23px;
+}
+
+.button i {
+    top: 4px;
+    font-size: 20px;
 }
 
 .button:hover {
@@ -63,6 +70,27 @@ a:hover {
     left: 0;
 }
 
+.user-menu {
+    position: absolute;
+    right: 9px;
+    top: -37px;
+}
+
+.user-menu li {
+    display: inline;
+    border-right: 1px solid #000;
+    padding: 0 11px 0 5px;
+}
+
+.user-menu li .glyphicon {
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+.user-menu :last-child {
+    border-style: none;
+}
+
 .application-box {
     box-sizing: border-box;
     box-shadow: 0 0 20px #999;
@@ -72,7 +100,7 @@ a:hover {
     margin: 100px auto 0;
     width: 903px;
     position: relative;
-    padding: 15px 20px 15px;
+    padding: 20px 20px 20px;
 }
 
 /*Styles for authentication and registration form*/
@@ -83,27 +111,20 @@ a:hover {
 
 .form-box .input {
     width: 100%;
-    margin-bottom: 3px;
-}
-
-.form-box .header i {
-    position: absolute;
-    top: 17px;
-    left: 416px;
-    font-size: 24px;
+    margin-bottom: 4px;
 }
 
 .form-box .row {
-    margin: 0 0 11px;
+    margin: 0 0 13px;
 }
 
 .form-box .row label {
     float: left;
     width: 30%;
+    margin-top: 4px;
 }
 
-.form-box .row .input-container,
-.form-box .row .button-link-container {
+.form-box .row .input-container {
     width: 60%;
     float: right;
 }
@@ -111,7 +132,6 @@ a:hover {
 .form-box .row .error-message {
     color: #f00;
     font-size: 12px;
-    line-height: 20px;
 }
 
 .form-box .row:after {
@@ -126,7 +146,7 @@ a:hover {
 
 .form-box .form-link {
     float: right;
-    margin-top: 3px;
+    margin-top: 5px;
     font-size: 12px;
 }
 
@@ -138,7 +158,7 @@ a:hover {
 /*Styles for file explorer*/
 
 .footer {
-    padding-top: 6px;
+    padding-top: 12px;
     border-top: 2px solid #999;
     text-align: center;
 }
@@ -148,34 +168,8 @@ a:hover {
     overflow-y: auto;
 }
 
-.file-explorer-container .glyphicon {
-    font-size: 20px;
-    margin-right: 9px;
-    top: 4px;
-}
-
-.user-menu {
-    position: absolute;
-    right: 9px;
-    top: -40px;
-}
-
-.user-menu li {
-    display: inline;
-    border-right: 1px solid #000;
-    padding: 0 11px 0 5px;
-}
-
-.user-menu :last-child {
-    border-style: none;
-}
-
-.file-explorer-container .user-menu li i {
-    font-size: 16px;
-}
-
 .file-explorer-container .content-header {
-    padding: 14px 12px 16px;
+    padding: 16px 12px 20px;
     position: sticky;
     top: 0;
     border-bottom: 1px solid #999;
@@ -194,6 +188,8 @@ a:hover {
 
 .file-explorer-container .path-title i {
     top: 0;
+    margin-right: 9px;
+    font-size: 20px;
 }
 
 .file-explorer-container .content-header .head-buttons {
@@ -203,18 +199,28 @@ a:hover {
 }
 
 .file-explorer-container .content-header .button {
-    padding: 2px 14px 10px;
     margin-left: 10px;
-}
-
-.file-explorer-container .content-header .button i {
-    margin-right: 1px;
-    top: 6px;
+    max-width: 150px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .table {
     width: 100%;
     table-layout: fixed;
+}
+
+.table .glyphicon {
+    font-size: 20px;
+    margin-right: 9px;
+    top: 4px;
+}
+
+.table .glyphicon-menu-right {
+    font-size: 12px;
+    margin-left: 8px;
+    top: 2px;
 }
 
 .table tr {
@@ -225,36 +231,31 @@ a:hover {
     background-color: #f4f4f4;
 }
 
-.table td:nth-child(1) {
-    width: 32px;
-}
-
-.table td:nth-child(3) {
-    width: 101px;
-}
-
-.table td:nth-child(4) {
-    width: 118px;
-}
-
-.table .file-action-icons {
-    opacity: 0;
-    text-align: right;
-}
-
 .table tbody tr:hover .file-action-icons {
     opacity: 1;
 }
 
 .table td {
-    vertical-align: middle;
-    padding: 12px 5px 11px;
+    padding: 12px 5px 12px;
+    line-height: 28px;
 }
 
-.table .glyphicon-menu-right {
-    font-size: 12px;
-    margin-left: 8px;
-    top: 2px;
+.table .arrow {
+    width: 32px;
+}
+
+.table .file-count {
+    width: 101px;
+}
+
+.table .file-action-icons {
+    opacity: 0;
+    text-align: right;
+    width: 118px;
+}
+
+.table .file-action-icons i {
+    cursor: pointer;
 }
 
 .table .file-name {
@@ -268,10 +269,6 @@ a:hover {
     width: 300px;
 }
 
-.table .file-action-icons i {
-    cursor: pointer;
-}
-
 .table .file-action-icons .glyphicon-upload {
     color: #32cd32;
 }
@@ -281,6 +278,6 @@ a:hover {
 }
 
 .table .file-action-icons .glyphicon-remove-circle {
-    color: #ff0000;
+    color: #f00;
 }
 

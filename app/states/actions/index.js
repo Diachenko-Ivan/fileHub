@@ -7,8 +7,9 @@ export class Action {
    *
    * @param {StateManager} stateManager
    * @param {ApiService} apiService
+   * @async
    */
-  apply(stateManager, apiService) {
+  async apply(stateManager, apiService) {
 
   }
 }

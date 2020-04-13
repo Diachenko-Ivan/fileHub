@@ -2,13 +2,20 @@ import {FileListLoadingMutator} from '../../mutator/file-list-loading-mutator';
 import {Action} from '../index.js';
 import {FileListLoadErrorMutator} from '../../mutator/file-list-load-error-mutator';
 import {FileListMutator} from '../../mutator/file-list-mutator';
+import {FolderMutator} from '../../mutator/folder-mutator';
 
 /**
  * Action that is responsible for getting file item list.
  */
-export class GetFileListAction extends Action {
-  constructor() {
+export class GetFolderAction extends Action {
+  /**
+   * Creates new {@type GetFolderAction} instance.
+   *
+   * @param {string} folderId - id of folder which is going to be requested from server.
+   */
+  constructor(folderId) {
     super();
+    this.folderId = folderId;
   }
 
   /**
@@ -17,12 +24,15 @@ export class GetFileListAction extends Action {
   async apply(stateManager, apiService) {
     stateManager.mutate(new FileListLoadingMutator(true));
     try {
-      const response = await apiService.getFileItemList();
+      const folderResponse = await apiService.getFolder(this.folderId);
+      const folderContentResponse = await apiService.getFolderContent(this.folderId);
       stateManager.mutate(new FileListLoadingMutator(false));
-      stateManager.mutate(new FileListMutator(response.fileList));
-      return response.fileList;
+      stateManager.mutate(new FolderMutator(folderResponse.folder));
+      stateManager.mutate(new FileListMutator(folderContentResponse.content));
+      return folderContentResponse.content;
     } catch (e) {
       stateManager.mutate(new FileListLoadErrorMutator(e));
+      return e;
     }
   }
 }

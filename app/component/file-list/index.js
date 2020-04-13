@@ -51,6 +51,7 @@ export class FileItemList extends Component {
    * @property {number} size - file size.
    * @property {number} filesCount - number of files in folder.
    * @property {string} id - id of folder or file.
+   * @property {string} parentId - id of parent folder.
    */
   /**
    * Creates new {@type FileList} component.

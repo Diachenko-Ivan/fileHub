@@ -29,6 +29,7 @@ a:hover {
 }
 
 .button {
+    font-size: 14px;
     border: 0 solid;
     border-radius: 4px;
     cursor: pointer;

@@ -5,4 +5,7 @@ export class FileListState {
   fileList = [];
   isLoading;
   loadError;
+  locationParam;
+  location;
+  currentFolder;
 }

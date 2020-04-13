@@ -2,7 +2,7 @@ import {UserCredentials} from '../models/user-credentials';
 import {ValidationError} from '../models/errors/validation-error';
 import {GeneralServerError} from '../models/errors/server-error';
 import {AuthenticationError} from '../models/errors/authentication-error';
-import {LOGIN_PAGE_URL} from '../config/router-config';
+import {LOGIN_PAGE_URL, NOT_FOUND_PAGE_URL} from '../config/router-config';
 
 /**
  * Used for fulfilling requests to server.
@@ -57,12 +57,35 @@ export class ApiService {
   }
 
   /**
-   * Tries to get full file item list.
+   * Tries to get folder by its id.
    *
    * @return {Promise} either object with file list or error if server is gone down.
    */
-  getFileItemList() {
-    return fetch('/file-list', {
+  getFolder(folderId) {
+    return fetch(`/folder/${folderId}`, {
+        method: 'GET',
+        headers: this.authenticationHeader()
+      }
+    ).then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      this.handleCommonErrors(response.status, () => {
+        window.location.hash = LOGIN_PAGE_URL;
+      }, () => {
+        throw new GeneralServerError('Server error!');
+      });
+    });
+  }
+
+
+  /**
+   * Tries to get folder content.
+   *
+   * @return {Promise} either object with file list or error if server is gone down.
+   */
+  getFolderContent(folderId) {
+    return fetch(`/folder/${folderId}/content`, {
         method: 'GET',
         headers: this.authenticationHeader()
       }
@@ -109,6 +132,8 @@ export class ApiService {
       unauthorizedErrorHandler();
     } else if (status === 500) {
       serverErrorHandler();
+    } else if (status === 404) {
+      window.location.hash = NOT_FOUND_PAGE_URL;
     }
   }
 }

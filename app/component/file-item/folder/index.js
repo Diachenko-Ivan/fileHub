@@ -10,6 +10,7 @@ export class FolderComponent extends FileItem {
    * @property {string} name - name of folder.
    * @property {number} filesCount - number of files in folder.
    * @property {string} id - folder id.
+   * @property {string} parentId - id of parent folder.
    */
   /**
    * Creates new {@type FolderComponent} component.

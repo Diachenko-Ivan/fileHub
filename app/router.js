@@ -5,6 +5,11 @@ import {NOT_FOUND_PAGE_URL} from './config/router-config';
  */
 export class Router {
   /**
+   * Instance of current page.
+   * @type {Component}
+   */
+  _currentPage;
+  /**
    * @typedef PageMapping
    * @property {string} url - page url.
    * @property {Function} page - function that returns page.
@@ -127,6 +132,9 @@ export class Router {
       this._window.location.hash = `#${this._defaultUrl}`;
       this._currentPageUrl = this._defaultUrl;
       return;
+    }
+    if (this._currentPage) {
+      this._currentPage.destroy();
     }
     if (!this._pageMapping[url]) {
       this._pageMapping[NOT_FOUND_PAGE_URL]();

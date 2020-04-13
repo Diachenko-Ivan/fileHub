@@ -75,7 +75,6 @@ export class FileHubPage extends StateAwareComponent {
   initState() {
     this.onStateChange('isLoading', (state) => {
       if (state.isLoading) {
-        this.fileList.eraseFileList();
         this.progressBarContainer.innerHTML = '<h2>Loading...</h2>';
       } else {
         this.progressBarContainer.innerHTML = '';

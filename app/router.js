@@ -29,7 +29,18 @@ export class Router {
   init() {
     this._window.addEventListener('hashchange', (event) => {
       const nextURL = this._window.location.hash.slice(1);
-      this.generatePage(nextURL);
+      const urlTemplate = this._getUrlTemplate(nextURL);
+      if (urlTemplate) {
+        const dynamicHashParams = this._hashDynamicPart(nextURL, urlTemplate);
+        if (urlTemplate !== this._currentPageUrl) {
+          this._generatePage(urlTemplate);
+          this._dynamicPartHandler(nextURL, dynamicHashParams);
+        } else {
+          this._dynamicPartHandler(nextURL, dynamicHashParams);
+        }
+      } else {
+        this._generatePage(nextURL);
+      }
     });
   }
 
@@ -122,6 +133,24 @@ export class Router {
       this._currentPageUrl = '';
     } else {
       this._pageMapping[url]();
+      this._currentPageUrl = url;
+    }
+  }
+
+  /**
+   * Generates page when application is loaded.
+   *
+   * @param {string} hash - hash for concrete page.
+   * @private
+   */
+  _generatePageOnLoad(hash) {
+    const urlTemplate = this._getUrlTemplate(hash);
+    if (urlTemplate) {
+      const dynamicParam = this._hashDynamicPart(hash, urlTemplate);
+      this._generatePage(urlTemplate);
+      this._dynamicPartHandler(hash, dynamicParam);
+    } else {
+      this._generatePage(hash);
     }
   }
 }

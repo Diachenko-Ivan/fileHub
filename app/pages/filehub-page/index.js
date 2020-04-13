@@ -2,8 +2,8 @@ import {Button} from '../../component/button';
 import {UserDetails} from '../../component/user-details';
 import {FileItemList} from '../../component/file-list';
 import {StateAwareComponent} from '../../component/state-aware-component';
-import {GetFileListAction} from '../../states/actions/file-list-action';
 import {DirectoryPath} from '../../component/directory-path';
+import {GetFolderAction} from '../../states/actions/file-list-action';
 
 /**
  * Page for file hub explorer.
@@ -36,6 +36,7 @@ export class FileHubPage extends StateAwareComponent {
                 <span data-element="head-buttons" class="head-buttons">             
                 </span>
             </div>
+            <div data-element="progress-bar"></div>
             <div data-element="file-list">
             </div>     
         </div>
@@ -53,6 +54,8 @@ export class FileHubPage extends StateAwareComponent {
     const headButtonsContainer = this.rootContainer.querySelector('[data-element="head-buttons"]');
 
     this.fileListContainer = this.rootContainer.querySelector('[data-element="file-list"]');
+    this.progressBarContainer = this.rootContainer.querySelector('[data-element="progress-bar"]');
+
     const directoryPathContainer = this.rootContainer.querySelector('[data-element="directory-path"]');
 
     this.directoryPath = new DirectoryPath(directoryPathContainer);
@@ -63,23 +66,34 @@ export class FileHubPage extends StateAwareComponent {
     this.createFolderButton = new Button(headButtonsContainer,
       'head-button create', '<i class="glyphicon glyphicon-plus"></i>Create Folder');
 
-    this.dispatch(new GetFileListAction());
+    this.fileList = new FileItemList(this.fileListContainer);
   }
 
+  /**
+   * @inheritdoc
+   */
   initState() {
     this.onStateChange('isLoading', (state) => {
       if (state.isLoading) {
-        this.fileListContainer.innerHTML = '<h3>Loading...</h3>';
+        this.fileList.eraseFileList();
+        this.progressBarContainer.innerHTML = '<h2>Loading...</h2>';
       } else {
-        this.fileListContainer.innerHTML = '';
+        this.progressBarContainer.innerHTML = '';
       }
     });
     this.onStateChange('fileList', (state) => {
-      this.fileList = new FileItemList(this.fileListContainer);
       this.fileList.renderFileList(state.fileList);
     });
     this.onStateChange('loadError', (state) => {
-
+      // if (state.loadError instanceof FileItemNotFoundError) {
+      //   this.directoryPath.folderName = state.loadError.message;
+      // }
+    });
+    this.onStateChange('locationParam', (state) => {
+      this.dispatch(new GetFolderAction(state.locationParam.id));
+    });
+    this.onStateChange('currentFolder', (state) => {
+      this.directoryPath.folderName = state.currentFolder.name;
     });
   }
 }

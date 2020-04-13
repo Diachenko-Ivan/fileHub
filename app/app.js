@@ -7,8 +7,9 @@ import {ErrorPage} from './pages/error-page';
 import {StateManager} from './states/state-manager';
 import {ApiService} from './services/api-service.js';
 import {FileListState} from './states/model/file-list-state';
+import {LOGIN_PAGE_URL} from './config/router-config';
+import {DynamicRouteChangeAction} from './states/actions/dynamic-route-change-action';
 
-const defaultUrl = '/login';
 
 /**
  * Base component for application that stores different pages.
@@ -35,16 +36,19 @@ export class Application extends Component {
    * @inheritdoc
    */
   initNestedComponents() {
-    const stateManager = new StateManager(new FileListState(), ApiService.getInstance());
+    const fileListState = new FileListState();
+    const stateManager = new StateManager(fileListState, ApiService.getInstance());
 
     const pageMapping = {
       '/login': () => new LoginPage(this.rootContainer),
       '/registration': () => new RegistrationPage(this.rootContainer),
-      '/fileHub': () => new FileHubPage(this.rootContainer, stateManager),
+      '/folder/:id': () => new FileHubPage(this.rootContainer, stateManager),
       '/404': () => new ErrorPage(this.rootContainer, 404, 'Sorry, this page was not found.'),
     };
 
     this.router = new Router(window, this.rootContainer, pageMapping);
-    this.router.defaultUrl = defaultUrl;
+    this.router.onDynamicPartChange((staticPart, requestParam) =>
+      stateManager.dispatch(new DynamicRouteChangeAction(staticPart, requestParam)));
+    this.router.defaultUrl = LOGIN_PAGE_URL;
   }
 }

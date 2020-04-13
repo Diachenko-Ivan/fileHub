@@ -1,3 +1,5 @@
+import {NOT_FOUND_PAGE_URL} from './config/router-config';
+
 /**
  * Router for full application that controls page changing.
  */
@@ -45,23 +47,79 @@ export class Router {
     if (!this._window.location.hash) {
       this._window.location.hash = `#${url}`;
     } else {
-      this.generatePage(this._window.location.hash.slice(1));
+      this._generatePageOnLoad(this._window.location.hash.slice(1));
     }
   }
+
+  /**
+   * Returns url template from concrete hash if it has dynamic parameters.
+   *
+   * @param {string} hash - url hash value.
+   * @return {string|null} url template from hash.
+   * @private
+   */
+  _getUrlTemplate(hash) {
+    const urlTemplate = Object.keys(this._pageMapping).find((mapping) => {
+      const staticPart = mapping.split('/:')[0];
+      return hash.startsWith(staticPart) && mapping.includes(':');
+    });
+
+    if (urlTemplate && urlTemplate.split('/').length === hash.split('/').length) {
+      return urlTemplate;
+    }
+    return null;
+  }
+
+  /**
+   * Gets dynamic part of hash.
+   *
+   * @param hash - hash for concrete page.
+   * @param {string} urlTemplate - url template with dynamic parameters.
+   * @return {{}} object whose properties are dynamic parts of url and their values.
+   * @private
+   */
+  _hashDynamicPart(hash, urlTemplate) {
+    const splittedTemplate = urlTemplate.split('/');
+
+    const keyToMap = splittedTemplate.reduce((accumulator, key, index) => {
+      if (!key.startsWith(':')) {
+        return accumulator;
+      }
+      accumulator[key.slice(1)] = index;
+      return accumulator;
+    }, {});
+
+    const splittedHash = hash.split('/');
+
+    return Object.entries(keyToMap).reduce((accumulator, [key, index]) => {
+      accumulator[key] = splittedHash[index];
+      return accumulator;
+    }, {});
+  };
+
+  /**
+   * Registers
+   * @param handler
+   */
+  onDynamicPartChange(handler) {
+    this._dynamicPartHandler = (staticPart, params) => handler(staticPart, params);
+  };
 
   /**
    * Generates new page on hash change.
    *
    * @param {string} url - hash for concrete page.
    */
-  generatePage(url) {
+  _generatePage(url) {
     this.container.innerHTML = '';
     if (!url) {
       this._window.location.hash = `#${this._defaultUrl}`;
+      this._currentPageUrl = this._defaultUrl;
       return;
     }
     if (!this._pageMapping[url]) {
-      this._pageMapping['/404']();
+      this._pageMapping[NOT_FOUND_PAGE_URL]();
+      this._currentPageUrl = '';
     } else {
       this._pageMapping[url]();
     }

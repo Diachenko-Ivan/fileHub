@@ -80,15 +80,7 @@ export class FileItemList extends Component {
    * @param {Item[]} items - received from server file list.
    */
   renderFileList(items) {
-    items.forEach((item) => this._fileItems.push(this._fileItem[item.type](item)));
-  }
-
-  /**
-   * Delete the list of file items.
-   */
-  eraseFileList() {
-    this._fileItems.length = 0;
     this.rootContainer.firstElementChild.innerHTML = '';
-    debugger
+    items.forEach((item) => this._fileItem[item.type](item));
   }
 }

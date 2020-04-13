@@ -4,6 +4,8 @@ import {Component} from '../parent-component.js';
  * Abstract component of highest order that can have a state.
  */
 export class StateAwareComponent extends Component {
+  _stateChangeHandlers = [];
+
   /**
    * Creates new instance.
    *
@@ -30,12 +32,31 @@ export class StateAwareComponent extends Component {
   }
 
   /**
+   * Removes event listeners for state aware component.
+   */
+  removeStateChangeListeners() {
+    this._stateChangeHandlers.forEach(({property, listener}) => {
+      this.stateManager.removeStateChangedListener(property, listener);
+    });
+  }
+
+  /**
    * Registers handler for concrete property.
    *
    * @param {string} property - name of state property.
    * @param {Function} handler - function that is invoked when property is changed.
    */
   onStateChange(property, handler) {
-    this.stateManager.onStateChanged(property, handler);
+    const listener = () => handler(this.stateManager.state);
+    this.stateManager.onStateChanged(property, listener);
+    this._stateChangeHandlers.push({property: property, listener: listener});
+  }
+
+  /**
+   * @inheritdoc
+   */
+  destroy() {
+    super.destroy();
+    this.removeStateChangeListeners();
   }
 }

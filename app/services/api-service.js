@@ -64,7 +64,7 @@ export class ApiService {
   getFolder(folderId) {
     return fetch(`/folder/${folderId}`, {
         method: 'GET',
-        headers: this.authenticationHeader()
+        headers: this._authenticationHeader()
       }
     ).then(response => {
       if (response.ok) {
@@ -87,11 +87,55 @@ export class ApiService {
   getFolderContent(folderId) {
     return fetch(`/folder/${folderId}/content`, {
         method: 'GET',
-        headers: this.authenticationHeader()
+        headers: this._authenticationHeader()
       }
     ).then(response => {
       if (response.ok) {
         return response.json();
+      }
+      this.handleCommonErrors(response.status, () => {
+        window.location.hash = LOGIN_PAGE_URL;
+      }, () => {
+        throw new GeneralServerError('Server error!');
+      });
+    });
+  }
+
+  /**
+   * Removes folder.
+   *
+   * @param {string} id - folder id.
+   * @return {Promise<Response>} successful or unsuccessful result of deletion.
+   */
+  removeFolder(id) {
+    return fetch(`/folder/${id}`, {
+      method: 'DELETE',
+      headers: this._authenticationHeader(),
+    }).then((response) => {
+      if (response.ok) {
+        return `Folder with id ${id} deleted.`;
+      }
+      this.handleCommonErrors(response.status, () => {
+        window.location.hash = LOGIN_PAGE_URL;
+      }, () => {
+        throw new GeneralServerError('Server error!');
+      });
+    });
+  }
+
+  /**
+   * Removes file.
+   *
+   * @param {string} id - file id.
+   * @return {Promise<Response>} successful or unsuccessful result of deletion.
+   */
+  removeFile(id) {
+    return fetch(`/file/${id}`, {
+      method: 'DELETE',
+      headers: this._authenticationHeader(),
+    }).then((response) => {
+      if (response.ok) {
+        return `File with id ${id} deleted.`;
       }
       this.handleCommonErrors(response.status, () => {
         window.location.hash = LOGIN_PAGE_URL;
@@ -113,7 +157,7 @@ export class ApiService {
    *
    * @return {{Authorization: string}}
    */
-  authenticationHeader() {
+  _authenticationHeader() {
     return {
       'Authorization':
         `Bearer ${localStorage.getItem('token')}`

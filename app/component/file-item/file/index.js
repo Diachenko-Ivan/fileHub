@@ -51,5 +51,15 @@ export class FileComponent extends FileItem {
 
     this.downloadIcon = new FileItemIcon(fileActionIcons, {styleClass: 'download'});
     this.removeIcon = new FileItemIcon(fileActionIcons, {styleClass: 'remove-circle'});
+    this.removeIcon.onClick(() => {
+      this.removeHandler({
+        name: this.name,
+        size: this.size,
+        type: 'file',
+        id: this.id,
+        parentId: this.parentId,
+        mimeType: this.mimeType
+      });
+    });
   }
 }

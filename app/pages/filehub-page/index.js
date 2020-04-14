@@ -4,6 +4,7 @@ import {FileItemList} from '../../component/file-list';
 import {StateAwareComponent} from '../../component/state-aware-component';
 import {DirectoryPath} from '../../component/directory-path';
 import {GetFolderAction} from '../../states/actions/file-list-action';
+import {RemoveItemAction} from '../../states/actions/remove-item-action';
 
 /**
  * Page for file hub explorer.
@@ -67,6 +68,9 @@ export class FileHubPage extends StateAwareComponent {
       'head-button create', '<i class="glyphicon glyphicon-plus"></i>Create Folder');
 
     this.fileList = new FileItemList(this.fileListContainer);
+    this.fileList.onRemoveListItem((model) => {
+      this.dispatch(new RemoveItemAction(model));
+    });
   }
 
   /**

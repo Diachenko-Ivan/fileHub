@@ -15,4 +15,13 @@ export class FileItem extends Component {
     this.initNestedComponents();
     this.addEventListener();
   }
+
+  /**
+   * Adds handler on remove action.
+   *
+   * @param {Function} handler - executed when delete action is called.
+   */
+  onRemove(handler) {
+    this.removeHandler = (model) => handler(model);
+  }
 }

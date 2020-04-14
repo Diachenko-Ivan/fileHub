@@ -29,10 +29,15 @@ export class FileItemList extends Component {
       name: item.name,
       size: item.size,
       fileIcon: this._fileIconTypes[item.mimeType],
+      id: item.id,
+      parentId: item.parentId,
+      mimeType: item.mimeType,
     }),
     folder: (item) => new FolderComponent(this.rootContainer.firstElementChild, {
       name: item.name,
       filesCount: item.filesCount,
+      id: item.id,
+      parentId: item.parentId,
     }),
   };
   /**
@@ -81,6 +86,18 @@ export class FileItemList extends Component {
    */
   renderFileList(items) {
     this.rootContainer.firstElementChild.innerHTML = '';
-    items.forEach((item) => this._fileItem[item.type](item));
+    items.forEach((item) => {
+      const fileItem = this._fileItem[item.type](item);
+      fileItem.onRemove(this._removeListItemHandler);
+    });
+  }
+
+  /**
+   * Adds handler on remove file item action.
+   *
+   * @param {Function} handler - executed when delete action is called.
+   */
+  onRemoveListItem(handler) {
+    this._removeListItemHandler = handler;
   }
 }

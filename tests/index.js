@@ -15,6 +15,6 @@ import FileListMutator from './states/mutator/file-list-mutator';
 import FileListErrorMutator from './states/mutator/file-list-load-error-mutator';
 import StateManagerTest from './states/state-manager';
 import DirectoryPathTest from './component/directory-path'
-import MockFileSystem from './services/mock-file-system'
+import MockFileSystemTest from './services/mock-file-system'
 import RemoveItemAction from './states/actions/remove-item-action'
 

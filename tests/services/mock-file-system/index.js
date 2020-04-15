@@ -52,13 +52,13 @@ export default module('MockFileSystem test', function (hook) {
   });
 
   test('should successfully return one folder.', function (assert) {
-    const filesBeforeDelete = fileSystem.getFiles();
-    const id = filesBeforeDelete[0].id;
+    const foldersBeforeDelete = fileSystem.getFolders();
+    const id = foldersBeforeDelete[0].id;
 
-    const existentFolder = fileSystem.getFile(id);
+    const existentFolder = fileSystem.getFolder(id);
 
     const wrongId = 'wrongId';
-    const nonExistentFolder = fileSystem.getFile(wrongId);
+    const nonExistentFolder = fileSystem.getFolder(wrongId);
 
     assert.ok(existentFolder,  'Should return folder by existing id.');
     assert.notOk(nonExistentFolder, 'Should not return folder by wrong id.');

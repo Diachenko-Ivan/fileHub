@@ -10,12 +10,16 @@ export default module('FolderComponent test', function (hook) {
   });
 
   test('should render folder component.', function (assert) {
-    new FolderComponent(fixture,{name:'documents', filesCount:10});
+    const folderName = 'documents';
+    const filesCount = 10;
+    const folderComponent = new FolderComponent(fixture, {name: folderName, filesCount: filesCount});
     const folder = fixture.firstElementChild;
 
-    const numOfChildElements = 4;
+    const renderedFolderName = folderComponent.rootContainer.querySelector('[data-test="folder-name"]').innerText;
+    const renderedFilesCount = folderComponent.rootContainer.querySelector('[data-test="file-count"]').innerText;
 
     assert.ok(folder, 'Should contain rendered folder.');
-    assert.strictEqual(numOfChildElements, folder.childElementCount, 'Should render correct number of table data.');
+    assert.strictEqual(renderedFolderName, folderName, 'Should render correct folder name.');
+    assert.strictEqual(renderedFilesCount, filesCount.toString(), 'Should render correct files count.');
   });
 });

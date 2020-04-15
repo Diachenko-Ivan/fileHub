@@ -31,8 +31,8 @@ export class FolderComponent extends FileItem {
     return `<tr>
                 <td class="arrow"><i class="glyphicon glyphicon-menu-right"></i></td>
                 <td><span class="folder-name"><i class="glyphicon glyphicon-folder-close"></i>
-                       <a href="#/folder/${this.id}">${this.name}</a></span></td>
-                    <td class="file-count">${this.filesCount}</td>
+                       <a data-test="folder-name" href="#/folder/${this.id}">${this.name}</a></span></td>
+                <td data-test="file-count" class="file-count">${this.filesCount}</td>
                 <td data-element="file-action-icons" class="file-action-icons">
                     </td>
                 </tr>`;

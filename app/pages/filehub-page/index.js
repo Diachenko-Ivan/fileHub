@@ -4,6 +4,7 @@ import {FileItemList} from '../../component/file-list';
 import {StateAwareComponent} from '../../component/state-aware-component';
 import {GetFileListAction} from '../../states/actions/file-list-action';
 import {DirectoryPath} from '../../component/directory-path';
+import {TitleService} from '../../services/title-service';
 
 /**
  * Page for file hub explorer.
@@ -15,6 +16,7 @@ export class FileHubPage extends StateAwareComponent {
   constructor(container, stateManager) {
     super(container, stateManager);
     this.render();
+    TitleService.getInstance().setTitle('Root - FileHub');
   }
 
   /**
@@ -36,8 +38,7 @@ export class FileHubPage extends StateAwareComponent {
                 <span data-element="head-buttons" class="head-buttons">             
                 </span>
             </div>
-            <div data-element="file-list">
-            </div>     
+            <div data-element="file-list"></div>
         </div>
         <footer class="footer">
             Copyright &copy; 2020 <a href="#">TeamDev</a>. All rights reserved.
@@ -49,11 +50,10 @@ export class FileHubPage extends StateAwareComponent {
    * @inheritdoc
    */
   initNestedComponents() {
-    const userDetailsContainer = this.rootContainer.querySelector('[data-element="user-menu"]').firstElementChild;
-    const headButtonsContainer = this.rootContainer.querySelector('[data-element="head-buttons"]');
-
-    this.fileListContainer = this.rootContainer.querySelector('[data-element="file-list"]');
-    const directoryPathContainer = this.rootContainer.querySelector('[data-element="directory-path"]');
+    const userDetailsContainer = this._returnContainer('user-menu').firstElementChild;
+    const headButtonsContainer = this._returnContainer('head-buttons');
+    this.fileListContainer = this._returnContainer('file-list');
+    const directoryPathContainer = this._returnContainer('directory-path');
 
     this.directoryPath = new DirectoryPath(directoryPathContainer);
     this.userDetails = new UserDetails(userDetailsContainer, 'Username');
@@ -81,6 +81,17 @@ export class FileHubPage extends StateAwareComponent {
     this.onStateChange('loadError', (state) => {
 
     });
+  }
+
+  /**
+   * Returns container by data-element name.
+   *
+   * @param {string} dataElement - name of element.
+   * @return {Element} container.
+   * @private
+   */
+  _returnContainer(dataElement) {
+    return this.rootContainer.querySelector(`[data-element="${dataElement}"]`);
   }
 }
 

@@ -10,12 +10,16 @@ export default module('FileComponent test', function (hook) {
   });
 
   test('should render file component.', function (assert) {
-    new FileComponent(fixture,{name:'page.txt', fileIcon:'book', size:20});
+    const expectedFileName = 'page.txt';
+    const size = 20;
+    const fileComponent = new FileComponent(fixture, {name: expectedFileName, mimeType: 'text', size: size});
     const file = fixture.firstElementChild;
 
-    const numOfChildElements = 4;
+    const renderedFileName = fileComponent.rootContainer.querySelector('[data-test="file-name"]').innerText;
+    const renderedFileSize = fileComponent.rootContainer.querySelector('[data-test="file-size"]').innerText;
 
     assert.ok(file, 'Should contain rendered file.');
-    assert.strictEqual(numOfChildElements, file.childElementCount, 'Should render correct number of table data.');
+    assert.strictEqual(renderedFileName, expectedFileName, 'Should render correct file name.');
+    assert.strictEqual(renderedFileSize, size.toString(), 'Should render correct file size.');
   });
 });

@@ -9,10 +9,22 @@ export class FileComponent extends FileItem {
    * @typedef FileDescription
    * @property {string} name - name of file.
    * @property {number} size - file size.
-   * @property {string} fileIcon - image, video, document.
+   * @property {string} mimeType - image, video, document.
    * @property {string} id - file id.
    * @property {string} parentId - id of parent folder.
    */
+  /**
+   * Contains icon classes for each file type.
+   *
+   * @type {{image: string, text: string, audio: string, video: string}}
+   * @private
+   */
+  _fileIconTypes = {
+    image: 'picture',
+    text: 'book',
+    audio: 'music',
+    video: 'film',
+  };
   /**
    * Creates new {@type FileComponent} component.
    *
@@ -33,11 +45,11 @@ export class FileComponent extends FileItem {
                 <tr>
                     <td class="arrow"></td>
                     <td>
-                        <span class="file-name">
-                            <i class="glyphicon glyphicon-${this.fileIcon}"></i>
+                        <span data-test="file-name" class="file-name">
+                            <i class="glyphicon glyphicon-${this._fileIconTypes[this.mimeType]}"></i>
                             ${this.name}
                         </span></td>
-                    <td class="file-size">${this.size}</td>
+                    <td data-test="file-size" class="file-size">${this.size}</td>
                     <td data-element="file-action-icons" class="file-action-icons">
                     </td>
                 </tr>`;

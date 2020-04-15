@@ -7,33 +7,14 @@ import {FileComponent} from '../file-item/file';
  */
 export class FileItemList extends Component {
   /**
-   * Contains icon classes for each file type.
-   *
-   * @type {{image: string, text: string, audio: string, video: string}}
-   * @private
-   */
-  _fileIconTypes = {
-    image: 'picture',
-    text: 'book',
-    audio: 'music',
-    video: 'film',
-  };
-  /**
    * Contains either file or folder.
    *
    * @type {{file: (function(Item): FileComponent), folder: (function(Item): FolderComponent)}}
    * @private
    */
   _fileItem = {
-    file: (item) => new FileComponent(this.rootContainer.firstElementChild, {
-      name: item.name,
-      size: item.size,
-      fileIcon: this._fileIconTypes[item.mimeType],
-    }),
-    folder: (item) => new FolderComponent(this.rootContainer.firstElementChild, {
-      name: item.name,
-      filesCount: item.filesCount,
-    }),
+    file: (item) => new FileComponent(this.rootContainer.firstElementChild, item),
+    folder: (item) => new FolderComponent(this.rootContainer.firstElementChild, item),
   };
   /**
    * Contains files and folders.

@@ -1,31 +1,16 @@
 import fetchMock from '../../node_modules/fetch-mock/esm/client.js';
+import {MockFileSystem} from './mock-file-system';
 
 /**
  * Plays role of server that handles requests.
  */
 export class MockServer {
   /**
-   * Used for development.
-   * @type {{folder: {'123': {content: [{size: number, name: string, mimeType: string, type: string}, {size: number, name: string, mimeType: string, type: string}], info: {filesCount: number, name: string, id: string, type: string}}, root: {content: [{filesCount: number, name: string, id: string, type: string}, {size: number, name: string, mimeType: string, type: string}], info: {filesCount: number, name: string, id: string, type: string}}}}}
-   * @private
-   */
-  _folders = {
-    'root': {
-      info: {name: 'Root', type: 'folder', filesCount: 10, id: 'root'},
-      content: [{name: 'Different', type: 'folder', filesCount: 10, id: '123'},
-        {name: 'file.pdf', type: 'file', mimeType: 'text', size: 100}]
-    },
-    '123': {
-      info: {name: 'Different', type: 'folder', filesCount: 3, id: '123'},
-      content: [{name: 'nature.jpeg', type: 'file', mimeType: 'image', size: 10},
-        {name: 'hello.txt', type: 'file', mimeType: 'text', size: 100}]
-    },
-  };
-
-  /**
    * Creates new {@type MockServer} instance with setting of mappings for concrete requests.
    */
   constructor() {
+    this._fileSystem = new MockFileSystem();
+
     fetchMock.post('/login', (url, request) => {
       const credentials = JSON.parse(request.body);
       if (credentials.login === 'admin' && credentials.password === 'Password1') {
@@ -50,9 +35,10 @@ export class MockServer {
     fetchMock.get('express:/folder/:folderId', (url, request) => {
       if (this._hasAuthToken(request.headers)) {
         const id = url.split('/')[2];
-        if (this._folders[id]) {
+        const folder = this._fileSystem.getFolder(id);
+        if (folder) {
           return {
-            folder: this._folders[id].info
+            folder: folder
           };
         } else {
           return 404;
@@ -64,9 +50,9 @@ export class MockServer {
     fetchMock.get('express:/folder/:folderId/content', (url, request) => {
       if (this._hasAuthToken(request.headers)) {
         const id = url.split('/')[2];
-        if (this._folders[id]) {
+        if (this._fileSystem.getFolder(id)) {
           return {
-            content: this._folders[id].content
+            content: this._fileSystem.getFolderContent(id)
           };
         } else {
           return 404;

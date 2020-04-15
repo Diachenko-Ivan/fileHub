@@ -58,10 +58,29 @@ export class FileItemList extends Component {
   /**
    * Shows the list of file items.
    *
-   * @param {Item[]} items - received from server file list.
+   * @param {Item[]} items - received file list.
    */
   renderFileList(items) {
     this.rootContainer.firstElementChild.innerHTML = '';
-    items.forEach((item) => this._fileItem[item.type](item));
+    this._sortedItems(items).forEach((item) => this._fileItem[item.type](item));
+  }
+
+  /**
+   * Sorts array of items where folders go first.
+   *
+   * @param {Item[]} items - received file list.
+   * @return {[]} sorted array where folders go first.
+   * @private
+   */
+  _sortedItems(items) {
+    const sortedArray = [];
+    items.forEach((item) => {
+      if (item.type === 'folder') {
+        sortedArray.unshift(item);
+      } else {
+        sortedArray.push(item);
+      }
+    });
+    return sortedArray;
   }
 }

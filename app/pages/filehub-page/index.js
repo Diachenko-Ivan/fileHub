@@ -37,6 +37,7 @@ export class FileHubPage extends Component {
                 <span data-element="head-buttons" class="head-buttons">             
                 </span>
             </div>
+            <div data-element="file-list"></div>
         </div>
         <footer class="footer">
             Copyright &copy; 2020 <a href="#">TeamDev</a>. All rights reserved.
@@ -46,14 +47,14 @@ export class FileHubPage extends Component {
 
 
   initNestedComponents() {
-    const userDetailsContainer = this._returnContainer('user-menu');
+    const userDetailsContainer = this._returnContainer('user-menu').firstElementChild;
     const headButtonsContainer = this._returnContainer('head-buttons');
-    const fileListContainer = this._returnContainer('main');
+    this.fileListContainer = this._returnContainer('file-list');
     const directoryPathContainer = this._returnContainer('directory-path');
 
     this.directoryPath = new DirectoryPath(directoryPathContainer);
     this.userDetails = new UserDetails(userDetailsContainer, 'Username');
-    this.fileList = new FileItemList(fileListContainer);
+    this.fileList = new FileItemList(this.fileListContainer);
     this.fileList.renderFileList([{name: 'Documents', type: 'folder', filesCount: 10},
       {name: '404.html', type: 'file', size: 4000, mimeType: 'text'}]);
 

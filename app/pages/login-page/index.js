@@ -1,18 +1,19 @@
 import {Component} from '../../component/parent-component.js';
 import {LoginFormComponent} from '../../component/form-login';
 import {ApiService} from '../../services/api-service.js';
+import {TitleService} from '../../services/title-service';
 
 /**
  * Page which is designed for login form.
  */
 export class LoginPage extends Component {
-  apiService = new ApiService();
   /**
    * @inheritdoc
    */
   constructor(container) {
     super(container);
     this.render();
+    TitleService.getInstance().setTitle('Login - FileHub')
   }
 
   /**
@@ -34,9 +35,9 @@ export class LoginPage extends Component {
    */
   addEventListener() {
     this.loginForm.onSubmit((credentials) => {
-      this.apiService.register(credentials)
+      ApiService.getInstance().login(credentials)
         .then(() => window.location.hash = '/fileHub')
-        .catch((validationError) => this.loginForm.showFieldErrors(validationError.errors));
+        .catch((authenticationError) => this.loginForm.showAuthenticationError(authenticationError.message));
     });
   }
 }

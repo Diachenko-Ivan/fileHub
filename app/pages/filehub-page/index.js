@@ -3,6 +3,7 @@ import {Button} from '../../component/button';
 import {UserDetails} from '../../component/user-details';
 import {FileItemList} from '../../component/file-list';
 import {DirectoryPath} from '../../component/directory-path';
+import {TitleService} from '../../services/title-service';
 
 /**
  * Page for file hub explorer.
@@ -14,6 +15,7 @@ export class FileHubPage extends Component {
   constructor(container) {
     super(container);
     this.render();
+    TitleService.getInstance().setTitle('Root - FileHub');
   }
 
   /**

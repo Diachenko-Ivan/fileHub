@@ -46,10 +46,10 @@ export class FileHubPage extends Component {
 
 
   initNestedComponents() {
-    const userDetailsContainer = this.rootContainer.querySelector('[data-element="user-menu"]').firstElementChild;
-    const headButtonsContainer = this.rootContainer.querySelector('[data-element="head-buttons"]');
-    const fileListContainer = this.rootContainer.querySelector('[data-element="main"]');
-    const directoryPathContainer = this.rootContainer.querySelector('[data-element="directory-path"]');
+    const userDetailsContainer = this._returnContainer('user-menu');
+    const headButtonsContainer = this._returnContainer('head-buttons');
+    const fileListContainer = this._returnContainer('main');
+    const directoryPathContainer = this._returnContainer('directory-path');
 
     this.directoryPath = new DirectoryPath(directoryPathContainer);
     this.userDetails = new UserDetails(userDetailsContainer, 'Username');
@@ -61,6 +61,17 @@ export class FileHubPage extends Component {
       'head-button upload', '<i class="glyphicon glyphicon-upload"></i>Upload File');
     this.createFolderButton = new Button(headButtonsContainer,
       'head-button create', '<i class="glyphicon glyphicon-plus"></i>Create Folder');
+  }
+
+  /**
+   * Returns container by data-element name.
+   *
+   * @param {string} dataElement - name of element.
+   * @return {Element} container.
+   * @private
+   */
+  _returnContainer(dataElement) {
+    return this.rootContainer.querySelector(`[data-element="${dataElement}"]`);
   }
 }
 

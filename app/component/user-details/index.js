@@ -20,11 +20,12 @@ export class UserDetails extends Component {
    * @inheritdoc
    */
   markup() {
-    return `<span><i class="glyphicon glyphicon-user"></i>${this._username}</span>`;
+    return `<span><i class="glyphicon glyphicon-user"></i>
+            <span data-element="username">${this._username}</span></span>`;
   }
 
   set username(value) {
     this._username = value;
-    this.rootContainer.innerText = value;
+    this.rootContainer.querySelector('[data-element="username"]').innerText = value;
   }
 }

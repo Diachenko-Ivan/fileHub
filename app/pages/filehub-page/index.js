@@ -5,6 +5,7 @@ import {StateAwareComponent} from '../../component/state-aware-component';
 import {DirectoryPath} from '../../component/directory-path';
 import {GetFolderAction} from '../../states/actions/file-list-action';
 import {TitleService} from '../../services/title-service';
+import {UserInfoAction} from '../../states/actions/user-info-action';
 
 /**
  * Page for file hub explorer.
@@ -66,6 +67,8 @@ export class FileHubPage extends StateAwareComponent {
       'head-button create', '<i class="glyphicon glyphicon-plus"></i>Create Folder');
 
     this.fileList = new FileItemList(this.fileListContainer);
+
+    this.dispatch(new UserInfoAction());
   }
 
   /**
@@ -93,6 +96,9 @@ export class FileHubPage extends StateAwareComponent {
     this.onStateChange('currentFolder', (state) => {
       this.directoryPath.folderName = state.currentFolder.name;
       TitleService.getInstance().setTitle(`${state.currentFolder.name} - FileHub`);
+    });
+    this.onStateChange('user', (state) => {
+      this.userDetails.username = state.user.name;
     });
   }
 

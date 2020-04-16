@@ -16,4 +16,7 @@ import FileListErrorMutator from './states/mutator/file-list-load-error-mutator'
 import StateManagerTest from './states/state-manager';
 import DirectoryPathTest from './component/directory-path'
 import MockFileSystemTest from './services/mock-file-system'
+import UserInfoActionTest from './states/actions/user-info-action'
+import UserMutatorTest from './states/mutator/user-mutator'
+
 

@@ -38,6 +38,7 @@ export class FileHubPage extends StateAwareComponent {
                 <span data-element="head-buttons" class="head-buttons">             
                 </span>
             </div>
+            <div data-element="progress-bar"></div>
             <div data-element="file-list"></div>
         </div>
         <footer class="footer">
@@ -54,6 +55,7 @@ export class FileHubPage extends StateAwareComponent {
     const headButtonsContainer = this._returnContainer('head-buttons');
     this.fileListContainer = this._returnContainer('file-list');
     const directoryPathContainer = this._returnContainer('directory-path');
+    this.progressBarContainer = this.rootContainer.querySelector('[data-element="progress-bar"]');
 
     this.directoryPath = new DirectoryPath(directoryPathContainer);
     this.userDetails = new UserDetails(userDetailsContainer, 'Username');

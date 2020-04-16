@@ -102,6 +102,27 @@ export class ApiService {
   }
 
   /**
+   * Gets user info from server.
+   *
+   * @return {Promise} object with user name an id or server error.
+   */
+  getUserInfo() {
+    return fetch('/user', {
+      method: 'GET',
+      headers: this.authenticationHeader(),
+    }).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      this.handleCommonErrors(response.status, () => {
+        window.location.hash = LOGIN_PAGE_URL;
+      }, () => {
+        throw new GeneralServerError('Server error!');
+      });
+    });
+  }
+
+  /**
    * @return {ApiService} singleton.
    */
   static getInstance() {

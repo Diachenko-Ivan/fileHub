@@ -26,13 +26,14 @@ export class GetFolderAction extends Action {
     try {
       const folderResponse = await apiService.getFolder(this.folderId);
       const folderContentResponse = await apiService.getFolderContent(this.folderId);
-      stateManager.mutate(new FileListLoadingMutator(false));
       stateManager.mutate(new FolderMutator(folderResponse.folder));
       stateManager.mutate(new FileListMutator(folderContentResponse.content));
-      return folderContentResponse.content;
+      return [folderResponse, folderContentResponse];
     } catch (e) {
       stateManager.mutate(new FileListLoadErrorMutator(e));
       return e;
+    } finally {
+      stateManager.mutate(new FileListLoadingMutator(false));
     }
   }
 }

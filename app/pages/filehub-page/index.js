@@ -65,19 +65,20 @@ export class FileHubPage extends StateAwareComponent {
     this.createFolderButton = new Button(headButtonsContainer,
       'head-button create', '<i class="glyphicon glyphicon-plus"></i>Create Folder');
 
+    this.fileList = new FileItemList(this.fileListContainer);
+
     this.dispatch(new GetFileListAction());
   }
 
   initState() {
     this.onStateChange('isLoading', (state) => {
       if (state.isLoading) {
-        this.fileListContainer.innerHTML = '<h3>Loading...</h3>';
+        this.progressBarContainer.innerHTML = '<h3>Loading...</h3>';
       } else {
-        this.fileListContainer.innerHTML = '';
+        this.progressBarContainer.innerHTML = '';
       }
     });
     this.onStateChange('fileList', (state) => {
-      this.fileList = new FileItemList(this.fileListContainer);
       this.fileList.renderFileList(state.fileList);
     });
     this.onStateChange('loadError', (state) => {

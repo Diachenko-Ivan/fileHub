@@ -49,7 +49,7 @@ export class StateAwareComponent extends Component {
   onStateChange(property, handler) {
     const listener = () => handler(this.stateManager.state);
     this.stateManager.onStateChanged(property, listener);
-    this._stateChangeHandlers.push({property: property, listener: listener});
+    this._stateChangeHandlers.push({property, listener});
   }
 
   /**

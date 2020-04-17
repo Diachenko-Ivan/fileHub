@@ -60,6 +60,13 @@ export class MockServer {
       }
       return 401;
     }, {delay: 500});
+
+    fetchMock.post('/logout', (url, request) => {
+      if (this._hasAuthToken(request.headers)) {
+        return 200;
+      }
+      return 401;
+    }, {delay: 500});
   }
 
   _hasAuthToken(headers) {

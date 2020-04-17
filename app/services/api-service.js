@@ -102,6 +102,28 @@ export class ApiService {
   }
 
   /**
+   *
+   * @return {Promise<Response>}
+   */
+  logOut() {
+    return fetch('/logout', {
+      method: 'POST',
+      headers: this.authenticationHeader()
+    }).then((response)=>{
+      if (response.ok){
+        localStorage.removeItem('token');
+        window.location.hash = LOGIN_PAGE_URL;
+        return 'Logged out';
+      }
+      this.handleCommonErrors(response.status, () => {
+        window.location.hash = LOGIN_PAGE_URL;
+      }, () => {
+        throw new GeneralServerError('Server error!');
+      });
+    });
+  }
+
+  /**
    * @return {ApiService} singleton.
    */
   static getInstance() {

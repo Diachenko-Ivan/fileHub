@@ -5,6 +5,7 @@ import {StateAwareComponent} from '../../component/state-aware-component';
 import {DirectoryPath} from '../../component/directory-path';
 import {GetFolderAction} from '../../states/actions/file-list-action';
 import {TitleService} from '../../services/title-service';
+import {LogOutAction} from '../../states/actions/log-out-action';
 
 /**
  * Page for file hub explorer.
@@ -68,6 +69,10 @@ export class FileHubPage extends StateAwareComponent {
     const logOutLink=this._returnContainer('log-out');
 
     this.fileList = new FileItemList(this.fileListContainer);
+    logOutLink.addEventListener('click', (event)=>{
+      event.preventDefault();
+      this.dispatch(new LogOutAction());
+    })
   }
 
   /**

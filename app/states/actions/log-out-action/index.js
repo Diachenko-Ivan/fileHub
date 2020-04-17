@@ -1,11 +1,12 @@
 import {Action} from '../';
+import {FileListLoadErrorMutator} from '../../mutator/file-list-load-error-mutator';
 
 /**
- * Action that is responsible for changing location and location parameters.
+ * Action that is responsible for user log out.
  */
 export class LogOutAction extends Action {
   /**
-   * Creates new {@type DynamicRouteChangeAction} instance.
+   * Creates new {@type LogOutAction} instance.
    */
   constructor() {
     super();
@@ -15,6 +16,11 @@ export class LogOutAction extends Action {
    * @inheritdoc
    */
   async apply(stateManager, apiService) {
-    return await apiService.logOut();
+    try {
+      return await apiService.logOut();
+    } catch (e) {
+      stateManager.mutate(new FileListLoadErrorMutator(e));
+      return e;
+    }
   }
 }

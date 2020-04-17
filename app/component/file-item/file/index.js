@@ -49,7 +49,7 @@ export class FileComponent extends FileItem {
                             <i class="glyphicon glyphicon-${this._fileIconTypes[this.mimeType]}"></i>
                             ${this.name}
                         </span></td>
-                    <td data-test="file-size" class="file-size">${this.size}</td>
+                    <td data-test="file-size" class="file-size">${this._getSizeWithMemoryUnit(this.size)}</td>
                     <td data-element="file-action-icons" class="file-action-icons">
                     </td>
                 </tr>`;
@@ -74,4 +74,23 @@ export class FileComponent extends FileItem {
       });
     });
   }
+
+  /**
+   * Converts bytes to string with memory units.
+   *
+   * @param {number} fileSizeInBytes - size in bytes.
+   * @returns {string} size with memory units.
+   * @private
+   */
+  _getSizeWithMemoryUnit(fileSizeInBytes) {
+    const memoryUnits = [' KB', ' MB', ' GB'];
+    let pointer = -1;
+    do {
+      fileSizeInBytes = fileSizeInBytes / 1024;
+      pointer++;
+    } while (fileSizeInBytes > 1024);
+
+    return Math.max(fileSizeInBytes, 0.1).toFixed(1) + memoryUnits[pointer];
+  }
+
 }

@@ -28,7 +28,7 @@ export class FileHubPage extends StateAwareComponent {
         <img alt="TeamDev" class="logo" src="../src/main/resources/teamdev.png">
         <ul data-element="user-menu" class="user-menu">
             <li class="username"></li>
-            <li><a href="#">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>
+            <li><a data-element="log-out" href="#">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>
         </ul>
 
         <header class="header file-explorer-header"><a href="#"><h1>File Explorer</h1></a></header>
@@ -56,7 +56,7 @@ export class FileHubPage extends StateAwareComponent {
     const headButtonsContainer = this._returnContainer('head-buttons');
     this.fileListContainer = this._returnContainer('file-list');
     const directoryPathContainer = this._returnContainer('directory-path');
-    this.progressBarContainer = this.rootContainer.querySelector('[data-element="progress-bar"]');
+    this.progressBarContainer = this._returnContainer('progress-bar');
 
     this.directoryPath = new DirectoryPath(directoryPathContainer);
     this.userDetails = new UserDetails(userDetailsContainer, 'Username');
@@ -65,6 +65,8 @@ export class FileHubPage extends StateAwareComponent {
       'head-button upload', '<i class="glyphicon glyphicon-upload"></i>Upload File');
     this.createFolderButton = new Button(headButtonsContainer,
       'head-button create', '<i class="glyphicon glyphicon-plus"></i>Create Folder');
+
+    const logOutLink=this._returnContainer('log-out');
 
     this.fileList = new FileItemList(this.fileListContainer);
     this.fileList.onRemoveListItem((model) => {

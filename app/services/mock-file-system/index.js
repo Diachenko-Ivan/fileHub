@@ -45,6 +45,18 @@ export class MockFileSystem {
   ];
 
   /**
+   * @typedef FileObject
+   * @property {string} id - file id.
+   * @property {File} file - file.
+   */
+  /**
+   * Stores files with its id.
+   *
+   * @type {FileObject[]}
+   */
+  _fileObjects = [];
+
+  /**
    * Returns file by its id.
    *
    * @param {string} id - file id.
@@ -79,6 +91,27 @@ export class MockFileSystem {
   }
 
   /**
+   * Saves new file to file system.
+   *
+   * @param {File} file - uploading file.
+   * @param {string} folderId - id of folder where file is saved.
+   */
+  saveFile(file, folderId) {
+    const fileId = Math.random().toString();
+    const fileItem = {
+      name: file.name,
+      id: fileId,
+      mimeType: file.type,
+      parentId: folderId,
+      size: file.size,
+      type: 'file'
+    };
+    this._files.push(fileItem);
+    this._fileObjects.push({file, id: fileId});
+    return fileItem;
+  }
+
+  /**
    * Used for tests.
    *
    * @return {FileItem[]}
@@ -94,5 +127,14 @@ export class MockFileSystem {
    */
   getFolders() {
     return this._folders;
+  }
+
+  /**
+   * Used for tests.
+   *
+   * @return {FileObject[]}
+   */
+  getFileObjects() {
+    return this._fileObjects;
   }
 }

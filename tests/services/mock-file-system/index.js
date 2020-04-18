@@ -18,7 +18,7 @@ export default module('MockFileSystem test', function (hook) {
     const wrongId = 'wrongId';
     const nonExistentFile = fileSystem.getFile(wrongId);
 
-    assert.ok(existentFile,  'Should return file by existing id.');
+    assert.ok(existentFile, 'Should return file by existing id.');
     assert.notOk(nonExistentFile, 'Should not return file by wrong id.');
   });
 
@@ -31,7 +31,15 @@ export default module('MockFileSystem test', function (hook) {
     const wrongId = 'wrongId';
     const nonExistentFolder = fileSystem.getFolder(wrongId);
 
-    assert.ok(existentFolder,  'Should return folder by existing id.');
+    assert.ok(existentFolder, 'Should return folder by existing id.');
     assert.notOk(nonExistentFolder, 'Should not return folder by wrong id.');
+  });
+
+  test('should successfully save file.', function (assert) {
+    const file = new File([JSON.stringify({name: 'file'})], 'file');
+
+    fileSystem.saveFile(file, '');
+
+    assert.deepEqual(fileSystem.getFileObjects()[0].file, file, 'Should save right file.');
   });
 });

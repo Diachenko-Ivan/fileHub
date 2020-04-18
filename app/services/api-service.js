@@ -102,6 +102,32 @@ export class ApiService {
   }
 
   /**
+   * Uploads new file to the to folder system.
+   *
+   * @param folderId - folder id.
+   * @param {File} file - file that is going to be saved.
+   * @return {Promise<Response>}
+   */
+  uploadFile(folderId, file) {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    return fetch(`/folder/${folderId}/file`, {
+      method: 'POST',
+      body: formData,
+      headers: this.authenticationHeader()
+    }).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      this.handleCommonErrors(response.status, () => {
+        window.location.hash = LOGIN_PAGE_URL;
+      }, () => {
+        throw new GeneralServerError('Server error!');
+      });
+    });
+  }
+
+  /**
    * @return {ApiService} singleton.
    */
   static getInstance() {

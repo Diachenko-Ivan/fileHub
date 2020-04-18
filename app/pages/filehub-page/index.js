@@ -5,6 +5,8 @@ import {StateAwareComponent} from '../../component/state-aware-component';
 import {DirectoryPath} from '../../component/directory-path';
 import {GetFolderAction} from '../../states/actions/file-list-action';
 import {TitleService} from '../../services/title-service';
+import {UploadFileAction} from '../../states/actions/upload-file-action';
+import {UploadWindowService} from '../../services/upload-window-service';
 
 /**
  * Page for file hub explorer.
@@ -61,13 +63,28 @@ export class FileHubPage extends StateAwareComponent {
     this.userDetails = new UserDetails(userDetailsContainer, 'Username');
 
     this.uploadFileButton = new Button(headButtonsContainer,
-      'head-button upload', '<i class="glyphicon glyphicon-upload"></i>Upload File');
+      'head-button upload',
+      '<i class="glyphicon glyphicon-upload"></i>Upload File');
     this.createFolderButton = new Button(headButtonsContainer,
       'head-button create', '<i class="glyphicon glyphicon-plus"></i>Create Folder');
 
-    const logOutLink=this._returnContainer('log-out');
+    const logOutLink = this._returnContainer('log-out');
 
     this.fileList = new FileItemList(this.fileListContainer);
+
+    const openWindowService = new UploadWindowService();
+
+    this.uploadFileButton.onClick(() => {
+      openWindowService.openUploadWindow((file) => {
+        this.dispatch(new UploadFileAction(this.stateManager.state.currentFolder.id, file));
+      });
+    });
+
+    this.fileList.onUploadFileToFolder((folderId) => {
+      openWindowService.openUploadWindow((file) => {
+        this.dispatch(new UploadFileAction(folderId, file));
+      });
+    });
   }
 
   /**

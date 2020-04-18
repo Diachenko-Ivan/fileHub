@@ -46,5 +46,18 @@ export class FolderComponent extends FileItem {
 
     this.uploadIcon = new FileItemIcon(fileActionIcons, {styleClass: 'upload'});
     this.removeIcon = new FileItemIcon(fileActionIcons, {styleClass: 'remove-circle'});
+
+    this.uploadIcon.onClick(() => {
+      this._onUploadFile(this.id);
+    });
+  }
+
+  /**
+   * Registers function that executes when user clicked to folder upload icon.
+   *
+   * @param {Function} handler - executes when user clicked to folder upload icon.
+   */
+  onUploadFile(handler) {
+    this._onUploadFile = (id) => handler(id);
   }
 }

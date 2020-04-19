@@ -132,4 +132,19 @@ export default module('ApiService test', function (hook) {
         done();
       });
   });
+
+  test('should return correct user.', function (assert) {
+    const done = assert.async();
+    const storageService = {
+      getItem(){}
+    };
+    const service = new ApiService(storageService);
+    const user = {name:'John'};
+    fetchMock.once('/user', user);
+    service.getUserInfo()
+      .then((responseUser) => {
+        assert.deepEqual(user, responseUser, 'Should return correct user.');
+        done();
+      });
+  });
 });

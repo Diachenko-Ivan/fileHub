@@ -122,11 +122,9 @@ export class ApiService {
       if (response.ok) {
         return response.json();
       }
-      this.handleCommonErrors(response.status, () => {
-        window.location.hash = LOGIN_PAGE_URL;
-      }, () => {
-        throw new GeneralServerError('Server error!');
-      });
+      this.handleCommonErrors(response.status,
+        new AuthenticationError(),
+        new GeneralServerError('Server error!'));
     });
   }
 

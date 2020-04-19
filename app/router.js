@@ -137,11 +137,31 @@ export class Router {
       this._currentPage.destroy();
     }
     if (!this._pageMapping[url]) {
-      this._pageMapping[NOT_FOUND_PAGE_URL]();
+      this._currentPage = this._pageMapping[NOT_FOUND_PAGE_URL]();
       this._currentPageUrl = '';
     } else {
-      this._pageMapping[url]();
+      this._currentPage = this._pageMapping[url]();
       this._currentPageUrl = url;
+    }
+    this._setResourceNotFound(url);
+  }
+
+  /**
+   * Sets behaviour to page, which has dynamic parameters.
+   *
+   * @param {string} urlTemplate - page mapping.
+   * @private
+   */
+  _setResourceNotFound(urlTemplate){
+    if (urlTemplate.includes(':')){
+      this._currentPage.onResourceNotFound(()=>{
+        if (this._currentPage) {
+          this._currentPage.destroy();
+        }
+        this.container.innerHTML = '';
+        this._currentPage = this._pageMapping[NOT_FOUND_PAGE_URL]();
+        this._currentPageUrl = '';
+      });
     }
   }
 

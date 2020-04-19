@@ -7,6 +7,9 @@ import {GetFolderAction} from '../../states/actions/file-list-action';
 import {TitleService} from '../../services/title-service';
 import {UploadFileAction} from '../../states/actions/upload-file-action';
 import {UploadWindowService} from '../../services/upload-window-service';
+import {AuthenticationError} from '../../models/errors/authentication-error';
+import {LOGIN_PAGE_URL} from '../../config/router-config';
+import {FileItemNotFoundError} from '../../models/errors/file-item-not-found';
 
 /**
  * Page for file hub explorer.
@@ -63,8 +66,7 @@ export class FileHubPage extends StateAwareComponent {
     this.userDetails = new UserDetails(userDetailsContainer, 'Username');
 
     this.uploadFileButton = new Button(headButtonsContainer,
-      'head-button upload',
-      '<i class="glyphicon glyphicon-upload"></i>Upload File');
+      'head-button upload', '<i class="glyphicon glyphicon-upload"></i>Upload File');
     this.createFolderButton = new Button(headButtonsContainer,
       'head-button create', '<i class="glyphicon glyphicon-plus"></i>Create Folder');
 
@@ -102,9 +104,11 @@ export class FileHubPage extends StateAwareComponent {
       this.fileList.renderFileList(state.fileList);
     });
     this.onStateChange('loadError', (state) => {
-      // if (state.loadError instanceof FileItemNotFoundError) {
-      //   this.directoryPath.folderName = state.loadError.message;
-      // }
+      if (state.loadError instanceof AuthenticationError) {
+        window.location.hash = LOGIN_PAGE_URL;
+      } else if(state.loadError instanceof FileItemNotFoundError){
+        this._onResourceNotFound();
+      }
     });
     this.onStateChange('locationParam', (state) => {
       this.dispatch(new GetFolderAction(state.locationParam.id));
@@ -113,6 +117,16 @@ export class FileHubPage extends StateAwareComponent {
       this.directoryPath.folderName = state.currentFolder.name;
       TitleService.getInstance().setTitle(`${state.currentFolder.name} - FileHub`);
     });
+  }
+
+  /**
+   * Registers the function that is invoked when folder is not found.
+   * <p>Used by {@link Router}.
+   *
+   * @param {Function} handler - the function that is invoked when folder is not found.
+   */
+  onResourceNotFound(handler) {
+    this._onResourceNotFound = () => handler();
   }
 
   /**

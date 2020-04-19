@@ -17,4 +17,4 @@ import StateManagerTest from './states/state-manager';
 import DirectoryPathTest from './component/directory-path'
 import MockFileSystemTest from './services/mock-file-system'
 import RemoveItemAction from './states/actions/remove-item-action'
-
+import StorageServiceTest from './services/storage-service'

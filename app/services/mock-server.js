@@ -37,9 +37,7 @@ export class MockServer {
         const id = url.split('/')[2];
         const folder = this._fileSystem.getFolder(id);
         if (folder) {
-          return {
-            folder: folder
-          };
+          return folder;
         } else {
           return 404;
         }
@@ -51,9 +49,7 @@ export class MockServer {
       if (this._hasAuthToken(request.headers)) {
         const id = url.split('/')[2];
         if (this._fileSystem.getFolder(id)) {
-          return {
-            content: this._fileSystem.getFolderContent(id),
-          };
+          return this._fileSystem.getFolderContent(id);
         } else {
           return 404;
         }

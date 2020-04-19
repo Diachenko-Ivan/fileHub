@@ -26,8 +26,8 @@ export class GetFolderAction extends Action {
     try {
       const folderResponse = await apiService.getFolder(this.folderId);
       const folderContentResponse = await apiService.getFolderContent(this.folderId);
-      stateManager.mutate(new FolderMutator(folderResponse.folder));
-      stateManager.mutate(new FileListMutator(folderContentResponse.content));
+      stateManager.mutate(new FolderMutator(folderResponse));
+      stateManager.mutate(new FileListMutator(folderContentResponse));
       return [folderResponse, folderContentResponse];
     } catch (e) {
       stateManager.mutate(new FileListLoadErrorMutator(e));

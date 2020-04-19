@@ -95,7 +95,6 @@ export class FileComponent extends FileItem {
   _defineIcon(mimeType) {
     const iconType = Object.keys(this._fileIconTypes).find((iconType) => mimeType.startsWith(iconType));
     if (iconType) {
-      debugger
       this._iconType = this._fileIconTypes[iconType];
       return;
     }

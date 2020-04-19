@@ -3,6 +3,7 @@ import {ValidationError} from '../models/errors/validation-error';
 import {GeneralServerError} from '../models/errors/server-error';
 import {AuthenticationError} from '../models/errors/authentication-error';
 import {StorageService} from './storage-service';
+import {FileItemNotFoundError} from '../models/errors/file-item-not-found';
 
 /**
  * Used for fulfilling requests to server.
@@ -79,6 +80,7 @@ export class ApiService {
       this.handleCommonErrors(response.status,
         new AuthenticationError(),
         new GeneralServerError('Server error!'),
+        new FileItemNotFoundError('Folder not found.')
       );
     });
   }
@@ -100,6 +102,7 @@ export class ApiService {
       this.handleCommonErrors(response.status,
         new AuthenticationError(),
         new GeneralServerError('Server error!'),
+        new FileItemNotFoundError('Folder not found.')
       );
     });
   }

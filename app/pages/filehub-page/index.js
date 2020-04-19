@@ -5,6 +5,8 @@ import {StateAwareComponent} from '../../component/state-aware-component';
 import {GetFileListAction} from '../../states/actions/file-list-action';
 import {DirectoryPath} from '../../component/directory-path';
 import {TitleService} from '../../services/title-service';
+import {AuthenticationError} from '../../models/errors/authentication-error';
+import {LOGIN_PAGE_URL} from '../../config/router-config';
 
 /**
  * Page for file hub explorer.
@@ -65,7 +67,7 @@ export class FileHubPage extends StateAwareComponent {
     this.createFolderButton = new Button(headButtonsContainer,
       'head-button create', '<i class="glyphicon glyphicon-plus"></i>Create Folder');
 
-    const logOutLink=this._returnContainer('log-out');
+    const logOutLink = this._returnContainer('log-out');
 
     this.fileList = new FileItemList(this.fileListContainer);
 
@@ -84,7 +86,9 @@ export class FileHubPage extends StateAwareComponent {
       this.fileList.renderFileList(state.fileList);
     });
     this.onStateChange('loadError', (state) => {
-
+      if (state.loadError instanceof AuthenticationError) {
+        window.location.hash = LOGIN_PAGE_URL;
+      }
     });
   }
 

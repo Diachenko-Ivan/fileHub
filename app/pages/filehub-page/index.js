@@ -62,7 +62,7 @@ export class FileHubPage extends StateAwareComponent {
     this.progressBarContainer = this._returnContainer('progress-bar');
 
     this.directoryPath = new DirectoryPath(directoryPathContainer);
-    this.userDetails = new UserDetails(userDetailsContainer, 'Username');
+    this.userDetails = new UserDetails(userDetailsContainer);
 
     this.uploadFileButton = new Button(headButtonsContainer,
       'head-button upload', '<i class="glyphicon glyphicon-upload"></i>Upload File');

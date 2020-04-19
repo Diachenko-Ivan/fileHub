@@ -8,11 +8,9 @@ export class UserDetails extends Component {
    * Creates new {@type UserDetails} instance.
    *
    * @param {Element} container - outer container.
-   * @param {string} username - user`s name.
    */
-  constructor(container, username) {
+  constructor(container) {
     super(container);
-    this._username = username;
     this.render();
   }
 
@@ -21,7 +19,7 @@ export class UserDetails extends Component {
    */
   markup() {
     return `<span><i class="glyphicon glyphicon-user"></i>
-            <span data-element="username">${this._username}</span></span>`;
+            <span data-element="username"></span></span>`;
   }
 
   set username(value) {

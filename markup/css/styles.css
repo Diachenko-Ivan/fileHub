@@ -235,6 +235,18 @@ a:hover {
     opacity: 1;
 }
 
+.table tr .input {
+    display: none;
+}
+.table .editing .name {
+    display: none;
+}
+
+.table .editing .input {
+    width: 300px;
+    display: inline-block;
+}
+
 .table td {
     padding: 12px 5px 12px;
     line-height: 28px;
@@ -258,7 +270,7 @@ a:hover {
     cursor: pointer;
 }
 
-.table .file-name {
+.table .cell-file-name {
     display: block;
     text-overflow: ellipsis;
     overflow: hidden;

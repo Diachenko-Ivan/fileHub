@@ -28,6 +28,7 @@ export class RemoveItemAction extends Action {
       }
       await stateManager.dispatch(new GetFolderAction(stateManager.state.currentFolder.id));
     } catch (e) {
+      stateManager.mutate(new FileListLoadErrorMutator(e));
       return e;
     }
   }

@@ -12,11 +12,13 @@ export default module('UserDetails test', function (hook) {
 
   test('should render user details component.', function (assert) {
     const username = 'Username';
-    new UserDetails(fixture, username);
+    const userDetails = new UserDetails(fixture);
 
-    const userDetails = fixture.firstElementChild;
+    const userDetailsComponent = fixture.firstElementChild;
 
-    assert.ok(userDetails, 'Should render user details component.');
-    assert.strictEqual(userDetails.innerText, username, 'Should render correct username.');
+    userDetails.username = username;
+
+    assert.ok(userDetailsComponent, 'Should render user details component.');
+    assert.strictEqual(userDetailsComponent.innerText, username, 'Should render correct username.');
   });
 });

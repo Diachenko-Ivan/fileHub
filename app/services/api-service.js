@@ -66,6 +66,7 @@ export class ApiService {
   /**
    * Tries to get folder by its id.
    *
+   * @param {string} folderId - folder id.
    * @return {Promise} either object with file list or error if server is gone down.
    */
   getFolder(folderId) {
@@ -88,6 +89,7 @@ export class ApiService {
   /**
    * Tries to get folder content.
    *
+   * @param {string} folderId - folder id.
    * @return {Promise} either object with file list or error if server is gone down.
    */
   getFolderContent(folderId) {

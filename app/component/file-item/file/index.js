@@ -24,7 +24,9 @@ export class FileComponent extends FileItem {
     text: 'book',
     audio: 'music',
     video: 'film',
+    other: 'file'
   };
+
   /**
    * Creates new {@type FileComponent} component.
    *
@@ -34,6 +36,7 @@ export class FileComponent extends FileItem {
   constructor(container, fileDescription) {
     super(container);
     Object.assign(this, fileDescription);
+    this._defineIcon(this.mimeType);
     this.render();
   }
 
@@ -46,7 +49,7 @@ export class FileComponent extends FileItem {
                     <td class="arrow"></td>
                     <td>
                         <span data-test="file-name" class="file-name">
-                            <i class="glyphicon glyphicon-${this._fileIconTypes[this.mimeType]}"></i>
+                            <i class="glyphicon glyphicon-${this._iconType}"></i>
                             ${this.name}
                         </span></td>
                     <td data-test="file-size" class="file-size">${this._getSizeWithMemoryUnit(this.size)}</td>
@@ -83,4 +86,18 @@ export class FileComponent extends FileItem {
     return Math.max(fileSizeInBytes, 0.1).toFixed(1) + memoryUnits[pointer];
   }
 
+  /**
+   * Defines appropriate file icon.
+   *
+   * @param {string} mimeType - file mime type.
+   * @private
+   */
+  _defineIcon(mimeType) {
+    const iconType = Object.keys(this._fileIconTypes).find((iconType) => mimeType.startsWith(iconType));
+    if (iconType) {
+      this._iconType = this._fileIconTypes[iconType];
+      return;
+    }
+    this._iconType = this._fileIconTypes.other;
+  }
 }

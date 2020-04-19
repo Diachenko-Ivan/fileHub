@@ -43,10 +43,10 @@ export default module('GetFolderAction test', function (hook) {
     };
     const mockApiService = {
       getFolder() {
-        return Promise.resolve({folder});
+        return Promise.resolve(folder);
       },
       getFolderContent() {
-        return Promise.resolve({content});
+        return Promise.resolve(content);
       }
     };
 

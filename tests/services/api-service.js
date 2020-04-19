@@ -132,4 +132,32 @@ export default module('ApiService test', function (hook) {
         done();
       });
   });
+
+  test('should return success after file deletion.', function (assert) {
+    const done = assert.async();
+    const storageService = {
+      getItem(){}
+    };
+    const service = new ApiService(storageService);
+    fetchMock.once('/file/id', 200);
+    service.removeFile('id')
+      .then(() => {
+        assert.ok(true, 'Should return code 200.');
+        done();
+      });
+  });
+
+  test('should return success after folder deletion.', function (assert) {
+    const done = assert.async();
+    const storageService = {
+      getItem(){}
+    };
+    const service = new ApiService(storageService);
+    fetchMock.once('/folder/id', 200);
+    service.removeFolder('id')
+      .then(() => {
+        assert.ok(true, 'Should return code 200.');
+        done();
+      });
+  });
 });

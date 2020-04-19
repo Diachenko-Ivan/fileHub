@@ -2,12 +2,21 @@ import {UserCredentials} from '../models/user-credentials';
 import {ValidationError} from '../models/errors/validation-error';
 import {GeneralServerError} from '../models/errors/server-error';
 import {AuthenticationError} from '../models/errors/authentication-error';
-import {LOGIN_PAGE_URL} from '../config/router-config';
+import {StorageService} from './storage-service';
 
 /**
  * Used for fulfilling requests to server.
  */
 export class ApiService {
+  /**
+   * Creates new Api Service.
+   *
+   * @param {StorageService} storageService - used for storing token and etc.
+   */
+  constructor(storageService) {
+    this.storageService = storageService;
+  }
+
   /**
    * Tries to authenticate user and returns result of authentication.
    *
@@ -20,15 +29,12 @@ export class ApiService {
       body: JSON.stringify(userCredentials),
     }).then((response) => {
       if (response.ok) {
-        response.json()
-          .then((data) => localStorage.setItem('token', data.token));
-        return 'Successfully authenticated.';
+        return response.json().then((data) => this.storageService.setItem('token', data.token));
       }
-      this.handleCommonErrors(response.status, () => {
-        throw new AuthenticationError('No users found with this login and password.');
-      }, () => {
-        throw new GeneralServerError('Server error!');
-      });
+      this.handleCommonErrors(response.status,
+        new AuthenticationError('No users found with this login and password.'),
+        new GeneralServerError('Server error!'),
+      );
     });
   }
 
@@ -44,7 +50,7 @@ export class ApiService {
       body: JSON.stringify(userCredentials),
     }).then((response) => {
       if (response.ok) {
-        return 'Successfully registered.';
+        return true;
       } else if (response.status === 422) {
         return response.json()
           .then((responseObject) => {
@@ -53,28 +59,6 @@ export class ApiService {
       } else if (response.status === 500) {
         throw new GeneralServerError('Server error!');
       }
-    });
-  }
-
-  /**
-   * Tries to get full file item list.
-   *
-   * @return {Promise} either object with file list or error if server is gone down.
-   */
-  getFileItemList() {
-    return fetch('/file-list', {
-        method: 'GET',
-        headers: this.authenticationHeader()
-      }
-    ).then(response => {
-      if (response.ok) {
-        return response.json();
-      }
-      this.handleCommonErrors(response.status, () => {
-        window.location.hash = LOGIN_PAGE_URL;
-      }, () => {
-        throw new GeneralServerError('Server error!');
-      });
     });
   }
 
@@ -93,22 +77,25 @@ export class ApiService {
   authenticationHeader() {
     return {
       'Authorization':
-        `Bearer ${localStorage.getItem('token')}`
+        `Bearer ${this.storageService.getItem('token')}`
     };
   }
 
   /**
-   * Handles 401 and 500 error.
+   * Handles 401, 404 and 500 error.
    *
    * @param {number} status - error status code.
-   * @param {Function} unauthorizedErrorHandler - function that is invoked when status = 401.
-   * @param {Function} serverErrorHandler - function that is invoked when status = 500.
+   * @param {Error} error401 - function that is invoked when status = 401.
+   * @param {Error} error500 - function that is invoked when status = 500.
+   * @param {Error} error404 - function that is invoked when status = 404.
    */
-  handleCommonErrors(status, unauthorizedErrorHandler, serverErrorHandler) {
+  handleCommonErrors(status, error401, error500, error404 = new Error()) {
     if (status === 401) {
-      unauthorizedErrorHandler();
+      throw error401;
     } else if (status === 500) {
-      serverErrorHandler();
+      throw error500;
+    } else if (status === 404) {
+      throw error404;
     }
   }
 }
@@ -118,4 +105,4 @@ export class ApiService {
  *
  * @type {ApiService}
  */
-const service = new ApiService();
+const service = new ApiService(new StorageService(localStorage));

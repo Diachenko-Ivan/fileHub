@@ -10,4 +10,4 @@ import FileTest from './component/file-item/file'
 import FolderTest from './component/file-item/folder'
 import FileItemListTest from './component/file-list'
 import DirectoryPathTest from './component/directory-path'
-
+import StorageServiceTest from './services/storage-service'

@@ -132,4 +132,23 @@ export default module('ApiService test', function (hook) {
         done();
       });
   });
+
+  test('should successfully upload file.', function (assert) {
+    const done = assert.async();
+    const fileItem = {name: 'file'};
+    const file = new File([JSON.stringify(fileItem)], 'file');
+    const storageService = {
+      getItem(){}
+    };
+    const service = new ApiService(storageService);
+    fetchMock.once('/folder/id/file',((url, opts) => {
+      assert.deepEqual(opts.body.get('file'), file, 'Should send form data in request body.');
+      return fileItem;
+    }));
+    service.uploadFile('id', file)
+      .then((returnedFile) => {
+        assert.deepEqual(fileItem, returnedFile, 'Should return file object on status 200.');
+        done();
+      });
+  });
 });

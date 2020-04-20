@@ -117,17 +117,15 @@ export class ApiService {
     return fetch('/logout', {
       method: 'POST',
       headers: this.authenticationHeader()
-    }).then((response)=>{
-      if (response.ok){
-        localStorage.removeItem('token');
-        window.location.hash = LOGIN_PAGE_URL;
-        return 'Logged out';
+    }).then((response) => {
+      if (response.ok) {
+        this.storageService.removeItem('token');
+        throw new AuthenticationError();
       }
-      this.handleCommonErrors(response.status, () => {
-        window.location.hash = LOGIN_PAGE_URL;
-      }, () => {
-        throw new GeneralServerError('Server error!');
-      });
+      this.handleCommonErrors(response.status,
+        new AuthenticationError(),
+        new GeneralServerError('Server error!')
+      );
     });
   }
 

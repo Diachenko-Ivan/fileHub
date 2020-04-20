@@ -8,6 +8,7 @@ import {TitleService} from '../../services/title-service';
 import {AuthenticationError} from '../../models/errors/authentication-error';
 import {LOGIN_PAGE_URL} from '../../config/router-config';
 import {FileItemNotFoundError} from '../../models/errors/file-item-not-found';
+import {RenameItemAction} from '../../states/actions/item-name-change-action';
 
 /**
  * Page for file hub explorer.
@@ -71,6 +72,9 @@ export class FileHubPage extends StateAwareComponent {
     const logOutLink = this._returnContainer('log-out');
 
     this.fileList = new FileItemList(this.fileListContainer);
+    this.fileList.onFileItemNameChange((model) => {
+      this.dispatch(new RenameItemAction(model));
+    });
   }
 
   /**

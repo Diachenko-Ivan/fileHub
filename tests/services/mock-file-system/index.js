@@ -47,6 +47,7 @@ export default module('MockFileSystem test', function (hook) {
 
     fileSystem.saveFile(file, '');
 
-    assert.deepEqual(fileSystem.getFileObjects()[0].file, file, 'Should save right file.');
+    assert.ok(fileSystem.getFileObjects()[0].file, 'Should save file.');
+    assert.deepEqual(fileSystem.getFileObjects()[0].file, file, 'Should save equal file.');
   });
 });

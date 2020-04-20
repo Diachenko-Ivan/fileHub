@@ -51,4 +51,67 @@ export class FolderComponent extends FileItem {
     this.uploadIcon = new FileItemIcon(fileActionIcons, {styleClass: 'upload'});
     this.removeIcon = new FileItemIcon(fileActionIcons, {styleClass: 'remove-circle'});
   }
+
+  /**
+   * @inheritdoc
+   */
+  addEventListener() {
+    let timeout;
+    this._fileName = this.rootContainer.querySelector('[data-element="item-name"]');
+    this._fileName.addEventListener('click', () => {
+      if (this.isSelected) {
+        timeout = setTimeout(() => {
+          this.isSelected = false;
+          this.isEditing = true;
+          this.onSecondClick();
+        }, 500);
+      } else if(!this._isEditing){
+        this.isSelected = true;
+        this._onFirstClick();
+      }
+    });
+    this._fileName.addEventListener('dblclick', () => {
+      clearTimeout(timeout);
+      clearTimeout(timeout - 1);
+      window.location.hash = `/folder/${this.id}`;
+    });
+  }
+
+  /**
+   * @inheritdoc
+   */
+  onSecondClick() {
+    const input = this._fileName.querySelector('input');
+    input.value = this.name;
+    input.addEventListener('change', () => {
+      this.name=input.value;
+      this._onNameChange(this);
+    });
+    input.addEventListener('click', (event)=>{
+      event.stopPropagation();
+    })
+  }
+
+  /**
+   * @inheritdoc
+   */
+  set isEditing(value){
+    this._isEditing = value;
+    this._fileName.innerHTML = '';
+    if (value) {
+      this._fileName.innerHTML = `
+            <span class="folder-name">
+                <i class="glyphicon glyphicon-folder-close"></i>
+                <span class="file-name-editing">
+                    <input class="input edit-input" value="${this.name}">
+                </span>
+            </span>`;
+    } else {
+      this._fileName.innerHTML = `
+            <span class="folder-name">
+                <i class="glyphicon glyphicon-folder-close"></i>
+                <a data-test="folder-name" data-element="folder-link" href="#/folder/${this.id}">${this.name}</a>
+            </span>`;
+    }
+  }
 }

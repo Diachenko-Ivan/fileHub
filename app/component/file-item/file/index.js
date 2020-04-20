@@ -101,4 +101,61 @@ export class FileComponent extends FileItem {
     }
     this._iconType = this._fileIconTypes.other;
   }
+
+  /**
+   * @inheritdoc
+   */
+  addEventListener() {
+    this._fileName = this.rootContainer.querySelector('[data-element="item-name"]');
+    this._fileName.addEventListener('click', () => {
+      if (this.isSelected) {
+        setTimeout(() => {
+          this.isSelected = false;
+          this.isEditing = true;
+          this.onSecondClick();
+        }, 500);
+      } else if(!this.isEditing){
+        this.isSelected = true;
+        this._onFirstClick();
+      }
+    });
+  }
+
+  /**
+   * @inheritdoc
+   */
+  onSecondClick() {
+    const input = this._fileName.querySelector('input');
+    input.value = this.name.split('.')[0];
+    input.addEventListener('change', () => {
+      this.name=`${input.value}.${this.name.split('.')[1]}`;
+      this._onNameChange(this);
+    });
+    input.addEventListener('click', (event)=>{
+      event.stopPropagation();
+    })
+  }
+
+  /**
+   * @inheritdoc
+   */
+  set isEditing(value){
+    this._isEditing = value;
+    this._fileName.innerHTML = '';
+    if (value) {
+      this._fileName.innerHTML = `
+            <span class="folder-name">
+                <i class="glyphicon glyphicon-${this._iconType}"></i>
+                <span class="file-name-editing">
+                    <input class="input edit-input">
+                </span>
+            </span>`;
+    } else {
+      this._fileName.innerHTML = `
+            <span class="folder-name">
+                <i class="glyphicon glyphicon-${this._iconType}"></i>
+                ${this.name}
+            </span>`;
+    }
+  }
 }

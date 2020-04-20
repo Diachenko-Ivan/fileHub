@@ -62,7 +62,19 @@ export class FileItemList extends Component {
    */
   renderFileList(items) {
     this.rootContainer.firstElementChild.innerHTML = '';
-    this._sortedItems(items).forEach((item) => this._fileItem[item.type](item));
+    this._sortedItems(items).forEach((item) => {
+      const fileItem = this._fileItem[item.type](item);
+      fileItem.onFirstClick(() => {
+        if (this._currentSelected) {
+          this._currentSelected.isSelected = false;
+          this._currentSelected.isEditing = false;
+        }
+        this._currentSelected = fileItem;
+      });
+      fileItem.onNameChange((model) => {
+        this._onFileItemNameChange(model);
+      });
+    });
   }
 
   /**
@@ -82,5 +94,9 @@ export class FileItemList extends Component {
       }
     });
     return sortedArray;
+  }
+
+  onFileItemNameChange(handler) {
+    this._onFileItemNameChange = (model) => handler(model);
   }
 }

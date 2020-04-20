@@ -26,10 +26,7 @@ export class MockFileSystem {
    * @type {FolderItem[]}
    * @private
    */
-  _folders = [
-    {name: 'Different', type: 'folder', filesCount: 10, id: '123', parentId: 'root'},
-    {name: 'Root', type: 'folder', filesCount: 10, id: 'root'},
-  ];
+  _folders = [];
 
   /**
    * Array of files.
@@ -38,11 +35,19 @@ export class MockFileSystem {
    * @type {FileItem[]}
    * @private
    */
-  _files = [
-    {name: 'nature.jpeg', type: 'file', mimeType: 'image', size: 10, id: 'abs', parentId: '123'},
-    {name: 'hello.txt', type: 'file', mimeType: 'text', size: 100, id: 'qwe', parentId: '123'},
-    {name: 'file.pdf', type: 'file', mimeType: 'text', size: 100, id: 'zxc', parentId: 'root'},
-  ];
+  _files = [];
+
+  /**
+   * Creates new mock file system with available files and folders.
+   *
+   * @param {FolderItem[]} folders - array of folders.
+   * @param {FileItem[]} files - array of files.
+   */
+  constructor(folders, files) {
+    this._folders = folders;
+    this._files = files;
+  }
+
 
   /**
    * @typedef FileObject

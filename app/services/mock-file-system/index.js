@@ -84,6 +84,33 @@ export class MockFileSystem {
   }
 
   /**
+   * Renames folder with specific id.
+   *
+   * @param {string} id - folder id.
+   * @param {FolderItem} renamedFolder - renamed folder sent by user.
+   */
+  renameFolder(id, renamedFolder) {
+    this._folders.forEach((folder) => {
+      if (id === folder.id) {
+        folder.name = renamedFolder.name;
+      }
+    });
+  }
+
+  /**
+   *
+   * @param {string} id - file id.
+   * @param {FileItem} renamedFile - renamed file sent by user.
+   */
+  renameFile(id, renamedFile){
+    this._files.forEach((file) => {
+      if (id === file.id) {
+        file.name = renamedFile.name;
+      }
+    });
+  }
+
+  /**
    * Used for tests.
    *
    * @return {FileItem[]}

@@ -305,3 +305,9 @@ a:hover {
     color: #ff0000;
 }
 
+table tr.isSelected {
+    background-color: #c0dbe8;
+}
+table tr.isSelected:hover {
+    background-color: #c0dbe8;
+}

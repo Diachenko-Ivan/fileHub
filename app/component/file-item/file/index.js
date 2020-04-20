@@ -47,11 +47,12 @@ export class FileComponent extends FileItem {
     return `
                 <tr>
                     <td class="arrow"></td>
-                    <td>
+                    <td data-element="item-name">
                         <span data-test="file-name" class="file-name">
                             <i class="glyphicon glyphicon-${this._iconType}"></i>
                             ${this.name}
-                        </span></td>
+                        </span>
+                    </td>
                     <td data-test="file-size" class="file-size">${this._getSizeWithMemoryUnit(this.size)}</td>
                     <td data-element="file-action-icons" class="file-action-icons">
                     </td>

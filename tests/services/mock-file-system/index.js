@@ -5,7 +5,14 @@ const {test, module} = QUnit;
 export default module('MockFileSystem test', function (hook) {
   let fileSystem;
   hook.beforeEach(() => {
-    fileSystem = new MockFileSystem();
+    fileSystem = new MockFileSystem([
+      {name: 'Different', type: 'folder', filesCount: 10, id: '123', parentId: 'root'},
+      {name: 'Root', type: 'folder', filesCount: 10, id: 'root'},
+    ], [
+      {name: 'nature.jpeg', type: 'file', mimeType: 'image', size: 10, id: 'abs', parentId: '123'},
+      {name: 'hello.txt', type: 'file', mimeType: 'text', size: 100, id: 'qwe', parentId: '123'},
+      {name: 'file.pdf', type: 'file', mimeType: 'text', size: 100, id: 'zxc', parentId: 'root'},
+    ]);
   });
 
   test('should successfully delete one folder.', function (assert) {

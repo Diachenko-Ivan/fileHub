@@ -63,6 +63,36 @@ export class MockServer {
       }
       return 401;
     }, {delay: 500});
+
+    fetchMock.put('express:/file/:fileId', (url, request) => {
+      if (this._hasAuthToken(request.headers)) {
+        const id = url.split('/')[2];
+        const fileToRename = this._fileSystem.getFile(id);
+        if (fileToRename) {
+          const renamedFile = JSON.parse(request.body);
+          this._fileSystem.renameFile(id, renamedFile)
+          return fileToRename;
+        } else {
+          return 404;
+        }
+      }
+      return 401;
+    }, {delay: 500});
+
+    fetchMock.put('express:/folder/:folderId', (url, request) => {
+      if (this._hasAuthToken(request.headers)) {
+        const id = url.split('/')[2];
+        const folderToRename = this._fileSystem.getFolder(id);
+        if (folderToRename) {
+          const renamedFolder = JSON.parse(request.body);
+          this._fileSystem.renameFolder(id, renamedFolder)
+          return folderToRename;
+        } else {
+          return 404;
+        }
+      }
+      return 401;
+    }, {delay: 500});
   }
 
   _hasAuthToken(headers) {

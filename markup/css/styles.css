@@ -235,15 +235,16 @@ a:hover {
     opacity: 1;
 }
 
-.table tr .input {
+.table .cell-file-name .input {
+    width: 300px;
     display: none;
 }
+
 .table .editing .name {
     display: none;
 }
 
 .table .editing .input {
-    width: 300px;
     display: inline-block;
 }
 
@@ -275,10 +276,6 @@ a:hover {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-}
-
-.table .file-name-editing .input {
-    width: 300px;
 }
 
 .table .cell-action-icons .glyphicon-upload {

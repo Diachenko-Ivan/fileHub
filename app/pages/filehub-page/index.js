@@ -7,7 +7,7 @@ import {GetFolderAction} from '../../states/actions/file-list-action';
 import {TitleService} from '../../services/title-service';
 import {AuthenticationError} from '../../models/errors/authentication-error';
 import {LOGIN_PAGE_URL} from '../../config/router-config';
-import {FileItemNotFoundError} from '../../models/errors/file-item-not-found';
+import {PageNotFoundError} from '../../models/errors/page-not-found-error';
 
 /**
  * Page for file hub explorer.
@@ -90,7 +90,7 @@ export class FileHubPage extends StateAwareComponent {
     this.onStateChange('loadError', (state) => {
       if (state.loadError instanceof AuthenticationError) {
         window.location.hash = LOGIN_PAGE_URL;
-      } else if(state.loadError instanceof FileItemNotFoundError){
+      } else if(state.loadError instanceof PageNotFoundError){
         this._onResourceNotFound();
       }
     });
@@ -98,6 +98,11 @@ export class FileHubPage extends StateAwareComponent {
       this.dispatch(new GetFolderAction(state.locationParam.id));
     });
     this.onStateChange('currentFolder', (state) => {
+      if (state.currentFolder.parentId){
+        this.directoryPath.setInnerFolderIcon(`#/folder/${state.currentFolder.parentId}`);
+      } else {
+        this.directoryPath.setRootFolderIcon();
+      }
       this.directoryPath.folderName = state.currentFolder.name;
       TitleService.getInstance().setTitle(`${state.currentFolder.name} - FileHub`);
     });

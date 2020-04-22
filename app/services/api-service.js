@@ -71,8 +71,8 @@ export class ApiService {
   getFolder(folderId) {
     return fetch(`/folder/${folderId}`, {
         method: 'GET',
-        headers: this.authenticationHeader()
-      }
+        headers: this.authenticationHeader(),
+      },
     ).then(response => {
       if (response.ok) {
         return response.json();
@@ -90,8 +90,8 @@ export class ApiService {
   getFolderContent(folderId) {
     return fetch(`/folder/${folderId}/content`, {
         method: 'GET',
-        headers: this.authenticationHeader()
-      }
+        headers: this.authenticationHeader(),
+      },
     ).then(response => {
       if (response.ok) {
         return response.json();
@@ -113,9 +113,7 @@ export class ApiService {
       if (response.ok) {
         return response.json();
       }
-      this.handleCommonErrors(response.status,
-        new AuthenticationError(),
-        new GeneralServerError('Server error!'));
+      this.handleCommonErrors(response.status);
     });
   }
 

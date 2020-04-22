@@ -8,6 +8,8 @@ import {TitleService} from '../../services/title-service';
 import {AuthenticationError} from '../../models/errors/authentication-error';
 import {LOGIN_PAGE_URL} from '../../config/router-config';
 import {PageNotFoundError} from '../../models/errors/page-not-found-error';
+import {GetFileAction} from '../../states/actions/get-file-action';
+import {DownloadAnchorService} from '../../services/dowload-anchor-service';
 
 /**
  * Page for file hub explorer.
@@ -71,6 +73,13 @@ export class FileHubPage extends StateAwareComponent {
     const logOutLink = this._returnContainer('log-out');
 
     this.fileList = new FileItemList(this.fileListContainer);
+
+    const downloadAnchorService = new DownloadAnchorService();
+
+    this.fileList.onDownloadFile((id)=>{
+      this.dispatch(new GetFileAction(id))
+        .then((file) => downloadAnchorService.createAndClickDownloadAnchor(file));
+    })
   }
 
   /**

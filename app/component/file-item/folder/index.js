@@ -85,6 +85,7 @@ export class FolderComponent extends FileItem {
     input.value = this.name;
     input.addEventListener('change', () => {
       this.name=input.value;
+      const {name, id, parentId, type, mimeType, size} = this;
       this._onNameChange(this);
     });
     input.addEventListener('click', (event)=>{

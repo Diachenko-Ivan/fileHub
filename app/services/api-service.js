@@ -115,11 +115,7 @@ export class ApiService {
       if (response.ok) {
         return response.json();
       }
-      this.handleCommonErrors(response.status,
-        new AuthenticationError(),
-        new GeneralServerError('Server error!'),
-        new FileItemNotFoundError('Folder not found.')
-      );
+      this.handleCommonErrors(response.status);
     });
   }
 

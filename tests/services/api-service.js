@@ -132,4 +132,20 @@ export default module('ApiService test', function (hook) {
         done();
       });
   });
+
+  test('should return downloaded file.', function (assert) {
+    assert.expect(1);
+    const done = assert.async();
+    const storageService = {
+      getItem(){}
+    };
+    const service = new ApiService(storageService);
+    const downloadingFile = new Blob(['a','s']);
+    fetchMock.once('/file/id', downloadingFile);
+    service.downloadFile('id')
+      .then((blob)=>{
+        assert.ok(blob, 'Should return file.');
+        done();
+      })
+  });
 });

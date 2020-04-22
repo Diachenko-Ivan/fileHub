@@ -24,4 +24,21 @@ export default module('DirectoryPath test', function (hook) {
     const folderName = directoryPathComponent.rootContainer.querySelector('[data-element="folder-name"]').innerText;
     assert.strictEqual(`/ ${folder}`, folderName, 'Should contain directory path.');
   });
+
+
+  test('should set different folder icons.', function (assert) {
+    const directoryPathComponent = new DirectoryPath(fixture);
+    const url = '#/folder/root';
+
+    directoryPathComponent.setInnerFolderIcon(url);
+    const anchor = fixture.getElementsByTagName('a')[0];
+
+    assert.ok(anchor, 'Should contain anchor link if is inner.');
+    assert.strictEqual(anchor.getAttribute('href'), url, 'Should contain the same href.')
+
+    directoryPathComponent.setRootFolderIcon();
+    const absentAnchor = fixture.getElementsByTagName('a')[0];
+
+    assert.notOk(absentAnchor, 'Should not contain anchor link if is root.');
+  });
 });

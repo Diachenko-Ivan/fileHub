@@ -11,7 +11,6 @@ export class DirectoryPath extends Component {
   constructor(container) {
     super(container);
     this.render();
-    this.navigationIcon = this.rootContainer.querySelector('[data-element="nav-icon"]');
   }
 
   /**
@@ -26,16 +25,25 @@ export class DirectoryPath extends Component {
 
   /**
    * Makes icon to be level up.
+   * @param {string} url - url of parent folder.
    */
-  setInnerFolderIcon() {
-    this.navigationIcon.setAttribute('class', 'glyphicon glyphicon-level-up');
+  setInnerFolderIcon(url) {
+    const fakeDiv = document.createElement('div');
+    fakeDiv.innerHTML = `<a title="Level up" href="${url}">
+                            <i data-element="nav-icon" class="glyphicon glyphicon-level-up"></i>
+                         </a>`;
+    this.rootContainer.removeChild(this.rootContainer.firstElementChild);
+    this.rootContainer.prepend(fakeDiv.firstElementChild);
   }
 
   /**
    * Makes icon to be folder open.
    */
   setRootFolderIcon() {
-    this.navigationIcon.setAttribute('class', 'glyphicon glyphicon-folder-close');
+    const fakeDiv=document.createElement('div');
+    fakeDiv.innerHTML='<i data-element="nav-icon" class="glyphicon glyphicon-folder-open">';
+    this.rootContainer.removeChild(this.rootContainer.firstElementChild);
+    this.rootContainer.prepend(fakeDiv.firstElementChild);
   }
 
   /**

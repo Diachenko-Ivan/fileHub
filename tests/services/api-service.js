@@ -3,8 +3,8 @@ import {UserCredentials} from '../../app/models/user-credentials';
 import fetchMock from '../../node_modules/fetch-mock/esm/client.js';
 import {AuthenticationError} from '../../app/models/errors/authentication-error';
 import {ValidationError} from '../../app/models/errors/validation-error';
-import {FileItemNotFoundError} from '../../app/models/errors/file-item-not-found';
 import {GeneralServerError} from '../../app/models/errors/server-error';
+import {PageNotFoundError} from '../../app/models/errors/page-not-found-error';
 
 const {test, module} = QUnit;
 
@@ -114,7 +114,7 @@ export default module('ApiService test', function (hook) {
     fetchMock.once('/folder/id', 404);
     service.getFolder('id')
       .catch((error) => {
-        assert.ok(error instanceof FileItemNotFoundError, 'Should return not found error.');
+        assert.ok(error instanceof PageNotFoundError, 'Should return not found error.');
         done();
       });
   });

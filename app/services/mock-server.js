@@ -15,7 +15,8 @@ export class MockServer {
     ], [
       {name: 'nature.jpeg', type: 'file', mimeType: 'image', size: 10, id: 'abs', parentId: '123'},
       {name: 'hello.txt', type: 'file', mimeType: 'text', size: 100, id: 'qwe', parentId: '123'},
-      {name: 'file.pdf', type: 'file', mimeType: 'text', size: 100, id: 'zxc', parentId: 'root'},
+      {name: 'file.pdf', type: 'file', mimeType: 'text', size: 50, id: 'zxc', parentId: 'root'},
+      {name: 'download.pdf', type: 'file', mimeType: 'text', size: 0, id: 'zxc', parentId: 'root'},
     ]);
 
     fetchMock.post('/login', (url, request) => {
@@ -57,6 +58,18 @@ export class MockServer {
         const id = url.split('/')[2];
         if (this._fileSystem.getFolder(id)) {
           return this._fileSystem.getFolderContent(id);
+        } else {
+          return 404;
+        }
+      }
+      return 401;
+    }, {delay: 500});
+
+    fetchMock.get('express:/file/:fileId', (url, request) => {
+      if (this._hasAuthToken(request.headers)) {
+        const id = url.split('/')[2];
+        if (this._fileSystem.getFile(id)) {
+          return new File([JSON.stringify({name:'s'})], 'name',{type:'application/json'});
         } else {
           return 404;
         }

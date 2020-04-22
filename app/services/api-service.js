@@ -100,6 +100,18 @@ export class ApiService {
     });
   }
 
+  downloadFile(id){
+    return fetch(`/file/${id}`, {
+      method: 'GET',
+      headers:this.authenticationHeader()
+    }).then((response)=>{
+      if (response.ok) {
+        return response.blob();
+      }
+      this.handleCommonErrors(response.status);
+    })
+  }
+
   /**
    * @return {ApiService} singleton.
    */

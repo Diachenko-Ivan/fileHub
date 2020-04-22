@@ -62,7 +62,12 @@ export class FileItemList extends Component {
    */
   renderFileList(items) {
     this.rootContainer.firstElementChild.innerHTML = '';
-    this._sortedItems(items).forEach((item) => this._fileItem[item.type](item));
+    this._sortedItems(items).forEach((item) =>{
+      const fileItem = this._fileItem[item.type](item);
+      if (fileItem instanceof FileComponent){
+        fileItem.onDownloadFile(this._onDownloadFile);
+      }
+    });
   }
 
   /**
@@ -82,5 +87,9 @@ export class FileItemList extends Component {
       }
     });
     return sortedArray;
+  }
+
+  onDownloadFile(handler){
+    this._onDownloadFile=handler;
   }
 }

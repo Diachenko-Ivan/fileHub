@@ -24,7 +24,7 @@ export class FileComponent extends FileItem {
     text: 'book',
     audio: 'music',
     video: 'film',
-    other: 'file'
+    other: 'file',
   };
 
   /**
@@ -67,6 +67,8 @@ export class FileComponent extends FileItem {
 
     this.downloadIcon = new FileItemIcon(fileActionIcons, {styleClass: 'download'});
     this.removeIcon = new FileItemIcon(fileActionIcons, {styleClass: 'remove-circle'});
+
+    this.downloadIcon.onClick(() => this._onDownload(this.id));
   }
 
   /**
@@ -100,5 +102,9 @@ export class FileComponent extends FileItem {
       return;
     }
     this._iconType = this._fileIconTypes.other;
+  }
+
+  onDownloadFile(handler) {
+    this._onDownload = handler;
   }
 }

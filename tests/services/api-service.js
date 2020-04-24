@@ -9,10 +9,15 @@ const {test, module} = QUnit;
 export default module('ApiService test', function (hook) {
 
   hook.afterEach(fetchMock.restore);
-
-  test('should set right token to storage.', function (assert) {
+  
+  test('should set right token to storage after authentication.', function (assert) {
+    assert.expect(2);
     const token = 'auth_token';
-    fetchMock.once('/login', {token});
+    const userCredentials = {login:'login', password:'password'};
+    fetchMock.once('/login', (url, opts) => {
+      assert.deepEqual(JSON.parse(opts.body), userCredentials, 'Should send request with correct arguments.');
+      return {token};
+    });
     const storageService = {
       map: {},
       setItem(key, value) {
@@ -24,7 +29,7 @@ export default module('ApiService test', function (hook) {
     };
     const service = new ApiService(storageService);
     const done = assert.async();
-    service.login(new UserCredentials('login', 'password'))
+    service.login(userCredentials)
       .then(() => {
         assert.ok(storageService.getItem('token') === token, 'Should set correct token.');
         done();
@@ -44,11 +49,16 @@ export default module('ApiService test', function (hook) {
   });
 
   test('should return success registration.', function (assert) {
+    assert.expect(2);
     const done = assert.async();
     const storageService = {};
     const service = new ApiService(storageService);
-    fetchMock.once('/register', 200);
-    service.register(new UserCredentials('admin', 'password'))
+    const userCredentials = {login:'login', password:'password'};
+    fetchMock.once('/register', (url, opts) => {
+      assert.deepEqual(JSON.parse(opts.body), userCredentials, 'Should send request with correct arguments.');
+      return 200;
+    });
+    service.register(userCredentials)
       .then((response) => {
         assert.ok(response, 'Should return successful registration.');
         done();

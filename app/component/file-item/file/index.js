@@ -129,8 +129,8 @@ export class FileComponent extends FileItem {
     input.value = this.name.split('.')[0];
     input.addEventListener('change', () => {
       this.name=`${input.value}.${this.name.split('.')[1]}`;
-      const {name, id, parentId, type, filesCount} = this;
-      this._onNameChange({name, id, parentId, type, filesCount});
+      const {name, id, parentId, type, mimeType, size} = this;
+      this._onNameChange({name, id, parentId, type, mimeType, size});
     });
     input.addEventListener('click', (event)=>{
       event.stopPropagation();

@@ -3,7 +3,7 @@ import {FileListLoadErrorMutator} from '../../mutator/file-list-load-error-mutat
 import {GetFolderAction} from '../file-list-action';
 
 /**
- * Action that is responsible for getting file item list.
+ * Action that is responsible for renaming item.
  */
 export class RenameItemAction extends Action {
   /**

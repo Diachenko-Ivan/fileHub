@@ -75,4 +75,20 @@ export class FileItem extends Component {
   get isEditing(){
     return this._isEditing;
   }
+  
+  /**
+   * Used for handling clicks on the file or folder row.
+   */
+  handleClick(){
+    if (this.isSelected) {
+      setTimeout(() => {
+        this.isSelected = false;
+        this.isEditing = true;
+        this.onSecondClick();
+      }, 500);
+    } else if(!this.isEditing){
+      this.isSelected = true;
+      this._onFirstClick();
+    }
+  }
 }

@@ -108,16 +108,7 @@ export class FileComponent extends FileItem {
   addEventListener() {
     this._fileName = this.rootContainer.querySelector('[data-element="item-name"]');
     this._fileName.addEventListener('click', () => {
-      if (this.isSelected) {
-        setTimeout(() => {
-          this.isSelected = false;
-          this.isEditing = true;
-          this.onSecondClick();
-        }, 500);
-      } else if(!this.isEditing){
-        this.isSelected = true;
-        this._onFirstClick();
-      }
+      this.handleClick();
     });
   }
 

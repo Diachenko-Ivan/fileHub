@@ -59,16 +59,7 @@ export class FolderComponent extends FileItem {
     let timeout;
     this._fileName = this.rootContainer.querySelector('[data-element="item-name"]');
     this._fileName.addEventListener('click', () => {
-      if (this.isSelected) {
-        timeout = setTimeout(() => {
-          this.isSelected = false;
-          this.isEditing = true;
-          this.onSecondClick();
-        }, 500);
-      } else if(!this._isEditing){
-        this.isSelected = true;
-        this._onFirstClick();
-      }
+      this.handleClick();
     });
     this._fileName.addEventListener('dblclick', () => {
       clearTimeout(timeout);

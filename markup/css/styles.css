@@ -240,11 +240,11 @@ a:hover {
     display: none;
 }
 
-.table .editing .name {
+.table .cell-file-name.editing .name {
     display: none;
 }
 
-.table .editing .input {
+.table .cell-file-name.editing .input {
     display: inline-block;
 }
 

@@ -235,6 +235,19 @@ a:hover {
     opacity: 1;
 }
 
+.table .cell-file-name .input {
+    width: 300px;
+    display: none;
+}
+
+.table .cell-file-name.editing .name {
+    display: none;
+}
+
+.table .cell-file-name.editing .input {
+    display: inline-block;
+}
+
 .table td {
     padding: 12px 5px 12px;
     line-height: 28px;
@@ -258,15 +271,11 @@ a:hover {
     cursor: pointer;
 }
 
-.table .file-name {
+.table .cell-file-name {
     display: block;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-}
-
-.table .file-name-editing .input {
-    width: 300px;
 }
 
 .table .cell-action-icons .glyphicon-upload {

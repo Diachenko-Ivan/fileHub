@@ -132,7 +132,7 @@ export class FileComponent extends FileItem {
    * @inheritdoc
    */
   set isEditing(value){
-    this._isEditing = value;
+    super.isEditing = value;
     this._fileName.innerHTML = '';
     if (value) {
       this._fileName.innerHTML = `

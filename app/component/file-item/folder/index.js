@@ -59,7 +59,7 @@ export class FolderComponent extends FileItem {
     let timeout;
     this._fileName = this.rootContainer.querySelector('[data-element="item-name"]');
     this._fileName.addEventListener('click', () => {
-      this.handleClick();
+      timeout = this.handleClick();
     });
     this._fileName.addEventListener('dblclick', () => {
       clearTimeout(timeout);
@@ -88,7 +88,7 @@ export class FolderComponent extends FileItem {
    * @inheritdoc
    */
   set isEditing(value){
-    this._isEditing = value;
+    super.isEditing = value;
     this._fileName.innerHTML = '';
     if (value) {
       this._fileName.innerHTML = `

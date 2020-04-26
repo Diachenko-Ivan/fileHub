@@ -15,7 +15,7 @@ export class FileItem extends Component {
     this.initNestedComponents();
     this.addEventListener();
   }
-
+  
   /**
    * Registers function that is called on the first click on file item.
    *
@@ -24,23 +24,23 @@ export class FileItem extends Component {
   onFirstClick(handler) {
     this._onFirstClick = () => handler();
   }
-
+  
   /**
    * Register function that is called when name is changed.
    *
    * @param {Function} handler - called when name is changed.
    */
-  onNameChange(handler){
+  onNameChange(handler) {
     this._onNameChange = (model) => handler(model);
   }
-
+  
   /**
    * Executed when user clicked the second time on file item.
    */
-  onSecondClick(){
-
+  onSecondClick() {
+  
   }
-
+  
   /**
    * Defines either row is selected or not.
    *
@@ -50,7 +50,7 @@ export class FileItem extends Component {
     this._isSelected = value;
     this.rootContainer.classList.toggle('isSelected', value);
   }
-
+  
   /**
    * Either selected or not.
    *
@@ -59,36 +59,41 @@ export class FileItem extends Component {
   get isSelected() {
     return this._isSelected;
   }
-
+  
   /**
    * Defines either row in editing mode or not.
    *
    * @param {boolean} value - selected or not.
    */
-  set isEditing(value){
+  set isEditing(value) {
     this._isEditing = value;
   }
-
+  
   /**
    * @return {boolean} - editing mode or not.
    */
-  get isEditing(){
+  get isEditing() {
     return this._isEditing;
   }
   
   /**
    * Used for handling clicks on the file or folder row.
    */
-  handleClick(){
+  handleClick() {
+    let timeout;
     if (this.isSelected) {
-      setTimeout(() => {
+      timeout = setTimeout(() => {
         this.isSelected = false;
         this.isEditing = true;
         this.onSecondClick();
       }, 500);
-    } else if(!this.isEditing){
+    } else if (this._isEditing) {
+      this.isSelected = true;
+      this.isEditing = false;
+     } else {
       this.isSelected = true;
       this._onFirstClick();
     }
+    return timeout;
   }
 }

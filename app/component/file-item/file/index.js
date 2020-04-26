@@ -77,14 +77,13 @@ export class FileComponent extends FileItem {
    * @private
    */
   _getSizeWithMemoryUnit(fileSizeInBytes) {
-    const memoryUnits = [' KB', ' MB', ' GB'];
-    let pointer = -1;
-    do {
+    const memoryUnits = [' B', ' KB', ' MB', ' GB'];
+    let pointer = 0;
+    while (fileSizeInBytes >= 1024){
       fileSizeInBytes = fileSizeInBytes / 1024;
       pointer++;
-    } while (fileSizeInBytes > 1024);
-
-    return Math.max(fileSizeInBytes, 0.1).toFixed(1) + memoryUnits[pointer];
+    }
+    return fileSizeInBytes.toFixed(1) + memoryUnits[pointer];
   }
 
   /**

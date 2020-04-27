@@ -1,2 +1,7 @@
-/node_modules/
 /.idea/
+/gradle/
+/node_modules/
+settings.gradle
+build.gradle
+gradlew
+gradlew.bat

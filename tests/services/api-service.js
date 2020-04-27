@@ -12,22 +12,22 @@ export default module('ApiService test', function (hook) {
   
   test('should set correct token to storage after authentication.', function (assert) {
     assert.expect(3);
-    const token = 'auth_token';
+    const tokenValue = 'auth_token';
     const userCredentials = {login: 'login', password: 'password'};
     fetchMock.once('/login', (url, opts) => {
       assert.deepEqual(JSON.parse(opts.body), userCredentials, 'Should send request with correct arguments.');
-      return {token};
+      return {token: tokenValue};
     });
     const storageService = {
-      setItem() {
-        assert.step('Set');
+      setItem(key, value) {
+        assert.step(`Set ${key} ${value}`);
       },
     };
     const service = new ApiService(storageService);
     const done = assert.async();
     service.login(userCredentials)
       .then(() => {
-        assert.verifySteps(['Set'], 'Should set token after success authentication.');
+        assert.verifySteps([`Set token ${tokenValue}`], 'Should set token with correct value after success authentication.');
         done();
       });
   });

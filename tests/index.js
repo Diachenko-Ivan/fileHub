@@ -5,3 +5,8 @@ import LoginFormTest from './component/form-login'
 import ValidatorTest from './validator'
 import ApiServiceTest from './services/api-service.js'
 import StorageServiceTest from './services/storage-service'
+import LoginPageTest from './pages/login-page'
+import RegistrationPageTest from './pages/registration-page'
+import ErrorPageTest from './pages/error-page'
+import RegistrationFormTest from './component/form-registration'
+

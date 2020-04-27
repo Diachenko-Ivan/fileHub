@@ -2,20 +2,20 @@ import {StorageService} from '../../../app/services/storage-service';
 
 const {test, module} = QUnit;
 
-export default module('StorageService test', function () {
+export default module('StorageService', function () {
   
-  test('should check the call of getItem.', function (assert) {
+  test('should call getItem.', function (assert) {
     const testKey = 'Get';
     const mockStorage = {
       getItem(key) {
-        assert.ok(key === testKey, 'Should get value by correct key.');
+        assert.strictEqual(key, testKey, 'Should get value by correct key.');
       },
     };
     const storageService = new StorageService(mockStorage);
     storageService.getItem(testKey);
   });
   
-  test('should check the call of setItem.', function (assert) {
+  test('should call setItem.', function (assert) {
     const testKey = 'Key';
     const testValue = 'Value';
     const mockStorage = {
@@ -28,7 +28,7 @@ export default module('StorageService test', function () {
     storageService.setItem(testKey, testValue);
   });
   
-  test('should check the call of removeItem.', function (assert) {
+  test('should call removeItem.', function (assert) {
     const testKey = 'Key';
     const mockStorage = {
       removeItem(key) {

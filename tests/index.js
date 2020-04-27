@@ -17,3 +17,4 @@ import StateManagerTest from './states/state-manager';
 import DirectoryPathTest from './component/directory-path'
 import MockFileSystemTest from './services/mock-file-system'
 import StorageServiceTest from './services/storage-service'
+import FileHubPageTest from './pages/filehub-page'

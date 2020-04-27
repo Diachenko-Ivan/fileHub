@@ -6,7 +6,7 @@ import {ValidationError} from '../../app/models/errors/validation-error';
 
 const {test, module} = QUnit;
 
-export default module('ApiService test', function (hook) {
+export default module('ApiService', function (hook) {
   
   hook.afterEach(fetchMock.restore);
   

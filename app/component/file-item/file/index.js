@@ -89,6 +89,7 @@ export class FileComponent extends FileItem {
    * Defines appropriate file icon.
    *
    * @param {string} mimeType - file mime type.
+   * @return {string} file icon class name.
    * @private
    */
   _defineIcon(mimeType) {

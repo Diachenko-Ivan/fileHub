@@ -24,8 +24,8 @@ export class FileHubPage extends Component {
   markup() {
     return `<section class="application-box file-explorer-container">
         <img alt="TeamDev" class="logo" src="../src/main/resources/teamdev.png">
-        <ul data-element="user-menu" class="user-menu">
-            <li class="username"></li>
+        <ul class="user-menu">
+            <li data-element="user-info" class="username"></li>
             <li><a data-element="log-out" href="#">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>
         </ul>
 
@@ -48,7 +48,7 @@ export class FileHubPage extends Component {
   
   
   initNestedComponents() {
-    const userDetailsContainer = this._returnContainer('user-menu').firstElementChild;
+    const userDetailsContainer = this._returnContainer('user-info');
     const headButtonsContainer = this._returnContainer('head-buttons');
     this.fileListContainer = this._returnContainer('file-list');
     const directoryPathContainer = this._returnContainer('directory-path');

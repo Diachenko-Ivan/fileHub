@@ -7,12 +7,12 @@ import {FileComponent} from '../file-item/file';
  */
 export class FileItemList extends Component {
   /**
-   * Contains either file or folder.
+   * Contains functions which return file or folder component depending on type.
    *
    * @type {{file: (function(Item): FileComponent), folder: (function(Item): FolderComponent)}}
    * @private
    */
-  _fileItem = {
+  _fileItemFactory = {
     file: (item) => new FileComponent(this.rootContainer.firstElementChild, item),
     folder: (item) => new FolderComponent(this.rootContainer.firstElementChild, item),
   };
@@ -23,7 +23,7 @@ export class FileItemList extends Component {
    * @private
    */
   _fileItems = [];
-
+  
   /**
    * @typedef Item
    * @property {string} name - file or folder name.
@@ -43,18 +43,17 @@ export class FileItemList extends Component {
     super(container);
     this.render();
   }
-
+  
   /**
    * @inheritdoc
    */
   markup() {
     return `<table data-element="file-list" class="content-table">
                 <tbody>
-                   
                 </tbody>
             </table>`;
   }
-
+  
   /**
    * Shows the list of file items.
    *

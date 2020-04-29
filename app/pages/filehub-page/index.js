@@ -17,7 +17,7 @@ export class FileHubPage extends Component {
     this.render();
     TitleService.getInstance().setTitle('Root - FileHub');
   }
-
+  
   /**
    * @inheritdoc
    */
@@ -45,29 +45,29 @@ export class FileHubPage extends Component {
         </footer>
     </section>`;
   }
-
-
+  
+  
   initNestedComponents() {
     const userDetailsContainer = this._returnContainer('user-menu').firstElementChild;
     const headButtonsContainer = this._returnContainer('head-buttons');
     this.fileListContainer = this._returnContainer('file-list');
     const directoryPathContainer = this._returnContainer('directory-path');
     this.progressBarContainer = this._returnContainer('progress-bar');
-
+    
     this.directoryPath = new DirectoryPath(directoryPathContainer);
-    this.userDetails = new UserDetails(userDetailsContainer, 'Username');
+    this.userDetails = new UserDetails(userDetailsContainer, {username: 'Username'});
     this.fileList = new FileItemList(this.fileListContainer);
     this.fileList.renderFileList([{name: 'Documents', type: 'folder', filesCount: 10},
       {name: '404.html', type: 'file', size: 4000, mimeType: 'text'}]);
-
+    
     this.uploadFileButton = new Button(headButtonsContainer,
       'head-button upload', '<i class="glyphicon glyphicon-upload"></i>Upload File');
     this.createFolderButton = new Button(headButtonsContainer,
       'head-button create', '<i class="glyphicon glyphicon-plus"></i>Create Folder');
-
-    const logOutLink=this._returnContainer('log-out');
+    
+    const logOutLink = this._returnContainer('log-out');
   }
-
+  
   /**
    * Returns container by data-element name.
    *

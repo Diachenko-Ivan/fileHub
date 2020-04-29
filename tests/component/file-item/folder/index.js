@@ -20,6 +20,6 @@ export default module('FolderComponent test', function (hook) {
 
     assert.ok(folder, 'Should contain rendered folder.');
     assert.strictEqual(renderedFolderName, folderName, 'Should render correct folder name.');
-    assert.strictEqual(renderedFilesCount, filesCount.toString(), 'Should render correct files count.');
+    assert.strictEqual(renderedFilesCount, `${filesCount.toString()} items`, 'Should render correct files count.');
   });
 });

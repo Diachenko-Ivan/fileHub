@@ -23,7 +23,7 @@ export class FolderComponent extends FileItem {
     Object.assign(this, folderDescription);
     this.render();
   }
-
+  
   /**
    * @inheritdoc
    */
@@ -36,18 +36,18 @@ export class FolderComponent extends FileItem {
                         <a data-test="folder-name" data-element="folder-link" href="#/folder/${this.id}">${this.name}</a>
                     </span>
                 </td>
-                <td data-test="file-count" class="file-count">${this.filesCount}</td>
+                <td data-test="file-count" class="file-count">${this.filesCount} items</td>
                 <td data-element="file-action-icons" class="file-action-icons">
                     </td>
                 </tr>`;
   }
-
+  
   /**
    * @inheritdoc
    */
   initNestedComponents() {
     const fileActionIcons = this.rootContainer.querySelector('[data-element="file-action-icons"]');
-
+    
     this.uploadIcon = new Icon(fileActionIcons, {styleClass: 'upload'});
     this.removeIcon = new Icon(fileActionIcons, {styleClass: 'remove-circle'});
   }

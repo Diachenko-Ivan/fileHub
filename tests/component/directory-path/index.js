@@ -28,14 +28,15 @@ export default module('DirectoryPath test', function (hook) {
   
   test('should set different folder icons.', function (assert) {
     const directoryPathComponent = new DirectoryPath(fixture);
-    const url = '#/folder/root';
+    const folderId = 'root';
+    const url = '#/folder/' + folderId;
     
-    directoryPathComponent.showInnerFolderIcon(url);
+    directoryPathComponent.generatePathInfo({name: 'Folder', parentId: '123', id: folderId});
     const anchor = fixture.querySelector(`a[href="${url}"]`);
     
     assert.ok(anchor, 'Should contain anchor link with the same href.');
-    
-    directoryPathComponent.showRootFolderIcon();
+  
+    directoryPathComponent.generatePathInfo({name: 'Folder', id: folderId});
     const absentAnchor = fixture.getElementsByTagName('a')[0];
     
     assert.notOk(absentAnchor, 'Should not contain anchor link if is root.');

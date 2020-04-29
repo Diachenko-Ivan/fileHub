@@ -1,4 +1,6 @@
 import {Component} from '../parent-component.js';
+import {LEVEL_UP_ICON_CLASS, OPEN_FOLDER_ICON_CLASS} from '../../config/icon-config';
+import {Icon} from '../file-item/file-item-icon';
 
 /**
  * Represents a field for folder name and navigation icon.
@@ -17,8 +19,8 @@ export class DirectoryPath extends Component {
    */
   markup() {
     return `<div class="path-title">
-              <i data-element="nav-icon" class="glyphicon glyphicon-folder-open"></i>
-              <strong class="directory-path" data-element="folder-name">/ Shared with me</strong>
+              <span data-element="nav-icon"></span>
+              <strong class="directory-path" data-element="folder-name">/</strong>
             </div>`;
   }
   
@@ -26,24 +28,22 @@ export class DirectoryPath extends Component {
    * @inheritdoc
    */
   initNestedComponents() {
-    this.navigationIcon = document.querySelector('[data-element="nav-icon"]');
+    this.navigationIconContainer = this.rootContainer.querySelector('[data-element="nav-icon"]');
+    new Icon(this.navigationIconContainer, {styleClass: OPEN_FOLDER_ICON_CLASS});
   }
   
   /**
-   * Makes icon to be level up.
-   * @param {string} url - url of parent folder.
+   * Generates path info - icon and current folder name.
+   *
+   * @param {FolderDescription} folder - folder model.
    */
-  showInnerFolderIcon(url) {
-    this._createAnchor(url);
-    this._changeIconClass(true);
-  }
-  
-  /**
-   * Makes icon to be folder open.
-   */
-  showRootFolderIcon() {
-    this._deleteAnchor();
-    this._changeIconClass(false);
+  generatePathInfo(folder) {
+    if (folder.parentId) {
+      this._createAnchor(folder.id);
+    } else {
+      this._deleteAnchor();
+    }
+    this.folderName = folder.name;
   }
   
   /**
@@ -59,9 +59,10 @@ export class DirectoryPath extends Component {
     } else {
       const anchor = document.createElement('a');
       anchor.setAttribute('title', 'Level up');
-      anchor.setAttribute('href', href);
-      this.navigationIcon.parentNode.insertBefore(anchor, this.navigationIcon);
-      anchor.append(this.navigationIcon);
+      anchor.setAttribute('href', `#/folder/${href}`);
+      this.navigationIconContainer.removeChild(this.navigationIconContainer.firstElementChild);
+      this.navigationIconContainer.append(anchor);
+      new Icon(anchor, {styleClass: LEVEL_UP_ICON_CLASS});
     }
   }
   
@@ -73,26 +74,8 @@ export class DirectoryPath extends Component {
   _deleteAnchor() {
     const existentAnchor = this.rootContainer.querySelector('a');
     if (existentAnchor) {
-      const icon = existentAnchor.firstElementChild;
-      this.rootContainer.removeChild(existentAnchor);
-      this.rootContainer.prepend(icon);
-    }
-  }
-  
-  /**
-   * Changes navigation icon class.
-   *
-   * @param {boolean} isLevelUp - defines either icon is "level-up" or simple "open-folder".
-   * @private
-   */
-  _changeIconClass(isLevelUp) {
-    const levelUpClass = 'glyphicon-level-up';
-    const openFolderClass = 'glyphicon-folder-open';
-    this.navigationIcon.classList.remove(openFolderClass, levelUpClass);
-    if (isLevelUp) {
-      this.navigationIcon.classList.add(levelUpClass);
-    } else {
-      this.navigationIcon.classList.add(openFolderClass);
+      this.navigationIconContainer.removeChild(existentAnchor);
+      new Icon(this.navigationIconContainer, {styleClass: OPEN_FOLDER_ICON_CLASS});
     }
   }
   

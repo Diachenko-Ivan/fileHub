@@ -10,18 +10,21 @@ export class Button extends Component {
    * @type {Function[]}
    */
   handlers = [];
-
+  /**
+   * @typedef ButtonDescription
+   * @property {string} className - button class.
+   * @property {string} buttonText - text in button.
+   * @property {string} iconClass - class of button icon if such exists.
+   */
   /**
    * Creates new {@type Button} instance.
    *
    * @param {Element} container - outer container for button.
-   * @param {string} className - value for class attribute.
-   * @param {string} buttonText - value for inner button text.
+   * @param {ButtonDescription} buttonDescription - button configuration.
    */
-  constructor(container, className, buttonText) {
+  constructor(container, buttonDescription) {
     super(container);
-    this._className = className;
-    this._buttonText = buttonText;
+    Object.assign(this, buttonDescription);
     this.render();
   }
 
@@ -29,7 +32,7 @@ export class Button extends Component {
    * @inheritdoc
    */
   markup() {
-    return `<button data-test="button" class="button ${this._className}">${this._buttonText}</button>`;
+    return `<button data-test="button" class="button ${this.className}">${this.buttonText}</button>`;
   }
 
   /**

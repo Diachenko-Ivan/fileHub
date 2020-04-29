@@ -48,11 +48,11 @@ export class FileHubPage extends Component {
   
   
   initNestedComponents() {
-    const userDetailsContainer = this._returnContainer('user-info');
-    const headButtonsContainer = this._returnContainer('head-buttons');
-    this.fileListContainer = this._returnContainer('file-list');
-    const directoryPathContainer = this._returnContainer('directory-path');
-    this.progressBarContainer = this._returnContainer('progress-bar');
+    const userDetailsContainer = this._getContainer('user-info');
+    const headButtonsContainer = this._getContainer('head-buttons');
+    this.fileListContainer = this._getContainer('file-list');
+    const directoryPathContainer = this._getContainer('directory-path');
+    this.progressBarContainer = this._getContainer('progress-bar');
     
     this.directoryPath = new DirectoryPath(directoryPathContainer);
     this.userDetails = new UserDetails(userDetailsContainer, {username: 'Username'});
@@ -65,7 +65,7 @@ export class FileHubPage extends Component {
     this.createFolderButton = new Button(headButtonsContainer,
       'head-button create', '<i class="glyphicon glyphicon-plus"></i>Create Folder');
     
-    const logOutLink = this._returnContainer('log-out');
+    const logOutLink = this._getContainer('log-out');
   }
   
   /**
@@ -75,7 +75,7 @@ export class FileHubPage extends Component {
    * @return {Element} container.
    * @private
    */
-  _returnContainer(dataElement) {
+  _getContainer(dataElement) {
     return this.rootContainer.querySelector(`[data-element="${dataElement}"]`);
   }
 }

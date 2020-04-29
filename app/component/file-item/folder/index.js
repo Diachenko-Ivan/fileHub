@@ -1,4 +1,4 @@
-import {FileItemIcon} from '../file-item-icon';
+import {Icon} from '../file-item-icon';
 import {FileItem} from '../index.js';
 
 /**
@@ -48,7 +48,7 @@ export class FolderComponent extends FileItem {
   initNestedComponents() {
     const fileActionIcons = this.rootContainer.querySelector('[data-element="file-action-icons"]');
 
-    this.uploadIcon = new FileItemIcon(fileActionIcons, {styleClass: 'upload'});
-    this.removeIcon = new FileItemIcon(fileActionIcons, {styleClass: 'remove-circle'});
+    this.uploadIcon = new Icon(fileActionIcons, {styleClass: 'upload'});
+    this.removeIcon = new Icon(fileActionIcons, {styleClass: 'remove-circle'});
   }
 }

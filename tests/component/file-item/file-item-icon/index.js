@@ -1,4 +1,4 @@
-import {FileItemIcon} from '../../../../app/component/file-item/file-item-icon';
+import {Icon} from '../../../../app/component/file-item/file-item-icon';
 
 const {test, module} = QUnit;
 
@@ -10,13 +10,13 @@ export default module('FileItemIcon test', function (hook) {
   });
 
   test('should show icon.', function (assert) {
-    new FileItemIcon(fixture, {styleClass:'book'});
+    new Icon(fixture, {styleClass:'book'});
     const icon = fixture.querySelector('i');
     assert.ok(icon, 'Should contain rendered icon.');
   });
 
   test('should call click handler on icon click.', function (assert) {
-    const component = new FileItemIcon(fixture, {styleClass:'book'});
+    const component = new Icon(fixture, {styleClass:'book'});
     component.onClick(() => assert.step('Clicked'));
 
     const icon = fixture.firstElementChild;

@@ -34,7 +34,18 @@ export class Button extends Component {
   markup() {
     return `<button data-test="button" class="button ${this.className}">${this.buttonText}</button>`;
   }
-
+  
+  /**
+   * @inheritdoc
+   */
+  initNestedComponents() {
+    if (this.iconClass) {
+      const buttonIcon = document.createElement('i');
+      buttonIcon.setAttribute('class', `glyphicon ${this.iconClass}`);
+      this.rootContainer.prepend(buttonIcon);
+    }
+  }
+  
   /**
    * Add custom handler for button 'onclick' event.
    *

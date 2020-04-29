@@ -44,7 +44,7 @@ export class LoginFormComponent extends Component {
                 <div class="form-target"><h1>Login</h1></div>
                 <div class="user-icon"><i class="glyphicon glyphicon-user"></i></div>
             </header>
-            <div style="color: #f00; font-size: 20px" data-element="auth-error-message"></div>
+            <div data-element="auth-error-message"></div>
             <div data-element="inputs"></div>
             <div class="form-footer-container">
                 <div data-element="button-link" class="form-footer-button-container">

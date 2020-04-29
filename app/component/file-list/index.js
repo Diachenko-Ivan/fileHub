@@ -7,7 +7,7 @@ import {FileComponent} from '../file-item/file';
  */
 export class FileItemList extends Component {
   /**
-   * Contains functions which return file or folder component depending on type.
+   * Contains functions that return file or folder component depending on type.
    *
    * @type {{file: (function(Item): FileComponent), folder: (function(Item): FolderComponent)}}
    * @private
@@ -93,7 +93,7 @@ export class FileItemList extends Component {
     });
     folders.sort(sortByNameFunction);
     files.sort(sortByNameFunction);
-    return folders.concat(files);
+    return [...folders, ...files];
   }
   
   /**

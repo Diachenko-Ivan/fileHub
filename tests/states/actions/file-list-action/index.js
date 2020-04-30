@@ -6,10 +6,10 @@ import {FileListLoadingMutator} from '../../../../app/states/mutator/file-list-l
 
 const {test, module} = QUnit;
 
-export default module('GetFolderAction test', function (hook) {
-  const action = new GetFolderAction('qw');
+export default module('GetFolderAction', function (hook) {
   
   test('should call load error mutator.', function (assert) {
+    const action = new GetFolderAction('qw');
     assert.expect(4);
     const done = assert.async();
     const mockStateManager = {
@@ -39,6 +39,7 @@ export default module('GetFolderAction test', function (hook) {
   });
   
   test('should call folder mutator.', function (assert) {
+    const action = new GetFolderAction('qw');
     assert.expect(5);
     const done = assert.async();
     const folder = {name: 'doc'};

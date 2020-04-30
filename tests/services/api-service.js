@@ -78,8 +78,11 @@ export default module('ApiService test', function (hook) {
 
   test('should return folder on success.', function (assert) {
     const done = assert.async();
+    assert.expect(2);
     const storageService = {
-      getItem(){}
+      getItem(){
+        return 'token';
+      }
     };
     const service = new ApiService(storageService);
     const folder = {name: 'folder'};
@@ -89,10 +92,37 @@ export default module('ApiService test', function (hook) {
         assert.deepEqual(folder, folderResponse, 'Should return equal folder.');
         done();
       });
+    assert.ok(fetchMock.called('/folder/id', {
+      method: 'GET',
+      headers: {'Authorization': `Bearer token`},
+    }), 'Should send request for accepting folder with correct params.');
   });
-
+  
+  test('should return folder content on success.', function (assert) {
+    const done = assert.async();
+    assert.expect(2);
+    const storageService = {
+      getItem(){
+        return 'token';
+      }
+    };
+    const service = new ApiService(storageService);
+    const folderContentResponse = [{name: 'folder'}];
+    fetchMock.once('/folder/id/content', folderContentResponse);
+    service.getFolderContent('id')
+      .then((folderContent) => {
+        assert.deepEqual(folderContentResponse, folderContent, 'Should return equal folder content.');
+        done();
+      });
+    assert.ok(fetchMock.called('/folder/id/content', {
+      method: 'GET',
+      headers: {'Authorization': `Bearer token`},
+    }), 'Should send request for accepting folder with correct params.');
+  });
+  
   test('should return authentication error.', function (assert) {
     const done = assert.async();
+    assert.expect(1);
     const storageService = {
       getItem(){}
     };
@@ -107,6 +137,7 @@ export default module('ApiService test', function (hook) {
 
   test('should return not found error.', function (assert) {
     const done = assert.async();
+    assert.expect(1);
     const storageService = {
       getItem(){}
     };
@@ -121,6 +152,7 @@ export default module('ApiService test', function (hook) {
 
   test('should return server error.', function (assert) {
     const done = assert.async();
+    assert.expect(1);
     const storageService = {
       getItem(){}
     };

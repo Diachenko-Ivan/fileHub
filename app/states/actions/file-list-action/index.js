@@ -17,7 +17,7 @@ export class GetFolderAction extends Action {
     super();
     this.folderId = folderId;
   }
-
+  
   /**
    * @inheritdoc
    */

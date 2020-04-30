@@ -21,15 +21,15 @@ export class FileHubPage extends StateAwareComponent {
     this.render();
     TitleService.getInstance().setTitle('Root - FileHub');
   }
-
+  
   /**
    * @inheritdoc
    */
   markup() {
     return `<section class="application-box file-explorer-container">
         <img alt="TeamDev" class="logo" src="../src/main/resources/teamdev.png">
-        <ul data-element="user-menu" class="user-menu">
-            <li class="username"></li>
+        <ul class="user-menu">
+            <li data-element="user-info" class="username"></li>
             <li><a data-element="log-out" href="#">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>
         </ul>
 
@@ -54,21 +54,20 @@ export class FileHubPage extends StateAwareComponent {
    * @inheritdoc
    */
   initNestedComponents() {
-    const userDetailsContainer = this._returnContainer('user-menu').firstElementChild;
-    const headButtonsContainer = this._returnContainer('head-buttons');
-    this.fileListContainer = this._returnContainer('file-list');
-    const directoryPathContainer = this._returnContainer('directory-path');
-    this.progressBarContainer = this._returnContainer('progress-bar');
-
+    const userDetailsContainer = this._getContainer('user-info');
+    const headButtonsContainer = this._getContainer('head-buttons');
+    this.fileListContainer = this._getContainer('file-list');
+    const directoryPathContainer = this._getContainer('directory-path');
+    this.progressBarContainer = this._getContainer('progress-bar');
+    
     this.directoryPath = new DirectoryPath(directoryPathContainer);
-    this.userDetails = new UserDetails(userDetailsContainer, 'Username');
-
+    this.userDetails = new UserDetails(userDetailsContainer, {username: 'Username'});
     this.uploadFileButton = new Button(headButtonsContainer,
       'head-button upload', '<i class="glyphicon glyphicon-upload"></i>Upload File');
     this.createFolderButton = new Button(headButtonsContainer,
       'head-button create', '<i class="glyphicon glyphicon-plus"></i>Create Folder');
-
-    const logOutLink = this._returnContainer('log-out');
+    
+    const logOutLink = this._getContainer('log-out');
 
     this.fileList = new FileItemList(this.fileListContainer);
   }
@@ -117,7 +116,7 @@ export class FileHubPage extends StateAwareComponent {
   onResourceNotFound(handler) {
     this._onResourceNotFound = () => handler();
   }
-
+  
   /**
    * Returns container by data-element name.
    *
@@ -125,7 +124,7 @@ export class FileHubPage extends StateAwareComponent {
    * @return {Element} container.
    * @private
    */
-  _returnContainer(dataElement) {
+  _getContainer(dataElement) {
     return this.rootContainer.querySelector(`[data-element="${dataElement}"]`);
   }
 }

@@ -97,12 +97,7 @@ export class FileHubPage extends StateAwareComponent {
       this.dispatch(new GetFolderAction(state.locationParam.id));
     });
     this.onStateChange('currentFolder', (state) => {
-      if (state.currentFolder.parentId){
-        this.directoryPath.setInnerFolderIcon(`#/folder/${state.currentFolder.parentId}`);
-      } else {
-        this.directoryPath.setRootFolderIcon();
-      }
-      this.directoryPath.folderName = state.currentFolder.name;
+      this.directoryPath.generatePathInfo(state.currentFolder);
       TitleService.getInstance().setTitle(`${state.currentFolder.name} - FileHub`);
     });
   }

@@ -10,7 +10,7 @@ export class GetFileListAction extends Action {
   constructor() {
     super();
   }
-
+  
   /**
    * @inheritdoc
    */
@@ -23,8 +23,8 @@ export class GetFileListAction extends Action {
     } catch (e) {
       stateManager.mutate(new FileListLoadErrorMutator(e));
       return e;
-    }finally {
-      stateManager.mutate(new FileListLoadingMutator(false))
+    } finally {
+      stateManager.mutate(new FileListLoadingMutator(false));
     }
   }
 }

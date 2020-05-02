@@ -36,19 +36,6 @@ export class MockFileSystem {
    * @private
    */
   _files = [];
-
-  /**
-   * Creates new mock file system with available files and folders.
-   *
-   * @param {FolderItem[]} folders - array of folders.
-   * @param {FileItem[]} files - array of files.
-   */
-  constructor(folders, files) {
-    this._folders = folders;
-    this._files = files;
-  }
-
-
   /**
    * @typedef FileObject
    * @property {string} id - file id.
@@ -60,6 +47,16 @@ export class MockFileSystem {
    * @type {FileObject[]}
    */
   _fileObjects = [];
+  /**
+   * Creates new mock file system with available files and folders.
+   *
+   * @param {FolderItem[]} folders - array of folders.
+   * @param {FileItem[]} files - array of files.
+   */
+  constructor(folders, files) {
+    this._folders = folders;
+    this._files = files;
+  }
 
   /**
    * Returns file by its id.
@@ -100,6 +97,7 @@ export class MockFileSystem {
    *
    * @param {File} file - uploading file.
    * @param {string} folderId - id of folder where file is saved.
+   * @return {FileItem} file object model.
    */
   saveFile(file, folderId) {
     const fileId = Math.random().toString();

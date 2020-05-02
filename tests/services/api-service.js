@@ -134,18 +134,24 @@ export default module('ApiService test', function (hook) {
   });
 
   test('should return downloaded file.', function (assert) {
-    assert.expect(1);
+    assert.expect(2);
     const done = assert.async();
     const storageService = {
-      getItem(){}
+      getItem() {
+        return 'token';
+      },
     };
     const service = new ApiService(storageService);
-    const downloadingFile = new Blob(['a','s']);
+    const downloadingFile = new Blob(['a', 's']);
     fetchMock.once('/file/id', downloadingFile);
     service.downloadFile('id')
-      .then((blob)=>{
+      .then((blob) => {
         assert.ok(blob, 'Should return file.');
         done();
-      })
+      });
+    assert.ok(fetchMock.called('/file/id', {
+      method: 'GET',
+      headers: {'Authorization': 'Bearer token'},
+    }));
   });
 });

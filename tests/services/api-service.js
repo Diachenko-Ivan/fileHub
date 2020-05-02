@@ -132,11 +132,14 @@ export default module('ApiService test', function (hook) {
         done();
       });
   });
-
+  
   test('should return success after file deletion.', function (assert) {
     const done = assert.async();
+    assert.expect(2);
     const storageService = {
-      getItem(){}
+      getItem() {
+        return 'token';
+      },
     };
     const service = new ApiService(storageService);
     fetchMock.once('/file/id', 200);
@@ -145,12 +148,19 @@ export default module('ApiService test', function (hook) {
         assert.ok(true, 'Should return code 200.');
         done();
       });
+    assert.ok(fetchMock.called('/file/id', {
+      method: 'DELETE',
+      headers: {'Authorization': 'Bearer token'},
+    }), 'Should send request with correct attributes.');
   });
-
+  
   test('should return success after folder deletion.', function (assert) {
     const done = assert.async();
+    assert.expect(2);
     const storageService = {
-      getItem(){}
+      getItem() {
+        return 'token';
+      },
     };
     const service = new ApiService(storageService);
     fetchMock.once('/folder/id', 200);
@@ -159,5 +169,9 @@ export default module('ApiService test', function (hook) {
         assert.ok(true, 'Should return code 200.');
         done();
       });
+    assert.ok(fetchMock.called('/folder/id', {
+      method: 'DELETE',
+      headers: {'Authorization': 'Bearer token'},
+    }), 'Should send request with correct attributes.');
   });
 });

@@ -132,25 +132,28 @@ export default module('ApiService test', function (hook) {
         done();
       });
   });
-
+  
   test('should log out user.', function (assert) {
     const done = assert.async();
     const storageService = {
-      token: 'auth-token',
-      getItem(){
+      token: 'token',
+      getItem() {
         return this.token;
       },
-      removeItem(){
+      removeItem() {
         this.token = null;
-      }
+      },
     };
     const service = new ApiService(storageService);
     fetchMock.once('/logout', 200);
     service.logOut()
-      .catch((error) => {
-        console.log(error)
+      .catch(() => {
         assert.notOk(storageService.token, 'Should remove authentication token.');
         done();
-      })
+      });
+    assert.ok(fetchMock.called('/logout', {
+      method: 'POST',
+      headers: {'Authorization': 'Bearer token'},
+    }), 'Should send log out request with correct attributes.');
   });
 });

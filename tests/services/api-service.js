@@ -132,19 +132,24 @@ export default module('ApiService test', function (hook) {
         done();
       });
   });
-
-  test('should successfully upload file.', function (assert) {
+  
+  test('should successfully send upload file.', function (assert) {
     const done = assert.async();
+    assert.expect(4);
     const fileItem = {name: 'file'};
     const file = new File([JSON.stringify(fileItem)], 'file');
     const storageService = {
-      getItem(){}
+      getItem() {
+        return 'token';
+      },
     };
     const service = new ApiService(storageService);
-    fetchMock.once('/folder/id/file',((url, opts) => {
-      assert.deepEqual(opts.body.get('file'), file, 'Should send form data in request body.');
+    fetchMock.once('/folder/id/file', (url, opts) => {
+      assert.deepEqual(opts.body.get('file'), file, 'Should send correct file.');
+      assert.equal(opts.method, 'POST', 'Should send request with correct http method.');
+      assert.deepEqual(opts.headers, {'Authorization': 'Bearer token'}, 'Should send correct header.');
       return fileItem;
-    }));
+    });
     service.uploadFile('id', file)
       .then((returnedFile) => {
         assert.deepEqual(fileItem, returnedFile, 'Should return file object on status 200.');

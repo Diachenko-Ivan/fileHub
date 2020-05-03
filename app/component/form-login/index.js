@@ -79,7 +79,7 @@ export class LoginFormComponent extends Component {
     });
 
     this.formButton = new Button(buttonContainer, {
-      buttonText: 'Login',
+      buttonText: 'Log In',
       className: 'form-button',
     });
   }

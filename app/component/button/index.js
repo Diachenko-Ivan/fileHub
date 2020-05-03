@@ -41,7 +41,7 @@ export class Button extends Component {
   initNestedComponents() {
     if (this.iconClass) {
       const buttonIcon = document.createElement('i');
-      buttonIcon.setAttribute('class', `glyphicon ${this.iconClass}`);
+      buttonIcon.setAttribute('class', `glyphicon glyphicon-${this.iconClass}`);
       this.rootContainer.prepend(buttonIcon);
     }
   }

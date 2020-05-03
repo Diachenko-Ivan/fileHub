@@ -18,6 +18,8 @@ export default module('GetFileListAction test', function (hook) {
           assert.step(`FileListLoadErrorMutator ${mutator.loadError.message}`);
         } else if (mutator instanceof FileListLoadingMutator) {
           assert.step(`FileListLoadingMutator ${mutator.isLoading}`);
+        } else {
+          assert.notOk(true, 'Should not call unknown mutator.');
         }
       },
     };
@@ -30,9 +32,9 @@ export default module('GetFileListAction test', function (hook) {
     action.apply(mockStateManager, mockApiService)
       .then(() => {
         assert.verifySteps([
-          'FileListLoadingMutator true',
-          'FileListLoadErrorMutator error',
-          'FileListLoadingMutator false'],
+            'FileListLoadingMutator true',
+            'FileListLoadErrorMutator error',
+            'FileListLoadingMutator false'],
           'Should call mutators in the correct order.');
         done();
       });
@@ -47,6 +49,8 @@ export default module('GetFileListAction test', function (hook) {
           assert.step(`FileListLoadingMutator ${mutator.isLoading}`);
         } else if (mutator instanceof FileListMutator) {
           assert.step(`FileListMutator ${mutator.fileList[0].name}`);
+        } else {
+          assert.notOk(true, 'Should not call unknown mutator.');
         }
       },
     };
@@ -59,9 +63,9 @@ export default module('GetFileListAction test', function (hook) {
     action.apply(mockStateManager, mockApiService)
       .then(() => {
         assert.verifySteps([
-          'FileListLoadingMutator true',
-          `FileListMutator ${list[0].name}`,
-          'FileListLoadingMutator false'],
+            'FileListLoadingMutator true',
+            `FileListMutator ${list[0].name}`,
+            'FileListLoadingMutator false'],
           'Should call mutators in the correct order.');
         done();
       });

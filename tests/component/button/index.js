@@ -11,9 +11,13 @@ export default module('Button test', function (hook) {
   });
   
   test('should show button', function (assert) {
-    new Button(fixture, {buttonText: 'Hello', iconClass: 'glyphicon-plus'});
-    const button = document.querySelector('[data-test="button"]');
+    const buttonText = 'Hello';
+    new Button(fixture, {buttonText, iconClass: 'glyphicon-plus'});
+    const button = fixture.querySelector('[data-test="button"]');
+    const icon = button.querySelector('i');
     assert.ok(button, 'Should contain rendered button.');
+    assert.strictEqual(button.innerText, buttonText, 'Should render correct button text.');
+    assert.ok(icon, 'Should render button icon if it is assigned in config.');
   });
   
   test('should call click handler on button click', function (assert) {

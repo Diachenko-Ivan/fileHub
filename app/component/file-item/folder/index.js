@@ -36,7 +36,7 @@ export class FolderComponent extends FileItem {
                         <a data-test="folder-name" data-element="folder-link" href="#/folder/${this.id}">${this.name}</a>
                     </span>
                 </td>
-                <td data-test="file-count" class="file-count">${this.filesCount} items</td>
+                <td data-test="file-count" class="file-count">${this._numberOfItems()}</td>
                 <td data-element="file-action-icons" class="file-action-icons">
                     </td>
                 </tr>`;
@@ -50,5 +50,15 @@ export class FolderComponent extends FileItem {
     
     this.uploadIcon = new Icon(fileActionIcons, {styleClass: 'upload'});
     this.removeIcon = new Icon(fileActionIcons, {styleClass: 'remove-circle'});
+  }
+  
+  /**
+   * Returns readable string with number of file items.
+   *
+   * @return {string} string with number of file items.
+   * @private
+   */
+  _numberOfItems() {
+    return this.filesCount === 1 ? `${this.filesCount} item` : `${this.filesCount} items`;
   }
 }

@@ -25,7 +25,7 @@ export class ApiService {
    * @param {UserCredentials} userCredentials - user`s login form credentials.
    * @return {Promise} result of login.
    */
-  login(userCredentials) {
+  logIn(userCredentials) {
     return fetch('/login', {
       method: 'POST',
       body: JSON.stringify(userCredentials),

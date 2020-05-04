@@ -50,7 +50,7 @@ export default module('GetFileListAction test', function (hook) {
         } else if (mutator instanceof FileListMutator) {
           assert.step(`FileListMutator ${mutator.fileList[0].name}`);
         } else {
-          assert.notOk(true, 'Should not call unknown mutator.');
+          assert.step(`${mutator.constructor.name}`);
         }
       },
     };

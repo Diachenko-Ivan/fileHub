@@ -7,7 +7,7 @@ import {ErrorPage} from './pages/error-page';
 import {StateManager} from './states/state-manager';
 import {ApiService} from './services/api-service.js';
 import {FileListState} from './states/model/file-list-state';
-import {LOGIN_PAGE_URL} from './config/router-config';
+import {FILEHUB_PAGE_URL, LOGIN_PAGE_URL, NOT_FOUND_PAGE_URL, REGISTRATION_PAGE_URL} from './config/router-config';
 import {DynamicRouteChangeAction} from './states/actions/dynamic-route-change-action';
 
 
@@ -24,21 +24,21 @@ export class Application extends Component {
     super(container);
     this.render();
   }
-
+  
   /**
    * @inheritdoc
    */
   markup() {
     return `<div id="application"></div>`;
   }
-
+  
   /**
    * @inheritdoc
    */
   initNestedComponents() {
     const fileListState = new FileListState();
     const stateManager = new StateManager(fileListState, ApiService.getInstance());
-
+    
     const pageMapping = {
       '/login': () => new LoginPage(this.rootContainer),
       '/registration': () => new RegistrationPage(this.rootContainer),
@@ -50,5 +50,6 @@ export class Application extends Component {
     this.router.onDynamicPartChange((staticPart, requestParam) =>
       stateManager.dispatch(new DynamicRouteChangeAction(staticPart, requestParam)));
     this.router.defaultUrl = LOGIN_PAGE_URL;
+    this.router.init();
   }
 }

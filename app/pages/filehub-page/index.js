@@ -3,11 +3,13 @@ import {UserDetails} from '../../component/user-details';
 import {FileItemList} from '../../component/file-list';
 import {StateAwareComponent} from '../../component/state-aware-component';
 import {DirectoryPath} from '../../component/directory-path';
-import {GetFolderAction} from '../../states/actions/file-list-action';
+import {GetFolderContentAction} from '../../states/actions/get-folder-content-action';
 import {TitleService} from '../../services/title-service';
 import {AuthenticationError} from '../../models/errors/authentication-error';
 import {LOGIN_PAGE_URL} from '../../config/router-config';
 import {PageNotFoundError} from '../../models/errors/page-not-found-error';
+import {GeneralServerError} from '../../models/errors/server-error';
+import {GetFolderAction} from '../../states/actions/get-folder-action';
 
 /**
  * Page for file hub explorer.
@@ -49,7 +51,7 @@ export class FileHubPage extends StateAwareComponent {
         </footer>
     </section>`;
   }
-
+  
   /**
    * @inheritdoc
    */
@@ -68,10 +70,10 @@ export class FileHubPage extends StateAwareComponent {
       'head-button create', '<i class="glyphicon glyphicon-plus"></i>Create Folder');
     
     const logOutLink = this._getContainer('log-out');
-
+    
     this.fileList = new FileItemList(this.fileListContainer);
   }
-
+  
   /**
    * @inheritdoc
    */
@@ -87,21 +89,30 @@ export class FileHubPage extends StateAwareComponent {
       this.fileList.renderFileList(state.fileList);
     });
     this.onStateChange('loadError', (state) => {
-      if (state.loadError instanceof AuthenticationError) {
+      const loadError = state.loadError;
+      if (loadError instanceof AuthenticationError) {
         window.location.hash = LOGIN_PAGE_URL;
-      } else if(state.loadError instanceof PageNotFoundError){
+      } else if (loadError instanceof PageNotFoundError) {
         this._onResourceNotFound();
+      } else if (loadError instanceof GeneralServerError) {
+        alert(state.loadError.message);
       }
     });
     this.onStateChange('locationParam', (state) => {
       this.dispatch(new GetFolderAction(state.locationParam.id));
+      this.dispatch(new GetFolderContentAction(state.locationParam.id));
     });
     this.onStateChange('currentFolder', (state) => {
       this.directoryPath.generatePathInfo(state.currentFolder);
       TitleService.getInstance().setTitle(`${state.currentFolder.name} - FileHub`);
     });
+    this.onStateChange('isFolderLoading', (state) => {
+      if (state.isFolderLoading) {
+        this.directoryPath.generatePathInfo({name: '...'});
+      }
+    });
   }
-
+  
   /**
    * Registers the function that is invoked when folder is not found.
    * <p>Used by {@link Router}.

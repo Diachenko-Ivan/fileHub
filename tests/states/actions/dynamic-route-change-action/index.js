@@ -1,8 +1,7 @@
 import {DynamicRouteChangeAction} from '../../../../app/states/actions/dynamic-route-change-action';
-import {LocationMutator} from '../../../../app/states/mutator/location-mutator';
 
 const {test, module} = QUnit;
-export default module('DynamicRouteChangeAction', function (hook) {
+export default module('DynamicRouteChangeAction', function () {
   
   test('should call LocationMutator.', function (assert) {
     assert.expect(2);
@@ -12,8 +11,7 @@ export default module('DynamicRouteChangeAction', function (hook) {
     const action = new DynamicRouteChangeAction(staticPart, param);
     const stateManager = {
       mutate(mutator) {
-        if (mutator instanceof LocationMutator)
-          assert.step(`LocationMutator ${mutator.location} ${mutator.locationParam}`);
+        assert.step(`${mutator.constructor.name} ${mutator.location} ${mutator.locationParam}`);
       },
     };
     action.apply(stateManager, {})

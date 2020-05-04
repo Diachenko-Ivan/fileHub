@@ -8,4 +8,5 @@ export class FileListState {
   locationParam;
   location;
   currentFolder;
+  isFolderLoading;
 }

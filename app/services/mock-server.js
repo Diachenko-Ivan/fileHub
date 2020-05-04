@@ -67,6 +67,6 @@ export class MockServer {
 
   _hasAuthToken(headers) {
     const authToken = headers['Authorization'].split(' ')[1];
-    return authToken !== 'null';
+    return authToken === 'authentication_token';
   }
 }

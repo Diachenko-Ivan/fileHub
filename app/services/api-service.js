@@ -4,6 +4,7 @@ import {GeneralServerError} from '../models/errors/server-error';
 import {AuthenticationError} from '../models/errors/authentication-error';
 import {StorageService} from './storage-service';
 import {PageNotFoundError} from '../models/errors/page-not-found-error';
+import {GeneralError} from '../models/errors/general-error';
 
 /**
  * Used for fulfilling requests to server.
@@ -74,7 +75,7 @@ export class ApiService {
    *
    * @return {{Authorization: string}}
    */
-  authenticationHeader() {
+  _getAuthenticationHeader() {
     return {
       'Authorization':
         `Bearer ${this.storageService.getItem('token')}`,
@@ -98,6 +99,8 @@ export class ApiService {
       throw error500;
     } else if (status === 404) {
       throw error404;
+    } else {
+      throw new GeneralError(status);
     }
   }
 }

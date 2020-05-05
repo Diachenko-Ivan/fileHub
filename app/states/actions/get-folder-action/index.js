@@ -1,7 +1,7 @@
 import {Action} from '../';
 import {FolderMutator} from '../../mutator/folder-mutator';
-import {FileListLoadErrorMutator} from '../../mutator/file-list-load-error-mutator';
 import {FolderLoadingMutator} from '../../mutator/folder-loading-mutator';
+import {FolderLoadErrorMutator} from '../../mutator/folder-load-error-mutator';
 
 /**
  * Action that is responsible for getting folder.
@@ -27,7 +27,7 @@ export class GetFolderAction extends Action {
       stateManager.mutate(new FolderMutator(folderResponse));
       return folderResponse;
     } catch (e) {
-      stateManager.mutate(new FileListLoadErrorMutator(e));
+      stateManager.mutate(new FolderLoadErrorMutator(e));
     } finally {
       stateManager.mutate(new FolderLoadingMutator(false));
     }

@@ -8,7 +8,6 @@ import {StateManager} from './states/state-manager';
 import {ApiService} from './services/api-service.js';
 import {FileListState} from './states/model/file-list-state';
 import {
-  FILEHUB_PAGE_URL,
   FILEHUB_PAGE_URL_TEMPLATE,
   LOGIN_PAGE_URL,
   NOT_FOUND_PAGE_URL,
@@ -55,10 +54,13 @@ export class Application extends Component {
       [NOT_FOUND_PAGE_URL]: () => new ErrorPage(this.rootContainer, 404, 'Sorry, this page was not found.'),
     };
     
-    this.router = new Router(window, this.rootContainer, pageMapping);
-    this.router.onDynamicPartChange((staticPart, requestParam) =>
-      stateManager.dispatch(new DynamicRouteChangeAction(staticPart, requestParam)));
-    this.router.defaultUrl = LOGIN_PAGE_URL;
-    this.router.checkHashOnLoad();
+    this.router = Router.builder()
+      .appContainer(this.rootContainer)
+      .window(window)
+      .pageMapping(pageMapping)
+      .defaultUrl(LOGIN_PAGE_URL)
+      .onDynamicHashChange((staticPart, requestParam) =>
+        stateManager.dispatch(new DynamicRouteChangeAction(staticPart, requestParam)))
+      .build();
   }
 }

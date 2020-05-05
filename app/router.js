@@ -1,4 +1,5 @@
 import {NOT_FOUND_PAGE_URL} from './config/router-config';
+import {RouterBuilder} from './config/router-config/router-builder';
 
 /**
  * Router for full application that controls page changing.
@@ -11,21 +12,12 @@ export class Router {
   _currentPage;
   
   /**
-   * @typedef PageMapping
-   * @property {string} url - page url.
-   * @property {Function} page - function that returns page.
-   */
-  /**
    * Creates new {@type Router} instance.
    *
-   * @param {Window} window - current window.
-   * @param {Element} container - container where pages are generated in.
-   * @param {PageMapping} pageMapping - set of page mappings with appropriate pages.
+   * @param {RouterBuilder} routerBuilder - builder for router instance.
    */
-  constructor(window, container, pageMapping) {
-    this._window = window;
-    this.container = container;
-    this._pageMapping = pageMapping;
+  constructor(routerBuilder) {
+    Object.assign(this, routerBuilder);
     this.init();
   }
   
@@ -36,6 +28,7 @@ export class Router {
     this._window.addEventListener('hashchange', () => {
       this._handleHashChange();
     });
+    this._handleHashChange();
   }
   
   /**
@@ -59,13 +52,6 @@ export class Router {
     if (dynamicHashParams) {
       this._dynamicPartHandler(nextURL, dynamicHashParams);
     }
-  }
-  
-  /**
-   * Executes the check of hash value on application load.
-   */
-  checkHashOnLoad() {
-    this._handleHashChange();
   }
   
   /**
@@ -110,7 +96,6 @@ export class Router {
    */
   _getHashDynamicPart(hash, urlTemplate) {
     const partedTemplate = urlTemplate.split('/');
-    
     const keyToMap = partedTemplate.reduce((accumulator, key, index) => {
       if (!key.startsWith(':')) {
         return accumulator;
@@ -131,21 +116,12 @@ export class Router {
   };
   
   /**
-   * Registers callback which is invoked when ulr dynamic params are changed.
-   *
-   * @param {Function} handler - callback.
-   */
-  onDynamicPartChange(handler) {
-    this._dynamicPartHandler = (staticPart, params) => handler(staticPart, params);
-  };
-  
-  /**
    * Generates new page on hash change.
    *
    * @param {string} url - hash for concrete page.
    */
   _renderPage(url) {
-    this.container.innerHTML = '';
+    this._container.innerHTML = '';
     this._currentPage = this._pageMapping[url](this);
     this._currentPageUrl = url;
   }
@@ -175,5 +151,14 @@ export class Router {
    */
   renderNotFoundPage() {
     this._renderPage(NOT_FOUND_PAGE_URL);
+  }
+  
+  /**
+   * Creates new {@link RouterBuilder} instance.
+   *
+   * @return {RouterBuilder} instance.
+   */
+  static builder() {
+    return new RouterBuilder();
   }
 }

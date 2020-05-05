@@ -130,48 +130,48 @@ export default module('ApiService', function (hook) {
     }), 'Should send request for accepting folder with correct params.');
   });
   
-  test('should return authentication error.', function (assert) {
-    const done = assert.async();
-    assert.expect(1);
-    const storageService = {
-      getItem(){}
-    };
-    const service = new ApiService(storageService);
-    fetchMock.once('/folder/id', 401);
-    service.getFolder('id')
-      .catch((error) => {
-        assert.ok(error instanceof AuthenticationError, 'Should return authentication error.');
-        done();
-      });
+  test('should return authentication error on get folder.', function (assert) {
+    testCommonErrors(assert, '/folder/id', 401, 'getFolder', 'id');
   });
 
-  test('should return not found error.', function (assert) {
-    const done = assert.async();
-    assert.expect(1);
-    const storageService = {
-      getItem(){}
-    };
-    const service = new ApiService(storageService);
-    fetchMock.once('/folder/id', 404);
-    service.getFolder('id')
-      .catch((error) => {
-        assert.ok(error instanceof PageNotFoundError, 'Should return not found error.');
-        done();
-      });
+  test('should return not found error on get folder.', function (assert) {
+    testCommonErrors(assert, '/folder/id', 404, 'getFolder', 'id');
   });
 
-  test('should return server error.', function (assert) {
-    const done = assert.async();
-    assert.expect(1);
-    const storageService = {
-      getItem(){}
-    };
-    const service = new ApiService(storageService);
-    fetchMock.once('/folder/id', 500);
-    service.getFolder('id')
-      .catch((error) => {
-        assert.ok(error instanceof GeneralServerError, 'Should return server error.');
-        done();
-      });
+  test('should return server error on get folder.', function (assert) {
+    testCommonErrors(assert, '/folder/id', 500, 'getFolder', 'id');
+  });
+  
+  test('should return authentication error on get folder content.', function (assert) {
+    testCommonErrors(assert, '/folder/id/content', 401, 'getFolderContent', 'id');
+  });
+  
+  test('should return not found error on get folder content.', function (assert) {
+    testCommonErrors(assert, '/folder/id/content', 404, 'getFolderContent', 'id');
+  });
+  
+  test('should return server error on get folder content.', function (assert) {
+    testCommonErrors(assert, '/folder/id/content', 500, 'getFolderContent', 'id');
   });
 });
+
+function testCommonErrors(assert, url, errorCode, apiServiceMethod, ...params) {
+  const errorsMap = {
+    404: PageNotFoundError,
+    401: AuthenticationError,
+    500: GeneralServerError,
+  };
+  const done = assert.async();
+  assert.expect(1);
+  const storageService = {
+    getItem() {
+    },
+  };
+  const service = new ApiService(storageService);
+  fetchMock.once(url, errorCode);
+  service[apiServiceMethod](params)
+    .catch((error) => {
+      assert.ok(error instanceof errorsMap[errorCode], `Should return ${errorsMap[errorCode].name}.`);
+      done();
+    });
+}

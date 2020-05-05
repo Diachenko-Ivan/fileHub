@@ -109,9 +109,9 @@ export class Router {
    * @private
    */
   _getHashDynamicPart(hash, urlTemplate) {
-    const splittedTemplate = urlTemplate.split('/');
+    const partedTemplate = urlTemplate.split('/');
     
-    const keyToMap = splittedTemplate.reduce((accumulator, key, index) => {
+    const keyToMap = partedTemplate.reduce((accumulator, key, index) => {
       if (!key.startsWith(':')) {
         return accumulator;
       }
@@ -122,10 +122,10 @@ export class Router {
     if (!Object.keys(keyToMap).length) {
       return null;
     }
-    const splittedHash = hash.split('/');
+    const partedHash = hash.split('/');
     
     return Object.entries(keyToMap).reduce((accumulator, [key, index]) => {
-      accumulator[key] = splittedHash[index];
+      accumulator[key] = partedHash[index];
       return accumulator;
     }, {});
   };

@@ -14,7 +14,7 @@ export default module('Button test', function (hook) {
     const buttonText = 'Hello';
     new Button(fixture, {buttonText, iconClass: 'glyphicon-plus'});
     const button = fixture.querySelector('[data-test="button"]');
-    const icon = button.querySelector('i');
+    const icon = button.querySelector('[data-test="button-icon"]');
     assert.ok(button, 'Should contain rendered button.');
     assert.strictEqual(button.innerText, buttonText, 'Should render correct button text.');
     assert.ok(icon, 'Should render button icon if it is assigned in config.');

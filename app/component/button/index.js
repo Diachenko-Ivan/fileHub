@@ -10,6 +10,7 @@ export class Button extends Component {
    * @type {Function[]}
    */
   handlers = [];
+  
   /**
    * @typedef ButtonDescription
    * @property {string} className - button class.
@@ -27,7 +28,7 @@ export class Button extends Component {
     Object.assign(this, buttonDescription);
     this.render();
   }
-
+  
   /**
    * @inheritdoc
    */
@@ -41,6 +42,7 @@ export class Button extends Component {
   initNestedComponents() {
     if (this.iconClass) {
       const buttonIcon = document.createElement('i');
+      buttonIcon.setAttribute('data-test', 'button-icon');
       buttonIcon.setAttribute('class', `glyphicon glyphicon-${this.iconClass}`);
       this.rootContainer.prepend(buttonIcon);
     }
@@ -54,7 +56,7 @@ export class Button extends Component {
   onClick(handler) {
     this.handlers.push(handler);
   }
-
+  
   /**
    *@inheritdoc
    */

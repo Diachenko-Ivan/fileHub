@@ -116,12 +116,37 @@ export class FileHubPage extends StateAwareComponent {
   /**
    * Registers the function that is invoked when folder is not found.
    *
-   * @param {Router} router - router instance.
+   * @param {Function} handler - callback for not found error.
    */
-  onResourceNotFound(router) {
-    this._onResourceNotFound = () => router.renderNotFoundPage();
+  onResourceNotFound(handler) {
+    this._onResourceNotFound = handler;
   }
   
+  /**
+   * Registers handler that is called when authorization error is raised.
+   *
+   * @param {Function} handler - callback.
+   */
+  onFailedAuthorization(handler) {
+    this._onFailedAuthorization = handler;
+  }
+  
+  /**
+   * Resolves error type.
+   *
+   * @param {FileListState} state - common application state.
+   * @private
+   */
+  _solveLoadError(state){
+    const loadError = state.loadError;
+    if (loadError instanceof AuthenticationError) {
+      this._onFailedAuthorization();
+    } else if (loadError instanceof PageNotFoundError) {
+      this._onResourceNotFound();
+    } else if (loadError instanceof GeneralServerError) {
+      alert(state.loadError.message);
+    }
+  }
   /**
    * Returns container by data-element name.
    *

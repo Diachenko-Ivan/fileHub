@@ -49,7 +49,9 @@ export class Application extends Component {
       [REGISTRATION_PAGE_URL]: () => new RegistrationPage(this.rootContainer),
       [FILEHUB_PAGE_URL_TEMPLATE]: (router) => {
         const fileHubPage = new FileHubPage(this.rootContainer, stateManager);
-        fileHubPage.onResourceNotFound(router);
+        fileHubPage.onResourceNotFound(() => router.renderNotFoundPage());
+        fileHubPage.onFailedAuthorization(() => window.location.hash = '/login');
+        return fileHubPage;
       },
       [NOT_FOUND_PAGE_URL]: () => new ErrorPage(this.rootContainer, 404, 'Sorry, this page was not found.'),
     };

@@ -1,7 +1,7 @@
-import {FileListLoadErrorMutator} from '../../../../app/states/mutator/file-list-load-error-mutator';
 import {FolderLoadingMutator} from '../../../../app/states/mutator/folder-loading-mutator';
 import {GetFolderAction} from '../../../../app/states/actions/get-folder-action';
 import {FolderMutator} from '../../../../app/states/mutator/folder-mutator';
+import {FolderLoadErrorMutator} from '../../../../app/states/mutator/folder-load-error-mutator';
 
 const {test, module} = QUnit;
 export default module('GetFolderAction', function () {
@@ -12,8 +12,8 @@ export default module('GetFolderAction', function () {
     const done = assert.async();
     const mockStateManager = {
       mutate(mutator) {
-        if (mutator instanceof FileListLoadErrorMutator) {
-          assert.step(`FileListLoadErrorMutator ${mutator.loadError.message}`);
+        if (mutator instanceof FolderLoadErrorMutator) {
+          assert.step(`FolderLoadErrorMutator ${mutator.folderLoadError.message}`);
         } else if (mutator instanceof FolderLoadingMutator) {
           assert.step(`FolderLoadingMutator ${mutator.isFolderLoading}`);
         } else {
@@ -31,7 +31,7 @@ export default module('GetFolderAction', function () {
       .then(() => {
         assert.verifySteps([
             'FolderLoadingMutator true',
-            'FileListLoadErrorMutator error',
+            'FolderLoadErrorMutator error',
             'FolderLoadingMutator false'],
           'Should call mutators in the correct order.');
         done();

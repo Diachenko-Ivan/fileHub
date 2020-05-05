@@ -9,4 +9,5 @@ export class FileListState {
   location;
   currentFolder;
   isFolderLoading;
+  folderLoadError;
 }

@@ -40,16 +40,19 @@ export class Application extends Component {
     const stateManager = new StateManager(fileListState, ApiService.getInstance());
     
     const pageMapping = {
-      '/login': () => new LoginPage(this.rootContainer),
-      '/registration': () => new RegistrationPage(this.rootContainer),
-      '/folder/:id': () => new FileHubPage(this.rootContainer, stateManager),
-      '/404': () => new ErrorPage(this.rootContainer, 404, 'Sorry, this page was not found.'),
+      [LOGIN_PAGE_URL]: () => new LoginPage(this.rootContainer),
+      [REGISTRATION_PAGE_URL]: () => new RegistrationPage(this.rootContainer),
+      [FILEHUB_PAGE_URL]: (router) => {
+        const fileHubPage = new FileHubPage(this.rootContainer, stateManager);
+        fileHubPage.onResourceNotFound(router);
+      },
+      [NOT_FOUND_PAGE_URL]: () => new ErrorPage(this.rootContainer, 404, 'Sorry, this page was not found.'),
     };
-
+    
     this.router = new Router(window, this.rootContainer, pageMapping);
     this.router.onDynamicPartChange((staticPart, requestParam) =>
       stateManager.dispatch(new DynamicRouteChangeAction(staticPart, requestParam)));
     this.router.defaultUrl = LOGIN_PAGE_URL;
-    this.router.init();
+    this.router.checkHashOnLoad();
   }
 }

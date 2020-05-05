@@ -115,12 +115,11 @@ export class FileHubPage extends StateAwareComponent {
   
   /**
    * Registers the function that is invoked when folder is not found.
-   * <p>Used by {@link Router}.
    *
-   * @param {Function} handler - the function that is invoked when folder is not found.
+   * @param {Router} router - router instance.
    */
-  onResourceNotFound(handler) {
-    this._onResourceNotFound = () => handler();
+  onResourceNotFound(router) {
+    this._onResourceNotFound = () => router.renderNotFoundPage();
   }
   
   /**

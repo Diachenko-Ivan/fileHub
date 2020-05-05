@@ -62,6 +62,13 @@ export class Router {
   }
   
   /**
+   * Executes the check of hash value on application load.
+   */
+  checkHashOnLoad() {
+    this._handleHashChange();
+  }
+  
+  /**
    * Sets default page for first application start.
    *
    * @param {string} url - page url for first application load.
@@ -83,13 +90,14 @@ export class Router {
   _getUrlTemplate(hash) {
     const urlTemplate = Object.keys(this._pageMapping).find((mapping) => {
       const staticPart = mapping.split('/:')[0];
-      return hash.startsWith(staticPart) && mapping.includes(':');
+      const splitStaticPart = staticPart.split('/');
+      const splitHash = hash.split('/').slice(0, splitStaticPart.length);
+      return JSON.stringify(splitHash) === JSON.stringify(splitStaticPart);
     });
-
     if (urlTemplate && urlTemplate.split('/').length === hash.split('/').length) {
       return urlTemplate;
     }
-    return null;
+    return NOT_FOUND_PAGE_URL;
   }
   
   /**

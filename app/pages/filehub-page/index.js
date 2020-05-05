@@ -88,15 +88,11 @@ export class FileHubPage extends StateAwareComponent {
     this.onStateChange('fileList', (state) => {
       this.fileList.renderFileList(state.fileList);
     });
+    this.onStateChange('folderLoadError', (state) => {
+      this._solveLoadError(state);
+    });
     this.onStateChange('loadError', (state) => {
-      const loadError = state.loadError;
-      if (loadError instanceof AuthenticationError) {
-        window.location.hash = LOGIN_PAGE_URL;
-      } else if (loadError instanceof PageNotFoundError) {
-        this._onResourceNotFound();
-      } else if (loadError instanceof GeneralServerError) {
-        alert(state.loadError.message);
-      }
+      this._solveLoadError(state);
     });
     this.onStateChange('locationParam', (state) => {
       this.dispatch(new GetFolderAction(state.locationParam.id));

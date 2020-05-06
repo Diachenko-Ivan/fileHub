@@ -12,3 +12,8 @@ import FileItemListTest from './component/file-list'
 import DirectoryPathTest from './component/directory-path'
 import StorageServiceTest from './services/storage-service'
 import FileHubPageTest from './pages/filehub-page'
+import LoginPageTest from './pages/login-page'
+import RegistrationPageTest from './pages/registration-page'
+import ErrorPageTest from './pages/error-page'
+import RegistrationFormTest from './component/form-registration'
+

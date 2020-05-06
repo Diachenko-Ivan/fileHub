@@ -33,20 +33,14 @@ export default module('ApiService', function (hook) {
   });
   
   test('should return authentication error.', function (assert) {
-    assert.expect(2);
+    assert.expect(1);
     const done = assert.async();
     const storageService = {};
     const service = new ApiService(storageService);
-    fetchMock.once('/login', {
-      body: {
-        message: 'Oops!'
-      },
-      status: 401,
-    });
+    fetchMock.once('/login', 401);
     service.logIn(new UserCredentials('admin', 'password'))
       .catch((error) => {
         assert.ok(error instanceof AuthenticationError, 'Should return authentication error.');
-        assert.equal('Oops!', error.message, 'Should return correct error message.');
         done();
       });
   });

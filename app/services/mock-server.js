@@ -13,12 +13,7 @@ export class MockServer {
       if (credentials.login === 'admin' && credentials.password === 'Password1') {
         return {token: 'authentication_token'};
       }
-      return {
-        status: 401,
-        body: {
-          message: 'No users found with this login and password.',
-        },
-      };
+      return 401;
     });
 
     fetchMock.post('/register', (url, request) => {

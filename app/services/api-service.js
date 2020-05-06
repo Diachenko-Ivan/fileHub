@@ -20,7 +20,7 @@ export class ApiService {
   }
   
   /**
-   * Tries to authenticate user and returns result of authentication.
+   * Sends request for user authentication and returns its result.
    *
    * @param {UserCredentials} userCredentials - user`s login form credentials.
    * @return {Promise} result of login.
@@ -32,13 +32,15 @@ export class ApiService {
     }).then((response) => {
       if (response.ok) {
         return response.json().then((data) => this.storageService.setItem('token', data.token));
+      } else if (response.status === 401) {
+        throw new AuthenticationError('No users found with this login and password.');
       }
-      return this.handleCommonErrors(response);
+      return this._handleCommonErrors(response);
     });
   }
   
   /**
-   * Tries to register new user and returns result of registration.
+   * Sends request for registration of new user and returns result of registration.
    *
    * @param {UserCredentials} userCredentials - user`s registration form credentials.
    * @return {Promise} result of registration.
@@ -51,7 +53,7 @@ export class ApiService {
       if (response.ok) {
         return true;
       }
-      return this.handleCommonErrors(response);
+      return this._handleCommonErrors(response);
     });
   }
   
@@ -78,18 +80,20 @@ export class ApiService {
    * Handles errors that can come from request.
    *
    * @param {Response} response - response object from server.
+   * @private
    */
-  async handleCommonErrors(response) {
+  async _handleCommonErrors(response) {
     const availableCodesToErrorMap = {
-      401: (error) => new AuthenticationError(error.message),
-      404: (error) => new PageNotFoundError(error.message),
+      401: () => new AuthenticationError(),
+      404: () => new PageNotFoundError(),
       422: (error) => new ValidationError(error),
-      500: (error) => new GeneralServerError(error.message),
+      500: () => new GeneralServerError('Server error.'),
     };
     const status = response.status;
-    if (availableCodesToErrorMap[status]) {
+    const errorHandler = availableCodesToErrorMap[status];
+    if (errorHandler) {
       const errorObject = await response.json();
-      throw availableCodesToErrorMap[status](errorObject);
+      throw errorHandler(errorObject);
     } else {
       const textFromServer = await response.text();
       throw new GeneralError(status, textFromServer);

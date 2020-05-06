@@ -1,9 +1,12 @@
-import {Component} from '../../component/parent-component.js';
 import {Button} from '../../component/button';
 import {UserDetails} from '../../component/user-details';
 import {FileItemList} from '../../component/file-list';
+import {StateAwareComponent} from '../../component/state-aware-component';
+import {GetFileListAction} from '../../states/actions/file-list-action';
 import {DirectoryPath} from '../../component/directory-path';
 import {TitleService} from '../../services/title-service';
+import {AuthenticationError} from '../../models/errors/authentication-error';
+import {LOGIN_PAGE_URL} from '../../config/router-config';
 
 /**
  * Class name for upload icon.
@@ -18,12 +21,12 @@ const PLUS_ICON_CLASS = 'plus';
 /**
  * Page for file hub explorer.
  */
-export class FileHubPage extends Component {
+export class FileHubPage extends StateAwareComponent {
   /**
    * @inheritdoc
    */
-  constructor(container) {
-    super(container);
+  constructor(container, stateManager) {
+    super(container, stateManager);
     this.render();
     TitleService.getInstance().setTitle('Root - FileHub');
   }
@@ -55,8 +58,10 @@ export class FileHubPage extends Component {
         </footer>
     </section>`;
   }
-  
-  
+
+  /**
+   * @inheritdoc
+   */
   initNestedComponents() {
     const userDetailsContainer = this._getContainer('user-info');
     const headButtonsContainer = this._getContainer('head-buttons');
@@ -66,10 +71,6 @@ export class FileHubPage extends Component {
     
     this.directoryPath = new DirectoryPath(directoryPathContainer);
     this.userDetails = new UserDetails(userDetailsContainer, {username: 'Username'});
-    this.fileList = new FileItemList(this.fileListContainer);
-    this.fileList.renderFileList([{name: 'Documents', type: 'folder', filesCount: 10},
-      {name: '404.html', type: 'file', size: 4000, mimeType: 'text'}]);
-    
     this.uploadFileButton = new Button(headButtonsContainer, {
       buttonText: 'Upload File',
       className: 'head-button upload',
@@ -82,6 +83,28 @@ export class FileHubPage extends Component {
     });
     
     const logOutLink = this._getContainer('log-out');
+
+    this.fileList = new FileItemList(this.fileListContainer);
+
+    this.dispatch(new GetFileListAction());
+  }
+
+  initState() {
+    this.onStateChange('isLoading', (state) => {
+      if (state.isLoading) {
+        this.progressBarContainer.innerHTML = '<h3>Loading...</h3>';
+      } else {
+        this.progressBarContainer.innerHTML = '';
+      }
+    });
+    this.onStateChange('fileList', (state) => {
+      this.fileList.renderFileList(state.fileList);
+    });
+    this.onStateChange('loadError', (state) => {
+      if (state.loadError instanceof AuthenticationError) {
+        window.location.hash = LOGIN_PAGE_URL;
+      }
+    });
   }
   
   /**

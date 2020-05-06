@@ -63,6 +63,24 @@ export class ApiService {
   }
 
   /**
+   * Tries to get full file item list.
+   *
+   * @return {Promise} either object with file list or error if server is gone down.
+   */
+  getFileItemList() {
+    return fetch('/file-list', {
+        method: 'GET',
+        headers: this.authenticationHeader()
+      }
+    ).then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      this.handleCommonErrors(response.status);
+    });
+  }
+
+  /**
    * @return {ApiService} singleton.
    */
   static getInstance() {

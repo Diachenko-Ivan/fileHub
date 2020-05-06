@@ -63,7 +63,6 @@ export default module('Router test', function (hook) {
 
     const userForm = fixture.querySelector('[data-test="login-form"]');
 
-
     assert.ok(userForm, 'Should show existing page.');
   });
 });

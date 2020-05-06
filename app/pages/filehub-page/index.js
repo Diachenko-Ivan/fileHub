@@ -144,7 +144,7 @@ export class FileHubPage extends StateAwareComponent {
   }
   
   /**
-   * Resolves error type.
+   * Handles error with concrete type.
    *
    * @param {Error} loadError - folder or folder content load error.
    * @private

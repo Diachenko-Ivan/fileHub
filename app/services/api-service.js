@@ -18,7 +18,7 @@ export class ApiService {
   constructor(storageService) {
     this.storageService = storageService;
   }
-
+  
   /**
    * Tries to authenticate user and returns result of authentication.
    *
@@ -33,12 +33,10 @@ export class ApiService {
       if (response.ok) {
         return response.json().then((data) => this.storageService.setItem('token', data.token));
       }
-      this.handleCommonErrors(response.status,
-        new AuthenticationError('No users found with this login and password.'),
-      );
+      return this.handleCommonErrors(response);
     });
   }
-
+  
   /**
    * Tries to register new user and returns result of registration.
    *
@@ -52,24 +50,18 @@ export class ApiService {
     }).then((response) => {
       if (response.ok) {
         return true;
-      } else if (response.status === 422) {
-        return response.json()
-          .then((responseObject) => {
-            throw new ValidationError(responseObject);
-          });
-      } else if (response.status === 500) {
-        throw new GeneralServerError('Server error!');
       }
+      return this.handleCommonErrors(response);
     });
   }
-
+  
   /**
    * @return {ApiService} singleton.
    */
   static getInstance() {
     return service;
   }
-
+  
   /**
    * Returns authentication header with token.
    *
@@ -81,26 +73,26 @@ export class ApiService {
         `Bearer ${this.storageService.getItem('token')}`,
     };
   }
-
+  
   /**
-   * Handles 401, 404 and 500 error.
+   * Handles errors that can come from request.
    *
-   * @param {number} status - error status code.
-   * @param {Error} error401 - function that is invoked when status = 401.
-   * @param {Error} error500 - function that is invoked when status = 500.
-   * @param {Error} error404 - function that is invoked when status = 404.
+   * @param {Response} response - response object from server.
    */
-  handleCommonErrors(status, error401 = new AuthenticationError(),
-                     error500 = new GeneralServerError('Server error!'),
-                     error404 = new PageNotFoundError()) {
-    if (status === 401) {
-      throw error401;
-    } else if (status === 500) {
-      throw error500;
-    } else if (status === 404) {
-      throw error404;
+  async handleCommonErrors(response) {
+    const availableCodesToErrorMap = {
+      401: (error) => new AuthenticationError(error.message),
+      404: (error) => new PageNotFoundError(error.message),
+      422: (error) => new ValidationError(error),
+      500: (error) => new GeneralServerError(error.message),
+    };
+    const status = response.status;
+    if (availableCodesToErrorMap[status]) {
+      const errorObject = await response.json();
+      throw availableCodesToErrorMap[status](errorObject);
     } else {
-      throw new GeneralError(status);
+      const textFromServer = await response.text();
+      throw new GeneralError(status, textFromServer);
     }
   }
 }

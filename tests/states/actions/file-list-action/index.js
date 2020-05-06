@@ -5,7 +5,7 @@ import {FileListLoadingMutator} from '../../../../app/states/mutator/file-list-l
 
 const {test, module} = QUnit;
 
-export default module('GetFileListAction test', function (hook) {
+export default module('GetFileListAction test', function () {
   const action = new GetFileListAction();
   const list = [{name: 'file'}];
   
@@ -19,7 +19,7 @@ export default module('GetFileListAction test', function (hook) {
         } else if (mutator instanceof FileListLoadingMutator) {
           assert.step(`FileListLoadingMutator ${mutator.isLoading}`);
         } else {
-          assert.notOk(true, 'Should not call unknown mutator.');
+          assert.step(`${mutator.constructor.name}`);
         }
       },
     };
@@ -48,7 +48,7 @@ export default module('GetFileListAction test', function (hook) {
         if (mutator instanceof FileListLoadingMutator) {
           assert.step(`FileListLoadingMutator ${mutator.isLoading}`);
         } else if (mutator instanceof FileListMutator) {
-          assert.step(`FileListMutator ${mutator.fileList[0].name}`);
+          assert.step(`FileListMutator ${mutator.fileList.length}`);
         } else {
           assert.step(`${mutator.constructor.name}`);
         }
@@ -64,7 +64,7 @@ export default module('GetFileListAction test', function (hook) {
       .then(() => {
         assert.verifySteps([
             'FileListLoadingMutator true',
-            `FileListMutator ${list[0].name}`,
+            `FileListMutator ${list.length}`,
             'FileListLoadingMutator false'],
           'Should call mutators in the correct order.');
         done();

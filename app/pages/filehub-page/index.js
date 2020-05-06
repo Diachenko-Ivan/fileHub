@@ -6,7 +6,6 @@ import {DirectoryPath} from '../../component/directory-path';
 import {GetFolderContentAction} from '../../states/actions/get-folder-content-action';
 import {TitleService} from '../../services/title-service';
 import {AuthenticationError} from '../../models/errors/authentication-error';
-import {LOGIN_PAGE_URL} from '../../config/router-config';
 import {PageNotFoundError} from '../../models/errors/page-not-found-error';
 import {GeneralServerError} from '../../models/errors/server-error';
 import {GetFolderAction} from '../../states/actions/get-folder-action';
@@ -21,6 +20,7 @@ const UPLOAD_ICON_CLASS = 'upload';
  * @type {string}
  */
 const PLUS_ICON_CLASS = 'plus';
+
 /**
  * Page for file hub explorer.
  */
@@ -105,10 +105,10 @@ export class FileHubPage extends StateAwareComponent {
       this.fileList.renderFileList(state.fileList);
     });
     this.onStateChange('folderLoadError', (state) => {
-      this._solveLoadError(state);
+      this._handleLoadError(state.folderLoadError);
     });
     this.onStateChange('loadError', (state) => {
-      this._solveLoadError(state);
+      this._handleLoadError(state.loadError);
     });
     this.onStateChange('locationParam', (state) => {
       this.dispatch(new GetFolderAction(state.locationParam.id));
@@ -146,19 +146,19 @@ export class FileHubPage extends StateAwareComponent {
   /**
    * Resolves error type.
    *
-   * @param {FileListState} state - common application state.
+   * @param {Error} loadError - folder or folder content load error.
    * @private
    */
-  _solveLoadError(state){
-    const loadError = state.loadError;
+  _handleLoadError(loadError) {
     if (loadError instanceof AuthenticationError) {
       this._onFailedAuthorization();
     } else if (loadError instanceof PageNotFoundError) {
       this._onResourceNotFound();
     } else if (loadError instanceof GeneralServerError) {
-      alert(state.loadError.message);
+      alert(loadError.message);
     }
   }
+  
   /**
    * Returns container by data-element name.
    *

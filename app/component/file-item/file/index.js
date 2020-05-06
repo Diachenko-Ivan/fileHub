@@ -12,6 +12,7 @@ export class FileComponent extends FileItem {
    * @property {string} mimeType - image, video, document.
    * @property {string} id - file id.
    * @property {string} parentId - id of parent folder.
+   * @property {string} type - folder.
    */
   /**
    * Contains icon classes for each file type.

@@ -84,7 +84,10 @@ export class RegistrationFormComponent extends Component {
       labelText: 'Confirm Password',
     });
 
-    this.formButton = new Button(buttonContainer, 'form-button', 'Register');
+    this.formButton = new Button(buttonContainer, {
+        buttonText: 'Register',
+        className: 'form-button',
+      });
   }
 
   /**

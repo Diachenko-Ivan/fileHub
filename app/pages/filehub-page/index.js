@@ -12,6 +12,16 @@ import {GeneralServerError} from '../../models/errors/server-error';
 import {GetFolderAction} from '../../states/actions/get-folder-action';
 
 /**
+ * Class name for upload icon.
+ * @type {string}
+ */
+const UPLOAD_ICON_CLASS = 'upload';
+/**
+ * Class name for plus icon.
+ * @type {string}
+ */
+const PLUS_ICON_CLASS = 'plus';
+/**
  * Page for file hub explorer.
  */
 export class FileHubPage extends StateAwareComponent {
@@ -64,10 +74,16 @@ export class FileHubPage extends StateAwareComponent {
     
     this.directoryPath = new DirectoryPath(directoryPathContainer);
     this.userDetails = new UserDetails(userDetailsContainer, {username: 'Username'});
-    this.uploadFileButton = new Button(headButtonsContainer,
-      'head-button upload', '<i class="glyphicon glyphicon-upload"></i>Upload File');
-    this.createFolderButton = new Button(headButtonsContainer,
-      'head-button create', '<i class="glyphicon glyphicon-plus"></i>Create Folder');
+    this.uploadFileButton = new Button(headButtonsContainer, {
+      buttonText: 'Upload File',
+      className: 'head-button upload',
+      iconClass: UPLOAD_ICON_CLASS,
+    });
+    this.createFolderButton = new Button(headButtonsContainer, {
+      buttonText: 'Create Folder',
+      className: 'head-button create',
+      iconClass: PLUS_ICON_CLASS,
+    });
     
     const logOutLink = this._getContainer('log-out');
     

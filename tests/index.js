@@ -24,3 +24,8 @@ import FolderMutatorTest from './states/mutator/folder-mutator'
 import GetFolderActionTest from './states/actions/get-folder-action'
 import FolderLoadingMutatorTest from './states/mutator/folder-loading-mutator'
 import FolderLoadErrorMutatorTest from './states/mutator/folder-load-error-mutator'
+import LoginPageTest from './pages/login-page'
+import RegistrationPageTest from './pages/registration-page'
+import ErrorPageTest from './pages/error-page'
+import RegistrationFormTest from './component/form-registration'
+

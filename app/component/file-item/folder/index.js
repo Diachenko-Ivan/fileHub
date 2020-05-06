@@ -60,6 +60,6 @@ export class FolderComponent extends FileItem {
    * @private
    */
   _numberOfItems() {
-    return this.filesCount === 1 ? `${this.filesCount} item` : `${this.filesCount} items`;
+    return `${this.filesCount} ${this.filesCount === 1 ? 'item' : 'items'}`;
   }
 }

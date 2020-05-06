@@ -65,13 +65,13 @@ export class ApiService {
   getFileItemList() {
     return fetch('/file-list', {
         method: 'GET',
-        headers: this.authenticationHeader()
+        headers: this._getAuthenticationHeader()
       }
     ).then(response => {
       if (response.ok) {
         return response.json();
       }
-      this.handleCommonErrors(response.status);
+      return this._handleCommonErrors(response);
     });
   }
 

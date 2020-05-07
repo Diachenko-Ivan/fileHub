@@ -1,6 +1,6 @@
 import {RemoveItemAction} from '../../../../app/states/actions/remove-item-action';
 import {FileListLoadErrorMutator} from '../../../../app/states/mutator/file-list-load-error-mutator';
-import {GetFolderAction} from '../../../../app/states/actions/file-list-action';
+import {GetFolderAction} from '../../../../app/states/actions/get-folder-action';
 
 const {test, module} = QUnit;
 

@@ -195,6 +195,19 @@ export default module('ApiService', function (hook) {
       headers: {'Authorization': 'Bearer token'},
     }), 'Should send request with correct attributes.');
   });
+  
+  test('should return server error on remove file request.', function (assert) {
+    testCommonErrors(assert, '/folder/id', 500, 'removeFolder', 'id');
+  });
+  
+  test('should return server error on get folder content.', function (assert) {
+    testCommonErrors(assert, '/folder/id', 401, 'removeFolder', 'id');
+  });
+
+  test('should return server error on get folder content.', function (assert) {
+    testCommonErrors(assert, '/folder/id', 404, 'removeFolder', 'id');
+  });
+
 });
 
 function testCommonErrors(assert, url, errorCode, apiServiceMethod, ...params) {

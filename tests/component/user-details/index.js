@@ -12,7 +12,7 @@ export default module('UserDetails test', function (hook) {
 
   test('should render user details component.', function (assert) {
     const username = 'Username';
-    new UserDetails(fixture, username);
+    new UserDetails(fixture, {username});
 
     const userDetails = fixture.firstElementChild;
 

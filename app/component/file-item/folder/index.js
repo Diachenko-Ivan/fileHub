@@ -1,4 +1,4 @@
-import {FileItemIcon} from '../file-item-icon';
+import {Icon} from '../file-item-icon';
 import {FileItem} from '../index.js';
 
 /**
@@ -11,6 +11,7 @@ export class FolderComponent extends FileItem {
    * @property {number} filesCount - number of files in folder.
    * @property {string} id - folder id.
    * @property {string} parentId - id of parent folder.
+   * @property {string} type - folder.
    */
   /**
    * Creates new {@type FolderComponent} component.
@@ -23,7 +24,7 @@ export class FolderComponent extends FileItem {
     Object.assign(this, folderDescription);
     this.render();
   }
-
+  
   /**
    * @inheritdoc
    */
@@ -36,20 +37,20 @@ export class FolderComponent extends FileItem {
                         <a data-test="folder-name" data-element="folder-link" href="#/folder/${this.id}">${this.name}</a>
                     </span>
                 </td>
-                <td data-test="file-count" class="file-count">${this.filesCount}</td>
+                <td data-test="file-count" class="file-count">${this._numberOfItems()}</td>
                 <td data-element="file-action-icons" class="file-action-icons">
                     </td>
                 </tr>`;
   }
-
+  
   /**
    * @inheritdoc
    */
   initNestedComponents() {
     const fileActionIcons = this.rootContainer.querySelector('[data-element="file-action-icons"]');
-
-    this.uploadIcon = new FileItemIcon(fileActionIcons, {styleClass: 'upload'});
-    this.removeIcon = new FileItemIcon(fileActionIcons, {styleClass: 'remove-circle'});
+    
+    this.uploadIcon = new Icon(fileActionIcons, {styleClass: 'upload'});
+    this.removeIcon = new Icon(fileActionIcons, {styleClass: 'remove-circle'});
     this.removeIcon.onClick(() => {
       this.removeHandler({
         name: this.name,
@@ -59,5 +60,15 @@ export class FolderComponent extends FileItem {
         parentId: this.parentId,
       });
     });
+  }
+  
+  /**
+   * Returns readable string with number of file items.
+   *
+   * @return {string} string with number of file items.
+   * @private
+   */
+  _numberOfItems() {
+    return `${this.filesCount} ${this.filesCount === 1 ? 'item' : 'items'}`;
   }
 }

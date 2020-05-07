@@ -9,7 +9,7 @@ export class DynamicRouteChangeAction extends Action {
    * Creates new {@type DynamicRouteChangeAction} instance.
    *
    * @param {string} staticPart - current hash value.
-   * @param {{}} param - object with dynamic location parameters.
+   * @param {object} param - object with dynamic location parameters.
    */
   constructor(staticPart, param) {
     super();

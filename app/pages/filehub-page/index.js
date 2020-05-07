@@ -3,12 +3,24 @@ import {UserDetails} from '../../component/user-details';
 import {FileItemList} from '../../component/file-list';
 import {StateAwareComponent} from '../../component/state-aware-component';
 import {DirectoryPath} from '../../component/directory-path';
-import {GetFolderAction} from '../../states/actions/file-list-action';
+import {GetFolderContentAction} from '../../states/actions/get-folder-content-action';
 import {RemoveItemAction} from '../../states/actions/remove-item-action';
 import {TitleService} from '../../services/title-service';
 import {AuthenticationError} from '../../models/errors/authentication-error';
-import {LOGIN_PAGE_URL} from '../../config/router-config';
 import {PageNotFoundError} from '../../models/errors/page-not-found-error';
+import {GeneralServerError} from '../../models/errors/server-error';
+import {GetFolderAction} from '../../states/actions/get-folder-action';
+
+/**
+ * Class name for upload icon.
+ * @type {string}
+ */
+const UPLOAD_ICON_CLASS = 'upload';
+/**
+ * Class name for plus icon.
+ * @type {string}
+ */
+const PLUS_ICON_CLASS = 'plus';
 
 /**
  * Page for file hub explorer.
@@ -22,15 +34,15 @@ export class FileHubPage extends StateAwareComponent {
     this.render();
     TitleService.getInstance().setTitle('Root - FileHub');
   }
-
+  
   /**
    * @inheritdoc
    */
   markup() {
     return `<section class="application-box file-explorer-container">
         <img alt="TeamDev" class="logo" src="../src/main/resources/teamdev.png">
-        <ul data-element="user-menu" class="user-menu">
-            <li class="username"></li>
+        <ul class="user-menu">
+            <li data-element="user-info" class="username"></li>
             <li><a data-element="log-out" href="#">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>
         </ul>
 
@@ -50,33 +62,38 @@ export class FileHubPage extends StateAwareComponent {
         </footer>
     </section>`;
   }
-
+  
   /**
    * @inheritdoc
    */
   initNestedComponents() {
-    const userDetailsContainer = this._returnContainer('user-menu').firstElementChild;
-    const headButtonsContainer = this._returnContainer('head-buttons');
-    this.fileListContainer = this._returnContainer('file-list');
-    const directoryPathContainer = this._returnContainer('directory-path');
-    this.progressBarContainer = this._returnContainer('progress-bar');
-
+    const userDetailsContainer = this._getContainer('user-info');
+    const headButtonsContainer = this._getContainer('head-buttons');
+    this.fileListContainer = this._getContainer('file-list');
+    const directoryPathContainer = this._getContainer('directory-path');
+    this.progressBarContainer = this._getContainer('progress-bar');
+    
     this.directoryPath = new DirectoryPath(directoryPathContainer);
-    this.userDetails = new UserDetails(userDetailsContainer, 'Username');
-
-    this.uploadFileButton = new Button(headButtonsContainer,
-      'head-button upload', '<i class="glyphicon glyphicon-upload"></i>Upload File');
-    this.createFolderButton = new Button(headButtonsContainer,
-      'head-button create', '<i class="glyphicon glyphicon-plus"></i>Create Folder');
-
-    const logOutLink = this._returnContainer('log-out');
-
+    this.userDetails = new UserDetails(userDetailsContainer, {username: 'Username'});
+    this.uploadFileButton = new Button(headButtonsContainer, {
+      buttonText: 'Upload File',
+      className: 'head-button upload',
+      iconClass: UPLOAD_ICON_CLASS,
+    });
+    this.createFolderButton = new Button(headButtonsContainer, {
+      buttonText: 'Create Folder',
+      className: 'head-button create',
+      iconClass: PLUS_ICON_CLASS,
+    });
+    
+    const logOutLink = this._getContainer('log-out');
+    
     this.fileList = new FileItemList(this.fileListContainer);
     this.fileList.onRemoveListItem((model) => {
       this.dispatch(new RemoveItemAction(model));
     });
   }
-
+  
   /**
    * @inheritdoc
    */
@@ -91,37 +108,61 @@ export class FileHubPage extends StateAwareComponent {
     this.onStateChange('fileList', (state) => {
       this.fileList.renderFileList(state.fileList);
     });
+    this.onStateChange('folderLoadError', (state) => {
+      this._handleLoadError(state.folderLoadError);
+    });
     this.onStateChange('loadError', (state) => {
-      if (state.loadError instanceof AuthenticationError) {
-        window.location.hash = LOGIN_PAGE_URL;
-      } else if(state.loadError instanceof PageNotFoundError){
-        this._onResourceNotFound();
-      }
+      this._handleLoadError(state.loadError);
     });
     this.onStateChange('locationParam', (state) => {
       this.dispatch(new GetFolderAction(state.locationParam.id));
+      this.dispatch(new GetFolderContentAction(state.locationParam.id));
     });
     this.onStateChange('currentFolder', (state) => {
-      if (state.currentFolder.parentId){
-        this.directoryPath.setInnerFolderIcon(`#/folder/${state.currentFolder.parentId}`);
-      } else {
-        this.directoryPath.setRootFolderIcon();
-      }
-      this.directoryPath.folderName = state.currentFolder.name;
+      this.directoryPath.folder = state.currentFolder;
       TitleService.getInstance().setTitle(`${state.currentFolder.name} - FileHub`);
     });
+    this.onStateChange('isFolderLoading', (state) => {
+      if (state.isFolderLoading) {
+        this.directoryPath.folder = {name: '...'};
+      }
+    });
   }
-
+  
   /**
    * Registers the function that is invoked when folder is not found.
-   * <p>Used by {@link Router}.
    *
-   * @param {Function} handler - the function that is invoked when folder is not found.
+   * @param {Function} handler - callback for not found error.
    */
   onResourceNotFound(handler) {
-    this._onResourceNotFound = () => handler();
+    this._onResourceNotFound = handler;
   }
-
+  
+  /**
+   * Registers handler that is called when authorization error is raised.
+   *
+   * @param {Function} handler - callback.
+   */
+  onFailedAuthorization(handler) {
+    this._onFailedAuthorization = handler;
+  }
+  
+  /**
+   * Handles error with concrete type.
+   *
+   * @param {Error} loadError - folder or folder content load error.
+   * @private
+   */
+  _handleLoadError(loadError) {
+    if (loadError instanceof AuthenticationError) {
+      this._onFailedAuthorization();
+    } else if (loadError instanceof PageNotFoundError) {
+      this._onResourceNotFound();
+    } else if (loadError instanceof GeneralServerError) {
+      alert(loadError.message);
+    }
+  }
+  
   /**
    * Returns container by data-element name.
    *
@@ -129,7 +170,7 @@ export class FileHubPage extends StateAwareComponent {
    * @return {Element} container.
    * @private
    */
-  _returnContainer(dataElement) {
+  _getContainer(dataElement) {
     return this.rootContainer.querySelector(`[data-element="${dataElement}"]`);
   }
 }

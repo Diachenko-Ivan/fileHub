@@ -42,4 +42,5 @@ export class FileListState {
    * @type {Error}
    */
   folderLoadError;
+  inRemoveProgress;
 }

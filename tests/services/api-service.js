@@ -88,11 +88,11 @@ export default module('ApiService', function (hook) {
 
   test('should return folder on success.', function (assert) {
     const done = assert.async();
-    assert.expect(2);
+    assert.expect(3);
     const storageService = {
-      getItem(){
+      getItem() {
         return 'token';
-      }
+      },
     };
     const service = new ApiService(storageService);
     const folder = {name: 'folder'};
@@ -112,9 +112,9 @@ export default module('ApiService', function (hook) {
     const done = assert.async();
     assert.expect(2);
     const storageService = {
-      getItem(){
+      getItem() {
         return 'token';
-      }
+      },
     };
     const service = new ApiService(storageService);
     const folderContentResponse = [{name: 'folder'}];
@@ -169,9 +169,6 @@ function testCommonErrors(assert, url, errorCode, apiServiceMethod, ...params) {
   };
   const service = new ApiService(storageService);
   fetchMock.once(url, errorCode);
-  service[apiServiceMethod](params)
-    .catch((error) => {
-      assert.ok(error instanceof errorsMap[errorCode], `Should return ${errorsMap[errorCode].name}.`);
-      done();
-    });
+  assert.rejects(service[apiServiceMethod](params), errorsMap[errorCode], `Should return ${errorsMap[errorCode].name}.`);
+  done();
 }

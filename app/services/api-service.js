@@ -122,8 +122,8 @@ export class ApiService {
    */
   async _handleCommonErrors(response) {
     const availableCodesToErrorMap = {
-      401: (errorText) => new AuthenticationError(errorText),
-      404: (errorText) => new PageNotFoundError(errorText),
+      401: () => new AuthenticationError(),
+      404: () => new PageNotFoundError(),
       422: (error) => new ValidationError(error),
       500: (errorText) => new GeneralServerError(errorText),
     };

@@ -88,7 +88,7 @@ export default module('ApiService', function (hook) {
 
   test('should return folder on success.', function (assert) {
     const done = assert.async();
-    assert.expect(3);
+    assert.expect(2);
     const storageService = {
       getItem() {
         return 'token';

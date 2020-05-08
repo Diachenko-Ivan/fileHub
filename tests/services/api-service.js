@@ -25,7 +25,7 @@ export default module('ApiService', function (hook) {
     };
     const service = new ApiService(storageService);
     const done = assert.async();
-    service.login(userCredentials)
+    service.logIn(userCredentials)
       .then(() => {
         assert.verifySteps([`Set token ${tokenValue}`], 'Should set token with correct value after success authentication.');
         done();
@@ -38,7 +38,7 @@ export default module('ApiService', function (hook) {
     const storageService = {};
     const service = new ApiService(storageService);
     fetchMock.once('/login', 401);
-    service.login(new UserCredentials('admin', 'password'))
+    service.logIn(new UserCredentials('admin', 'password'))
       .catch((error) => {
         assert.ok(error instanceof AuthenticationError, 'Should return authentication error.');
         done();

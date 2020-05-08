@@ -29,4 +29,18 @@ export class FileItem extends Component {
     this.initNestedComponents();
     this.addEventListener();
   }
+  
+  /**
+   * Shows loading wheel icon when user executes any action with file item.
+   */
+  showLoadingWheel() {
+    new Icon(this._itemName, {styleClass:'cd'});
+  }
+  
+  /**
+   * Hides loading wheel icon.
+   */
+  hideLoadingWheel(){
+    this._itemName.removeChild(this._itemName.querySelector('[data-element="icon"]'))
+  }
 }

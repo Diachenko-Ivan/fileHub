@@ -122,10 +122,10 @@ export class ApiService {
    */
   async _handleCommonErrors(response) {
     const availableCodesToErrorMap = {
-      401: () => new AuthenticationError(),
-      404: () => new PageNotFoundError(),
+      401: (errorText) => new AuthenticationError(errorText),
+      404: (errorText) => new PageNotFoundError(errorText),
       422: (error) => new ValidationError(error),
-      500: () => new GeneralServerError('Server error.'),
+      500: (errorText) => new GeneralServerError(errorText),
     };
     const status = response.status;
     const errorHandler = availableCodesToErrorMap[status];
@@ -133,7 +133,9 @@ export class ApiService {
       let errorObject;
       try {
         errorObject = await response.json();
-      } catch (ignoredError) {}
+      } catch (e) {
+        errorObject = await response.text();
+      }
       throw errorHandler(errorObject);
     } else {
       const textFromServer = await response.text();

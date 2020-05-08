@@ -66,16 +66,16 @@ export class ApiService {
   getFolder(folderId) {
     return fetch(`/folder/${folderId}`, {
         method: 'GET',
-        headers: this.authenticationHeader()
-      }
+        headers: this._getAuthenticationHeader(),
+      },
     ).then(response => {
       if (response.ok) {
         return response.json();
       }
-      this.handleCommonErrors(response.status);
+      return this._handleCommonErrors(response);
     });
   }
-
+  
   /**
    * Tries to get folder content.
    *
@@ -85,8 +85,8 @@ export class ApiService {
   getFolderContent(folderId) {
     return fetch(`/folder/${folderId}/content`, {
         method: 'GET',
-        headers: this._getAuthenticationHeader()
-      }
+        headers: this._getAuthenticationHeader(),
+      },
     ).then(response => {
       if (response.ok) {
         return response.json();
@@ -94,7 +94,7 @@ export class ApiService {
       return this._handleCommonErrors(response);
     });
   }
-
+  
   /**
    * @return {ApiService} singleton.
    */
@@ -130,7 +130,10 @@ export class ApiService {
     const status = response.status;
     const errorHandler = availableCodesToErrorMap[status];
     if (errorHandler) {
-      const errorObject = await response.json();
+      let errorObject;
+      try {
+        errorObject = await response.json();
+      } catch (ignoredError) {}
       throw errorHandler(errorObject);
     } else {
       const textFromServer = await response.text();

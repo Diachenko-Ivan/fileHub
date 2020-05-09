@@ -267,7 +267,7 @@ a:hover {
     color: #000000;
 }
 
-.file-explorer-container .content-table tr td .file-name, .folder-name {
+.file-explorer-container .content-table tr td .cell-file-name {
     display: block;
     width: 100%;
     text-overflow: ellipsis;
@@ -275,7 +275,26 @@ a:hover {
     white-space: nowrap;
 }
 
-.file-explorer-container .content-table tr td .file-name-editing .edit-input {
+.content-table .cell-file-name {
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+ .cell-file-name .edit-input {
+    width: 300px;
+    display: none;
+}
+
+.content-table .cell-file-name.editing .file-name,
+.content-table .cell-file-name.editing .folder-name {
+    display: none;
+}
+
+.content-table .cell-file-name.editing .edit-input {
+    display: inline-block;
+}
+.file-explorer-container .content-table tr td .edit-input {
     border-radius: 5px;
     width: 62%;
     line-height: 25px;

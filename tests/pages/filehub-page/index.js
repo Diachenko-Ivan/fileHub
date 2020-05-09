@@ -20,9 +20,9 @@ export default module('FileHubPage', function () {
     };
     const stateManager = new StateManager(state, {});
     const fileHub = new FileHubPage(fixture, stateManager);
-    fileHub.onFailedAuthorization(() => assert.step('Authorization is needed'));
+    fileHub.onFailedAuthorization(() => assert.step('Authorization failed'));
     stateManager.state.folderLoadError = new AuthenticationError();
-    assert.verifySteps(['Authorization is needed'], 'Should call method for failed authorization case.');
+    assert.verifySteps(['Authorization failed'], 'Should call method for failed authorization case.');
   });
   
   test('should call method for resource not found error in getting of folder.', function (assert) {
@@ -42,9 +42,9 @@ export default module('FileHubPage', function () {
     };
     const stateManager = new StateManager(state, {});
     const fileHub = new FileHubPage(fixture, stateManager);
-    fileHub.onFailedAuthorization(() => assert.step('Authorization is needed'));
+    fileHub.onFailedAuthorization(() => assert.step('Authorization failed'));
     stateManager.state.loadError = new AuthenticationError();
-    assert.verifySteps(['Authorization is needed'], 'Should redirect to login page.');
+    assert.verifySteps(['Authorization failed'], 'Should redirect to login page.');
   });
   
   test('should call method for resource not found error in getting of folder content.', function (assert) {

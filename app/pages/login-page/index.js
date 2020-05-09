@@ -38,7 +38,7 @@ export class LoginPage extends Component {
    */
   addEventListener() {
     this.loginForm.onSubmit((credentials) => {
-      ApiService.getInstance().login(credentials)
+      ApiService.getInstance().logIn(credentials)
         .then(() => window.location.hash = FILEHUB_PAGE_URL)
         .catch((error) => {
           if (error instanceof AuthenticationError) {

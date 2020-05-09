@@ -1,6 +1,7 @@
 import {Component} from '../../component/parent-component.js';
 import {LoginFormComponent} from '../../component/form-login';
 import {ApiService} from '../../services/api-service.js';
+import {FILEHUB_PAGE_URL} from '../../config/router-config';
 import {TitleService} from '../../services/title-service';
 import {AuthenticationError} from '../../models/errors/authentication-error';
 import {GeneralServerError} from '../../models/errors/server-error';
@@ -38,7 +39,7 @@ export class LoginPage extends Component {
   addEventListener() {
     this.loginForm.onSubmit((credentials) => {
       ApiService.getInstance().logIn(credentials)
-        .then(() => window.location.hash = '/fileHub')
+        .then(() => window.location.hash = FILEHUB_PAGE_URL)
         .catch((error) => {
           if (error instanceof AuthenticationError) {
             this.loginForm.showAuthenticationError(error.message);

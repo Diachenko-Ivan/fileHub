@@ -1,15 +1,14 @@
-import {GetFileListAction} from '../../../../app/states/actions/file-list-action';
+import {GetFolderContentAction} from '../../../../app/states/actions/get-folder-content-action';
 import {FileListLoadErrorMutator} from '../../../../app/states/mutator/file-list-load-error-mutator';
 import {FileListMutator} from '../../../../app/states/mutator/file-list-mutator';
 import {FileListLoadingMutator} from '../../../../app/states/mutator/file-list-loading-mutator';
 
 const {test, module} = QUnit;
 
-export default module('GetFileListAction test', function () {
-  const action = new GetFileListAction();
-  const list = [{name: 'file'}];
+export default module('GetFolderContentAction', function (hook) {
   
-  test('should call FileListLoadErrorMutator.', function (assert) {
+  test('should call load error mutator.', function (assert) {
+    const action = new GetFolderContentAction('qw');
     assert.expect(4);
     const done = assert.async();
     const mockStateManager = {
@@ -19,12 +18,12 @@ export default module('GetFileListAction test', function () {
         } else if (mutator instanceof FileListLoadingMutator) {
           assert.step(`FileListLoadingMutator ${mutator.isLoading}`);
         } else {
-          assert.step(`${mutator.constructor.name}`);
+          assert.step(mutator.constructor.name);
         }
       },
     };
     const mockApiService = {
-      getFileItemList() {
+      getFolderContent() {
         return Promise.reject(new Error('error'));
       },
     };
@@ -40,23 +39,25 @@ export default module('GetFileListAction test', function () {
       });
   });
   
-  test('should call FileListMutator.', function (assert) {
+  test('should call folder content(file list) mutator.', function (assert) {
+    const action = new GetFolderContentAction('qw');
     assert.expect(4);
     const done = assert.async();
+    const content = [{name: 'file.pdf'}];
     const mockStateManager = {
       mutate(mutator) {
-        if (mutator instanceof FileListLoadingMutator) {
+        if (mutator instanceof FileListMutator) {
+          assert.step(`FileListMutator ${mutator.fileList}`);
+        } else if (mutator instanceof FileListLoadingMutator) {
           assert.step(`FileListLoadingMutator ${mutator.isLoading}`);
-        } else if (mutator instanceof FileListMutator) {
-          assert.step(`FileListMutator ${mutator.fileList.length}`);
         } else {
-          assert.step(`${mutator.constructor.name}`);
+          assert.step(mutator.constructor.name);
         }
       },
     };
     const mockApiService = {
-      getFileItemList() {
-        return Promise.resolve({fileList: list});
+      getFolderContent() {
+        return Promise.resolve(content);
       },
     };
     
@@ -64,7 +65,7 @@ export default module('GetFileListAction test', function () {
       .then(() => {
         assert.verifySteps([
             'FileListLoadingMutator true',
-            `FileListMutator ${list.length}`,
+            `FileListMutator ${content}`,
             'FileListLoadingMutator false'],
           'Should call mutators in the correct order.');
         done();

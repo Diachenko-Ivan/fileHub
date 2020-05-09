@@ -1,4 +1,5 @@
 import fetchMock from '../../node_modules/fetch-mock/esm/client.js';
+import {MockFileSystem} from './mock-file-system';
 
 /**
  * Plays role of server that handles requests.
@@ -8,6 +9,15 @@ export class MockServer {
    * Creates new {@type MockServer} instance with setting of mappings for concrete requests.
    */
   constructor() {
+    this._fileSystem = new MockFileSystem( [
+      {name: 'Different', type: 'folder', filesCount: 10, id: '123', parentId: 'root'},
+      {name: 'Root', type: 'folder', filesCount: 10, id: 'root'},
+    ], [
+      {name: 'nature.jpeg', type: 'file', mimeType: 'image', size: 10, id: 'abs', parentId: '123'},
+      {name: 'hello.txt', type: 'file', mimeType: 'text', size: 100, id: 'qwe', parentId: '123'},
+      {name: 'file.pdf', type: 'file', mimeType: 'text', size: 100, id: 'zxc', parentId: 'root'},
+    ]);
+
     fetchMock.post('/login', (url, request) => {
       const credentials = JSON.parse(request.body);
       if (credentials.login === 'admin' && credentials.password === 'Password1') {
@@ -29,18 +39,34 @@ export class MockServer {
       return 200;
     });
 
-    fetchMock.get('/file-list', (url, request) => {
-      const authToken = request.headers['Authorization'].split(' ')[1];
-      if (authToken !== 'null') {
-        return {
-          body: {
-            fileList: [{name: 'Documents', type: 'folder', filesCount: 10},
-              {name: 'file.pdf', type: 'file', mimeType: 'text', size: 100}]
-          },
-          status: 200,
-        };
+    fetchMock.get('express:/folder/:folderId', (url, request) => {
+      if (this._hasAuthToken(request.headers)) {
+        const id = url.split('/')[2];
+        const folder = this._fileSystem.getFolder(id);
+        if (folder) {
+          return folder;
+        } else {
+          return 404;
+        }
       }
       return 401;
     }, {delay: 500});
+
+    fetchMock.get('express:/folder/:folderId/content', (url, request) => {
+      if (this._hasAuthToken(request.headers)) {
+        const id = url.split('/')[2];
+        if (this._fileSystem.getFolder(id)) {
+          return this._fileSystem.getFolderContent(id);
+        } else {
+          return 404;
+        }
+      }
+      return 401;
+    }, {delay: 500});
+  }
+
+  _hasAuthToken(headers) {
+    const authToken = headers['Authorization'].split(' ')[1];
+    return authToken === 'authentication_token';
   }
 }

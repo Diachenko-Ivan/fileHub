@@ -58,15 +58,16 @@ export class ApiService {
   }
   
   /**
-   * Tries to get full file item list.
+   * Tries to get folder by its id.
    *
+   * @param {string} folderId - folder id.
    * @return {Promise} either object with file list or error if server is gone down.
    */
-  getFileItemList() {
-    return fetch('/file-list', {
+  getFolder(folderId) {
+    return fetch(`/folder/${folderId}`, {
         method: 'GET',
-        headers: this._getAuthenticationHeader()
-      }
+        headers: this._getAuthenticationHeader(),
+      },
     ).then(response => {
       if (response.ok) {
         return response.json();
@@ -74,7 +75,26 @@ export class ApiService {
       return this._handleCommonErrors(response);
     });
   }
-
+  
+  /**
+   * Tries to get folder content.
+   *
+   * @param {string} folderId - folder id.
+   * @return {Promise} either object with file list or error if server is gone down.
+   */
+  getFolderContent(folderId) {
+    return fetch(`/folder/${folderId}/content`, {
+        method: 'GET',
+        headers: this._getAuthenticationHeader(),
+      },
+    ).then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      return this._handleCommonErrors(response);
+    });
+  }
+  
   /**
    * @return {ApiService} singleton.
    */
@@ -105,12 +125,17 @@ export class ApiService {
       401: () => new AuthenticationError(),
       404: () => new PageNotFoundError(),
       422: (error) => new ValidationError(error),
-      500: () => new GeneralServerError('Server error.'),
+      500: (errorText) => new GeneralServerError(errorText),
     };
     const status = response.status;
     const errorHandler = availableCodesToErrorMap[status];
     if (errorHandler) {
-      const errorObject = await response.json();
+      let errorObject;
+      try {
+        errorObject = await response.json();
+      } catch (e) {
+        errorObject = await response.text();
+      }
       throw errorHandler(errorObject);
     } else {
       const textFromServer = await response.text();

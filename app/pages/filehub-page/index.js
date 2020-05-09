@@ -2,11 +2,13 @@ import {Button} from '../../component/button';
 import {UserDetails} from '../../component/user-details';
 import {FileItemList} from '../../component/file-list';
 import {StateAwareComponent} from '../../component/state-aware-component';
-import {GetFileListAction} from '../../states/actions/file-list-action';
 import {DirectoryPath} from '../../component/directory-path';
+import {GetFolderContentAction} from '../../states/actions/get-folder-content-action';
 import {TitleService} from '../../services/title-service';
 import {AuthenticationError} from '../../models/errors/authentication-error';
-import {LOGIN_PAGE_URL} from '../../config/router-config';
+import {PageNotFoundError} from '../../models/errors/page-not-found-error';
+import {GeneralServerError} from '../../models/errors/server-error';
+import {GetFolderAction} from '../../states/actions/get-folder-action';
 
 /**
  * Class name for upload icon.
@@ -18,6 +20,7 @@ const UPLOAD_ICON_CLASS = 'upload';
  * @type {string}
  */
 const PLUS_ICON_CLASS = 'plus';
+
 /**
  * Page for file hub explorer.
  */
@@ -58,7 +61,7 @@ export class FileHubPage extends StateAwareComponent {
         </footer>
     </section>`;
   }
-
+  
   /**
    * @inheritdoc
    */
@@ -83,16 +86,17 @@ export class FileHubPage extends StateAwareComponent {
     });
     
     const logOutLink = this._getContainer('log-out');
-
+    
     this.fileList = new FileItemList(this.fileListContainer);
-
-    this.dispatch(new GetFileListAction());
   }
-
+  
+  /**
+   * @inheritdoc
+   */
   initState() {
     this.onStateChange('isLoading', (state) => {
       if (state.isLoading) {
-        this.progressBarContainer.innerHTML = '<h3>Loading...</h3>';
+        this.progressBarContainer.innerHTML = '<h2>Loading...</h2>';
       } else {
         this.progressBarContainer.innerHTML = '';
       }
@@ -100,11 +104,59 @@ export class FileHubPage extends StateAwareComponent {
     this.onStateChange('fileList', (state) => {
       this.fileList.renderFileList(state.fileList);
     });
+    this.onStateChange('folderLoadError', (state) => {
+      this._handleLoadError(state.folderLoadError);
+    });
     this.onStateChange('loadError', (state) => {
-      if (state.loadError instanceof AuthenticationError) {
-        window.location.hash = LOGIN_PAGE_URL;
+      this._handleLoadError(state.loadError);
+    });
+    this.onStateChange('locationParam', (state) => {
+      this.dispatch(new GetFolderAction(state.locationParam.id));
+      this.dispatch(new GetFolderContentAction(state.locationParam.id));
+    });
+    this.onStateChange('currentFolder', (state) => {
+      this.directoryPath.folder = state.currentFolder;
+      TitleService.getInstance().setTitle(`${state.currentFolder.name} - FileHub`);
+    });
+    this.onStateChange('isFolderLoading', (state) => {
+      if (state.isFolderLoading) {
+        this.directoryPath.folder = {name: '...'};
       }
     });
+  }
+  
+  /**
+   * Registers the function that is invoked when folder is not found.
+   *
+   * @param {Function} handler - callback for not found error.
+   */
+  onResourceNotFound(handler) {
+    this._onResourceNotFound = handler;
+  }
+  
+  /**
+   * Registers handler that is called when authorization error is raised.
+   *
+   * @param {Function} handler - callback.
+   */
+  onFailedAuthorization(handler) {
+    this._onFailedAuthorization = handler;
+  }
+  
+  /**
+   * Handles error with concrete type.
+   *
+   * @param {Error} loadError - folder or folder content load error.
+   * @private
+   */
+  _handleLoadError(loadError) {
+    if (loadError instanceof AuthenticationError) {
+      this._onFailedAuthorization();
+    } else if (loadError instanceof PageNotFoundError) {
+      this._onResourceNotFound();
+    } else if (loadError instanceof GeneralServerError) {
+      alert(loadError.message);
+    }
   }
   
   /**

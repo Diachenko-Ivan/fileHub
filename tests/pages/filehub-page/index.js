@@ -14,51 +14,75 @@ export default module('FileHubPage', function () {
     assert.ok(fileHubPage, 'Should successfully render file hub page.');
   });
   
-  test('should redirect to login page when folder request returns 401 error.', function (assert) {
+  test('should call method for failed authorization in getting of folder.', function (assert) {
     const state = {
       folderLoadError: {},
     };
     const stateManager = new StateManager(state, {});
     const fileHub = new FileHubPage(fixture, stateManager);
-    fileHub.onFailedAuthorization(() => assert.step('Redirected to login'));
+    fileHub.onFailedAuthorization(() => assert.step('Authorization failed'));
     stateManager.state.folderLoadError = new AuthenticationError();
-    assert.verifySteps(['Redirected to login'], 'Should redirect to login page.');
+    assert.verifySteps(['Authorization failed'], 'Should call method for failed authorization case.');
   });
   
-  test('should render 404 page if folder is not found.', function (assert) {
+  test('should call method for resource not found error in getting of folder.', function (assert) {
     const state = {
       folderLoadError: {},
     };
     const stateManager = new StateManager(state, {});
     const fileHub = new FileHubPage(fixture, stateManager);
-    fileHub.onResourceNotFound(() => assert.step('Render 404 page'));
+    fileHub.onResourceNotFound(() => assert.step('Not found'));
     stateManager.state.folderLoadError = new PageNotFoundError();
-    assert.verifySteps(['Render 404 page'], 'Should render 404 page.');
+    assert.verifySteps(['Not found'], 'Should call method for resource not found error.');
   });
   
-  test('should redirect to login page when folder content request returns 401 error.', function (assert) {
+  test('should call method for failed authorization in getting of folder content.', function (assert) {
     const state = {
       loadError: {},
     };
     const stateManager = new StateManager(state, {});
     const fileHub = new FileHubPage(fixture, stateManager);
-    fileHub.onFailedAuthorization(() => assert.step('Redirected to login'));
+    fileHub.onFailedAuthorization(() => assert.step('Authorization failed'));
     stateManager.state.loadError = new AuthenticationError();
-    assert.verifySteps(['Redirected to login'], 'Should redirect to login page.');
+    assert.verifySteps(['Authorization failed'], 'Should redirect to login page.');
+  });
+  
+  test('should call method for resource not found error in getting of folder content.', function (assert) {
+    const state = {
+      loadError: {},
+    };
+    const stateManager = new StateManager(state, {});
+    const fileHub = new FileHubPage(fixture, stateManager);
+    fileHub.onResourceNotFound(() => assert.step('Not found content'));
+    stateManager.state.loadError = new PageNotFoundError();
+    assert.verifySteps(['Not found content'], 'Should call method for resource not found error.');
   });
   
   test('should dispatch actions for getting folder and folder content.', function (assert) {
     const state = {
-      locationParam: {},
+      set locationParam(value) {
+        this._locationParam = value;
+        this.handler();
+      },
+      get locationParam() {
+        return this._locationParam;
+      },
     };
-    const stateManager = new StateManager(state, {});
-    const fileHub = new FileHubPage(fixture, stateManager);
-    fileHub.dispatch = (action)=>{
-      assert.step(`${action.constructor.name} ${state.locationParam.id}`);
+    const stateManager = {
+      state,
+      onStateChanged(property, handler) {
+        if (property === 'locationParam') {
+          state.handler = handler;
+        }
+      },
+      dispatch(action) {
+        assert.step(`${action.constructor.name} ${state.locationParam.id}`);
+      },
     };
-    stateManager.state.locationParam = {id:'12'};
-    assert.verifySteps(["GetFolderAction 12",
-      "GetFolderContentAction 12"], 'Should dispatch actions for getting folder and folder content.');
+    new FileHubPage(fixture, stateManager);
+    stateManager.state.locationParam = {id: '12'};
+    assert.verifySteps(['GetFolderAction 12',
+      'GetFolderContentAction 12'], 'Should dispatch actions for getting folder and folder content.');
   });
 });
 

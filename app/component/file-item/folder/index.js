@@ -20,9 +20,7 @@ export class FolderComponent extends FileItem {
    * @param {FolderDescription} folderDescription - container for folder properties.
    */
   constructor(container, folderDescription) {
-    super(container);
-    Object.assign(this, folderDescription);
-    this.render();
+    super(container, folderDescription);
   }
   
   /**
@@ -31,11 +29,12 @@ export class FolderComponent extends FileItem {
   markup() {
     return `<tr>
                 <td class="arrow"><i class="glyphicon glyphicon-menu-right"></i></td>
-                <td data-element="item-name">
+                <td class="cell-file-name" data-element="item-name">
+                    <i class="glyphicon glyphicon-folder-close"></i>
                     <span class="folder-name">
-                        <i class="glyphicon glyphicon-folder-close"></i>
                         <a data-test="folder-name" data-element="folder-link" href="#/folder/${this.id}">${this.name}</a>
                     </span>
+                    <input class="edit-input"/>
                 </td>
                 <td data-test="file-count" class="file-count">${this._numberOfItems()}</td>
                 <td data-element="file-action-icons" class="file-action-icons">

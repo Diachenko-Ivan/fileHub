@@ -2,6 +2,19 @@ import {Icon} from '../file-item-icon';
 import {FileItem} from '../index.js';
 
 /**
+ * Contains icon classes for each file type.
+ *
+ * @type {{image: string, text: string, audio: string, video: string}}
+ * @private
+ */
+const FILE_ICON_TYPES = {
+  image: 'picture',
+  text: 'book',
+  audio: 'music',
+  video: 'film',
+  other: 'file',
+};
+/**
  * Represents file in file list.
  */
 export class FileComponent extends FileItem {
@@ -14,19 +27,6 @@ export class FileComponent extends FileItem {
    * @property {string} parentId - id of parent folder.
    * @property {string} type - folder.
    */
-  /**
-   * Contains icon classes for each file type.
-   *
-   * @type {{image: string, text: string, audio: string, video: string}}
-   * @private
-   */
-  _fileIconTypes = {
-    image: 'picture',
-    text: 'book',
-    audio: 'music',
-    video: 'film',
-    other: 'file',
-  };
   
   /**
    * Creates new {@type FileComponent} component.
@@ -35,9 +35,7 @@ export class FileComponent extends FileItem {
    * @param {FileDescription} fileDescription - container for file properties.
    */
   constructor(container, fileDescription) {
-    super(container);
-    Object.assign(this, fileDescription);
-    this.render();
+    super(container, fileDescription);
   }
   
   /**
@@ -47,11 +45,10 @@ export class FileComponent extends FileItem {
     return `
                 <tr>
                     <td class="arrow"></td>
-                    <td data-element="item-name">
-                        <span data-test="file-name" class="file-name">
-                            <i class="glyphicon glyphicon-${this._defineIcon(this.mimeType)}"></i>
-                            ${this.name}
-                        </span>
+                    <td class="cell-file-name" data-element="item-name">
+                        <i class="glyphicon glyphicon-${this._defineIcon(this.mimeType)}"></i>
+                        <span data-test="file-name" class="file-name">${this.name}</span>
+                        <input class="edit-input"/>
                     </td>
                     <td data-test="file-size" class="file-size">${this._getSizeWithMemoryUnit(this.size)}</td>
                     <td data-element="file-action-icons" class="file-action-icons">
@@ -104,8 +101,8 @@ export class FileComponent extends FileItem {
    * @private
    */
   _defineIcon(mimeType) {
-    const iconTypeByMimeType = Object.keys(this._fileIconTypes).find((iconType) => mimeType.startsWith(iconType));
+    const iconTypeByMimeType = Object.keys(FILE_ICON_TYPES).find((iconType) => mimeType.startsWith(iconType));
     const iconTypeKey = iconTypeByMimeType || 'other';
-    return this._fileIconTypes[iconTypeKey];
+    return FILE_ICON_TYPES[iconTypeKey];
   }
 }

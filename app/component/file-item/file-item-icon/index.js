@@ -30,7 +30,7 @@ export class Icon extends Component {
    * @inheritdoc
    */
   markup() {
-    return `<i class="glyphicon glyphicon-${this.styleClass}"></i>`;
+    return `<i data-element="icon" class="glyphicon glyphicon-${this.styleClass}"></i>`;
   }
 
   /**

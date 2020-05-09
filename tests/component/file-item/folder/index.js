@@ -38,4 +38,15 @@ export default module('FolderComponent test', function (hook) {
     const renderedFilesCount = fixture.querySelector('[data-test="file-count"]').innerText;
     assert.strictEqual(renderedFilesCount, `${filesCount.toString()} item`, 'Should render files count with "item".');
   });
+  
+  test('should show and hide loading wheel.', function (assert) {
+    const file = new FolderComponent(fixture, {name: 'sas'});
+    file.showLoadingWheel();
+    const loadIcon = fixture.querySelector('[data-element="item-name"] [data-element="icon"]');
+    assert.ok(loadIcon, 'Should render loading wheel.');
+    
+    file.hideLoadingWheel();
+    const absentLoadIcon = fixture.querySelector('[data-element="item-name"] [data-element="icon"]');
+    assert.notOk(absentLoadIcon, 'Should remove loading wheel.');
+  });
 });

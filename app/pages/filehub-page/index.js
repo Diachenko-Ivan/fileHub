@@ -127,7 +127,10 @@ export class FileHubPage extends StateAwareComponent {
       }
     });
     this.onStateChange('user', (state) => {
-      this.userDetails.username = state.user.name;
+      this.userDetails.setNewUsername(state.user.name);
+    });
+    this.onStateChange('userError', (state) => {
+      this._handleLoadError(state.userError);
     });
   }
   

@@ -49,4 +49,14 @@ export default module('FolderComponent test', function (hook) {
     const absentLoadIcon = fixture.querySelector('[data-element="item-name"] [data-element="icon"]');
     assert.notOk(absentLoadIcon, 'Should remove loading wheel.');
   });
+  
+  test('should call remove handler if remove icon is clicked.', function (assert) {
+    const file = new FolderComponent(fixture, {name: 'sas'});
+    
+    const removeIcon = fixture.querySelector('[data-element="file-action-icons"]').lastElementChild;
+    file.onRemoveIconClicked(() => assert.step('Remove icon clicked'));
+    
+    removeIcon.click();
+    assert.verifySteps(['Remove icon clicked'], 'Should call remove handler if remove icon is clicked.');
+  });
 });

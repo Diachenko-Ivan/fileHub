@@ -23,6 +23,13 @@ export class FileItemList extends Component {
    * @private
    */
   _fileItems = [];
+  /**
+   * Contains items that are being changed(renamed or deleted).
+   *
+   * @type {string[]}
+   * @private
+   */
+  _changingItemsIds = [];
   
   /**
    * @typedef Item
@@ -60,12 +67,13 @@ export class FileItemList extends Component {
    * @param {Item[]} items - received file list.
    */
   renderFileList(items) {
+    this._changingItemsIds.length = 0;
     this.rootContainer.firstElementChild.innerHTML = '';
     this._fileItems.length = 0;
     this._sortedItems(items).forEach((item) => {
       const fileItem = this._fileItemFactory[item.type](item);
       this._fileItems.push(fileItem);
-      fileItem.onRemove(this._removeListItemHandler);
+      fileItem.onRemoveIconClicked(this._removeListItemHandler);
     });
   }
   
@@ -76,6 +84,21 @@ export class FileItemList extends Component {
    */
   onRemoveListItem(handler) {
     this._removeListItemHandler = handler;
+  }
+  
+  /**
+   * Moves the list of concrete items in process loading state.
+   *
+   * @param {string[]} changingItemsIds - list of item ids that are being changed.
+   */
+  showChangeLoadingItems(changingItemsIds) {
+    changingItemsIds.forEach((id) => {
+      const changingItem = this._fileItems.find((item) => item.id === id);
+      if (!this._changingItemsIds.includes(changingItem.id)) {
+        changingItem.showLoadingWheel();
+        this._changingItemsIds.push(changingItem.id);
+      }
+    });
   }
   
   /**

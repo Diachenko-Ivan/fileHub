@@ -98,7 +98,7 @@ export default module('FileHubPage', function () {
     assert.verifySteps([
       'UserInfoAction John',
       'GetFolderAction 12',
-      'GetFolderContentAction 12'], 'Should dispatch actions for getting folder and folder content.');
+      'GetFolderContentAction 12'], 'Should dispatch actions for getting user, folder and folder content.');
   });
   
   test('should call method for authorization error in getting of user info.', function (assert) {

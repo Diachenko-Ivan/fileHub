@@ -119,8 +119,13 @@ export class FileHubPage extends StateAwareComponent {
       this.directoryPath.folder = state.currentFolder;
       TitleService.getInstance().setTitle(`${state.currentFolder.name} - FileHub`);
     });
+    this.onStateChange('isFolderLoading', (state) => {
+      if (state.isFolderLoading) {
+        this.directoryPath.folder = {name: '...'};
+      }
+    });
     this.onStateChange('removingItemsIds', (state) => {
-      this.fileList.showChangeLoadingItems(state.removingItemsIds)
+      this.fileList.showChangeLoadingItems(state.removingItemsIds);
     });
     this.onStateChange('removeError', (state) => {
       const error = state.removeError;

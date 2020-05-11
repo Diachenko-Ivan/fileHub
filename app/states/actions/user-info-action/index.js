@@ -1,6 +1,6 @@
 import {Action} from '../';
 import {UserMutator} from '../../mutator/user-mutator';
-import {FileListLoadErrorMutator} from '../../mutator/file-list-load-error-mutator';
+import {UserErrorMutator} from '../../mutator/user-error-mutator';
 
 /**
  * Action that is responsible for getting user info.
@@ -12,7 +12,7 @@ export class UserInfoAction extends Action {
   constructor() {
     super();
   }
-
+  
   /**
    * @inheritdoc
    */
@@ -20,8 +20,8 @@ export class UserInfoAction extends Action {
     try {
       const user = await apiService.getUserInfo();
       stateManager.mutate(new UserMutator(user));
-    }catch (e) {
-      stateManager.mutate(new FileListLoadErrorMutator(e));
+    } catch (e) {
+      stateManager.mutate(new UserErrorMutator(e));
     }
   }
 }

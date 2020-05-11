@@ -29,4 +29,6 @@ import LoginPageTest from './pages/login-page'
 import RegistrationPageTest from './pages/registration-page'
 import ErrorPageTest from './pages/error-page'
 import RegistrationFormTest from './component/form-registration'
+import UserErrorMutatorTest from './states/mutator/user-error-mutator'
+
 

@@ -1,48 +1,43 @@
-import {FileListLoadErrorMutator} from '../../../../app/states/mutator/file-list-load-error-mutator';
 import {UserInfoAction} from '../../../../app/states/actions/user-info-action';
-import {UserMutator} from '../../../../app/states/mutator/user-mutator';
 
 const {test, module} = QUnit;
 
-export default module('UserInfoAction test', function (hook) {
+export default module('UserInfoAction', function () {
   const action = new UserInfoAction();
-
-  test('should call load error mutator.', function (assert) {
-    assert.expect(1);
-    const error = new Error();
+  
+  test('should call user error mutator.', async function (assert) {
+    assert.expect(2);
+    const error = new Error('User is unauthorized');
     const mockStateManager = {
-      mutate(loadErrorMutator) {
-        if (loadErrorMutator instanceof FileListLoadErrorMutator) {
-          assert.ok(true, 'Should call load error mutator.');
-        }
-      }
+      mutate(mutator) {
+        assert.step(`${mutator.constructor.name} ${mutator.userError.message}`);
+      },
     };
     const mockApiService = {
       getUserInfo() {
         return Promise.reject(error);
-      }
+      },
     };
-
-    action.apply(mockStateManager, mockApiService);
+    
+    await action.apply(mockStateManager, mockApiService);
+    assert.verifySteps([`UserErrorMutator ${error.message}`], 'Should call user error mutator.');
   });
-
-  test('should call user mutator.', function (assert) {
+  
+  test('should call user mutator.', async function (assert) {
     const user = {name: 'John'};
-    assert.expect(1);
+    assert.expect(2);
     const mockStateManager = {
       mutate(mutator) {
-        if (mutator instanceof UserMutator
-          && mutator.user === user) {
-          assert.ok(true, 'Should call user mutator.');
-        }
-      }
+        assert.step(`${mutator.constructor.name} ${mutator.user.name}`);
+      },
     };
     const mockApiService = {
       getUserInfo() {
         return Promise.resolve(user);
-      }
+      },
     };
-
-    action.apply(mockStateManager, mockApiService);
+    
+    await action.apply(mockStateManager, mockApiService);
+    assert.verifySteps([`UserMutator ${user.name}`], 'Should call user mutator.');
   });
 });

@@ -156,8 +156,11 @@ export default module('ApiService', function (hook) {
 
   test('should return correct user.', function (assert) {
     const done = assert.async();
+    assert.expect(2);
     const storageService = {
-      getItem(){}
+      getItem() {
+        return 'token';
+      },
     };
     const service = new ApiService(storageService);
     const user = {name:'John'};
@@ -167,6 +170,19 @@ export default module('ApiService', function (hook) {
         assert.deepEqual(user, responseUser, 'Should return correct user.');
         done();
       });
+    assert.ok(fetchMock.called('/user', {
+        method: 'GET',
+        headers: {'Authorization': `Bearer token`},
+      }
+    ))
+  });
+  
+  test('should return authorization error on get user info.', function (assert) {
+    testCommonErrors(assert, '/user', 401, 'getUserInfo');
+  });
+  
+  test('should return server error on get user info.', function (assert) {
+    testCommonErrors(assert, '/user', 500, 'getUserInfo');
   });
 });
 

@@ -71,9 +71,7 @@ export class MockFileSystem {
    * @param {string} fileId - id of file that is going to be deleted.
    */
   deleteFile(fileId) {
-    const fileToDelete = this._files.find((file) => file.id === fileId);
-    const fileIndex = this._files.indexOf(fileToDelete);
-    this._files.splice(fileIndex, 1);
+    this._files = this._files.filter((file) => file.id !== fileId);
   }
   
   /**

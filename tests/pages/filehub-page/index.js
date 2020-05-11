@@ -84,6 +84,17 @@ export default module('FileHubPage', function () {
     assert.verifySteps(['GetFolderAction 12',
       'GetFolderContentAction 12'], 'Should dispatch actions for getting folder and folder content.');
   });
+  
+  test('should call method for failed authorization in item removing.', function (assert) {
+    const state = {
+      removeError: {},
+    };
+    const stateManager = new StateManager(state, {});
+    const fileHub = new FileHubPage(fixture, stateManager);
+    fileHub.onFailedAuthorization(() => assert.step('Authorization failed'));
+    stateManager.state.removeError = new AuthenticationError();
+    assert.verifySteps(['Authorization failed'], 'Should redirect to login page.');
+  });
 });
 
 

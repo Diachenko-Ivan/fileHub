@@ -4,22 +4,51 @@ const {test, module} = QUnit;
 
 export default module('FileComponent test', function (hook) {
   let fixture;
-
+  
   hook.beforeEach(function () {
     fixture = document.getElementById('qunit-fixture');
   });
-
+  
   test('should render file component.', function (assert) {
     const expectedFileName = 'page.txt';
     const size = 1024;
-    const fileComponent = new FileComponent(fixture, {name: expectedFileName, mimeType: 'text', size});
+    new FileComponent(fixture, {name: expectedFileName, mimeType: 'text', size});
     const file = fixture.firstElementChild;
-
-    const renderedFileName = fileComponent.rootContainer.querySelector('[data-test="file-name"]').innerText;
-    const renderedFileSize = fileComponent.rootContainer.querySelector('[data-test="file-size"]').innerText;
-
+    
+    const renderedFileName = fixture.querySelector('[data-test="file-name"]').innerText;
+    const renderedFileSize = fixture.querySelector('[data-test="file-size"]').innerText;
+    
     assert.ok(file, 'Should contain rendered file.');
     assert.strictEqual(renderedFileName, expectedFileName, 'Should render correct file name.');
     assert.strictEqual(renderedFileSize, '1.0 KB', 'Should render correct file size.');
   });
+  
+  test('should show correct file size 100 B.', function (assert) {
+    testFileSize(fixture, assert, 100, '100.0 B');
+  });
+  
+  test('should show correct file size 100 KB.', function (assert) {
+    testFileSize(fixture, assert, 102400, '100.0 KB');
+  });
+  
+  test('should show correct file size 100 MB.', function (assert) {
+    testFileSize(fixture, assert, 104857600, '100.0 MB');
+  });
+  
+  test('should show and hide loading wheel.', function (assert) {
+    const file = new FileComponent(fixture, {name: 'sas', mimeType: 'text', size: 10});
+    file.showLoadingWheel();
+    const loadIcon = fixture.querySelector('[data-element="item-name"] [data-element="icon"]');
+    assert.ok(loadIcon, 'Should render loading wheel.');
+    
+    file.hideLoadingWheel();
+    const absentLoadIcon = fixture.querySelector('[data-element="item-name"] [data-element="icon"]');
+    assert.notOk(absentLoadIcon, 'Should remove loading wheel.');
+  });
 });
+
+function testFileSize(fixture, assert, size, expectedSize) {
+  new FileComponent(fixture, {name: 'filename', mimeType: 'text', size});
+  const renderedFileSize = fixture.querySelector('[data-test="file-size"]').innerText;
+  assert.strictEqual(renderedFileSize, expectedSize, `Should render correct ${expectedSize}.`);
+}

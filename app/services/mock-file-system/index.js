@@ -27,7 +27,7 @@ export class MockFileSystem {
    * @private
    */
   _folders = [];
-
+  
   /**
    * Array of files.
    * <p>Used for development.
@@ -36,7 +36,7 @@ export class MockFileSystem {
    * @private
    */
   _files = [];
-
+  
   /**
    * Creates new mock file system with available files and folders.
    *
@@ -47,8 +47,8 @@ export class MockFileSystem {
     this._folders = folders;
     this._files = files;
   }
-
-
+  
+  
   /**
    * Returns file by its id.
    *
@@ -56,10 +56,9 @@ export class MockFileSystem {
    * @return {FileItem} file.
    */
   getFile(id) {
-    const file = this._files.find((file) => file.id === id);
-    return file ? file : undefined;
+    return this._files.find((file) => file.id === id);
   }
-
+  
   /**
    * Returns folder by its id.
    *
@@ -67,10 +66,9 @@ export class MockFileSystem {
    * @return {FolderItem} folder.
    */
   getFolder(id) {
-    const folder = this._folders.find((folder) => folder.id === id);
-    return folder ? folder : undefined;
+    return this._folders.find((folder) => folder.id === id);
   }
-
+  
   /**
    * Returns folder content by its id.
    *
@@ -82,7 +80,7 @@ export class MockFileSystem {
     const files = this._files.filter((file) => file.parentId === id);
     return folders.concat(files);
   }
-
+  
   /**
    * Used for tests.
    *
@@ -91,7 +89,7 @@ export class MockFileSystem {
   getFiles() {
     return this._files;
   }
-
+  
   /**
    * Used for tests.
    *

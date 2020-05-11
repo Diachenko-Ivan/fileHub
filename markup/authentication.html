@@ -11,46 +11,47 @@
 <body>
 
 <div class="wrapper">
-    <div class="application-box user-form">
-        <img alt="TeamDev" class="logo" src="../src/main/resources/teamdev.png">
+    <section class="application-box form-box">
+        <img alt="TeamDev" class="logo" src="./images/teamdev.png">
 
-        <header class="header form-header">
-            <div class="form-target"><h1>Login</h1></div>
-            <div class="user-icon"><i class="glyphicon glyphicon-user"></i></div>
+        <header class="header">
+            <h1>Login</h1>
+            <i class="glyphicon glyphicon-user"></i>
         </header>
 
         <form>
-            <div class="credential-container">
+            <div class="row">
 
                 <label for="email">Username</label>
 
                 <div class="input-container">
-                    <input class="input form-input" id="email" placeholder="Email" name="email"/>
-                    <div class="error-message">Username can't be empty</div>
+                    <input class="input" id="email" placeholder="Email" name="email"/>
+                    <span class="error-message">Username can't be empty</span>
                 </div>
 
             </div>
 
-            <div class="credential-container">
+            <div class="row">
 
                 <label for="password">Password</label>
 
                 <div class="input-container">
-                    <input class="input form-input" id="password" type="password" placeholder="Password"
-                           name="password"/>
-                    <div class="error-message">Password can't be empty and should contain letters and numbers</div>
+                    <input class="input" id="password" type="password" placeholder="Password" name="password"/>
+                    <span class="error-message">Password can't be empty and should contain letters and numbers</span>
                 </div>
 
             </div>
 
-            <div class="credential-container">
+            <div class="row">
                 <div class="input-container">
-                    <a class="form-link" href="registration.html">Don't have an account yet?</a>
-                    <button class="button form-button" type="submit">Log In</button>
+                    <a title="Don't have an account yet?" class="form-link" href="registration.html">
+                        Don't have an account yet?
+                    </a>
+                    <button title="Log In" class="button" type="submit">Log In</button>
                 </div>
             </div>
         </form>
-    </div>
+    </section>
 </div>
 </body>
 </html>

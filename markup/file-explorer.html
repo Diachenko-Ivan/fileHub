@@ -13,90 +13,118 @@
 
 <div class="wrapper">
     <section class="application-box file-explorer-container">
-        <img alt="TeamDev" class="logo" src="../src/main/resources/teamdev.png">
+        <img alt="TeamDev" class="logo" src="./images/teamdev.png">
         <ul class="user-menu">
-            <li class="username"><i class="glyphicon glyphicon-user"></i>John Doe</li>
-            <li><a href="#">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>
+            <li><i class="glyphicon glyphicon-user"></i>John Doe</li>
+            <li><a title="Log out" href="#">Log Out <i class="glyphicon glyphicon-log-out"></i></a></li>
         </ul>
 
-        <header class="header file-explorer-header"><a href="#"><h1>File Explorer</h1></a></header>
+        <header class="header">
+            <h1><a title="File Explorer" href="#">File Explorer</a></h1>
+        </header>
 
         <div class="main">
             <div class="content-header">
-                <i class="glyphicon glyphicon-folder-open"></i>
-                <span class="directory-path">/ Root</span>
-                <span class="head-buttons">
-                <button type="button" class="button head-button upload">
-                    <i class="glyphicon glyphicon-upload"></i>
-                    Upload File
-                </button>
-                <button type="button" class="button head-button create">
-                    <i class="glyphicon glyphicon-plus"></i>
-                    Create Folder
-                </button>
-            </span>
+                <div class="path-title">
+                    <i class="glyphicon glyphicon-folder-open"></i>
+                    <strong title="/ Root">/ Root</strong>
+                </div>
+                <div class="head-buttons">
+                    <button title="Create Folder" type="button" class="button">
+                        <i class="glyphicon glyphicon-plus"></i>
+                        Create Folder
+                    </button>
+                    <button title="Upload File" type="button" class="button">
+                        <i class="glyphicon glyphicon-upload"></i>
+                        Upload File
+                    </button>
+                </div>
             </div>
 
-            <table class="content-table">
+            <table class="table">
                 <tbody>
 
                 <tr>
-                    <td class="arrow"><i class="glyphicon glyphicon-menu-right"></i></td>
-                    <td><span class="folder-name"><i class="glyphicon glyphicon-folder-close"></i>
-                        <a href="#">Documents </a></span></td>
-                    <td class="file-count">2 items</td>
-                    <td class="file-action-icons">
-                        <i id="file-upload-icon" class="glyphicon glyphicon-upload"></i>
-                        <input class="file-upload-input" type="file" id="file-upload" style="display: none">
-                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    <td class="cell-arrow">
+                        <i class="glyphicon glyphicon-menu-right"></i>
+                    </td>
+                    <td class="cell-file-name">
+                        <i class="glyphicon glyphicon-folder-close"></i>
+                        <span class="name">
+                            <a title="Documents" href="#">Documents</a>
+                        </span>
+                        <input class="input" value="Documents">
+                    </td>
+                    <td class="cell-count">2 items</td>
+                    <td class="cell-action-icons">
+                        <i title="Upload new file" class="glyphicon glyphicon-upload"></i>
+                        <i title="Delete folder" class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
 
                 <tr>
-                    <td class="arrow"><i class="glyphicon glyphicon-menu-right"></i></td>
-                    <td><span class="folder-name"><i class="glyphicon glyphicon-folder-close"></i>
-                        <a href="#">Images</a></span></td>
-                    <td class="file-count">2 items</td>
-                    <td class="file-action-icons">
-                        <i class="glyphicon glyphicon-upload"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    <td class="cell-arrow">
+                        <i class="glyphicon glyphicon-menu-right"></i>
+                    </td>
+                    <td class="cell-file-name">
+                        <i class="glyphicon glyphicon-folder-close"></i>
+                        <span class="name">
+                            <a title="Images" href="#">Images</a>
+                        </span>
+                        <input class="input" value="Images">
+                    </td>
+                    <td class="cell-count">2 items</td>
+                    <td class="cell-action-icons">
+                        <i title="Upload new file" class="glyphicon glyphicon-upload"></i>
+                        <i title="Delete folder" class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
 
                 <tr>
-                    <td class="arrow"><i class="glyphicon glyphicon-menu-right"></i></td>
-                    <td><span class="folder-name"><i class="glyphicon glyphicon-folder-close"></i>
-                        <a href="#">Videos</a></span></td>
-                    <td class="file-count">1 items</td>
-                    <td class="file-action-icons">
-                        <i class="glyphicon glyphicon-upload"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    <td class="cell-arrow">
+                        <i class="glyphicon glyphicon-menu-right"></i>
+                    </td>
+                    <td class="cell-file-name">
+                        <i class="glyphicon glyphicon-folder-close"></i>
+                        <span class="name">
+                            <a title="Videos" href="#">Videos</a>
+                        </span>
+                        <input class="input" value="Videos">
+                    </td>
+                    <td class="cell-count">1 item</td>
+                    <td class="cell-action-icons">
+                        <i title="Upload new file" class="glyphicon glyphicon-upload"></i>
+                        <i title="Delete folder" class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
 
                 <tr>
-                    <td class="arrow"><i class="glyphicon glyphicon-menu-right"></i></td>
-                    <td><span class="folder-name"><i class="glyphicon glyphicon-folder-close"></i>
-                        <a href="#">Music</a></span></td>
-                    <td class="file-count">2 items</td>
-                    <td class="file-action-icons">
-                        <i class="glyphicon glyphicon-upload"></i>
-                        <i class="glyphicon glyphicon-remove-circle"></i>
+                    <td class="cell-arrow">
+                        <i class="glyphicon glyphicon-menu-right"></i>
+                    </td>
+                    <td class="cell-file-name">
+                        <i class="glyphicon glyphicon-folder-close"></i>
+                        <span class="name">
+                            <a title="Music" href="#">Music</a>
+                        </span>
+                        <input class="input" value="Music">
+                    </td>
+                    <td class="cell-count">2 items</td>
+                    <td class="cell-action-icons">
+                        <i title="Upload new file" class="glyphicon glyphicon-upload"></i>
+                        <i title="Delete folder" class="glyphicon glyphicon-remove-circle"></i>
                     </td>
                 </tr>
-
-
                 </tbody>
             </table>
         </div>
 
 
         <footer class="footer">
-            Copyright &copy; 2020 <a href="#">TeamDev</a>. All rights reserved.
+            <p>Copyright &copy; 2020 <a title="TeamDev" href="#">TeamDev</a>. All rights reserved.</p>
         </footer>
     </section>
 </div>
 
-<script src="js/main.js"></script>
 </body>
 </html>

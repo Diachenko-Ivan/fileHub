@@ -2,41 +2,40 @@ import {StorageService} from '../../../app/services/storage-service';
 
 const {test, module} = QUnit;
 
-export default module('StorageService test', function (hook) {
-
-  test('should check the call of getItem.', function (assert) {
+export default module('StorageService', function () {
+  
+  test('should call getItem.', function (assert) {
+    const testKey = 'Get';
     const mockStorage = {
       getItem(key) {
-        assert.step(key);
-      }
+        assert.strictEqual(key, testKey, 'Should get value by correct key.');
+      },
     };
     const storageService = new StorageService(mockStorage);
-    storageService.getItem('Get')
-
-    assert.verifySteps(['Get'], 'Should invoke storage.getItem().');
+    storageService.getItem(testKey);
   });
-
-  test('should check the call of setItem.', function (assert) {
+  
+  test('should call setItem.', function (assert) {
+    const testKey = 'Key';
+    const testValue = 'Value';
     const mockStorage = {
-      setItem() {
-        assert.step('Set');
-      }
+      setItem(key, value) {
+        assert.strictEqual(key, testKey, 'Should accept correct key.');
+        assert.strictEqual(value, testValue, 'Should set correct value.');
+      },
     };
     const storageService = new StorageService(mockStorage);
-    storageService.setItem('', '')
-
-    assert.verifySteps(['Set'], 'Should invoke storage.setItem().');
+    storageService.setItem(testKey, testValue);
   });
-
-  test('should check the call of removeItem.', function (assert) {
+  
+  test('should call removeItem.', function (assert) {
+    const testKey = 'Key';
     const mockStorage = {
       removeItem(key) {
-        assert.step('Remove');
-      }
+        assert.strictEqual(key, testKey, 'Should accept correct key.');
+      },
     };
     const storageService = new StorageService(mockStorage);
-    storageService.removeItem('');
-
-    assert.verifySteps(['Remove'], 'Should invoke storage.setItem().');
+    storageService.removeItem(testKey);
   });
 });

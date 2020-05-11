@@ -14,6 +14,7 @@ const FILE_ICON_TYPES = {
   video: 'film',
   other: 'file',
 };
+
 /**
  * Represents file in file list.
  */
@@ -64,15 +65,15 @@ export class FileComponent extends FileItem {
     
     this.downloadIcon = new Icon(fileActionIcons, {styleClass: 'download'});
     this.removeIcon = new Icon(fileActionIcons, {styleClass: 'remove-circle'});
+  }
+  
+  /**
+   * @inheritdoc
+   */
+  addEventListener() {
     this.removeIcon.onClick(() => {
-      this.removeHandler({
-        name: this.name,
-        size: this.size,
-        type: 'file',
-        id: this.id,
-        parentId: this.parentId,
-        mimeType: this.mimeType
-      });
+      const {name, size, type, id, parentId, mimeType} = this;
+      this.removeHandler({name, size, type, id, parentId, mimeType});
     });
   }
   

@@ -50,14 +50,15 @@ export class FolderComponent extends FileItem {
     
     this.uploadIcon = new Icon(fileActionIcons, {styleClass: 'upload'});
     this.removeIcon = new Icon(fileActionIcons, {styleClass: 'remove-circle'});
+  }
+  
+  /**
+   * @inheritdoc
+   */
+  addEventListener() {
     this.removeIcon.onClick(() => {
-      this.removeHandler({
-        name: this.name,
-        filesCount: this.filesCount,
-        type: 'folder',
-        id: this.id,
-        parentId: this.parentId,
-      });
+      const {name, filesCount, type, id, parentId} = this;
+      this.removeHandler({name, filesCount, type, id, parentId});
     });
   }
   

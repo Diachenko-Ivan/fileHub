@@ -34,22 +34,22 @@ export class FileItem extends Component {
    * Shows loading wheel icon when user executes any action with file item.
    */
   showLoadingWheel() {
-    new Icon(this._itemName, {styleClass:'cd'});
+    new Icon(this._itemName, {styleClass: 'cd'});
   }
   
   /**
    * Hides loading wheel icon.
    */
-  hideLoadingWheel(){
-    this._itemName.removeChild(this._itemName.querySelector('[data-element="icon"]'))
+  hideLoadingWheel() {
+    this._itemName.removeChild(this._itemName.querySelector('[data-element="icon"]'));
   }
-
+  
   /**
    * Adds handler on remove action.
    *
-   * @param {Function} handler - executed when delete action is called.
+   * @param {Function} handler - callback which is called when user clicked on remove icon.
    */
-  onRemove(handler) {
+  onRemoveIconClicked(handler) {
     this.removeHandler = (model) => handler(model);
   }
 }

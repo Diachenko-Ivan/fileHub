@@ -1,16 +1,16 @@
 import {Action} from '../';
-import {FileListLoadErrorMutator} from '../../mutator/file-list-load-error-mutator';
 import {GetFolderContentAction} from '../get-folder-content-action';
-import {RemoveProgressMutator} from '../../mutator/remove-progress-mutator';
+import {RemovingItemsMutator} from '../../mutator/remove-items-mutator';
+import {RemoveItemErrorMutator} from '../../mutator/remove-item-error-mutator';
 
 /**
- * Action that is responsible for getting file item list.
+ * Action that is responsible for removing item.
  */
 export class RemoveItemAction extends Action {
   /**
-   * Creates new {@type GetFolderAction} instance.
+   * Creates new {@type RemoveItemAction} instance.
    *
-   * @param {Item} model - id of folder which is going to be requested from server.
+   * @param {FileDescription | FolderDescription} model - model of item that is being removed.
    */
   constructor(model) {
     super();
@@ -21,18 +21,19 @@ export class RemoveItemAction extends Action {
    * @inheritdoc
    */
   async apply(stateManager, apiService) {
-    stateManager.mutate(new RemoveProgressMutator(true));
+    const model = this.model;
+    stateManager.mutate(new RemovingItemsMutator(model.id));
     try {
-      if (this.model.type === 'folder') {
-        await apiService.removeFolder(this.model.id);
+      if (model.type === 'folder') {
+        await apiService.removeFolder(model.id);
       } else {
-        await apiService.removeFile(this.model.id);
+        await apiService.removeFile(model.id);
       }
-      await stateManager.dispatch(new GetFolderContentAction(stateManager.state.currentFolder.id));
     } catch (e) {
-      stateManager.mutate(new FileListLoadErrorMutator(e));
+      stateManager.mutate(new RemoveItemErrorMutator(e, model));
     } finally {
-      stateManager.mutate(new RemoveProgressMutator(false));
+      await stateManager.dispatch(new GetFolderContentAction(stateManager.state.currentFolder.id));
+      stateManager.mutate(new RemovingItemsMutator(model.id));
     }
   }
 }

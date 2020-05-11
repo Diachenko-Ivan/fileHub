@@ -1,14 +1,15 @@
 import {RemoveItemAction} from '../../../../app/states/actions/remove-item-action';
-import {FileListLoadErrorMutator} from '../../../../app/states/mutator/file-list-load-error-mutator';
-import {GetFolderAction} from '../../../../app/states/actions/get-folder-action';
+import {RemoveItemErrorMutator} from '../../../../app/states/mutator/remove-item-error-mutator';
+import {RemovingItemsMutator} from '../../../../app/states/mutator/remove-items-mutator';
 
 const {test, module} = QUnit;
 
-export default module('RemoveItemAction test', function (hook) {
+export default module('RemoveItemAction test', function () {
   
-  test('should dispatch GetFolderAction after successful deletion.', function (assert) {
-    const action = new RemoveItemAction({type: 'folder'});
-    assert.expect(3);
+  test('should call mutators and actions after successful deletion.', function (assert) {
+    const removingId = 'id';
+    const action = new RemoveItemAction({type: 'folder', id: removingId});
+    assert.expect(4);
     const done = assert.async();
     const folderId = 'root';
     const stateManager = {
@@ -18,52 +19,71 @@ export default module('RemoveItemAction test', function (hook) {
         },
       },
       dispatch(action) {
-        return new Promise((resolve, reject) => {
-          if (action instanceof GetFolderAction) {
-            assert.step(`GetFolderAction ${action.folderId}`);
-            resolve();
-          }
-          reject(new Error());
-        });
+        assert.step(`${action.constructor.name} ${action.folderId}`);
+        return Promise.resolve();
+      },
+      mutate(mutator) {
+        assert.step(`${mutator.constructor.name} ${mutator.removingItemId}`);
       },
     };
     const mockApiService = {
       removeFolder() {
-        assert.step('RemoveFolder');
         return Promise.resolve();
       },
     };
     
     action.apply(stateManager, mockApiService)
       .then(() => {
-        assert.verifySteps(['RemoveFolder', `GetFolderAction ${folderId}`],
-          'Should dispatch GetFolderAction after success folder deletion');
+        assert.verifySteps([
+            'RemovingItemsMutator id',
+            'GetFolderContentAction root',
+            'RemovingItemsMutator id',
+          ],
+          'Should call mutators and dispatch action in the correct order.');
         done();
       });
   });
-  test('should call load error mutator after unsuccessful deletion.', function (assert) {
-    const action = new RemoveItemAction({type: 'file'});
-    assert.expect(3);
+  test('should call remove error mutator after unsuccessful deletion.', function (assert) {
+    const removingId = 'id';
+    const name = 'docs';
+    const action = new RemoveItemAction({type: 'file', id: removingId, name});
+    assert.expect(5);
     const done = assert.async();
-    const loadError = new Error('error');
+    const removeError = new Error('error');
     const stateManager = {
+      state: {
+        currentFolder: {
+          id: 'root',
+        },
+      },
       mutate(mutator) {
-        if (mutator instanceof FileListLoadErrorMutator) {
-          assert.step(`FileListLoadErrorMutator ${mutator.loadError}`);
+        if (mutator instanceof RemoveItemErrorMutator) {
+          assert.step(`RemoveItemErrorMutator ${mutator.removeError.message} ${mutator.removingModel.name}`);
+        } else if (mutator instanceof RemovingItemsMutator) {
+          assert.step(`RemovingItemsMutator ${mutator.removingItemId}`);
+        } else {
+          assert.step(mutator.constructor.name);
         }
+      },
+      dispatch(action) {
+        assert.step(`${action.constructor.name} ${action.folderId}`);
+        return Promise.resolve();
       },
     };
     const apiService = {
       removeFile() {
-        assert.step('RemoveFile');
-        return Promise.reject(loadError);
+        return Promise.reject(removeError);
       },
     };
     
     action.apply(stateManager, apiService)
       .then(() => {
-        assert.verifySteps(['RemoveFile', `FileListLoadErrorMutator ${loadError}`],
-          'Should call FileListLoadErrorMutator after file deletion attempt.');
+        assert.verifySteps([
+            'RemovingItemsMutator id',
+            `RemoveItemErrorMutator ${removeError.message} ${name}`,
+            'GetFolderContentAction root',
+            'RemovingItemsMutator id'],
+          'Should call mutators and dispatch action in the correct order.');
         done();
       });
   });

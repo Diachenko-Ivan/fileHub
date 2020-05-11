@@ -42,4 +42,14 @@ export class FileListState {
    * @type {Error}
    */
   folderLoadError;
+  /**
+   * Currently authorized user.
+   * @type {object}
+   */
+  user;
+  /**
+   * Error in the result of getting user.
+   * @type {Error}
+   */
+  userError;
 }

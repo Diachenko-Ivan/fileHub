@@ -196,16 +196,28 @@ export default module('ApiService', function (hook) {
     }), 'Should send request with correct attributes.');
   });
   
-  test('should return server error on remove file request.', function (assert) {
+  test('should return server error on remove folder request.', function (assert) {
     testCommonErrors(assert, '/folder/id', 500, 'removeFolder', 'id');
   });
   
-  test('should return server error on get folder content.', function (assert) {
+  test('should return authorization error on remove folder request.', function (assert) {
     testCommonErrors(assert, '/folder/id', 401, 'removeFolder', 'id');
   });
 
-  test('should return server error on get folder content.', function (assert) {
+  test('should return not-found error on remove folder request.', function (assert) {
     testCommonErrors(assert, '/folder/id', 404, 'removeFolder', 'id');
+  });
+  
+  test('should return server error on remove file request.', function (assert) {
+    testCommonErrors(assert, '/file/id', 500, 'removeFile', 'id');
+  });
+  
+  test('should return authorization error on on remove file request.', function (assert) {
+    testCommonErrors(assert, '/file/id', 401, 'removeFile', 'id');
+  });
+  
+  test('should return not-found error on on remove file request.', function (assert) {
+    testCommonErrors(assert, '/file/id', 404, 'removeFile', 'id');
   });
 
 });

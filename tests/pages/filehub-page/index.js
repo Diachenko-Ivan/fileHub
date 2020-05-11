@@ -2,6 +2,9 @@ import {FileHubPage} from '../../../app/pages/filehub-page';
 import {StateManager} from '../../../app/states/state-manager';
 import {AuthenticationError} from '../../../app/models/errors/authentication-error';
 import {PageNotFoundError} from '../../../app/models/errors/page-not-found-error';
+import {GetFolderAction} from '../../../app/states/actions/get-folder-action';
+import {GetFolderContentAction} from '../../../app/states/actions/get-folder-content-action';
+import {UserInfoAction} from '../../../app/states/actions/user-info-action';
 
 const {test, module} = QUnit;
 
@@ -58,8 +61,9 @@ export default module('FileHubPage', function () {
     assert.verifySteps(['Not found content'], 'Should call method for resource not found error.');
   });
   
-  test('should dispatch actions for getting folder and folder content.', function (assert) {
+  test('should dispatch actions for getting user info, folder and folder content.', function (assert) {
     const state = {
+      user: {id: 'sdfsd', name: 'John'},
       set locationParam(value) {
         this._locationParam = value;
         this.handler();
@@ -73,16 +77,39 @@ export default module('FileHubPage', function () {
       onStateChanged(property, handler) {
         if (property === 'locationParam') {
           state.handler = handler;
+        } else if (property === 'user') {
+          state.userHanler = handler;
         }
       },
       dispatch(action) {
-        assert.step(`${action.constructor.name} ${state.locationParam.id}`);
+        if (action instanceof GetFolderAction) {
+          assert.step(`GetFolderAction ${state.locationParam.id}`);
+        } else if (action instanceof GetFolderContentAction) {
+          assert.step(`GetFolderContentAction ${state.locationParam.id}`);
+        } else if (action instanceof UserInfoAction) {
+          assert.step(`UserInfoAction ${state.user.name}`);
+        } else {
+          assert.step(action.constructor.name);
+        }
       },
     };
     new FileHubPage(fixture, stateManager);
     stateManager.state.locationParam = {id: '12'};
-    assert.verifySteps(['GetFolderAction 12',
+    assert.verifySteps([
+      'UserInfoAction John',
+      'GetFolderAction 12',
       'GetFolderContentAction 12'], 'Should dispatch actions for getting folder and folder content.');
+  });
+  
+  test('should call method for authorization error in getting of user info.', function (assert) {
+    const state = {
+      userError: {},
+    };
+    const stateManager = new StateManager(state, {});
+    const fileHub = new FileHubPage(fixture, stateManager);
+    fileHub.onFailedAuthorization(() => assert.step('User is unauthorized'));
+    stateManager.state.userError = new AuthenticationError();
+    assert.verifySteps(['User is unauthorized'], 'Should call method for authorization error.');
   });
 });
 

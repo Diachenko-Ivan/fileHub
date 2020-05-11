@@ -89,9 +89,6 @@ export class FileHubPage extends StateAwareComponent {
     const logOutLink = this._getContainer('log-out');
     
     this.fileList = new FileItemList(this.fileListContainer);
-    this.fileList.onRemoveListItem((model) => {
-      this.dispatch(new RemoveItemAction(model));
-    });
   }
   
   /**
@@ -134,6 +131,15 @@ export class FileHubPage extends StateAwareComponent {
       } else if (error instanceof GeneralServerError) {
         alert(error.message);
       }
+    });
+  }
+  
+  /**
+   * @inheritdoc
+   */
+  addEventListener() {
+    this.fileList.onRemoveListItem((model) => {
+      this.dispatch(new RemoveItemAction(model));
     });
   }
   

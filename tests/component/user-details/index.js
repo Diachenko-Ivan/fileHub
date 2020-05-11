@@ -16,7 +16,7 @@ export default module('UserDetails test', function (hook) {
 
     const userDetailsComponent = fixture.firstElementChild;
 
-    userDetails.username = username;
+    userDetails.setNewUsername(username);
 
     assert.ok(userDetailsComponent, 'Should render user details component.');
     assert.strictEqual(userDetailsComponent.innerText, username, 'Should render correct username.');

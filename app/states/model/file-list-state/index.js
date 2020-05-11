@@ -42,5 +42,14 @@ export class FileListState {
    * @type {Error}
    */
   folderLoadError;
-  inRemoveProgress;
+  /**
+   * Contains ids of items that are being deleted.
+   * @type {string[]}
+   */
+  removingItemsIds = [];
+  /**
+   * Error that is raised in the result of item deletion.
+   * @type {Error}
+   */
+  removeError;
 }

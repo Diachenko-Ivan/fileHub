@@ -50,7 +50,7 @@ export class MockFileSystem {
   
   
   /**
-   * Deletes folder by its id.
+   * Recursively deletes folder by its id.
    *
    * @param {string} folderId - id of folder that is going to be deleted.
    */
@@ -59,17 +59,12 @@ export class MockFileSystem {
     childFolders.forEach((childFolder) => {
       this.deleteFolder(childFolder);
     });
-
-    const files = this._files.filter((file) => file.parentId === folderId);
-    files.forEach((file) => {
-      const index = this._files.indexOf(file);
-      this._files.splice(index, 1);
-    });
-
-    const folderIndex = this._folders.indexOf(this.getFolder(folderId));
-    this._folders.splice(folderIndex, 1);
+    
+    this._files = this._files.filter((file) => file.parentId !== folderId);
+    
+    this._folders = this._folders.filter((folder) => folder.id !== folderId);
   }
-
+  
   /**
    * Deletes file by its id.
    *
@@ -80,7 +75,7 @@ export class MockFileSystem {
     const fileIndex = this._files.indexOf(fileToDelete);
     this._files.splice(fileIndex, 1);
   }
-
+  
   /**
    * Returns file by its id.
    *

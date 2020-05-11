@@ -109,7 +109,7 @@ export class ApiService {
       if (response.ok) {
         return response.json();
       }
-      return this._handleCommonErrors(response.status);
+      return this._handleCommonErrors(response);
     });
   }
   

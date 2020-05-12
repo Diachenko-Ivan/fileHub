@@ -3,27 +3,10 @@
  */
 export class MockFileSystem {
   /**
-   * @typedef FolderItem
-   * @property {string} name - folder name.
-   * @property {number} filesCount - number of file in folder.
-   * @property {string} id - id of current folder.
-   * @property {string} parentId - id of parent folder.
-   * @property {string} type - folder.
-   */
-  /**
-   * @typedef FileItem
-   * @property {string} name - file name.
-   * @property {number} size - file size.
-   * @property {string} id - id of current file.
-   * @property {string} parentId - id of parent folder.
-   * @property {string} type - file.
-   * @property {string} mimeType - image, text, audio or video.
-   */
-  /**
    * Array of folders.
    * <p>Used for development.
    *
-   * @type {FolderItem[]}
+   * @type {FolderDescription[]}
    * @private
    */
   _folders = [];
@@ -32,7 +15,7 @@ export class MockFileSystem {
    * Array of files.
    * <p>Used for development.
    *
-   * @type {FileItem[]}
+   * @type {FileDescription[]}
    * @private
    */
   _files = [];
@@ -40,8 +23,8 @@ export class MockFileSystem {
   /**
    * Creates new mock file system with available files and folders.
    *
-   * @param {FolderItem[]} folders - array of folders.
-   * @param {FileItem[]} files - array of files.
+   * @param {FolderDescription[]} folders - array of folders.
+   * @param {FileDescription[]} files - array of files.
    */
   constructor(folders, files) {
     this._folders = folders;
@@ -78,7 +61,7 @@ export class MockFileSystem {
    * Returns file by its id.
    *
    * @param {string} id - file id.
-   * @return {FileItem} file.
+   * @return {FileDescription} file.
    */
   getFile(id) {
     return this._files.find((file) => file.id === id);
@@ -88,7 +71,7 @@ export class MockFileSystem {
    * Returns folder by its id.
    *
    * @param {string} id - folder id.
-   * @return {FolderItem} folder.
+   * @return {FolderDescription} folder.
    */
   getFolder(id) {
     return this._folders.find((folder) => folder.id === id);
@@ -109,7 +92,7 @@ export class MockFileSystem {
   /**
    * Used for tests.
    *
-   * @return {FileItem[]}
+   * @return {FileDescription[]}
    */
   getFiles() {
     return this._files;
@@ -118,7 +101,7 @@ export class MockFileSystem {
   /**
    * Used for tests.
    *
-   * @return {FolderItem[]}
+   * @return {FolderDescription[]}
    */
   getFolders() {
     return this._folders;

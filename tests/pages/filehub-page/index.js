@@ -84,6 +84,18 @@ export default module('FileHubPage', function () {
     assert.verifySteps(['GetFolderAction 12',
       'GetFolderContentAction 12'], 'Should dispatch actions for getting folder and folder content.');
   });
+  
+  test('should call method for authorization failed error.', function (assert) {
+    const state = {
+      uploadError: {},
+    };
+    const stateManager = new StateManager(state, {});
+    const fileHub = new FileHubPage(fixture, stateManager);
+    fileHub.onFailedAuthorization(() => assert.step('Authorization failed'));
+    stateManager.state.uploadError = new AuthenticationError();
+    assert.verifySteps(['Authorization failed'], 'Should call method for authorization failed error.');
+  });
+  
 });
 
 

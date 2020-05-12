@@ -29,7 +29,7 @@ export class FileItemList extends Component {
    * @type {string[]}
    * @private
    */
-  _changingItemsIds = [];
+  _loadingItemIds = [];
   
   /**
    * @typedef Item
@@ -67,7 +67,6 @@ export class FileItemList extends Component {
    * @param {Item[]} items - received file list.
    */
   renderFileList(items) {
-    this._changingItemsIds.length = 0;
     this.rootContainer.firstElementChild.innerHTML = '';
     this._fileItems.length = 0;
     this._sortedItems(items).forEach((item) => {
@@ -75,6 +74,7 @@ export class FileItemList extends Component {
       this._fileItems.push(fileItem);
       fileItem.onRemoveIconClicked(this._removeListItemHandler);
     });
+    this.showLoadingItems(this._loadingItemIds);
   }
   
   /**
@@ -89,16 +89,24 @@ export class FileItemList extends Component {
   /**
    * Moves the list of concrete items in process loading state.
    *
-   * @param {string[]} changingItemsIds - list of item ids that are being changed.
+   * @param {string[]} changingItemIds - list of item ids that are being changed.
    */
-  showChangeLoadingItems(changingItemsIds) {
-    changingItemsIds.forEach((id) => {
-      const changingItem = this._fileItems.find((item) => item.id === id);
-      if (!this._changingItemsIds.includes(changingItem.id)) {
+  showLoadingItems(changingItemIds) {
+    const tmpChangingItemIds = changingItemIds.slice(0);
+    this._loadingItemIds
+      .map((id) => this._fileItems.find((item) => item.id === id))
+      .forEach((changingItem) => {
+        if (changingItem.isLoading()) {
+          changingItem.hideLoadingWheel();
+        }
+      });
+    this._loadingItemIds.length = 0;
+    tmpChangingItemIds
+      .map((id) => this._fileItems.find((item) => item.id === id))
+      .forEach((changingItem) => {
         changingItem.showLoadingWheel();
-        this._changingItemsIds.push(changingItem.id);
-      }
-    });
+        this._loadingItemIds.push(changingItem.id);
+      });
   }
   
   /**

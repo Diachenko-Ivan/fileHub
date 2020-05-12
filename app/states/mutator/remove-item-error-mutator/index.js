@@ -8,12 +8,10 @@ export class RemoveItemErrorMutator extends Mutator {
    * Creates new {@type RemoveItemErrorMutator} instance.
    *
    * @param {Error} removeError - error in the result of removing.
-   * @param {FileDescription | FolderDescription} removingModel - model of item that is being removed.
    */
-  constructor(removeError, removingModel) {
+  constructor(removeError) {
     super();
     this.removeError = removeError;
-    this.removingModel = removingModel;
   }
   
   /**

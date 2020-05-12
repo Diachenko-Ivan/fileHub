@@ -66,10 +66,8 @@ export default module('RemoveItemAction test', function () {
         },
       },
       mutate(mutator) {
-        debugger
-        
         if (mutator instanceof RemoveItemErrorMutator) {
-          assert.step(`RemoveItemErrorMutator ${mutator.removeError.message} ${mutator.removingModel.name}`);
+          assert.step(`RemoveItemErrorMutator ${mutator.removeError.message}`);
         } else if (mutator instanceof RemovingItemsMutator) {
           assert.step(`RemovingItemsMutator ${mutator.removingItemId}`);
         } else if (mutator instanceof RemovedItemsMutator) {
@@ -93,7 +91,7 @@ export default module('RemoveItemAction test', function () {
       .then(() => {
         assert.verifySteps([
             'RemovingItemsMutator id',
-            `RemoveItemErrorMutator ${removeError.message} ${name}`,
+            `RemoveItemErrorMutator ${removeError.message}`,
             'RemovedItemsMutator id',
             'GetFolderContentAction root'],
           'Should call mutators and dispatch action in the correct order.');

@@ -131,8 +131,6 @@ export class FileHubPage extends StateAwareComponent {
       const error = state.removeError;
       if (error instanceof AuthenticationError) {
         this._onFailedAuthorization();
-      } else if (error instanceof PageNotFoundError) {
-        alert(error.message);
       } else if (error instanceof GeneralServerError) {
         alert(error.message);
       }

@@ -8,10 +8,10 @@ export default module('FolderMutator', function (hook) {
     state = {
       currentFolder: {},
     };
-    const currentFolder = {name: 'Docs', id: '123', type: 'folder', filesCount: 10};
+    const currentFolder = {id: '123', name: 'Docs', type: 'folder', parentId: '123', filesCount: 10};
     const mutator = new FolderMutator(currentFolder);
     
     mutator.apply(state);
-    assert.deepEqual(state.currentFolder, currentFolder, 'Should set correct current folder.');
+    assert.deepEqual(JSON.stringify(state.currentFolder), JSON.stringify(currentFolder), 'Should set correct current folder.');
   });
 });

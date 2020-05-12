@@ -58,8 +58,9 @@ export class FileItemList extends Component {
    * Shows the list of file items.
    *
    * @param {AbstractItemModel[]} items - received file list.
+   * @param {string[]} loadingItemIds - ids of items that are in any process.
    */
-  renderFileList(items) {
+  renderFileList(items, loadingItemIds) {
     this.rootContainer.firstElementChild.innerHTML = '';
     this._fileItems.length = 0;
     this._sortedItems(items).forEach((item) => {

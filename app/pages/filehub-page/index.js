@@ -106,7 +106,7 @@ export class FileHubPage extends StateAwareComponent {
       }
     });
     this.onStateChange('fileList', (state) => {
-      this.fileList.renderFileList(state.fileList);
+      this.fileList.renderFileList(state.fileList, [...state.removingItemIds]);
     });
     this.onStateChange('folderLoadError', (state) => {
       this._handleLoadError(state.folderLoadError);

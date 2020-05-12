@@ -18,13 +18,9 @@ export class RemovingItemsMutator extends Mutator {
    * @inheritdoc
    */
   apply(state) {
-    const removingItemsIds = state.removingItemsIds;
+    const removingItemIds = state.removingItemIds;
     const itemId = this.removingItemId;
-    if (removingItemsIds.includes(itemId)) {
-      removingItemsIds.splice(removingItemsIds.indexOf(itemId), 1);
-    } else {
-      removingItemsIds.push(itemId);
-    }
-    state.removingItemsIds = removingItemsIds
+    removingItemIds.push(itemId);
+    state.removingItemIds = removingItemIds;
   }
 }

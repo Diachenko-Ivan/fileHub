@@ -42,4 +42,14 @@ export class FileListState {
    * @type {Error}
    */
   folderLoadError;
+  /**
+   * List of folder ids where upload is happening.
+   * @type {string[]}
+   */
+  uploadingFolderIds = [];
+  /**
+   * Error in the result of upload.
+   * @type {Error}
+   */
+  uploadError;
 }

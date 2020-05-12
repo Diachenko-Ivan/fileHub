@@ -15,6 +15,8 @@ import FileListMutator from './states/mutator/file-list-mutator';
 import FileListErrorMutator from './states/mutator/file-list-load-error-mutator';
 import StateManagerTest from './states/state-manager';
 import DirectoryPathTest from './component/directory-path'
+import UserInfoActionTest from './states/actions/user-info-action'
+import UserMutatorTest from './states/mutator/user-mutator'
 import RemoveItemAction from './states/actions/remove-item-action'
 import StorageServiceTest from './services/storage-service'
 import FileHubPageTest from './pages/filehub-page'
@@ -31,6 +33,6 @@ import RegistrationFormTest from './component/form-registration'
 import RemovingItemsMutatorTest from './states/mutator/remove-items-mutator'
 import RemoveItemErrorMutatorTest from './states/mutator/remove-item-error-mutator'
 import RemovedItemsMutatorTest from './states/mutator/removed-items-mutator'
-
+import UserErrorMutatorTest from './states/mutator/user-error-mutator'
 
 

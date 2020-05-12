@@ -90,6 +90,16 @@ export class MockServer {
       }
       return 401;
     }, {delay: 500});
+
+    fetchMock.get('/user', (url, request) => {
+      if (this._hasAuthToken(request.headers)) {
+        return {
+          name: 'John',
+          id: 'qwerty'
+        };
+      }
+      return 401;
+    }, {delay: 500});
   }
 
   /**

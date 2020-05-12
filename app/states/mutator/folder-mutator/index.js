@@ -1,4 +1,5 @@
 import {Mutator} from '../';
+import {FolderModel} from '../../../models/item/folder';
 
 /**
  * @inheritdoc
@@ -18,6 +19,6 @@ export class FolderMutator extends Mutator {
    * @inheritdoc
    */
   apply(state) {
-    state.currentFolder = this.currentFolder;
+    state.currentFolder = new FolderModel(this.currentFolder);
   }
 }

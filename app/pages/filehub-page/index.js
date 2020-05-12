@@ -6,6 +6,7 @@ import {DirectoryPath} from '../../component/directory-path';
 import {GetFolderContentAction} from '../../states/actions/get-folder-content-action';
 import {RemoveItemAction} from '../../states/actions/remove-item-action';
 import {TitleService} from '../../services/title-service';
+import {GetUserInfoAction} from '../../states/actions/user-info-action';
 import {AuthenticationError} from '../../models/errors/authentication-error';
 import {PageNotFoundError} from '../../models/errors/page-not-found-error';
 import {GeneralServerError} from '../../models/errors/server-error';
@@ -74,7 +75,7 @@ export class FileHubPage extends StateAwareComponent {
     this.progressBarContainer = this._getContainer('progress-bar');
     
     this.directoryPath = new DirectoryPath(directoryPathContainer);
-    this.userDetails = new UserDetails(userDetailsContainer, {username: 'Username'});
+    this.userDetails = new UserDetails(userDetailsContainer);
     this.uploadFileButton = new Button(headButtonsContainer, {
       buttonText: 'Upload File',
       className: 'head-button upload',
@@ -89,6 +90,8 @@ export class FileHubPage extends StateAwareComponent {
     const logOutLink = this._getContainer('log-out');
     
     this.fileList = new FileItemList(this.fileListContainer);
+
+    this.dispatch(new GetUserInfoAction());
   }
   
   /**
@@ -123,6 +126,12 @@ export class FileHubPage extends StateAwareComponent {
       if (state.isFolderLoading) {
         this.directoryPath.folder = {name: '...'};
       }
+    });
+    this.onStateChange('user', (state) => {
+      this.userDetails.username = state.user.name;
+    });
+    this.onStateChange('userError', (state) => {
+      this._handleLoadError(state.userError);
     });
     this.onStateChange('removingItemIds', (state) => {
       this.fileList.showLoadingItems(state.removingItemIds);

@@ -51,4 +51,11 @@ export class Component {
   addEventListener() {
 
   }
+
+  /**
+   * Executes before component is destroyed.
+   */
+  destroy() {
+
+  }
 }

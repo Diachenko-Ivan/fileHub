@@ -5,7 +5,7 @@ import {StateAwareComponent} from '../../component/state-aware-component';
 import {DirectoryPath} from '../../component/directory-path';
 import {GetFolderContentAction} from '../../states/actions/get-folder-content-action';
 import {TitleService} from '../../services/title-service';
-import {UserInfoAction} from '../../states/actions/user-info-action';
+import {GetUserInfoAction} from '../../states/actions/user-info-action';
 import {AuthenticationError} from '../../models/errors/authentication-error';
 import {PageNotFoundError} from '../../models/errors/page-not-found-error';
 import {GeneralServerError} from '../../models/errors/server-error';
@@ -74,7 +74,7 @@ export class FileHubPage extends StateAwareComponent {
     this.progressBarContainer = this._getContainer('progress-bar');
     
     this.directoryPath = new DirectoryPath(directoryPathContainer);
-    this.userDetails = new UserDetails(userDetailsContainer, {username: 'Username'});
+    this.userDetails = new UserDetails(userDetailsContainer);
     this.uploadFileButton = new Button(headButtonsContainer, {
       buttonText: 'Upload File',
       className: 'head-button upload',
@@ -127,7 +127,7 @@ export class FileHubPage extends StateAwareComponent {
       }
     });
     this.onStateChange('user', (state) => {
-      this.userDetails.setNewUsername(state.user.name);
+      this.userDetails.username = state.user.name;
     });
     this.onStateChange('userError', (state) => {
       this._handleLoadError(state.userError);

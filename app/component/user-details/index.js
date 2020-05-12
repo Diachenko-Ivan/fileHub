@@ -5,18 +5,12 @@ import {Component} from '../parent-component.js';
  */
 export class UserDetails extends Component {
   /**
-   * @typedef UserDetailsDescription
-   * @property {string} username - user`s name.
-   */
-  /**
    * Creates new {@type UserDetails} instance.
    *
    * @param {Element} container - outer container.
-   * @param {UserDetailsDescription} userDetailsDescription - user`s info.
    */
-  constructor(container, userDetailsDescription) {
+  constructor(container) {
     super(container);
-    Object.assign(this, userDetailsDescription);
     this.render();
   }
   
@@ -33,8 +27,8 @@ export class UserDetails extends Component {
    *
    * @param {string} value - user name.
    */
-  setNewUsername(value) {
-    this.username = value;
+  set username(value) {
+    this._username = value;
     this.rootContainer.querySelector('[data-element="username"]').innerText = value;
   }
 }

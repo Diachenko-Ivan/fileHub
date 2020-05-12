@@ -46,7 +46,7 @@ export class FileListState {
    * Contains ids of items that are being deleted.
    * @type {string[]}
    */
-  removingItemsIds = [];
+  removingItemIds = [];
   /**
    * Error that is raised in the result of item deletion.
    * @type {Error}

@@ -124,8 +124,8 @@ export class FileHubPage extends StateAwareComponent {
         this.directoryPath.folder = {name: '...'};
       }
     });
-    this.onStateChange('removingItemsIds', (state) => {
-      this.fileList.showChangeLoadingItems(state.removingItemsIds);
+    this.onStateChange('removingItemIds', (state) => {
+      this.fileList.showLoadingItems(state.removingItemIds);
     });
     this.onStateChange('removeError', (state) => {
       const error = state.removeError;

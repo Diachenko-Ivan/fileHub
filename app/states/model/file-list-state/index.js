@@ -4,7 +4,7 @@
 export class FileListState {
   /**
    * Rendered file list.
-   * @type {*[]}
+   * @type {AbstractItemModel[]}
    */
   fileList = [];
   /**
@@ -29,7 +29,7 @@ export class FileListState {
   location;
   /**
    * Current open folder.
-   * @type {FolderDescription}
+   * @type {FolderModel}
    */
   currentFolder;
   /**

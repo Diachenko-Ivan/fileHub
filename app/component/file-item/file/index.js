@@ -32,7 +32,7 @@ export class FileComponent extends FileItem {
    * Creates new {@type FileComponent} component.
    *
    * @param {Element} container - file list.
-   * @param {FileDescription} fileDescription - container for file properties.
+   * @param {FileModel} fileDescription - container for file properties.
    */
   constructor(container, fileDescription) {
     super(container, fileDescription);

@@ -95,7 +95,9 @@ export class FileItemList extends Component {
     changingItemIds
       .map((id) => this._fileItems.find((item) => item.id === id))
       .forEach((changingItem) => {
-        changingItem.showLoadingWheel();
+        if (changingItem) {
+          changingItem.showLoadingWheel();
+        }
       });
   }
   
@@ -130,7 +132,7 @@ export class FileItemList extends Component {
   /**
    * Returns list of rendered file item components.
    *
-   * @return {AbstractItemModel[]} list of rendered file item components.
+   * @return {FileItem[]} list of rendered file item components.
    */
   getFileItems() {
     return this._fileItems;

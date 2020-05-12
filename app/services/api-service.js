@@ -95,6 +95,24 @@ export class ApiService {
     });
   }
   
+  
+  /**
+   * Gets user info from server.
+   *
+   * @return {Promise} object with user name an id or server error.
+   */
+  getUserInfo() {
+    return fetch('/user', {
+      method: 'GET',
+      headers: this._getAuthenticationHeader(),
+    }).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return this._handleCommonErrors(response);
+    });
+  }
+  
   /**
    * @return {ApiService} singleton.
    */

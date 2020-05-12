@@ -15,6 +15,8 @@ import FileListMutator from './states/mutator/file-list-mutator';
 import FileListErrorMutator from './states/mutator/file-list-load-error-mutator';
 import StateManagerTest from './states/state-manager';
 import DirectoryPathTest from './component/directory-path'
+import UserInfoActionTest from './states/actions/user-info-action'
+import UserMutatorTest from './states/mutator/user-mutator'
 import StorageServiceTest from './services/storage-service'
 import FileHubPageTest from './pages/filehub-page'
 import DynamicRouteChangeActionTest from './states/actions/dynamic-route-change-action'
@@ -27,4 +29,6 @@ import LoginPageTest from './pages/login-page'
 import RegistrationPageTest from './pages/registration-page'
 import ErrorPageTest from './pages/error-page'
 import RegistrationFormTest from './component/form-registration'
+import UserErrorMutatorTest from './states/mutator/user-error-mutator'
+
 

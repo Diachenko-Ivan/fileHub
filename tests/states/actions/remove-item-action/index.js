@@ -25,7 +25,13 @@ export default module('RemoveItemAction test', function () {
         return Promise.resolve();
       },
       mutate(mutator) {
-        assert.step(`${mutator.constructor.name} ${mutator.removingItemId}`);
+        if (mutator instanceof RemovedItemsMutator) {
+          assert.step(`RemovedItemsMutator ${mutator.removedItemId}`);
+        } else if (mutator instanceof RemovingItemsMutator) {
+          assert.step(`RemovingItemsMutator ${mutator.removingItemId}`);
+        } else {
+          assert.step(mutator.constructor.name);
+        }
       },
     };
     const mockApiService = {
@@ -60,6 +66,8 @@ export default module('RemoveItemAction test', function () {
         },
       },
       mutate(mutator) {
+        debugger
+        
         if (mutator instanceof RemoveItemErrorMutator) {
           assert.step(`RemoveItemErrorMutator ${mutator.removeError.message} ${mutator.removingModel.name}`);
         } else if (mutator instanceof RemovingItemsMutator) {

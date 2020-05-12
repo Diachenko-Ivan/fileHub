@@ -17,7 +17,7 @@ export class FolderComponent extends FileItem {
    * Creates new {@type FolderComponent} component.
    *
    * @param {Element} container - outer container.
-   * @param {FolderDescription} folderDescription - container for folder properties.
+   * @param {FolderModel} folderDescription - container for folder properties.
    */
   constructor(container, folderDescription) {
     super(container, folderDescription);

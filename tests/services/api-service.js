@@ -189,6 +189,37 @@ export default module('ApiService', function (hook) {
   test('should return not found error on file upload.', function (assert) {
     testCommonErrors(assert, '/folder/id/file', 404, 'uploadFile', 'id', new Blob());
   });
+
+  test('should return correct user.', function (assert) {
+    const done = assert.async();
+    assert.expect(2);
+    const storageService = {
+      getItem() {
+        return 'token';
+      },
+    };
+    const service = new ApiService(storageService);
+    const user = {name:'John'};
+    fetchMock.once('/user', user);
+    service.getUserInfo()
+      .then((responseUser) => {
+        assert.deepEqual(user, responseUser, 'Should return correct user.');
+        done();
+      });
+    assert.ok(fetchMock.called('/user', {
+        method: 'GET',
+        headers: {'Authorization': `Bearer token`},
+      }
+    ))
+  });
+  
+  test('should return authorization error on get user info.', function (assert) {
+    testCommonErrors(assert, '/user', 401, 'getUserInfo');
+  });
+  
+  test('should return server error on get user info.', function (assert) {
+    testCommonErrors(assert, '/user', 500, 'getUserInfo');
+  });
 });
 
 function testCommonErrors(assert, url, errorCode, apiServiceMethod, ...params) {

@@ -4,7 +4,7 @@
 export class FileListState {
   /**
    * Rendered file list.
-   * @type {*[]}
+   * @type {AbstractItemModel[]}
    */
   fileList = [];
   /**
@@ -29,7 +29,7 @@ export class FileListState {
   location;
   /**
    * Current open folder.
-   * @type {FolderDescription}
+   * @type {FolderModel}
    */
   currentFolder;
   /**
@@ -42,6 +42,16 @@ export class FileListState {
    * @type {Error}
    */
   folderLoadError;
+  /**
+   * Currently authorized user.
+   * @type {object}
+   */
+  user;
+  /**
+   * Error in the result of getting user.
+   * @type {Error}
+   */
+  userError;
   /**
    * List of folder ids where upload is happening.
    * @type {string[]}

@@ -4,7 +4,7 @@ import {AuthenticationError} from '../../../app/models/errors/authentication-err
 import {PageNotFoundError} from '../../../app/models/errors/page-not-found-error';
 import {GetFolderAction} from '../../../app/states/actions/get-folder-action';
 import {GetFolderContentAction} from '../../../app/states/actions/get-folder-content-action';
-import {UserInfoAction} from '../../../app/states/actions/user-info-action';
+import {GetUserInfoAction} from '../../../app/states/actions/user-info-action';
 
 const {test, module} = QUnit;
 
@@ -86,7 +86,7 @@ export default module('FileHubPage', function () {
           assert.step(`GetFolderAction ${state.locationParam.id}`);
         } else if (action instanceof GetFolderContentAction) {
           assert.step(`GetFolderContentAction ${state.locationParam.id}`);
-        } else if (action instanceof UserInfoAction) {
+        } else if (action instanceof GetUserInfoAction) {
           assert.step(`UserInfoAction ${state.user.name}`);
         } else {
           assert.step(action.constructor.name);

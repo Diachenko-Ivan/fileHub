@@ -1,9 +1,9 @@
-import {UserInfoAction} from '../../../../app/states/actions/user-info-action';
+import {GetUserInfoAction} from '../../../../app/states/actions/user-info-action';
 
 const {test, module} = QUnit;
 
 export default module('UserInfoAction', function () {
-  const action = new UserInfoAction();
+  const action = new GetUserInfoAction();
   
   test('should call user error mutator.', async function (assert) {
     assert.expect(2);

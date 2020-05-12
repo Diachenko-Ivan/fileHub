@@ -5,9 +5,9 @@ import {UserErrorMutator} from '../../mutator/user-error-mutator';
 /**
  * Action that is responsible for getting user info.
  */
-export class UserInfoAction extends Action {
+export class GetUserInfoAction extends Action {
   /**
-   * Creates new {@type UserInfoAction} instance.
+   * Creates new {@type GetUserInfoAction} instance.
    */
   constructor() {
     super();

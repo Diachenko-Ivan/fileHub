@@ -90,7 +90,7 @@ export class FileHubPage extends StateAwareComponent {
     
     this.fileList = new FileItemList(this.fileListContainer);
 
-    this.dispatch(new UserInfoAction());
+    this.dispatch(new GetUserInfoAction());
   }
   
   /**

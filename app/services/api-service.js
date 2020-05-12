@@ -96,7 +96,7 @@ export class ApiService {
   }
   
   /**
-   * Uploads new file to the to folder system.
+   * Sends request for upload of new file to the folder.
    *
    * @param folderId - folder id.
    * @param {File} file - file that is going to be saved.
@@ -108,12 +108,12 @@ export class ApiService {
     return fetch(`/folder/${folderId}/file`, {
       method: 'POST',
       body: formData,
-      headers: this.authenticationHeader()
+      headers: this._getAuthenticationHeader()
     }).then((response) => {
       if (response.ok) {
         return response.json();
       }
-      this.handleCommonErrors(response.status);
+      return  this._handleCommonErrors(response);
     });
   }
 

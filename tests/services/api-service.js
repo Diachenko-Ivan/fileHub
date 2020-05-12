@@ -85,7 +85,7 @@ export default module('ApiService', function (hook) {
         done();
       });
   });
-
+  
   test('should return folder on success.', function (assert) {
     const done = assert.async();
     assert.expect(2);
@@ -133,11 +133,11 @@ export default module('ApiService', function (hook) {
   test('should return authentication error on get folder.', function (assert) {
     testCommonErrors(assert, '/folder/id', 401, 'getFolder', 'id');
   });
-
+  
   test('should return not found error on get folder.', function (assert) {
     testCommonErrors(assert, '/folder/id', 404, 'getFolder', 'id');
   });
-
+  
   test('should return server error on get folder.', function (assert) {
     testCommonErrors(assert, '/folder/id', 500, 'getFolder', 'id');
   });
@@ -177,6 +177,18 @@ export default module('ApiService', function (hook) {
         done();
       });
   });
+  
+  test('should return server error on file upload.', function (assert) {
+    testCommonErrors(assert, '/folder/id/file', 500, 'uploadFile', 'id', new Blob());
+  });
+  
+  test('should return authorization error on file upload.', function (assert) {
+    testCommonErrors(assert, '/folder/id/file', 401, 'uploadFile', 'id', new Blob());
+  });
+  
+  test('should return not found error on file upload.', function (assert) {
+    testCommonErrors(assert, '/folder/id/file', 404, 'uploadFile', 'id', new Blob());
+  });
 });
 
 function testCommonErrors(assert, url, errorCode, apiServiceMethod, ...params) {
@@ -193,6 +205,6 @@ function testCommonErrors(assert, url, errorCode, apiServiceMethod, ...params) {
   };
   const service = new ApiService(storageService);
   fetchMock.once(url, errorCode);
-  assert.rejects(service[apiServiceMethod](params), errorsMap[errorCode], `Should return ${errorsMap[errorCode].name}.`);
+  assert.rejects(service[apiServiceMethod](...params), errorsMap[errorCode], `Should return ${errorsMap[errorCode].name}.`);
   done();
 }

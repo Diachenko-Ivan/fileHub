@@ -1,0 +1,332 @@
+/*Common styles*/
+
+body {
+    font: 14px/28px Arial, Helvetica, sans-serif;
+    color: #000000;
+    background: #ffffff;
+}
+
+a {
+    color: #76baec;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.input{
+    border: 2px solid #d3d3d3;
+}
+
+.input:focus {
+    box-shadow: 0 0 5px #337ab7;
+}
+
+.header{
+    font-size: 30px;
+    border-bottom: 2px solid #999;
+    margin: 0 0 14px;
+    padding-bottom: 8px;
+}
+
+.button {
+    font-size: 18px;
+    border: 0px solid;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #339ab7;
+}
+
+.logo {
+    position: absolute;
+    width: 160px;
+    height: 70px;
+    top: -65px;
+    left: -2px;
+}
+
+.application-box{
+    box-sizing: border-box;
+    box-shadow: 0 0 20px #999999;
+    background-color: #ffffff;
+    border: 2px solid #999999;
+    border-radius: 8px;
+    margin: 100px auto 0px;
+    padding: 20px;
+    width: 900px;
+    position: relative;
+}
+
+/*Styles for authentication and registration form*/
+
+.user-form{
+    width: 34%;
+    min-width: 600px;
+    padding: 28px;
+}
+
+.user-form .form-input {
+    border-radius: 7px;
+    width: 100%;
+    height: 33px;
+    margin-bottom: 6px;
+}
+
+.user-form input::placeholder {
+    font-size: 18px;
+    padding: 20px 10px;
+}
+
+
+.user-form .form-header .form-target {
+    float: left;
+}
+
+.user-form .form-header .user-icon {
+    float: right;
+}
+
+.user-form .form-header::after {
+    display: block;
+    clear: both;
+    content: "";
+}
+
+.user-form .header .user-icon i {
+    font-size: 30px;
+}
+
+.user-form .credential-container, .form-footer-container {
+    box-sizing: border-box;
+    margin: 0px auto 14px;
+}
+
+.user-form .credential-container label {
+    margin-top: 9px;
+    float: left;
+    font-size: 20px;
+    width: 35%;
+}
+
+.user-form .input-container, .form-footer-button-container {
+    width: 60%;
+    float: right;
+}
+
+.user-form .credential-container .error-message {
+    color: red;
+    font-size: 17px;
+    line-height: 30px;
+}
+
+.user-form .credential-container:after, .form-footer-container:after {
+    display: block;
+    clear: both;
+    content: "";
+}
+
+.user-form .form-footer-container{
+    margin-bottom: 0px;
+}
+
+.user-form .form-link {
+    float: right;
+    margin-top: 8px;
+    font-size: 16px;
+}
+
+.user-form .form-button {
+    float: left;
+    padding: 13px 20px;
+    background-color: #337ab7;
+    color: #ffffff;
+}
+
+.user-form .form-button:hover {
+    background-color: #339ab7;
+}
+
+/*Styles for file explorer*/
+
+.file-explorer-container .footer {
+    font-size: 14px;
+    padding-top: 5px;
+    border-top: 2px solid #999;
+    text-align: center;
+}
+
+.file-explorer-container .main {
+    height: 600px;
+    overflow-y: auto;
+}
+
+.user-menu {
+    position: absolute;
+    right: 20px;
+    top: -40px;
+}
+
+.file-explorer-container .user-menu li {
+    display: inline;
+    border-right: 1px solid #000000;
+    padding-right: 5px;
+}
+
+.file-explorer-container .user-menu :last-child{
+    border-style: none;
+}
+
+.file-explorer-container .glyphicon {
+    font-size: 20px;
+    margin-right: 8px;
+    top: 5px;
+}
+
+
+.file-explorer-container .content-header {
+    padding: 10px 15px 20px;
+    position: sticky;
+    top: 0;
+    border-bottom: 2px solid #999;
+    z-index: 1;
+    background-color: #fff;
+}
+
+.file-explorer-container .content-header .head-buttons {
+    position: absolute;
+    left: 500px;
+}
+
+.file-explorer-container .content-header .head-button {
+    padding: 4px 10px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    float: right;
+    margin-left: 30px;
+    color: #ffffff;
+}
+
+.file-explorer-container .content-header .directory-path {
+    width: 56%;
+    font-size: 22px;
+    font-weight: 600;
+    text-align: left;
+}
+
+.upload{
+    background-color: #337ab7;
+}
+
+.create {
+    background-color: darkcyan;
+}
+
+.file-explorer-container .content-table {
+    width: 100%;
+}
+
+.file-explorer-container .content-table tr {
+    border-bottom: 1px solid #999;
+    width: 100%;
+    font-size: 14px;
+}
+
+.file-explorer-container .content-table tbody tr:hover {
+    background-color: #f4f4f4;
+}
+
+.file-explorer-container tr .file-action-icons {
+    opacity: 0;
+}
+
+.file-explorer-container tbody tr:hover .file-action-icons {
+    opacity: 1;
+}
+
+.file-explorer-container .content-table td, th {
+    vertical-align: middle;
+    padding-top: 11px;
+    padding-bottom: 11px;
+}
+
+.file-explorer-container .content-table .arrow{
+    width: 4%;
+}
+
+.file-explorer-container .arrow .glyphicon-menu-right {
+    font-size: 12px;
+    margin-left: 8px;
+    top: 2px;
+}
+
+.file-explorer-container .content-table tr td .file-name i {
+    color: #000000;
+}
+
+.file-explorer-container .content-table tr td .cell-file-name {
+    display: block;
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.content-table .cell-file-name {
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+ .cell-file-name .edit-input {
+    width: 300px;
+    display: none;
+}
+
+.content-table .cell-file-name.editing .file-name,
+.content-table .cell-file-name.editing .folder-name {
+    display: none;
+}
+
+.content-table .cell-file-name.editing .edit-input {
+    display: inline-block;
+}
+.file-explorer-container .content-table tr td .edit-input {
+    border-radius: 5px;
+    width: 62%;
+    line-height: 25px;
+    font-size: 14px;
+    padding-left: 5px;
+}
+
+.file-explorer-container .content-table tr .file-count, .file-size {
+    width: 20%;
+    text-align: center;
+}
+
+.file-explorer-container .content-table tr .file-action-icons {
+    width: 20%;
+    text-align: right;
+}
+
+.file-explorer-container .content-table tr .file-action-icons .glyphicon-upload {
+    color: 	#32CD32;
+}
+
+.file-explorer-container .content-table tr .file-action-icons .glyphicon-download {
+    color: #76baec;
+}
+
+.file-explorer-container .content-table tr .file-action-icons .glyphicon-remove-circle {
+    color: #ff0000;
+}
+
+table tr.isSelected {
+    background-color: #c0dbe8;
+}
+table tr.isSelected:hover {
+    background-color: #c0dbe8;
+}

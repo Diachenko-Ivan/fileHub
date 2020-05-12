@@ -1,5 +1,6 @@
 import {Icon} from '../file-item-icon';
 import {FileItem} from '../index.js';
+import {FolderModel} from '../../../models/item/folder';
 
 /**
  * Represents folder.
@@ -57,7 +58,8 @@ export class FolderComponent extends FileItem {
    */
   addEventListener() {
     this.removeIcon.onClick(() => {
-      this.removeHandler(this.modelForRemove);
+      const {id} = this;
+      this.removeHandler(new FolderModel({id}));
     });
   }
   

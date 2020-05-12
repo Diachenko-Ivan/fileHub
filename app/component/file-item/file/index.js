@@ -1,5 +1,6 @@
 import {Icon} from '../file-item-icon';
 import {FileItem} from '../index.js';
+import {FileModel} from '../../../models/item/file';
 
 /**
  * Contains icon classes for each file type.
@@ -72,7 +73,8 @@ export class FileComponent extends FileItem {
    */
   addEventListener() {
     this.removeIcon.onClick(() => {
-      this.removeHandler(this.modelForRemove);
+      const {id} = this;
+      this.removeHandler(new FileModel({id}));
     });
   }
   

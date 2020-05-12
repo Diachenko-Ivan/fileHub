@@ -49,4 +49,14 @@ export default module('FolderComponent test', function (hook) {
     const absentLoadIcon = fixture.querySelector('[data-element="item-name"] [data-element="icon"]');
     assert.notOk(absentLoadIcon, 'Should remove loading wheel.');
   });
+  
+  test('should call handler for upload.', function (assert) {
+    const folder = new FolderComponent(fixture, {name: 'sas'});
+
+    const uploadIcon = fixture.querySelector('[data-element="file-action-icons"]').firstElementChild;
+    folder.onUploadFile(() => assert.step('Uploaded'));
+    
+    uploadIcon.click();
+    assert.verifySteps(['Uploaded'], 'Should call handler for upload.');
+  });
 });

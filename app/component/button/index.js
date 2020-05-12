@@ -41,10 +41,10 @@ export class Button extends Component {
    */
   initNestedComponents() {
     if (this.iconClass) {
-      const buttonIcon = document.createElement('i');
-      buttonIcon.setAttribute('data-test', 'button-icon');
-      buttonIcon.setAttribute('class', `glyphicon glyphicon-${this.iconClass}`);
-      this.rootContainer.prepend(buttonIcon);
+      this.buttonIcon = document.createElement('i');
+      this.buttonIcon.setAttribute('data-test', 'button-icon');
+      this.buttonIcon.setAttribute('class', `glyphicon glyphicon-${this.iconClass}`);
+      this.rootContainer.prepend(this.buttonIcon);
     }
   }
   
@@ -62,5 +62,17 @@ export class Button extends Component {
    */
   addEventListener() {
     this.rootContainer.addEventListener('click', () => this.handlers.forEach((handler) => handler()));
+  }
+  
+  /**
+   * Sets new class to button icon.
+   * @param {string} value - style name.
+   */
+  set buttonIconClass(value) {
+    if (this.iconClass !== value) {
+      this.buttonIcon.classList.remove(`glyphicon-${this.iconClass}`);
+      this.iconClass = value;
+      this.buttonIcon.classList.add(`glyphicon-${this.iconClass}`);
+    }
   }
 }

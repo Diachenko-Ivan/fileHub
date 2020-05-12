@@ -1,5 +1,4 @@
 import {Mutator} from '../';
-import {PageNotFoundError} from '../../../models/errors/page-not-found-error';
 
 /**
  * @inheritdoc
@@ -21,9 +20,6 @@ export class RemoveItemErrorMutator extends Mutator {
    * @inheritdoc
    */
   apply(state) {
-    if (this.removeError instanceof PageNotFoundError) {
-      this.removeError.message = `Failed to remove ${this.removingModel.name}! It can be already removed.`;
-    }
     state.removeError = this.removeError;
   }
 }

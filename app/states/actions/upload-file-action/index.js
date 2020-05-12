@@ -1,6 +1,8 @@
 import {Action} from '../';
-import {GetFolderAction} from '../file-list-action';
-import {FileListLoadErrorMutator} from '../../mutator/file-list-load-error-mutator';
+import {GetFolderContentAction} from '../get-folder-content-action';
+import {UploadProcessMutator} from '../../mutator/upload-process-mutator';
+import {UploadFinishedMutator} from '../../mutator/upload-finished-mutator';
+import {UploadErrorMutator} from '../../mutator/upload-error-mutator';
 
 /**
  * Action that is responsible for uploading file.
@@ -22,13 +24,15 @@ export class UploadFileAction extends Action {
    * @inheritdoc
    */
   async apply(stateManager, apiService) {
+    const folderId = this.folderId;
+    stateManager.mutate(new UploadProcessMutator(folderId));
     try {
-      const response = await apiService.uploadFile(this.folderId, this.file);
-      await stateManager.dispatch(new GetFolderAction(stateManager.state.currentFolder.id));
-      return response;
+      return await apiService.uploadFile(folderId, this.file);
     } catch (e) {
-      stateManager.mutate(new FileListLoadErrorMutator(e));
-      return e;
+      stateManager.mutate(new UploadErrorMutator(e));
+    } finally {
+      stateManager.mutate(new UploadFinishedMutator(folderId));
+      await stateManager.dispatch(new GetFolderContentAction(stateManager.state.currentFolder.id));
     }
   }
 }

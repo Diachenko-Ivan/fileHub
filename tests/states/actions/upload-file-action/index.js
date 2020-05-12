@@ -1,16 +1,17 @@
 import {UploadFileAction} from '../../../../app/states/actions/upload-file-action';
-import {GetFolderAction} from '../../../../app/states/actions/file-list-action';
-import {FileListLoadErrorMutator} from '../../../../app/states/mutator/file-list-load-error-mutator';
+import {UploadProcessMutator} from '../../../../app/states/mutator/upload-process-mutator';
+import {UploadFinishedMutator} from '../../../../app/states/mutator/upload-finished-mutator';
+import {UploadErrorMutator} from '../../../../app/states/mutator/upload-error-mutator';
 
 const {test, module} = QUnit;
 
 export default module('UploadFileAction', function (hook) {
   
-  test('should dispatch GetFolderAction after successful upload.', function (assert) {
-    const action = new UploadFileAction('id', new File([JSON.stringify({})], 'file'));
-    assert.expect(2);
-    const done = assert.async();
+  test('should call mutators and actions in correct order after success upload.', function (assert) {
     const folderId = 'root';
+    const action = new UploadFileAction(folderId, new File([JSON.stringify({})], 'file'));
+    assert.expect(4);
+    const done = assert.async();
     const stateManager = {
       state: {
         currentFolder: {
@@ -18,13 +19,17 @@ export default module('UploadFileAction', function (hook) {
         },
       },
       dispatch(action) {
-        return new Promise((resolve, reject) => {
-          if (action instanceof GetFolderAction) {
-            assert.step(`GetFolderAction ${action.folderId}`);
-            resolve();
-          }
-          reject(new Error());
-        });
+        assert.step(`${action.constructor.name} ${action.folderId}`);
+        return Promise.resolve();
+      },
+      mutate(mutator) {
+        if (mutator instanceof UploadProcessMutator) {
+          assert.step(`UploadProcessMutator ${mutator.uploadingFolderId}`);
+        } else if (mutator instanceof UploadFinishedMutator) {
+          assert.step(`UploadFinishedMutator ${mutator.uploadFinishedFolderId}`);
+        } else {
+          assert.step(action.constructor.name);
+        }
       },
     };
     const apiService = {
@@ -35,32 +40,57 @@ export default module('UploadFileAction', function (hook) {
     
     action.apply(stateManager, apiService)
       .then(() => {
-        assert.verifySteps([`GetFolderAction ${folderId}`], 'Should dispatch GetFolderAction after success upload.');
+        assert.verifySteps([
+          `UploadProcessMutator ${folderId}`,
+          `UploadFinishedMutator ${folderId}`,
+          `GetFolderContentAction ${folderId}`,
+        ], 'Should call mutators and actions in correct order.');
         done();
       });
   });
   
-  test('should call load error mutator after unsuccessful upload.', function (assert) {
-    const action = new UploadFileAction('id', new File([JSON.stringify({})], 'file'));
-    assert.expect(2);
+  test('should call mutators and actions in correct order after unsuccessful upload.', function (assert) {
+    const folderId = 'root';
+    const action = new UploadFileAction(folderId, new File([JSON.stringify({})], 'file'));
+    assert.expect(5);
     const done = assert.async();
-    const loadError = new Error('error');
+    const uploadError = new Error('error');
     const stateManager = {
+      state: {
+        currentFolder: {
+          id: folderId,
+        },
+      },
+      dispatch(action) {
+        assert.step(`${action.constructor.name} ${action.folderId}`);
+        return Promise.resolve();
+      },
       mutate(mutator) {
-        if (mutator instanceof FileListLoadErrorMutator) {
-          assert.step(`FileListLoadErrorMutator ${mutator.loadError}`);
+        if (mutator instanceof UploadProcessMutator) {
+          assert.step(`UploadProcessMutator ${mutator.uploadingFolderId}`);
+        } else if (mutator instanceof UploadFinishedMutator) {
+          assert.step(`UploadFinishedMutator ${mutator.uploadFinishedFolderId}`);
+        } else if (mutator instanceof UploadErrorMutator) {
+          assert.step(`UploadErrorMutator ${mutator.uploadError.message}`);
+        } else {
+          assert.step(action.constructor.name);
         }
       },
     };
     const apiService = {
       uploadFile() {
-        return Promise.reject(loadError);
+        return Promise.reject(uploadError);
       },
     };
     
     action.apply(stateManager, apiService)
       .then(() => {
-        assert.verifySteps([`FileListLoadErrorMutator ${loadError}`], 'Should call FileListLoadErrorMutator.');
+        assert.verifySteps([
+          `UploadProcessMutator ${folderId}`,
+          `UploadErrorMutator ${uploadError.message}`,
+          `UploadFinishedMutator ${folderId}`,
+          `GetFolderContentAction ${folderId}`,
+        ], 'Should call mutators and actions in correct order.');
         done();
       });
   });

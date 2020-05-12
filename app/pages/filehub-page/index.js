@@ -22,7 +22,11 @@ const UPLOAD_ICON_CLASS = 'upload';
  * @type {string}
  */
 const PLUS_ICON_CLASS = 'plus';
-
+/**
+ * Class name for cd(loading wheel) icon.
+ * @type {string}
+ */
+const CD_ICON_CLASS = 'cd';
 /**
  * Page for file hub explorer.
  */
@@ -90,20 +94,6 @@ export class FileHubPage extends StateAwareComponent {
     const logOutLink = this._getContainer('log-out');
     
     this.fileList = new FileItemList(this.fileListContainer);
-
-    const openWindowService = new UploadWindowService();
-
-    this.uploadFileButton.onClick(() => {
-      openWindowService.openUploadWindow((file) => {
-        this.dispatch(new UploadFileAction(this.stateManager.state.currentFolder.id, file));
-      });
-    });
-
-    this.fileList.onUploadFileToFolder((folderId) => {
-      openWindowService.openUploadWindow((file) => {
-        this.dispatch(new UploadFileAction(folderId, file));
-      });
-    });
   }
   
   /**

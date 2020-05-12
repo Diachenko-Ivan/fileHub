@@ -129,6 +129,41 @@ export class FileHubPage extends StateAwareComponent {
         this.directoryPath.folder = {name: '...'};
       }
     });
+    this.onStateChange('uploadingFolderIds', (state) => {
+      if (state.uploadingFolderIds.includes(state.currentFolder.id)) {
+        this.uploadFileButton.buttonIconClass = CD_ICON_CLASS;
+      } else {
+        this.uploadFileButton.buttonIconClass = PLUS_ICON_CLASS;
+      }
+    });
+    this.onStateChange('uploadError', (state) => {
+      const error = state.uploadError;
+      if (error instanceof AuthenticationError) {
+        this._onFailedAuthorization();
+      } else if (error instanceof GeneralServerError) {
+        alert(error.message);
+      }
+    });
+    
+  }
+  
+  /**
+   * @inheritdoc
+   */
+  addEventListener() {
+    const openWindowService = new UploadWindowService();
+    
+    this.uploadFileButton.onClick(() => {
+      openWindowService.openUploadWindow((file) => {
+        this.dispatch(new UploadFileAction(this.stateManager.state.currentFolder.id, file));
+      });
+    });
+    
+    this.fileList.onUploadFileToFolder((folderId) => {
+      openWindowService.openUploadWindow((file) => {
+        this.dispatch(new UploadFileAction(folderId, file));
+      });
+    });
   }
   
   /**

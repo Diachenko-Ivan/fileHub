@@ -19,17 +19,10 @@ export class FileItemList extends Component {
   /**
    * Contains files and folders.
    *
-   * @type {AbstractItemModel[]}
+   * @type {FileItem[]}
    * @private
    */
   _fileItems = [];
-  /**
-   * Contains items that are being changed(renamed or deleted).
-   *
-   * @type {string[]}
-   * @private
-   */
-  _loadingItemIds = [];
   
   /**
    * @typedef Item
@@ -74,7 +67,7 @@ export class FileItemList extends Component {
       this._fileItems.push(fileItem);
       fileItem.onRemoveIconClicked(this._removeListItemHandler);
     });
-    this.showLoadingItems(this._loadingItemIds);
+    this.showLoadingItems(loadingItemIds);
   }
   
   /**
@@ -92,20 +85,16 @@ export class FileItemList extends Component {
    * @param {string[]} changingItemIds - list of item ids that are being changed.
    */
   showLoadingItems(changingItemIds) {
-    const tmpChangingItemIds = changingItemIds.slice(0);
-    this._loadingItemIds
-      .map((id) => this._fileItems.find((item) => item.id === id))
-      .forEach((changingItem) => {
-        if (changingItem.isLoading()) {
-          changingItem.hideLoadingWheel();
-        }
-      });
-    this._loadingItemIds.length = 0;
-    tmpChangingItemIds
+    this._fileItems
+      .forEach((item) => {
+          if (item.isLoading()) {
+            item.hideLoadingWheel();
+          }
+        });
+    changingItemIds
       .map((id) => this._fileItems.find((item) => item.id === id))
       .forEach((changingItem) => {
         changingItem.showLoadingWheel();
-        this._loadingItemIds.push(changingItem.id);
       });
   }
   

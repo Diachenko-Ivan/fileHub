@@ -57,8 +57,7 @@ export class FolderComponent extends FileItem {
    */
   addEventListener() {
     this.removeIcon.onClick(() => {
-      const {name, filesCount, type, id, parentId} = this;
-      this.removeHandler({name, filesCount, type, id, parentId});
+      this.removeHandler(this.modelForRemove);
     });
   }
   

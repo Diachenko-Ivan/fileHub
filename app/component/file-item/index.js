@@ -16,6 +16,8 @@ export class FileItem extends Component {
     Object.assign(this, params);
     this.render();
     this._itemName = this.rootContainer.querySelector('[data-element="item-name"]');
+    const {name, type, id} = this;
+    this.modelForRemove = {name, type, id};
   }
   
   /**
@@ -51,5 +53,14 @@ export class FileItem extends Component {
    */
   onRemoveIconClicked(handler) {
     this.removeHandler = (model) => handler(model);
+  }
+  
+  /**
+   * Defines either items is loading or not.
+   *
+   * @return {boolean} loading flag.
+   */
+  isLoading(){
+    return !!this.rootContainer.querySelector('[data-element="item-name"] [data-element="icon"]');
   }
 }

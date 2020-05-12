@@ -65,9 +65,7 @@ export class FileItemList extends Component {
     this._sortedItems(items).forEach((item) => {
       const fileItem = this._fileItemFactory[item.type](item);
       this._fileItems.push(fileItem);
-      if (fileItem instanceof FolderComponent) {
-        fileItem.onUploadFile(this._uploadFileHandler);
-      }
+      fileItem.onUploadFile(this._uploadFileHandler);
     });
   }
   
@@ -111,7 +109,7 @@ export class FileItemList extends Component {
   /**
    * Registers function that executes when user clicked to folder upload icon.
    *
-   * @param {Function} handler - executes when user clicked to folder upload icon.
+   * @param {Function} handler - callback for upload action.
    */
   onUploadFileToFolder(handler) {
     this._uploadFileHandler = handler;

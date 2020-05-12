@@ -30,5 +30,7 @@ import ErrorPageTest from './pages/error-page'
 import RegistrationFormTest from './component/form-registration'
 import RemovingItemsMutatorTest from './states/mutator/remove-items-mutator'
 import RemoveItemErrorMutatorTest from './states/mutator/remove-item-error-mutator'
+import RemovedItemsMutatorTest from './states/mutator/removed-items-mutator'
+
 
 

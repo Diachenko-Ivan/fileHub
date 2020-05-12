@@ -1,6 +1,7 @@
 import {RemoveItemAction} from '../../../../app/states/actions/remove-item-action';
 import {RemoveItemErrorMutator} from '../../../../app/states/mutator/remove-item-error-mutator';
 import {RemovingItemsMutator} from '../../../../app/states/mutator/remove-items-mutator';
+import {RemovedItemsMutator} from '../../../../app/states/mutator/remove-finished-item-mutator';
 
 const {test, module} = QUnit;
 
@@ -14,6 +15,7 @@ export default module('RemoveItemAction test', function () {
     const folderId = 'root';
     const stateManager = {
       state: {
+        removingItemIds: [],
         currentFolder: {
           id: folderId,
         },
@@ -36,8 +38,8 @@ export default module('RemoveItemAction test', function () {
       .then(() => {
         assert.verifySteps([
             'RemovingItemsMutator id',
+            'RemovedItemsMutator id',
             'GetFolderContentAction root',
-            'RemovingItemsMutator id',
           ],
           'Should call mutators and dispatch action in the correct order.');
         done();
@@ -52,6 +54,7 @@ export default module('RemoveItemAction test', function () {
     const removeError = new Error('error');
     const stateManager = {
       state: {
+        removingItemIds: [],
         currentFolder: {
           id: 'root',
         },
@@ -61,6 +64,8 @@ export default module('RemoveItemAction test', function () {
           assert.step(`RemoveItemErrorMutator ${mutator.removeError.message} ${mutator.removingModel.name}`);
         } else if (mutator instanceof RemovingItemsMutator) {
           assert.step(`RemovingItemsMutator ${mutator.removingItemId}`);
+        } else if (mutator instanceof RemovedItemsMutator) {
+          assert.step(`RemovedItemsMutator ${mutator.removedItemId}`);
         } else {
           assert.step(mutator.constructor.name);
         }
@@ -81,8 +86,8 @@ export default module('RemoveItemAction test', function () {
         assert.verifySteps([
             'RemovingItemsMutator id',
             `RemoveItemErrorMutator ${removeError.message} ${name}`,
-            'GetFolderContentAction root',
-            'RemovingItemsMutator id'],
+            'RemovedItemsMutator id',
+            'GetFolderContentAction root'],
           'Should call mutators and dispatch action in the correct order.');
         done();
       });

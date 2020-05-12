@@ -2,6 +2,7 @@ import {Action} from '../';
 import {GetFolderContentAction} from '../get-folder-content-action';
 import {RemovingItemsMutator} from '../../mutator/remove-items-mutator';
 import {RemoveItemErrorMutator} from '../../mutator/remove-item-error-mutator';
+import {RemovedItemsMutator} from '../../mutator/remove-finished-item-mutator';
 
 /**
  * Action that is responsible for removing item.
@@ -22,18 +23,20 @@ export class RemoveItemAction extends Action {
    */
   async apply(stateManager, apiService) {
     const model = this.model;
-    stateManager.mutate(new RemovingItemsMutator(model.id));
-    try {
-      if (model.type === 'folder') {
-        await apiService.removeFolder(model.id);
-      } else {
-        await apiService.removeFile(model.id);
-      }
-    } catch (e) {
-      stateManager.mutate(new RemoveItemErrorMutator(e, model));
-    } finally {
-      await stateManager.dispatch(new GetFolderContentAction(stateManager.state.currentFolder.id));
+    if (!stateManager.state.removingItemIds.includes(model.id)) {
       stateManager.mutate(new RemovingItemsMutator(model.id));
+      try {
+        if (model.type === 'folder') {
+          await apiService.removeFolder(model.id);
+        } else {
+          await apiService.removeFile(model.id);
+        }
+      } catch (e) {
+        stateManager.mutate(new RemoveItemErrorMutator(e, model));
+      } finally {
+        stateManager.mutate(new RemovedItemsMutator(model.id));
+        await stateManager.dispatch(new GetFolderContentAction(stateManager.state.currentFolder.id));
+      }
     }
   }
 }

@@ -85,7 +85,7 @@ export default module('FileHubPage', function () {
       'GetFolderContentAction 12'], 'Should dispatch actions for getting folder and folder content.');
   });
   
-  test('should call method for authorization failed error.', function (assert) {
+  test('should call method for authorization failed error on file upload.', function (assert) {
     const state = {
       uploadError: {},
     };

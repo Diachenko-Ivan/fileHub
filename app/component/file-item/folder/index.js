@@ -6,14 +6,6 @@ import {FileItem} from '../index.js';
  */
 export class FolderComponent extends FileItem {
   /**
-   * @typedef FolderDescription
-   * @property {string} name - name of folder.
-   * @property {number} filesCount - number of files in folder.
-   * @property {string} id - folder id.
-   * @property {string} parentId - id of parent folder.
-   * @property {string} type - folder.
-   */
-  /**
    * Creates new {@type FolderComponent} component.
    *
    * @param {Element} container - outer container.
@@ -32,7 +24,7 @@ export class FolderComponent extends FileItem {
                 <td class="cell-file-name" data-element="item-name">
                     <i class="glyphicon glyphicon-folder-close"></i>
                     <span class="folder-name">
-                        <a data-test="folder-name" data-element="folder-link" href="#/folder/${this.id}">${this.name}</a>
+                        <a data-test="folder-name" data-element="folder-link" href="#/folder/${this.model.id}">${this.model.name}</a>
                     </span>
                     <input class="edit-input"/>
                 </td>
@@ -59,6 +51,6 @@ export class FolderComponent extends FileItem {
    * @private
    */
   _numberOfItems() {
-    return `${this.filesCount} ${this.filesCount === 1 ? 'item' : 'items'}`;
+    return `${this.model.filesCount} ${this.model.filesCount === 1 ? 'item' : 'items'}`;
   }
 }

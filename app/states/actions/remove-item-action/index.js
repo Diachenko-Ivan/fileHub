@@ -23,20 +23,18 @@ export class RemoveItemAction extends Action {
    */
   async apply(stateManager, apiService) {
     const model = this.model;
-    if (!stateManager.state.removingItemIds.includes(model.id)) {
-      stateManager.mutate(new RemovingItemsMutator(model.id));
-      try {
-        if (model.type === 'folder') {
-          await apiService.removeFolder(model.id);
-        } else {
-          await apiService.removeFile(model.id);
-        }
-      } catch (e) {
-        stateManager.mutate(new RemoveItemErrorMutator(e));
-      } finally {
-        stateManager.mutate(new RemovedItemsMutator(model.id));
-        await stateManager.dispatch(new GetFolderContentAction(stateManager.state.currentFolder.id));
+    stateManager.mutate(new RemovingItemsMutator(model.id));
+    try {
+      if (model.type === 'folder') {
+        await apiService.removeFolder(model.id);
+      } else {
+        await apiService.removeFile(model.id);
       }
+    } catch (e) {
+      stateManager.mutate(new RemoveItemErrorMutator(e));
+    } finally {
+      stateManager.mutate(new RemovedItemsMutator(model.id));
+      await stateManager.dispatch(new GetFolderContentAction(stateManager.state.currentFolder.id));
     }
   }
 }

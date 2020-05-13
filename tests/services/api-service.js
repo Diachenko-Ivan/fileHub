@@ -189,6 +189,73 @@ export default module('ApiService', function (hook) {
   test('should return not found error on file upload.', function (assert) {
     testCommonErrors(assert, '/folder/id/file', 404, 'uploadFile', 'id', new Blob());
   });
+  
+  test('should return success after file deletion.', function (assert) {
+    const done = assert.async();
+    assert.expect(2);
+    const storageService = {
+      getItem() {
+        return 'token';
+      },
+    };
+    const service = new ApiService(storageService);
+    fetchMock.once('/file/id', 200);
+    service.removeFile('id')
+      .then(() => {
+        assert.ok(true, 'Should return code 200.');
+        done();
+      });
+    assert.ok(fetchMock.called('/file/id', {
+      method: 'DELETE',
+      headers: {'Authorization': 'Bearer token'},
+    }), 'Should send request with correct attributes.');
+  });
+  
+  test('should return success after folder deletion.', function (assert) {
+    const done = assert.async();
+    assert.expect(2);
+    const storageService = {
+      getItem() {
+        return 'token';
+      },
+    };
+    const service = new ApiService(storageService);
+    fetchMock.once('/folder/id', 200);
+    service.removeFolder('id')
+      .then(() => {
+        assert.ok(true, 'Should return code 200.');
+        done();
+      });
+    assert.ok(fetchMock.called('/folder/id', {
+      method: 'DELETE',
+      headers: {'Authorization': 'Bearer token'},
+    }), 'Should send request with correct attributes.');
+  });
+  
+  test('should return server error on remove folder request.', function (assert) {
+    testCommonErrors(assert, '/folder/id', 500, 'removeFolder', 'id');
+  });
+  
+  test('should return authorization error on remove folder request.', function (assert) {
+    testCommonErrors(assert, '/folder/id', 401, 'removeFolder', 'id');
+  });
+
+  test('should return not-found error on remove folder request.', function (assert) {
+    testCommonErrors(assert, '/folder/id', 404, 'removeFolder', 'id');
+  });
+  
+  test('should return server error on remove file request.', function (assert) {
+    testCommonErrors(assert, '/file/id', 500, 'removeFile', 'id');
+  });
+  
+  test('should return authorization error on on remove file request.', function (assert) {
+    testCommonErrors(assert, '/file/id', 401, 'removeFile', 'id');
+  });
+  
+  test('should return not-found error on on remove file request.', function (assert) {
+    testCommonErrors(assert, '/file/id', 404, 'removeFile', 'id');
+  });
+
 
   test('should return correct user.', function (assert) {
     const done = assert.async();

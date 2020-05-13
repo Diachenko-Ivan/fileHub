@@ -19,7 +19,7 @@ export class FileItemList extends Component {
   /**
    * Contains files and folders.
    *
-   * @type {AbstractItemModel[]}
+   * @type {FileItem[]}
    * @private
    */
   _fileItems = [];
@@ -58,15 +58,37 @@ export class FileItemList extends Component {
    * Shows the list of file items.
    *
    * @param {AbstractItemModel[]} items - received file list.
+   * @param {string[]} loadingItemIds - ids of items that are in any process.
    */
-  renderFileList(items) {
+  renderFileList(items, loadingItemIds) {
     this.rootContainer.firstElementChild.innerHTML = '';
     this._fileItems.length = 0;
     this._sortedItems(items).forEach((item) => {
       const fileItem = this._fileItemFactory[item.type](item);
       this._fileItems.push(fileItem);
+      fileItem.onRemoveIconClicked(this._removeListItemHandler);
       fileItem.onUploadFile(this._uploadFileHandler);
     });
+    this.showLoadingItems(loadingItemIds);
+  }
+  
+  /**
+   * Adds handler on remove file item action.
+   *
+   * @param {Function} handler - executed when delete action is called.
+   */
+  onRemoveListItem(handler) {
+    this._removeListItemHandler = handler;
+  }
+  
+  /**
+   * Moves the list of concrete items in process loading state.
+   *
+   * @param {string[]} changingItemIds - list of item ids that are being changed.
+   */
+  showLoadingItems(changingItemIds) {
+    this._fileItems
+      .forEach((item) => item.isLoading = changingItemIds.includes(item.model.id));
   }
   
   /**
@@ -100,7 +122,7 @@ export class FileItemList extends Component {
   /**
    * Returns list of rendered file item components.
    *
-   * @return {AbstractItemModel[]} list of rendered file item components.
+   * @return {FileItem[]} list of rendered file item components.
    */
   getFileItems() {
     return this._fileItems;

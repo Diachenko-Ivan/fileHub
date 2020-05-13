@@ -39,15 +39,24 @@ export default module('FolderComponent test', function (hook) {
     assert.strictEqual(renderedFilesCount, `${filesCount.toString()} item`, 'Should render files count with "item".');
   });
   
-  test('should show and hide loading wheel.', function (assert) {
+  test('should add and remove classes for loading wheel.', function (assert) {
     const file = new FolderComponent(fixture, {name: 'sas'});
-    file.showLoadingWheel();
-    const loadIcon = fixture.querySelector('[data-element="item-name"] [data-element="icon"]');
-    assert.ok(loadIcon, 'Should render loading wheel.');
+    const loader = fixture.querySelector('[data-element="item-name"] [data-element="loader"]');
+    const classCount = loader.classList.length;
+    file.isLoading = true;
+    assert.equal(loader.classList.length, classCount + 1, 'Should contain class for showing loader.');
+    file.isLoading = false;
+    assert.equal(loader.classList.length, classCount, 'Should remove class for showing loader.');
+  });
+  
+  test('should call remove handler if remove icon is clicked.', function (assert) {
+    const file = new FolderComponent(fixture, {name: 'sas'});
     
-    file.hideLoadingWheel();
-    const absentLoadIcon = fixture.querySelector('[data-element="item-name"] [data-element="icon"]');
-    assert.notOk(absentLoadIcon, 'Should remove loading wheel.');
+    const removeIcon = fixture.querySelector('[data-element="file-action-icons"]').lastElementChild;
+    file.onRemoveIconClicked(() => assert.step('Remove icon clicked'));
+    
+    removeIcon.click();
+    assert.verifySteps(['Remove icon clicked'], 'Should call remove handler if remove icon is clicked.');
   });
   
   test('should call handler for upload.', function (assert) {

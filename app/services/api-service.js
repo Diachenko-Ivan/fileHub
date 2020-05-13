@@ -114,6 +114,42 @@ export class ApiService {
   }
   
   /**
+   * Removes folder.
+   *
+   * @param {string} id - folder id.
+   * @return {Promise<Response>} successful or unsuccessful result of deletion.
+   */
+  removeFolder(id) {
+    return fetch(`/folder/${id}`, {
+      method: 'DELETE',
+      headers: this._getAuthenticationHeader(),
+    }).then((response) => {
+      if (response.ok) {
+        return `Folder with id ${id} deleted.`;
+      }
+      return this._handleCommonErrors(response);
+    });
+  }
+
+  /**
+   * Removes file.
+   *
+   * @param {string} id - file id.
+   * @return {Promise<Response>} successful or unsuccessful result of deletion.
+   */
+  removeFile(id) {
+    return fetch(`/file/${id}`, {
+      method: 'DELETE',
+      headers: this._getAuthenticationHeader(),
+    }).then((response) => {
+      if (response.ok) {
+        return `File with id ${id} deleted.`;
+      }
+      return this._handleCommonErrors(response);
+    });
+  }
+
+  /**
    * Sends request for upload of new file to the folder.
    *
    * @param folderId - folder id.
@@ -131,7 +167,7 @@ export class ApiService {
       if (response.ok) {
         return response.json();
       }
-      return  this._handleCommonErrors(response);
+      return this._handleCommonErrors(response);
     });
   }
 

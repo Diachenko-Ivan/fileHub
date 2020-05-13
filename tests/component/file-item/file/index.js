@@ -34,17 +34,6 @@ export default module('FileComponent test', function (hook) {
   test('should show correct file size 100 MB.', function (assert) {
     testFileSize(fixture, assert, 104857600, '100.0 MB');
   });
-  
-  test('should show and hide loading wheel.', function (assert) {
-    const file = new FileComponent(fixture, {name: 'sas', mimeType: 'text', size: 10});
-    file.showLoadingWheel();
-    const loadIcon = fixture.querySelector('[data-element="item-name"] [data-element="icon"]');
-    assert.ok(loadIcon, 'Should render loading wheel.');
-    
-    file.hideLoadingWheel();
-    const absentLoadIcon = fixture.querySelector('[data-element="item-name"] [data-element="icon"]');
-    assert.notOk(absentLoadIcon, 'Should remove loading wheel.');
-  });
 });
 
 function testFileSize(fixture, assert, size, expectedSize) {

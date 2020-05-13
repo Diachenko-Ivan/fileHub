@@ -1,5 +1,6 @@
 import {Icon} from '../file-item-icon';
 import {FileItem} from '../index.js';
+import {FileModel} from '../../../models/item/file';
 
 /**
  * Contains icon classes for each file type.
@@ -14,20 +15,11 @@ const FILE_ICON_TYPES = {
   video: 'film',
   other: 'file',
 };
+
 /**
  * Represents file in file list.
  */
 export class FileComponent extends FileItem {
-  /**
-   * @typedef FileDescription
-   * @property {string} name - name of file.
-   * @property {number} size - file size.
-   * @property {string} mimeType - image, video, document.
-   * @property {string} id - file id.
-   * @property {string} parentId - id of parent folder.
-   * @property {string} type - folder.
-   */
-  
   /**
    * Creates new {@type FileComponent} component.
    *
@@ -46,11 +38,12 @@ export class FileComponent extends FileItem {
                 <tr>
                     <td class="arrow"></td>
                     <td class="cell-file-name" data-element="item-name">
-                        <i class="glyphicon glyphicon-${this._defineIcon(this.mimeType)}"></i>
-                        <span data-test="file-name" class="file-name">${this.name}</span>
+                        <i class="glyphicon glyphicon-${this._defineIcon(this.model.mimeType)}"></i>
+                        <span data-test="file-name" class="file-name">${this.model.name}</span>
                         <input class="edit-input"/>
+                        <div data-element="loader" class="item-loader"></div>
                     </td>
-                    <td data-test="file-size" class="file-size">${this._getSizeWithMemoryUnit(this.size)}</td>
+                    <td data-test="file-size" class="file-size">${this._getSizeWithMemoryUnit(this.model.size)}</td>
                     <td data-element="file-action-icons" class="file-action-icons">
                     </td>
                 </tr>`;
@@ -64,6 +57,15 @@ export class FileComponent extends FileItem {
     
     this.downloadIcon = new Icon(fileActionIcons, {styleClass: 'download'});
     this.removeIcon = new Icon(fileActionIcons, {styleClass: 'remove-circle'});
+  }
+  
+  /**
+   * @inheritdoc
+   */
+  addEventListener() {
+    this.removeIcon.onClick(() => {
+      this.removeHandler(this.model);
+    });
   }
   
   /**

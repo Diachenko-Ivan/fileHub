@@ -1,18 +1,11 @@
 import {Icon} from '../file-item-icon';
 import {FileItem} from '../index.js';
+import {FolderModel} from '../../../models/item/folder';
 
 /**
  * Represents folder.
  */
 export class FolderComponent extends FileItem {
-  /**
-   * @typedef FolderDescription
-   * @property {string} name - name of folder.
-   * @property {number} filesCount - number of files in folder.
-   * @property {string} id - folder id.
-   * @property {string} parentId - id of parent folder.
-   * @property {string} type - folder.
-   */
   /**
    * Creates new {@type FolderComponent} component.
    *
@@ -32,9 +25,10 @@ export class FolderComponent extends FileItem {
                 <td class="cell-file-name" data-element="item-name">
                     <i class="glyphicon glyphicon-folder-close"></i>
                     <span class="folder-name">
-                        <a data-test="folder-name" data-element="folder-link" href="#/folder/${this.id}">${this.name}</a>
+                        <a data-test="folder-name" data-element="folder-link" href="#/folder/${this.model.id}">${this.model.name}</a>
                     </span>
                     <input class="edit-input"/>
+                    <div data-element="loader" class="item-loader"></div>
                 </td>
                 <td data-test="file-count" class="file-count">${this._numberOfItems()}</td>
                 <td data-element="file-action-icons" class="file-action-icons">
@@ -56,6 +50,9 @@ export class FolderComponent extends FileItem {
    * @inheritdoc
    */
   addEventListener() {
+    this.removeIcon.onClick(() => {
+      this.removeHandler(this.model);
+    });
     this.uploadIcon.onClick(() => {
       this._onUploadFile(this.id);
     });
@@ -75,6 +72,6 @@ export class FolderComponent extends FileItem {
    * @private
    */
   _numberOfItems() {
-    return `${this.filesCount} ${this.filesCount === 1 ? 'item' : 'items'}`;
+    return `${this.model.filesCount} ${this.model.filesCount === 1 ? 'item' : 'items'}`;
   }
 }

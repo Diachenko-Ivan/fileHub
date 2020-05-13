@@ -62,4 +62,14 @@ export class FileListState {
    * @type {Error}
    */
   uploadError;
+  /**
+   * Contains ids of items that are being deleted.
+   * @type {string[]}
+   */
+  removingItemIds = [];
+  /**
+   * Error that is raised in the result of item deletion.
+   * @type {Error}
+   */
+  removeError;
 }

@@ -9,7 +9,7 @@ export class Icon extends Component {
    * @type {Function[]}
    */
   _handlers = [];
-
+  
   /**
    * @typedef IconDescription
    * @property {string} styleClass - type of icon.
@@ -25,21 +25,24 @@ export class Icon extends Component {
     Object.assign(this, iconDescription);
     this.render();
   }
-
+  
   /**
    * @inheritdoc
    */
   markup() {
     return `<i data-element="icon" class="glyphicon glyphicon-${this.styleClass}"></i>`;
   }
-
+  
   /**
    * @inheritdoc
    */
   addEventListener() {
-    this.rootContainer.addEventListener('click', () => this._handlers.forEach((handler) => handler()));
+    this.rootContainer.addEventListener('click', (event) => {
+      event.stopPropagation();
+      this._handlers.forEach((handler) => handler());
+    });
   }
-
+  
   /**
    * Register new click handler for icon.
    *

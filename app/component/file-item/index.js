@@ -1,19 +1,35 @@
 import {Component} from '../parent-component.js';
-import {Icon} from './file-item-icon';
+
+/**
+ * Style class for disabling file icons.
+ * @type {string}
+ */
+const DISABLED_ICONS_CLASS = 'is-disabled';
+/**
+ * Style class for showing loader.
+ * @type {string}
+ */
+const LOADING_ITEM_CLASS = 'is-loading';
 
 /**
  * Represents either file or folder.
  */
 export class FileItem extends Component {
   /**
+   * Model that stores item properties.
+   *
+   * @type {AbstractItemModel}
+   */
+  model;
+  /**
    * Creates file item component.
    *
    * @param {Element} container - outer container.
-   * @param {FileDescription | FolderDescription} params
+   * @param {AbstractItemModel} params
    */
   constructor(container, params) {
     super(container);
-    Object.assign(this, params);
+    this.model = params;
     this.render();
     this._itemName = this.rootContainer.querySelector('[data-element="item-name"]');
   }
@@ -31,23 +47,38 @@ export class FileItem extends Component {
   }
   
   /**
-   * Shows loading wheel icon when user executes any action with file item.
+   * Adds handler on remove action.
+   *
+   * @param {Function} handler - callback which is called when user clicked on remove icon.
    */
-  showLoadingWheel() {
-    new Icon(this._itemName, {styleClass: 'cd'});
+  onRemoveIconClicked(handler) {
+    this.removeHandler = (model) => handler(model);
   }
   
   /**
-   * Hides loading wheel icon.
-   */
-  hideLoadingWheel() {
-    this._itemName.removeChild(this._itemName.querySelector('[data-element="icon"]'));
-  }
-  /**
-   * Registers function that executes when user clicked to folder upload icon.
+   * Adds or removes loading wheel from file item.
    *
-   * @param {Function} handler - executes when user clicked to folder upload icon.
+   * @param {boolean} value - flag that defines loading state.
    */
-  onUploadFile(handler) {
+  set isLoading(value) {
+    const loader = this._itemName.querySelector('[data-element="loader"]');
+    const actionIcons = this.rootContainer.querySelector('[data-element="file-action-icons"]');
+    if (value) {
+      loader.classList.add(LOADING_ITEM_CLASS);
+      actionIcons.classList.add(DISABLED_ICONS_CLASS);
+    } else {
+      loader.classList.remove(LOADING_ITEM_CLASS);
+      actionIcons.classList.remove(DISABLED_ICONS_CLASS);
+    }
+    this._isLoading = value;
+  }
+  
+  /**
+   * Defines either items is loading or not.
+   *
+   * @return {boolean} loading flag.
+   */
+  get isLoading() {
+    return this._isLoading;
   }
 }

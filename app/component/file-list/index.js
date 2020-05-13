@@ -9,7 +9,7 @@ export class FileItemList extends Component {
   /**
    * Contains functions that return file or folder component depending on type.
    *
-   * @type {{file: (function(Item): FileComponent), folder: (function(Item): FolderComponent)}}
+   * @type {{file: (function(FileModel): FileComponent), folder: (function(FolderModel): FolderComponent)}}
    * @private
    */
   _fileItemFactory = {
@@ -19,7 +19,7 @@ export class FileItemList extends Component {
   /**
    * Contains files and folders.
    *
-   * @type {FileItem[]}
+   * @type {AbstractItemModel[]}
    * @private
    */
   _fileItems = [];
@@ -57,7 +57,7 @@ export class FileItemList extends Component {
   /**
    * Shows the list of file items.
    *
-   * @param {Item[]} items - received file list.
+   * @param {AbstractItemModel[]} items - received file list.
    */
   renderFileList(items) {
     this.rootContainer.firstElementChild.innerHTML = '';
@@ -71,8 +71,8 @@ export class FileItemList extends Component {
   /**
    * Sorts array of items alphabetically where folders go first.
    *
-   * @param {Item[]} items - received file list.
-   * @return {[]} sorted array where folders go first.
+   * @param {AbstractItemModel[]} items - received file list.
+   * @return {AbstractItemModel[]} sorted array where folders go first.
    * @private
    */
   _sortedItems(items) {
@@ -99,7 +99,7 @@ export class FileItemList extends Component {
   /**
    * Returns list of rendered file item components.
    *
-   * @return {FileItem[]} list of rendered file item components.
+   * @return {AbstractItemModel[]} list of rendered file item components.
    */
   getFileItems() {
     return this._fileItems;

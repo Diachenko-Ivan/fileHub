@@ -32,7 +32,7 @@ export class RemoveItemAction extends Action {
           await apiService.removeFile(model.id);
         }
       } catch (e) {
-        stateManager.mutate(new RemoveItemErrorMutator(e, model));
+        stateManager.mutate(new RemoveItemErrorMutator(e));
       } finally {
         stateManager.mutate(new RemovedItemsMutator(model.id));
         await stateManager.dispatch(new GetFolderContentAction(stateManager.state.currentFolder.id));

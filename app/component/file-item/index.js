@@ -31,20 +31,6 @@ export class FileItem extends Component {
   }
   
   /**
-   * Shows loading wheel icon when user executes any action with file item.
-   */
-  showLoadingWheel() {
-    new Icon(this._itemName, {styleClass: 'cd'});
-  }
-  
-  /**
-   * Hides loading wheel icon.
-   */
-  hideLoadingWheel() {
-    this._itemName.removeChild(this._itemName.querySelector('[data-element="icon"]'));
-  }
-  
-  /**
    * Adds handler on remove action.
    *
    * @param {Function} handler - callback which is called when user clicked on remove icon.
@@ -54,11 +40,25 @@ export class FileItem extends Component {
   }
   
   /**
+   * Adds or removes loading wheel from file item.
+   *
+   * @param {boolean} value - flag that defines loading state.
+   */
+  set isLoading(value) {
+    if (value) {
+      new Icon(this._itemName, {styleClass: 'cd'});
+    } else {
+      this._itemName.removeChild(this._itemName.querySelector('[data-element="icon"]'));
+    }
+    this._isLoading = value;
+  }
+  
+  /**
    * Defines either items is loading or not.
    *
    * @return {boolean} loading flag.
    */
-  isLoading(){
-    return !!this.rootContainer.querySelector('[data-element="item-name"] [data-element="icon"]');
+  get isLoading() {
+    return this._isLoading;
   }
 }

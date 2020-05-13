@@ -5,6 +5,14 @@ import {AbstractItemModel} from '../';
  */
 export class FolderModel extends AbstractItemModel {
   /**
+   * @typedef FolderDescription
+   * @property {string} name - name of folder.
+   * @property {number} filesCount - number of files in folder.
+   * @property {string} id - folder id.
+   * @property {string} parentId - id of parent folder.
+   * @property {string} type - folder.
+   */
+  /**
    * File type.
    * @type {string}
    */

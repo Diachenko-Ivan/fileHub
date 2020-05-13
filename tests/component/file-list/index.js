@@ -43,7 +43,7 @@ export default module('FileItemList test', function (hook) {
     ];
     fileItemList.renderFileList(unsortedList, []);
     const fileItems = fileItemList.getFileItems().map((value) => {
-      return {name: value.name};
+      return {name: value.model.name};
     });
     assert.equal(JSON.stringify(sortedList), JSON.stringify(fileItems), 'Should render sorted list.');
   });

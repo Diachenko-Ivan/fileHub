@@ -5,6 +5,15 @@ import {AbstractItemModel} from '../';
  */
 export class FileModel extends AbstractItemModel {
   /**
+   * @typedef FileDescription
+   * @property {string} name - name of file.
+   * @property {number} size - file size.
+   * @property {string} mimeType - image, video, document.
+   * @property {string} id - file id.
+   * @property {string} parentId - id of parent folder.
+   * @property {string} type - folder.
+   */
+  /**
    * File type.
    * @type {string}
    */

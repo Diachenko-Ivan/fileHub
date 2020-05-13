@@ -50,8 +50,7 @@ export class FolderComponent extends FileItem {
    */
   addEventListener() {
     this.removeIcon.onClick(() => {
-      const {id} = this;
-      this.removeHandler(new FolderModel({id}));
+      this.removeHandler(this.model);
     });
   }
   

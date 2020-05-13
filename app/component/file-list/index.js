@@ -93,7 +93,7 @@ export class FileItemList extends Component {
           }
         });
     changingItemIds
-      .map((id) => this._fileItems.find((item) => item.id === id))
+      .map((id) => this._fileItems.find((item) => item.model.id === id))
       .forEach((changingItem) => {
         if (changingItem) {
           changingItem.isLoading = true;

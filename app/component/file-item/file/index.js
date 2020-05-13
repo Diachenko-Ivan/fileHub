@@ -63,8 +63,7 @@ export class FileComponent extends FileItem {
    */
   addEventListener() {
     this.removeIcon.onClick(() => {
-      const {id} = this;
-      this.removeHandler(new FileModel({id}));
+      this.removeHandler(this.model);
     });
   }
   

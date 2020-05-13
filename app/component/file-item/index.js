@@ -6,14 +6,20 @@ import {Icon} from './file-item-icon';
  */
 export class FileItem extends Component {
   /**
+   * Model that stores item properties.
+   *
+   * @type {AbstractItemModel}
+   */
+  model;
+  /**
    * Creates file item component.
    *
    * @param {Element} container - outer container.
-   * @param {FileDescription | FolderDescription} params
+   * @param {AbstractItemModel} params
    */
   constructor(container, params) {
     super(container);
-    Object.assign(this, params);
+    this.model = params;
     this.render();
     this._itemName = this.rootContainer.querySelector('[data-element="item-name"]');
   }

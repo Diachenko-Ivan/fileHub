@@ -21,16 +21,6 @@ const FILE_ICON_TYPES = {
  */
 export class FileComponent extends FileItem {
   /**
-   * @typedef FileDescription
-   * @property {string} name - name of file.
-   * @property {number} size - file size.
-   * @property {string} mimeType - image, video, document.
-   * @property {string} id - file id.
-   * @property {string} parentId - id of parent folder.
-   * @property {string} type - folder.
-   */
-  
-  /**
    * Creates new {@type FileComponent} component.
    *
    * @param {Element} container - file list.
@@ -48,12 +38,12 @@ export class FileComponent extends FileItem {
                 <tr>
                     <td class="arrow"></td>
                     <td class="cell-file-name" data-element="item-name">
-                        <i class="glyphicon glyphicon-${this._defineIcon(this.mimeType)}"></i>
-                        <span data-test="file-name" class="file-name">${this.name}</span>
+                        <i class="glyphicon glyphicon-${this._defineIcon(this.model.mimeType)}"></i>
+                        <span data-test="file-name" class="file-name">${this.model.name}</span>
                         <input class="edit-input"/>
                         <div data-element="loader" class="item-loader"></div>
                     </td>
-                    <td data-test="file-size" class="file-size">${this._getSizeWithMemoryUnit(this.size)}</td>
+                    <td data-test="file-size" class="file-size">${this._getSizeWithMemoryUnit(this.model.size)}</td>
                     <td data-element="file-action-icons" class="file-action-icons">
                     </td>
                 </tr>`;
@@ -74,8 +64,7 @@ export class FileComponent extends FileItem {
    */
   addEventListener() {
     this.removeIcon.onClick(() => {
-      const {id} = this;
-      this.removeHandler(new FileModel({id}));
+      this.removeHandler(this.model);
     });
   }
   

@@ -4,6 +4,7 @@ import {FileItemList} from '../../component/file-list';
 import {StateAwareComponent} from '../../component/state-aware-component';
 import {DirectoryPath} from '../../component/directory-path';
 import {GetFolderContentAction} from '../../states/actions/get-folder-content-action';
+import {RemoveItemAction} from '../../states/actions/remove-item-action';
 import {TitleService} from '../../services/title-service';
 import {GetUserInfoAction} from '../../states/actions/user-info-action';
 import {AuthenticationError} from '../../models/errors/authentication-error';
@@ -105,7 +106,7 @@ export class FileHubPage extends StateAwareComponent {
       }
     });
     this.onStateChange('fileList', (state) => {
-      this.fileList.renderFileList(state.fileList);
+      this.fileList.renderFileList(state.fileList, [...state.removingItemIds]);
     });
     this.onStateChange('folderLoadError', (state) => {
       this._handleLoadError(state.folderLoadError);
@@ -131,6 +132,26 @@ export class FileHubPage extends StateAwareComponent {
     });
     this.onStateChange('userError', (state) => {
       this._handleLoadError(state.userError);
+    });
+    this.onStateChange('removingItemIds', (state) => {
+      this.fileList.showLoadingItems(state.removingItemIds);
+    });
+    this.onStateChange('removeError', (state) => {
+      const error = state.removeError;
+      if (error instanceof AuthenticationError) {
+        this._onFailedAuthorization();
+      } else if (error instanceof GeneralServerError) {
+        alert(error.message);
+      }
+    });
+  }
+  
+  /**
+   * @inheritdoc
+   */
+  addEventListener() {
+    this.fileList.onRemoveListItem((model) => {
+      this.dispatch(new RemoveItemAction(model));
     });
   }
   

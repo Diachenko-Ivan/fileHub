@@ -13,7 +13,7 @@ export default module('FileItemList test', function (hook) {
     const fileItemList = new FileItemList(fixture);
     
     fileItemList.renderFileList([{name: 'Documents', type: 'folder', filesCount: 10},
-      {name: '404.html', type: 'file', size: 4000, mimeType: 'text'}]);
+      {name: '404.html', type: 'file', size: 4000, mimeType: 'text'}], []);
     
     const listTable = fixture.firstElementChild;
     const listBody = listTable.firstElementChild;
@@ -41,7 +41,7 @@ export default module('FileItemList test', function (hook) {
       {name: 'Main.java'},
       {name: 'hello.pdf'},
     ];
-    fileItemList.renderFileList(unsortedList);
+    fileItemList.renderFileList(unsortedList, []);
     const fileItems = fileItemList.getFileItems().map((value) => {
       return {name: value.model.name};
     });

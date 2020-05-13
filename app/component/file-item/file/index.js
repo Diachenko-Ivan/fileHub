@@ -1,5 +1,6 @@
 import {Icon} from '../file-item-icon';
 import {FileItem} from '../index.js';
+import {FileModel} from '../../../models/item/file';
 
 /**
  * Contains icon classes for each file type.
@@ -14,6 +15,7 @@ const FILE_ICON_TYPES = {
   video: 'film',
   other: 'file',
 };
+
 /**
  * Represents file in file list.
  */
@@ -54,6 +56,15 @@ export class FileComponent extends FileItem {
     
     this.downloadIcon = new Icon(fileActionIcons, {styleClass: 'download'});
     this.removeIcon = new Icon(fileActionIcons, {styleClass: 'remove-circle'});
+  }
+  
+  /**
+   * @inheritdoc
+   */
+  addEventListener() {
+    this.removeIcon.onClick(() => {
+      this.removeHandler(this.model);
+    });
   }
   
   /**

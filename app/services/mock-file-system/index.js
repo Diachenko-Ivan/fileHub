@@ -119,31 +119,4 @@ export class MockFileSystem {
     this._fileObjects.push({file, id: fileId});
     return fileItem;
   }
-  
-  /**
-   * Used for tests.
-   *
-   * @return {FileDescription[]}
-   */
-  getFiles() {
-    return this._files;
-  }
-  
-  /**
-   * Used for tests.
-   *
-   * @return {FolderDescription[]}
-   */
-  getFolders() {
-    return this._folders;
-  }
-
-  /**
-   * Used for tests.
-   *
-   * @return {FileObject[]}
-   */
-  getFileObjects() {
-    return this._fileObjects;
-  }
 }

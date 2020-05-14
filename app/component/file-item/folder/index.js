@@ -54,7 +54,7 @@ export class FolderComponent extends FileItem {
       this.removeHandler(this.model);
     });
     this.uploadIcon.onClick(() => {
-      this._onUploadFile(this.id);
+      this._onUploadFile(this.model.id);
     });
   }
   

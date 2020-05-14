@@ -158,7 +158,7 @@ export class ApiService {
    */
   uploadFile(folderId, file) {
     const formData = new FormData();
-    formData.append('file', file, file.name);
+    formData.append('file', file);
     return fetch(`/folder/${folderId}/file`, {
       method: 'POST',
       body: formData,

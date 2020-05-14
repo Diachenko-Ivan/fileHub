@@ -24,11 +24,7 @@ const UPLOAD_ICON_CLASS = 'upload';
  * @type {string}
  */
 const PLUS_ICON_CLASS = 'plus';
-/**
- * Class name for cd(loading wheel) icon.
- * @type {string}
- */
-const CD_ICON_CLASS = 'cd';
+
 /**
  * Page for file hub explorer.
  */
@@ -96,7 +92,7 @@ export class FileHubPage extends StateAwareComponent {
     const logOutLink = this._getContainer('log-out');
     
     this.fileList = new FileItemList(this.fileListContainer);
-
+    
     this.dispatch(new GetUserInfoAction());
   }
   
@@ -140,17 +136,16 @@ export class FileHubPage extends StateAwareComponent {
       this._handleLoadError(state.userError);
     });
     this.onStateChange('uploadingFolderIds', (state) => {
-      if (state.uploadingFolderIds.includes(state.currentFolder.id)) {
-        this.uploadFileButton.buttonIconClass = CD_ICON_CLASS;
-      } else {
-        this.uploadFileButton.buttonIconClass = PLUS_ICON_CLASS;
-      }
-      this.fileList.showLoadingItems([...state.removingItemIds, ...state.uploadingFolderIds])
+      this.uploadFileButton.isLoading = state.uploadingFolderIds.includes(state.currentFolder.id);
+      this.fileList.showLoadingItems([...state.removingItemIds, ...state.uploadingFolderIds]);
     });
-    this.onStateChange('uploadError', (state) => {
-      const error = state.uploadError;
+    this.onStateChange('uploadErrorObject', (state) => {
+      const error = state.uploadErrorObject.error;
+      const model = state.uploadErrorObject.model;
       if (error instanceof AuthenticationError) {
         this._onFailedAuthorization();
+      } else if (error instanceof PageNotFoundError) {
+        alert(`Failed to upload file in folder with name: ${model.name} and id: ${model.id}`);
       } else if (error instanceof GeneralServerError) {
         alert(error.message);
       }
@@ -172,7 +167,7 @@ export class FileHubPage extends StateAwareComponent {
    * @inheritdoc
    */
   addEventListener() {
-    const openWindowService = new UploadWindowService();
+    const uploadWindowService = new UploadWindowService();
     
     this.uploadFileButton.onClick(() => {
       uploadWindowService.openUploadWindow((file) => {

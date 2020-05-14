@@ -13,8 +13,14 @@ export class FileItemList extends Component {
    * @private
    */
   _fileItemFactory = {
-    file: (item) => new FileComponent(this.rootContainer.firstElementChild, item),
-    folder: (item) => new FolderComponent(this.rootContainer.firstElementChild, item),
+    file: (item) => {
+      return new FileComponent(this.rootContainer.firstElementChild, item);
+    },
+    folder: (item) => {
+      const folder = new FolderComponent(this.rootContainer.firstElementChild, item);
+      folder.onUploadFile(this._uploadFileHandler);
+      return folder;
+    },
   };
   /**
    * Contains files and folders.
@@ -67,7 +73,6 @@ export class FileItemList extends Component {
       const fileItem = this._fileItemFactory[item.type](item);
       this._fileItems.push(fileItem);
       fileItem.onRemoveIconClicked(this._removeListItemHandler);
-      fileItem.onUploadFile(this._uploadFileHandler);
     });
     this.showLoadingItems(loadingItemIds);
   }
@@ -127,7 +132,7 @@ export class FileItemList extends Component {
   getFileItems() {
     return this._fileItems;
   }
-
+  
   /**
    * Registers function that executes when user clicked to folder upload icon.
    *

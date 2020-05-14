@@ -56,6 +56,14 @@ export class FileItem extends Component {
   }
   
   /**
+   * Registers function that executes when user clicked to folder upload icon.
+   *
+   * @param {Function} handler - executes when user clicked to folder upload icon.
+   */
+  onUploadFile(handler) {
+  }
+  
+  /**
    * Adds or removes loading wheel from file item.
    *
    * @param {boolean} value - flag that defines loading state.

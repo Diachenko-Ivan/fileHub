@@ -112,7 +112,7 @@ export class FileHubPage extends StateAwareComponent {
       }
     });
     this.onStateChange('fileList', (state) => {
-      this.fileList.renderFileList(state.fileList, [...state.removingItemIds]);
+      this.fileList.renderFileList(state.fileList, [...state.removingItemIds, ...state.uploadingFolderIds]);
     });
     this.onStateChange('folderLoadError', (state) => {
       this._handleLoadError(state.folderLoadError);
@@ -145,6 +145,7 @@ export class FileHubPage extends StateAwareComponent {
       } else {
         this.uploadFileButton.buttonIconClass = PLUS_ICON_CLASS;
       }
+      this.fileList.showLoadingItems([...state.removingItemIds, ...state.uploadingFolderIds])
     });
     this.onStateChange('uploadError', (state) => {
       const error = state.uploadError;
@@ -155,7 +156,7 @@ export class FileHubPage extends StateAwareComponent {
       }
     });
     this.onStateChange('removingItemIds', (state) => {
-      this.fileList.showLoadingItems(state.removingItemIds);
+      this.fileList.showLoadingItems([...state.removingItemIds, ...state.uploadingFolderIds]);
     });
     this.onStateChange('removeError', (state) => {
       const error = state.removeError;

@@ -11,12 +11,12 @@ export class UploadFileAction extends Action {
   /**
    * Creates new {@type UploadFileAction} instance.
    *
-   * @param {string} folderId - folder id.
+   * @param {FolderModel} model - folder model.
    * @param {File} file - user`s uploaded file.
    */
-  constructor(folderId, file) {
+  constructor(model, file) {
     super();
-    this.folderId = folderId;
+    this.model = model;
     this.file = file;
   }
 
@@ -24,12 +24,12 @@ export class UploadFileAction extends Action {
    * @inheritdoc
    */
   async apply(stateManager, apiService) {
-    const folderId = this.folderId;
+    const folderId = this.model.id;
     stateManager.mutate(new UploadProcessMutator(folderId));
     try {
       return await apiService.uploadFile(folderId, this.file);
-    } catch (e) {
-      stateManager.mutate(new UploadErrorMutator(e));
+    } catch (error) {
+      stateManager.mutate(new UploadErrorMutator({error, model: this.model}));
     } finally {
       stateManager.mutate(new UploadFinishedMutator(folderId));
       await stateManager.dispatch(new GetFolderContentAction(stateManager.state.currentFolder.id));

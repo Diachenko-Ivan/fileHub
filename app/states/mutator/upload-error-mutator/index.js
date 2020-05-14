@@ -7,17 +7,17 @@ export class UploadErrorMutator extends Mutator {
   /**
    * Creates new {@type UploadErrorMutator} instance.
    *
-   * @param {Error} uploadError - error in the result of upload.
+   * @param {{model: FolderModel, error: Error}} uploadErrorObject - error in the result of upload.
    */
-  constructor(uploadError) {
+  constructor(uploadErrorObject) {
     super();
-    this.uploadError = uploadError
+    this.uploadErrorObject = uploadErrorObject;
   }
   
   /**
    * @inheritdoc
    */
   apply(state) {
-    state.uploadError = this.uploadError;
+    state.uploadErrorObject = this.uploadErrorObject;
   }
 }

@@ -9,7 +9,7 @@ export default module('UploadFileAction', function (hook) {
   
   test('should call mutators and actions in correct order after success upload.', function (assert) {
     const folderId = 'root';
-    const action = new UploadFileAction(folderId, new File([JSON.stringify({})], 'file'));
+    const action = new UploadFileAction({id: folderId}, new File([JSON.stringify({})], 'file'));
     assert.expect(4);
     const done = assert.async();
     const stateManager = {
@@ -51,7 +51,7 @@ export default module('UploadFileAction', function (hook) {
   
   test('should call mutators and actions in correct order after unsuccessful upload.', function (assert) {
     const folderId = 'root';
-    const action = new UploadFileAction(folderId, new File([JSON.stringify({})], 'file'));
+    const action = new UploadFileAction({id: folderId}, new File([JSON.stringify({})], 'file'));
     assert.expect(5);
     const done = assert.async();
     const uploadError = new Error('error');
@@ -71,7 +71,7 @@ export default module('UploadFileAction', function (hook) {
         } else if (mutator instanceof UploadFinishedMutator) {
           assert.step(`UploadFinishedMutator ${mutator.uploadFinishedFolderId}`);
         } else if (mutator instanceof UploadErrorMutator) {
-          assert.step(`UploadErrorMutator ${mutator.uploadError.message}`);
+          assert.step(`UploadErrorMutator ${mutator.uploadErrorObject.error.message}`);
         } else {
           assert.step(action.constructor.name);
         }

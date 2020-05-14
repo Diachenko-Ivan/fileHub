@@ -1,5 +1,17 @@
 import {Component} from '../parent-component.js';
 
+
+/**
+ * Style class for disabling file icons.
+ * @type {string}
+ */
+const DISABLED_BUTTON_CLASS = 'is-disabled';
+/**
+ * Style class for showing loader.
+ * @type {string}
+ */
+const LOADING_BUTTON_CLASS = 'is-loading';
+
 /**
  * Component that represents a simple button.
  */
@@ -33,7 +45,7 @@ export class Button extends Component {
    * @inheritdoc
    */
   markup() {
-    return `<button data-test="button" class="button ${this.className}">${this.buttonText}</button>`;
+    return `<button data-test="button" class="button ${this.className}"><div data-element="loader" class="item-loader"></div>${this.buttonText}</button>`;
   }
   
   /**
@@ -74,5 +86,14 @@ export class Button extends Component {
       this.iconClass = value;
       this.buttonIcon.classList.add(`glyphicon-${this.iconClass}`);
     }
+  }
+  
+  set isLoading(value) {
+    if (value) {
+      this.rootContainer.classList.add(LOADING_BUTTON_CLASS, DISABLED_BUTTON_CLASS);
+    } else {
+      this.rootContainer.classList.remove(LOADING_BUTTON_CLASS, DISABLED_BUTTON_CLASS);
+    }
+    this._isLoading = value;
   }
 }

@@ -103,7 +103,7 @@ export class MockFileSystem {
    *
    * @param {File} file - uploading file.
    * @param {string} folderId - id of folder where file is saved.
-   * @return {FileItem} file object model.
+   * @return {FileModel} file object model.
    */
   saveFile(file, folderId) {
     const fileId = Math.random().toString();

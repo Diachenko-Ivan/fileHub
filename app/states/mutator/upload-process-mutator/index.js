@@ -1,25 +1,25 @@
 import {Mutator} from '../';
 
 /**
- * @inheritdoc
+ * Used for adding of new folder id to list of uploading folders.
  */
 export class UploadProcessMutator extends Mutator {
   /**
    * Creates new {@type UploadProcessMutator} instance.
    *
-   * @param {string} uploadingFolderIds - flag
+   * @param {string} uploadingFolderId - id of folder in which upload is happening.
    */
-  constructor(uploadingFolderIds) {
+  constructor(uploadingFolderId) {
     super();
-    this.uploadingFolderId = uploadingFolderIds
+    this.uploadingFolderId = uploadingFolderId;
   }
   
   /**
    * @inheritdoc
    */
   apply(state) {
-    const uploadingFolderIds = state.uploadingFolderIds;
-    uploadingFolderIds.push(this.uploadingFolderId);
-    state.uploadingFolderIds = uploadingFolderIds;
+    if (!state.uploadingFolderIds.includes(this.uploadingFolderId)) {
+      state.uploadingFolderIds = [...state.uploadingFolderIds, this.uploadingFolderId];
+    }
   }
 }

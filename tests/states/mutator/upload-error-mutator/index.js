@@ -5,12 +5,14 @@ export default module('UploadErrorMutator', function () {
   
   test('should set correct upload error to state.', function (assert) {
     const state = {
-      uploadError: {},
+      uploadErrorObject: {},
     };
     const error = new Error('upload error');
-    const mutator = new UploadErrorMutator(error);
+    const model = {id: '123', name: 'docs'};
+    const expectedErrorObject = {error, model};
+    const mutator = new UploadErrorMutator({error, model});
     
     mutator.apply(state);
-    assert.deepEqual(state.uploadError, error, 'Should set correct error value.');
+    assert.deepEqual(state.uploadErrorObject, expectedErrorObject, 'Should set correct error and model.');
   });
 });

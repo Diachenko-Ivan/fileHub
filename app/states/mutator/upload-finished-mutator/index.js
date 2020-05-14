@@ -1,7 +1,7 @@
 import {Mutator} from '../';
 
 /**
- * @inheritdoc
+ * Used for removing of  folder id from list of uploading folders.
  */
 export class UploadFinishedMutator extends Mutator {
   /**
@@ -11,16 +11,13 @@ export class UploadFinishedMutator extends Mutator {
    */
   constructor(uploadFinishedFolderId) {
     super();
-    this.uploadFinishedFolderId = uploadFinishedFolderId
+    this.uploadFinishedFolderId = uploadFinishedFolderId;
   }
   
   /**
    * @inheritdoc
    */
   apply(state) {
-    const uploadingFolderIds = state.uploadingFolderIds;
-    const folderIndex = uploadingFolderIds.indexOf(this.uploadFinishedFolderId);
-    uploadingFolderIds.splice(folderIndex, 1);
-    state.uploadingFolderIds = uploadingFolderIds;
+    state.uploadingFolderIds = state.uploadingFolderIds.filter((id) => id !== this.uploadFinishedFolderId);
   }
 }

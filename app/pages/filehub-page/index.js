@@ -175,14 +175,14 @@ export class FileHubPage extends StateAwareComponent {
     const openWindowService = new UploadWindowService();
     
     this.uploadFileButton.onClick(() => {
-      openWindowService.openUploadWindow((file) => {
-        this.dispatch(new UploadFileAction(this.stateManager.state.currentFolder.id, file));
+      uploadWindowService.openUploadWindow((file) => {
+        this.dispatch(new UploadFileAction(this.stateManager.state.currentFolder, file));
       });
     });
     
-    this.fileList.onUploadFileToFolder((folderId) => {
-      openWindowService.openUploadWindow((file) => {
-        this.dispatch(new UploadFileAction(folderId, file));
+    this.fileList.onUploadFileToFolder((model) => {
+      uploadWindowService.openUploadWindow((file) => {
+        this.dispatch(new UploadFileAction(model, file));
       });
     });
     this.fileList.onRemoveListItem((model) => {

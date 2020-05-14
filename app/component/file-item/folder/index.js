@@ -54,12 +54,14 @@ export class FolderComponent extends FileItem {
       this.removeHandler(this.model);
     });
     this.uploadIcon.onClick(() => {
-      this._onUploadFile(this.model.id);
+      this._onUploadFile(this.model);
     });
   }
   
   /**
-   * @inheritdoc
+   * Registers function that executes when user clicked to folder upload icon.
+   *
+   * @param {Function} handler - executes when user clicked to folder upload icon.
    */
   onUploadFile(handler) {
     this._onUploadFile = (id) => handler(id);

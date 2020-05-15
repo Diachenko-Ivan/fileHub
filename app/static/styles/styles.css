@@ -330,3 +330,42 @@ table tr.isSelected {
 table tr.isSelected:hover {
     background-color: #c0dbe8;
 }
+
+/** loading styles
+ */
+.content-table .cell-file-name .item-loader{
+    display: none;
+}
+
+.content-table .cell-file-name .item-loader.is-loading{
+    display: inline-block;
+    width: 8px;
+    height: 13px;;
+}
+.item-loader:after {
+    content: "";
+    display: block;
+    width: 13px;
+    height: 12px;
+    margin-left: 8px;
+    margin-bottom: 8px;
+    border-radius: 90%;
+    border: 4px solid #636363;
+    border-color: #636363 transparent #636363 transparent;
+    animation: item-loader 1.2s linear infinite;
+}
+@keyframes item-loader {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.content-table .file-action-icons.is-disabled .glyphicon-download,
+.content-table .file-action-icons.is-disabled .glyphicon-upload,
+.content-table .file-action-icons.is-disabled .glyphicon-remove-circle {
+    opacity: 0.1;
+    pointer-events: none;
+}

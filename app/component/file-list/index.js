@@ -87,18 +87,7 @@ export class FileItemList extends Component {
    */
   showLoadingItems(changingItemIds) {
     this._fileItems
-      .forEach((item) => {
-          if (item.isLoading) {
-            item.isLoading = false;
-          }
-        });
-    changingItemIds
-      .map((id) => this._fileItems.find((item) => item.model.id === id))
-      .forEach((changingItem) => {
-        if (changingItem) {
-          changingItem.isLoading = true;
-        }
-      });
+      .forEach((item) => item.isLoading = changingItemIds.includes(item.model.id));
   }
   
   /**

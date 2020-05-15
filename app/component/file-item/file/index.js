@@ -41,6 +41,7 @@ export class FileComponent extends FileItem {
                         <i class="glyphicon glyphicon-${this._defineIcon(this.model.mimeType)}"></i>
                         <span data-test="file-name" class="file-name">${this.model.name}</span>
                         <input class="edit-input"/>
+                        <div data-element="loader" class="item-loader"></div>
                     </td>
                     <td data-test="file-size" class="file-size">${this._getSizeWithMemoryUnit(this.model.size)}</td>
                     <td data-element="file-action-icons" class="file-action-icons">

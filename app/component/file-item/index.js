@@ -1,5 +1,15 @@
 import {Component} from '../parent-component.js';
-import {Icon} from './file-item-icon';
+
+/**
+ * Style class for disabling file icons.
+ * @type {string}
+ */
+const DISABLED_ICONS_CLASS = 'is-disabled';
+/**
+ * Style class for showing loader.
+ * @type {string}
+ */
+const LOADING_ITEM_CLASS = 'is-loading';
 
 /**
  * Represents either file or folder.
@@ -51,10 +61,14 @@ export class FileItem extends Component {
    * @param {boolean} value - flag that defines loading state.
    */
   set isLoading(value) {
+    const loader = this._itemName.querySelector('[data-element="loader"]');
+    const actionIcons = this.rootContainer.querySelector('[data-element="file-action-icons"]');
     if (value) {
-      new Icon(this._itemName, {styleClass: 'cd'});
+      loader.classList.add(LOADING_ITEM_CLASS);
+      actionIcons.classList.add(DISABLED_ICONS_CLASS);
     } else {
-      this._itemName.removeChild(this._itemName.querySelector('[data-element="icon"]'));
+      loader.classList.remove(LOADING_ITEM_CLASS);
+      actionIcons.classList.remove(DISABLED_ICONS_CLASS);
     }
     this._isLoading = value;
   }

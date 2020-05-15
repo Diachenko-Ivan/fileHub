@@ -156,16 +156,13 @@ export class ApiService {
   logOut() {
     return fetch('/logout', {
       method: 'POST',
-      headers: this.authenticationHeader()
+      headers: this._getAuthenticationHeader(),
     }).then((response) => {
       if (response.ok) {
         this.storageService.removeItem('token');
-        throw new AuthenticationError();
+        return true;
       }
-      this.handleCommonErrors(response.status,
-        new AuthenticationError(),
-        new GeneralServerError('Server error!')
-      );
+      return this._handleCommonErrors(response);
     });
   }
 

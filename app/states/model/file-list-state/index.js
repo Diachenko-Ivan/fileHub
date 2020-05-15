@@ -54,9 +54,9 @@ export class FileListState {
   userError;
   /**
    * List of folder ids where upload is happening.
-   * @type {string[]}
+   * @type {Set<string>}
    */
-  uploadingFolderIds = [];
+  uploadingFolderIds = new Set();
   /**
    * Error in the result of upload.
    * @type {{model: FolderModel, error: Error}}

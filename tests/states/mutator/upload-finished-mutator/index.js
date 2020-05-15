@@ -6,10 +6,10 @@ export default module('UploadFinishedMutator', function () {
   
   test('should remove folder id to uploadingFolderIds.', function (assert) {
     state = {
-      uploadingFolderIds: ['423', 'sdf', 'jhd'],
+      uploadingFolderIds: new Set(['423', 'sdf', 'jhd']),
     };
     const uploadingItemId = 'sdf';
-    const expectedUploadingIds = ['423', 'jhd'];
+    const expectedUploadingIds = new Set(['423', 'jhd']);
     const mutator = new UploadFinishedMutator(uploadingItemId);
     
     mutator.apply(state);

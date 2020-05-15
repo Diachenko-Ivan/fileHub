@@ -6,10 +6,10 @@ export default module('UploadProcessMutator', function () {
   
   test('should add folder to uploadingFolderIds.', function (assert) {
     state = {
-      uploadingFolderIds: ['423', 'sdf', 'jhd'],
+      uploadingFolderIds: new Set(['423', 'sdf', 'jhd']),
     };
     const uploadingItemId = 'asd';
-    const expectedUploadingIds = ['423', 'sdf', 'jhd', 'asd'];
+    const expectedUploadingIds = new Set(['423', 'sdf', 'jhd', 'asd']);
     const mutator = new UploadProcessMutator(uploadingItemId);
     
     mutator.apply(state);

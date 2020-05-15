@@ -15,8 +15,7 @@ export class MockServer {
     ], [
       {name: 'nature.jpeg', type: 'file', mimeType: 'image', size: 10, id: 'abs', parentId: '123'},
       {name: 'hello.txt', type: 'file', mimeType: 'text', size: 100, id: 'qwe', parentId: '123'},
-      {name: 'file.pdf', type: 'file', mimeType: 'text', size: 50, id: 'zxc', parentId: 'root'},
-      {name: 'download.pdf', type: 'file', mimeType: 'text', size: 0, id: 'zxc', parentId: 'root'},
+      {name: 'file.pdf', type: 'file', mimeType: 'text', size: 100, id: 'zxc', parentId: 'root'},
     ]);
 
     fetchMock.post('/login', (url, request) => {
@@ -65,6 +64,43 @@ export class MockServer {
       return 401;
     }, {delay: 500});
 
+    fetchMock.delete('express:/folder/:folderId', (url, request) => {
+      if (this._hasAuthToken(request.headers)) {
+        const id = url.split('/')[2];
+        if (this._fileSystem.getFolder(id)) {
+          this._fileSystem.deleteFolder(id);
+          return 200;
+        } else {
+          return 404;
+        }
+      }
+      return 401;
+    }, {delay: 500});
+
+    fetchMock.delete('express:/file/:fileId', (url, request) => {
+      if (this._hasAuthToken(request.headers)) {
+        const id = url.split('/')[2];
+        const fileToRemove=this._fileSystem.getFile(id);
+        if (fileToRemove) {
+          this._fileSystem.deleteFile(id);
+          return 200;
+        } else {
+          return 404;
+        }
+      }
+      return 401;
+    }, {delay: 500});
+
+    fetchMock.get('/user', (url, request) => {
+      if (this._hasAuthToken(request.headers)) {
+        return {
+          name: 'John',
+          id: 'qwerty'
+        };
+      }
+      return 401;
+    }, {delay: 500});
+
     fetchMock.get('express:/file/:fileId', (url, request) => {
       if (this._hasAuthToken(request.headers)) {
         const id = url.split('/')[2];
@@ -78,8 +114,15 @@ export class MockServer {
     }, {delay: 500});
   }
 
+  /**
+   * Checks authentication token to not be null.
+   *
+   * @param {{}} headers - request headers.
+   * @return {boolean} - existence of authentication token.
+   * @private
+   */
   _hasAuthToken(headers) {
     const authToken = headers['Authorization'].split(' ')[1];
-    return authToken !== 'null';
+    return authToken === 'authentication_token';
   }
 }

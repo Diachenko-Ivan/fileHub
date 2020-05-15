@@ -7,12 +7,12 @@ import {FileComponent} from '../file-item/file';
  */
 export class FileItemList extends Component {
   /**
-   * Contains either file or folder.
+   * Contains functions that return file or folder component depending on type.
    *
-   * @type {{file: (function(Item): FileComponent), folder: (function(Item): FolderComponent)}}
+   * @type {{file: (function(FileModel): FileComponent), folder: (function(FolderModel): FolderComponent)}}
    * @private
    */
-  _fileItem = {
+  _fileItemFactory = {
     file: (item) => new FileComponent(this.rootContainer.firstElementChild, item),
     folder: (item) => new FolderComponent(this.rootContainer.firstElementChild, item),
   };
@@ -23,7 +23,7 @@ export class FileItemList extends Component {
    * @private
    */
   _fileItems = [];
-
+  
   /**
    * @typedef Item
    * @property {string} name - file or folder name.
@@ -43,25 +43,51 @@ export class FileItemList extends Component {
     super(container);
     this.render();
   }
-
+  
   /**
    * @inheritdoc
    */
   markup() {
     return `<table data-element="file-list" class="content-table">
                 <tbody>
-                   
                 </tbody>
             </table>`;
   }
-
+  
   /**
    * Shows the list of file items.
    *
-   * @param {Item[]} items - received file list.
+   * @param {AbstractItemModel[]} items - received file list.
+   * @param {string[]} loadingItemIds - ids of items that are in any process.
    */
-  renderFileList(items) {
+  renderFileList(items, loadingItemIds) {
     this.rootContainer.firstElementChild.innerHTML = '';
+    this._fileItems.length = 0;
+    this._sortedItems(items).forEach((item) => {
+      const fileItem = this._fileItemFactory[item.type](item);
+      this._fileItems.push(fileItem);
+      fileItem.onRemoveIconClicked(this._removeListItemHandler);
+    });
+    this.showLoadingItems(loadingItemIds);
+  }
+  
+  /**
+   * Adds handler on remove file item action.
+   *
+   * @param {Function} handler - executed when delete action is called.
+   */
+  onRemoveListItem(handler) {
+    this._removeListItemHandler = handler;
+  }
+  
+  /**
+   * Moves the list of concrete items in process loading state.
+   *
+   * @param {string[]} changingItemIds - list of item ids that are being changed.
+   */
+  showLoadingItems(changingItemIds) {
+    this._fileItems
+      .forEach((item) => item.isLoading = changingItemIds.includes(item.model.id));
     this._sortedItems(items).forEach((item) =>{
       const fileItem = this._fileItem[item.type](item);
       if (fileItem instanceof FileComponent){
@@ -69,24 +95,42 @@ export class FileItemList extends Component {
       }
     });
   }
-
+  
   /**
-   * Sorts array of items where folders go first.
+   * Sorts array of items alphabetically where folders go first.
    *
-   * @param {Item[]} items - received file list.
-   * @return {[]} sorted array where folders go first.
+   * @param {AbstractItemModel[]} items - received file list.
+   * @return {AbstractItemModel[]} sorted array where folders go first.
    * @private
    */
   _sortedItems(items) {
-    const sortedArray = [];
+    const files = [];
+    const folders = [];
+    const sortByNameFunction = (firstItem, secondItem) => {
+      if (firstItem.name < secondItem.name) {
+        return -1;
+      }
+      return 1;
+    };
     items.forEach((item) => {
       if (item.type === 'folder') {
-        sortedArray.unshift(item);
+        folders.push(item);
       } else {
-        sortedArray.push(item);
+        files.push(item);
       }
     });
-    return sortedArray;
+    folders.sort(sortByNameFunction);
+    files.sort(sortByNameFunction);
+    return [...folders, ...files];
+  }
+  
+  /**
+   * Returns list of rendered file item components.
+   *
+   * @return {FileItem[]} list of rendered file item components.
+   */
+  getFileItems() {
+    return this._fileItems;
   }
 
   onDownloadFile(handler){

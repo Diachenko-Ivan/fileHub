@@ -122,6 +122,28 @@ export default module('FileHubPage', function () {
     stateManager.state.removeError = new AuthenticationError();
     assert.verifySteps(['Authorization failed'], 'Should redirect to login page.');
   });
+  
+  test('should call method for success logout.', function (assert) {
+    const state = {
+      isLoggedOut: false,
+    };
+    const stateManager = new StateManager(state, {});
+    const fileHub = new FileHubPage(fixture, stateManager);
+    fileHub.onFailedAuthorization(() => assert.step('Logged out'));
+    stateManager.state.isLoggedOut = true;
+    assert.verifySteps(['Logged out'], 'Should redirect to login page.');
+  });
+  
+  test('should call method for failed authorization in the result of logout.', function (assert) {
+    const state = {
+      logoutError: false,
+    };
+    const stateManager = new StateManager(state, {});
+    const fileHub = new FileHubPage(fixture, stateManager);
+    fileHub.onFailedAuthorization(() => assert.step('Authorization failed'));
+    stateManager.state.logoutError = new AuthenticationError();
+    assert.verifySteps(['Authorization failed'], 'Should redirect to login page.');
+  });
 });
 
 

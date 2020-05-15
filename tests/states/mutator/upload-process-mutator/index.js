@@ -15,4 +15,16 @@ export default module('UploadProcessMutator', function () {
     mutator.apply(state);
     assert.deepEqual(expectedUploadingIds, state.uploadingFolderIds, 'Should contain correct array of ids.');
   });
+  
+  test('should not add folder to uploadingFolderIds because it already exists.', function (assert) {
+    state = {
+      uploadingFolderIds: new Set(['423', 'sdf', 'jhd']),
+    };
+    const uploadingItemId = 'sdf';
+    const expectedUploadingIds = new Set(['423', 'sdf', 'jhd']);
+    const mutator = new UploadProcessMutator(uploadingItemId);
+    
+    mutator.apply(state);
+    assert.deepEqual(expectedUploadingIds, state.uploadingFolderIds, 'Should contain correct array of ids.');
+  });
 });

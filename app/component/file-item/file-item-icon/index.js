@@ -3,19 +3,19 @@ import {Component} from '../../parent-component.js';
 /**
  * Represents icon which makes actions with file item.
  */
-export class FileItemIcon extends Component {
+export class Icon extends Component {
   /**
    * Array of icon click handlers.
    * @type {Function[]}
    */
   _handlers = [];
-
+  
   /**
    * @typedef IconDescription
    * @property {string} styleClass - type of icon.
    */
   /**
-   * Creates new {@type FileItemIcon} component.
+   * Creates new {@type Icon} component.
    *
    * @param {Element} container - outer container.
    * @param {IconDescription} iconDescription - descriptor of icon type.
@@ -25,21 +25,24 @@ export class FileItemIcon extends Component {
     Object.assign(this, iconDescription);
     this.render();
   }
-
+  
   /**
    * @inheritdoc
    */
   markup() {
-    return `<i class="glyphicon glyphicon-${this.styleClass}"></i>`;
+    return `<i data-element="icon" class="glyphicon glyphicon-${this.styleClass}"></i>`;
   }
-
+  
   /**
    * @inheritdoc
    */
   addEventListener() {
-    this.rootContainer.addEventListener('click', () => this._handlers.forEach((handler) => handler()));
+    this.rootContainer.addEventListener('click', (event) => {
+      event.stopPropagation();
+      this._handlers.forEach((handler) => handler());
+    });
   }
-
+  
   /**
    * Register new click handler for icon.
    *

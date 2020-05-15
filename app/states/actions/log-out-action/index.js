@@ -1,5 +1,6 @@
 import {Action} from '../';
-import {FileListLoadErrorMutator} from '../../mutator/file-list-load-error-mutator';
+import {LogoutMutator} from '../../mutator/logout-mutator';
+import {LogoutErrorMutator} from '../../mutator/logout-error-mutator';
 
 /**
  * Action that is responsible for user log out.
@@ -17,10 +18,10 @@ export class LogOutAction extends Action {
    */
   async apply(stateManager, apiService) {
     try {
-      return await apiService.logOut();
+      await apiService.logOut();
+      stateManager.mutate(new LogoutMutator(true));
     } catch (e) {
-      stateManager.mutate(new FileListLoadErrorMutator(e));
-      return e;
+      stateManager.mutate(new LogoutErrorMutator(e));
     }
   }
 }

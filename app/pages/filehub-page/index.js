@@ -88,15 +88,11 @@ export class FileHubPage extends StateAwareComponent {
       iconClass: PLUS_ICON_CLASS,
     });
     
-    const logOutLink = this._getContainer('log-out');
+    this.logOutLink = this._getContainer('log-out');
     
     this.fileList = new FileItemList(this.fileListContainer);
 
     this.dispatch(new GetUserInfoAction());
-    logOutLink.addEventListener('click', (event)=>{
-      event.preventDefault();
-      this.dispatch(new LogOutAction());
-    })
   }
   
   /**
@@ -149,6 +145,13 @@ export class FileHubPage extends StateAwareComponent {
         alert(error.message);
       }
     });
+    this.onStateChange('isLoggedOut', () => {
+      this._onFailedAuthorization();
+    });
+    this.onStateChange('logoutError', (state) => {
+      const error = state.logoutError;
+      this._handleLoadError(error);
+    });
   }
   
   /**
@@ -158,6 +161,11 @@ export class FileHubPage extends StateAwareComponent {
     this.fileList.onRemoveListItem((model) => {
       this.dispatch(new RemoveItemAction(model));
     });
+  
+    this.logOutLink.addEventListener('click', (event)=>{
+      event.preventDefault();
+      this.dispatch(new LogOutAction());
+    })
   }
   
   /**

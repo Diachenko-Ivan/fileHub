@@ -108,7 +108,8 @@ export class FileHubPage extends StateAwareComponent {
       }
     });
     this.onStateChange('fileList', (state) => {
-      this.fileList.renderFileList(state.fileList, [...state.removingItemIds, ...state.uploadingFolderIds]);
+      this.uploadFileButton.isLoading = state.uploadingFolderIds.has(state.currentFolder.id);
+      this.fileList.renderFileList(state.fileList, [...state.removingItemIds, ...Array.from(state.uploadingFolderIds)]);
     });
     this.onStateChange('folderLoadError', (state) => {
       this._handleLoadError(state.folderLoadError);
@@ -136,8 +137,8 @@ export class FileHubPage extends StateAwareComponent {
       this._handleLoadError(state.userError);
     });
     this.onStateChange('uploadingFolderIds', (state) => {
-      this.uploadFileButton.isLoading = state.uploadingFolderIds.includes(state.currentFolder.id);
-      this.fileList.showLoadingItems([...state.removingItemIds, ...state.uploadingFolderIds]);
+      this.uploadFileButton.isLoading = state.uploadingFolderIds.has(state.currentFolder.id);
+      this.fileList.showLoadingItems([...Array.from(state.uploadingFolderIds), ...state.removingItemIds]);
     });
     this.onStateChange('uploadErrorObject', (state) => {
       const error = state.uploadErrorObject.error;
@@ -145,13 +146,13 @@ export class FileHubPage extends StateAwareComponent {
       if (error instanceof AuthenticationError) {
         this._onFailedAuthorization();
       } else if (error instanceof PageNotFoundError) {
-        alert(`Failed to upload file in folder with name: ${model.name} and id: ${model.id}`);
+        alert(`Failed to upload file in ${model.name} folder.`);
       } else if (error instanceof GeneralServerError) {
-        alert(error.message);
+        alert(`Server error! Failed to upload file in ${model.name} folder.`);
       }
     });
     this.onStateChange('removingItemIds', (state) => {
-      this.fileList.showLoadingItems([...state.removingItemIds, ...state.uploadingFolderIds]);
+      this.fileList.showLoadingItems([...state.removingItemIds, ...Array.from(state.uploadingFolderIds)]);
     });
     this.onStateChange('removeError', (state) => {
       const error = state.removeError;

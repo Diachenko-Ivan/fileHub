@@ -266,7 +266,7 @@ export default module('ApiService', function (hook) {
     const service = new ApiService(storageService);
     fetchMock.once('/logout', 200);
     service.logOut()
-      .catch(() => {
+      .then(() => {
         assert.notOk(storageService.token, 'Should remove authentication token.');
         done();
       });
@@ -274,6 +274,14 @@ export default module('ApiService', function (hook) {
       method: 'POST',
       headers: {'Authorization': 'Bearer token'},
     }), 'Should send log out request with correct attributes.');
+  });
+  
+  test('should return server error on logout.', function (assert) {
+    testCommonErrors(assert, '/logout', 500, 'logOut');
+  });
+  
+  test('should return authorization error on logout.', function (assert) {
+    testCommonErrors(assert, '/logout', 401, 'logOut');
   });
 });
 

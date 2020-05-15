@@ -19,7 +19,7 @@ export class UploadFileAction extends Action {
     this.model = model;
     this.file = file;
   }
-
+  
   /**
    * @inheritdoc
    */
@@ -31,8 +31,11 @@ export class UploadFileAction extends Action {
     } catch (error) {
       stateManager.mutate(new UploadErrorMutator({error, model: this.model}));
     } finally {
+      const currentFolderId = stateManager.state.currentFolder.id;
       stateManager.mutate(new UploadFinishedMutator(folderId));
-      await stateManager.dispatch(new GetFolderContentAction(stateManager.state.currentFolder.id));
+      if (currentFolderId === folderId) {
+        await stateManager.dispatch(new GetFolderContentAction(currentFolderId));
+      }
     }
   }
 }

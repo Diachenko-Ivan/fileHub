@@ -18,8 +18,9 @@ export class UploadFinishedMutator extends Mutator {
    * @inheritdoc
    */
   apply(state) {
-    const uploadingFolderIds = state.uploadingFolderIds;
-    uploadingFolderIds.delete(this.uploadFinishedFolderId);
-    state.uploadingFolderIds = uploadingFolderIds;
+    state.uploadingFolderIds = new Set(
+      Array.from(state.uploadingFolderIds)
+        .filter((id) => id !== this.uploadFinishedFolderId),
+    );
   }
 }

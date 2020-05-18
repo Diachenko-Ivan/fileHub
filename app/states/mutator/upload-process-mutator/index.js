@@ -18,6 +18,6 @@ export class UploadProcessMutator extends Mutator {
    * @inheritdoc
    */
   apply(state) {
-    state.uploadingFolderIds = state.uploadingFolderIds.add(this.uploadingFolderId);
+    state.uploadingFolderIds = new Set([...state.uploadingFolderIds, this.uploadingFolderId]);
   }
 }

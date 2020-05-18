@@ -64,7 +64,7 @@ export class FileComponent extends FileItem {
    * @inheritdoc
    */
   addEventListener() {
-    this.downloadIcon.onClick(() => this._onDownload(this.id));
+    this.downloadIcon.onClick(() => this._onDownload(this.model));
     
     this.removeIcon.onClick(() => {
       this.removeHandler(this.model);
@@ -100,7 +100,12 @@ export class FileComponent extends FileItem {
     const iconTypeKey = iconTypeByMimeType || 'other';
     return FILE_ICON_TYPES[iconTypeKey];
   }
-
+  
+  /**
+   * Registers a handler that is called when download icon is clicked.
+   *
+   * @param {Function} handler - callback for download.
+   */
   onDownloadFile(handler) {
     this._onDownload = handler;
   }

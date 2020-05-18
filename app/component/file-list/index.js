@@ -29,17 +29,14 @@ export class FileItemList extends Component {
    * @private
    */
   _fileItems = [];
-  
   /**
-   * @typedef Item
-   * @property {string} name - file or folder name.
-   * @property {string} type - folder or file.
-   * @property {string} mimeType - file mime type.
-   * @property {number} size - file size.
-   * @property {number} filesCount - number of files in folder.
-   * @property {string} id - id of folder or file.
-   * @property {string} parentId - id of parent folder.
+   * Contains list of loading items.
+   *
+   * @type {Set<string>}
+   * @private
    */
+  _loadingItemIds = new Set();
+  
   /**
    * Creates new {@type FileList} component.
    *
@@ -64,17 +61,16 @@ export class FileItemList extends Component {
    * Shows the list of file items.
    *
    * @param {AbstractItemModel[]} items - received file list.
-   * @param {string[]} loadingItemIds - ids of items that are in any process.
    */
-  renderFileList(items, loadingItemIds) {
+  set fileList(items) {
     this.rootContainer.firstElementChild.innerHTML = '';
     this._fileItems.length = 0;
     this._sortedItems(items).forEach((item) => {
       const fileItem = this._fileItemFactory[item.type](item);
       this._fileItems.push(fileItem);
       fileItem.onRemoveIconClicked(this._removeListItemHandler);
+      fileItem.isLoading = this._loadingItemIds.has(fileItem.model.id);
     });
-    this.showLoadingItems(loadingItemIds);
   }
   
   /**
@@ -89,11 +85,11 @@ export class FileItemList extends Component {
   /**
    * Moves the list of concrete items in process loading state.
    *
-   * @param {string[]} changingItemIds - list of item ids that are being changed.
+   * @param {Set<string>} loadingItemIds - list of item ids that are being changed.
    */
-  showLoadingItems(changingItemIds) {
-    this._fileItems
-      .forEach((item) => item.isLoading = changingItemIds.includes(item.model.id));
+  set loadingItems(loadingItemIds) {
+    this._loadingItemIds = loadingItemIds;
+    this._fileItems.forEach((item) => item.isLoading = loadingItemIds.has(item.model.id));
   }
   
   /**

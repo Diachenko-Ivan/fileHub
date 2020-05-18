@@ -109,7 +109,7 @@ export class FileHubPage extends StateAwareComponent {
     });
     this.onStateChange('fileList', (state) => {
       this.uploadFileButton.isLoading = state.uploadingFolderIds.has(state.currentFolder.id);
-      this.fileList.renderFileList(state.fileList, [...state.removingItemIds, ...Array.from(state.uploadingFolderIds)]);
+      this.fileList.fileList = state.fileList;
     });
     this.onStateChange('folderLoadError', (state) => {
       this._handleLoadError(state.folderLoadError);
@@ -138,7 +138,7 @@ export class FileHubPage extends StateAwareComponent {
     });
     this.onStateChange('uploadingFolderIds', (state) => {
       this.uploadFileButton.isLoading = state.uploadingFolderIds.has(state.currentFolder.id);
-      this.fileList.showLoadingItems([...Array.from(state.uploadingFolderIds), ...state.removingItemIds]);
+      this.fileList.loadingItems = new Set([...state.uploadingFolderIds, ...state.removingItemIds]);
     });
     this.onStateChange('uploadErrorObject', (state) => {
       const error = state.uploadErrorObject.error;
@@ -152,7 +152,7 @@ export class FileHubPage extends StateAwareComponent {
       }
     });
     this.onStateChange('removingItemIds', (state) => {
-      this.fileList.showLoadingItems([...state.removingItemIds, ...Array.from(state.uploadingFolderIds)]);
+      this.fileList.loadingItems = new Set([...state.uploadingFolderIds, ...state.removingItemIds]);
     });
     this.onStateChange('removeError', (state) => {
       const error = state.removeError;

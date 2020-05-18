@@ -11,6 +11,8 @@ import {AuthenticationError} from '../../models/errors/authentication-error';
 import {PageNotFoundError} from '../../models/errors/page-not-found-error';
 import {GeneralServerError} from '../../models/errors/server-error';
 import {GetFolderAction} from '../../states/actions/get-folder-action';
+import {DownloadFileAction} from '../../states/actions/download-action';
+import {DownloadAnchorService} from '../../services/dowload-anchor-service';
 
 /**
  * Class name for upload icon.

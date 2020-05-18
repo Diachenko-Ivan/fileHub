@@ -13,7 +13,11 @@ export class FileItemList extends Component {
    * @private
    */
   _fileItemFactory = {
-    file: (item) => new FileComponent(this.rootContainer.firstElementChild, item),
+    file: (item) => {
+      const file = new FileComponent(this.rootContainer.firstElementChild, item);
+      file.onDownloadFile(this._onDownloadFile);
+      return file;
+    },
     folder: (item) => new FolderComponent(this.rootContainer.firstElementChild, item),
   };
   /**
@@ -88,12 +92,6 @@ export class FileItemList extends Component {
   showLoadingItems(changingItemIds) {
     this._fileItems
       .forEach((item) => item.isLoading = changingItemIds.includes(item.model.id));
-    this._sortedItems(items).forEach((item) =>{
-      const fileItem = this._fileItem[item.type](item);
-      if (fileItem instanceof FileComponent){
-        fileItem.onDownloadFile(this._onDownloadFile);
-      }
-    });
   }
   
   /**
@@ -132,8 +130,13 @@ export class FileItemList extends Component {
   getFileItems() {
     return this._fileItems;
   }
-
-  onDownloadFile(handler){
-    this._onDownloadFile=handler;
+  
+  /**
+   * Registers a handler that is used for download action.
+   *
+   * @param {Function} handler - callback for download.
+   */
+  onDownloadFile(handler) {
+    this._onDownloadFile = handler;
   }
 }

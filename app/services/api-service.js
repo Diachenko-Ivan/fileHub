@@ -130,7 +130,7 @@ export class ApiService {
       return this._handleCommonErrors(response);
     });
   }
-
+  
   /**
    * Removes file.
    *
@@ -148,19 +148,25 @@ export class ApiService {
       return this._handleCommonErrors(response);
     });
   }
-
-  downloadFile(id){
+  
+  /**
+   * Sends request for getting downloading file.
+   *
+   * @param {string} id - file id.
+   * @return {Promise<File>} downloading file.
+   */
+  downloadFile(id) {
     return fetch(`/file/${id}`, {
       method: 'GET',
-      headers:this.authenticationHeader()
-    }).then((response)=>{
+      headers: this._getAuthenticationHeader(),
+    }).then((response) => {
       if (response.ok) {
         return response.blob();
       }
-      this.handleCommonErrors(response.status);
-    })
+      return this._handleCommonErrors(response);
+    });
   }
-
+  
   /**
    * @return {ApiService} singleton.
    */

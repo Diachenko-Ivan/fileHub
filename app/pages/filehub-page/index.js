@@ -92,15 +92,8 @@ export class FileHubPage extends StateAwareComponent {
     const logOutLink = this._getContainer('log-out');
     
     this.fileList = new FileItemList(this.fileListContainer);
-
+    
     this.dispatch(new GetUserInfoAction());
-
-    const downloadAnchorService = new DownloadAnchorService();
-
-    this.fileList.onDownloadFile((id)=>{
-      this.dispatch(new GetFileAction(id))
-        .then((file) => downloadAnchorService.createAndClickDownloadAnchor(file));
-    })
   }
   
   /**
@@ -153,6 +146,21 @@ export class FileHubPage extends StateAwareComponent {
         alert(error.message);
       }
     });
+    this.onStateChange('downloadingFileObject', (state) => {
+      const downloadAnchorService = new DownloadAnchorService();
+      downloadAnchorService.createAndClickDownloadAnchor(state.downloadingFileObject);
+    });
+    this.onStateChange('downloadErrorObject', (state) => {
+      const error = state.downloadErrorObject.error;
+      const model = state.downloadErrorObject.model;
+      if (error instanceof AuthenticationError) {
+        this._onFailedAuthorization();
+      } else if (error instanceof PageNotFoundError) {
+        alert(`Failed to download ${model.name} file. It can be deleted.`);
+      } else if (error instanceof GeneralServerError) {
+        alert(`Server error! Failed to download ${model.name} file.`);
+      }
+    });
   }
   
   /**
@@ -161,6 +169,10 @@ export class FileHubPage extends StateAwareComponent {
   addEventListener() {
     this.fileList.onRemoveListItem((model) => {
       this.dispatch(new RemoveItemAction(model));
+    });
+    
+    this.fileList.onDownloadFile((id) => {
+      this.dispatch(new DownloadFileAction(id));
     });
   }
   

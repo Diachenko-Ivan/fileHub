@@ -122,6 +122,17 @@ export default module('FileHubPage', function () {
     stateManager.state.removeError = new AuthenticationError();
     assert.verifySteps(['Authorization failed'], 'Should redirect to login page.');
   });
+  
+  test('should call method for failed authorization in file download.', function (assert) {
+    const state = {
+      downloadErrorObject: {},
+    };
+    const stateManager = new StateManager(state, {});
+    const fileHub = new FileHubPage(fixture, stateManager);
+    fileHub.onFailedAuthorization(() => assert.step('Authorization failed'));
+    stateManager.state.downloadErrorObject = {model: {name: '123'}, error: new AuthenticationError()};
+    assert.verifySteps(['Authorization failed'], 'Should redirect to login page.');
+  });
 });
 
 

@@ -62,15 +62,4 @@ export class FileListState {
    * @type {Error}
    */
   removeError;
-  /**
-   * Error in the result of unsuccessful logout.
-   * @type {Error}
-   */
-  logoutError;
-  /**
-   * Defines either user is logged out or not.
-   *
-   * @type {boolean}
-   */
-  isLoggedOut;
 }

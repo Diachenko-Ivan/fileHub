@@ -91,7 +91,7 @@ export class FileHubPage extends StateAwareComponent {
     this.logOutLink = this._getContainer('log-out');
     
     this.fileList = new FileItemList(this.fileListContainer);
-
+    
     this.dispatch(new GetUserInfoAction());
   }
   
@@ -140,17 +140,10 @@ export class FileHubPage extends StateAwareComponent {
     this.onStateChange('removeError', (state) => {
       const error = state.removeError;
       if (error instanceof AuthenticationError) {
-        this._onFailedAuthorization();
+        this._redirectToLoginPage();
       } else if (error instanceof GeneralServerError) {
         alert(error.message);
       }
-    });
-    this.onStateChange('isLoggedOut', () => {
-      this._onFailedAuthorization();
-    });
-    this.onStateChange('logoutError', (state) => {
-      const error = state.logoutError;
-      this._handleLoadError(error);
     });
   }
   
@@ -161,11 +154,11 @@ export class FileHubPage extends StateAwareComponent {
     this.fileList.onRemoveListItem((model) => {
       this.dispatch(new RemoveItemAction(model));
     });
-  
-    this.logOutLink.addEventListener('click', (event)=>{
+    
+    this.logOutLink.addEventListener('click', (event) => {
       event.preventDefault();
-      this.dispatch(new LogOutAction());
-    })
+      this.dispatch(new LogOutAction()).then(() => this._redirectToLoginPage());
+    });
   }
   
   /**
@@ -183,7 +176,7 @@ export class FileHubPage extends StateAwareComponent {
    * @param {Function} handler - callback.
    */
   onFailedAuthorization(handler) {
-    this._onFailedAuthorization = handler;
+    this._redirectToLoginPage = handler;
   }
   
   /**
@@ -194,7 +187,7 @@ export class FileHubPage extends StateAwareComponent {
    */
   _handleLoadError(loadError) {
     if (loadError instanceof AuthenticationError) {
-      this._onFailedAuthorization();
+      this._redirectToLoginPage();
     } else if (loadError instanceof PageNotFoundError) {
       this._onResourceNotFound();
     } else if (loadError instanceof GeneralServerError) {

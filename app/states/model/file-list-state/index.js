@@ -62,4 +62,24 @@ export class FileListState {
    * @type {Error}
    */
   removeError;
+  /**
+   * @typedef DownloadFileObject
+   * @property {FileModel} model - model of downloading file.
+   * @property {File} file - downloading file.
+   */
+  /**
+   * Current downloading file.
+   * @type DownloadFileObject
+   */
+  downloadingFileObject;
+  /**
+   * @typedef DownloadErrorObject
+   * @property {FileModel} model - model of downloading file.
+   * @property {Error} error - error in the result of download.
+   */
+  /**
+   * Error in the result of file download.
+   * @type {DownloadErrorObject}
+   */
+  downloadErrorObject;
 }

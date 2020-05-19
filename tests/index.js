@@ -38,5 +38,5 @@ import UploadProcessMutatorTest from './states/mutator/upload-finished-mutator'
 import UploadFinishedMutatorTest from './states/mutator/upload-process-mutator'
 import UploadErrorMutatorTest from './states/mutator/upload-error-mutator'
 import UserErrorMutatorTest from './states/mutator/user-error-mutator'
-
+import LogOutAction from './states/actions/log-out-action'
 

@@ -130,7 +130,7 @@ export class ApiService {
       return this._handleCommonErrors(response);
     });
   }
-
+  
   /**
    * Removes file.
    *
@@ -148,7 +148,19 @@ export class ApiService {
       return this._handleCommonErrors(response);
     });
   }
-
+  
+  /**
+   * Sends request for user logout.
+   *
+   * @return {Promise<Response>}
+   */
+  logOut() {
+    return fetch('/logout', {
+      method: 'POST',
+      headers: this._getAuthenticationHeader(),
+    }).finally(() => this.storageService.removeItem('token'));
+  }
+  
   /**
    * Sends request for upload of new file to the folder.
    *
@@ -198,7 +210,10 @@ export class ApiService {
    */
   async _handleCommonErrors(response) {
     const availableCodesToErrorMap = {
-      401: () => new AuthenticationError(),
+      401: () => {
+        this.storageService.removeItem('token');
+        return new AuthenticationError();
+      },
       404: () => new PageNotFoundError(),
       422: (error) => new ValidationError(error),
       500: (errorText) => new GeneralServerError(errorText),

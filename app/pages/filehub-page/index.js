@@ -9,6 +9,7 @@ import {TitleService} from '../../services/title-service';
 import {UploadFileAction} from '../../states/actions/upload-file-action';
 import {UploadWindowService} from '../../services/upload-window-service';
 import {GetUserInfoAction} from '../../states/actions/user-info-action';
+import {LogOutAction} from '../../states/actions/log-out-action';
 import {AuthenticationError} from '../../models/errors/authentication-error';
 import {PageNotFoundError} from '../../models/errors/page-not-found-error';
 import {GeneralServerError} from '../../models/errors/server-error';
@@ -89,7 +90,7 @@ export class FileHubPage extends StateAwareComponent {
       iconClass: PLUS_ICON_CLASS,
     });
     
-    const logOutLink = this._getContainer('log-out');
+    this.logOutLink = this._getContainer('log-out');
     
     this.fileList = new FileItemList(this.fileListContainer);
     
@@ -157,7 +158,7 @@ export class FileHubPage extends StateAwareComponent {
     this.onStateChange('removeError', (state) => {
       const error = state.removeError;
       if (error instanceof AuthenticationError) {
-        this._onFailedAuthorization();
+        this._redirectToLoginPage();
       } else if (error instanceof GeneralServerError) {
         alert(error.message);
       }
@@ -184,6 +185,11 @@ export class FileHubPage extends StateAwareComponent {
     this.fileList.onRemoveListItem((model) => {
       this.dispatch(new RemoveItemAction(model));
     });
+    
+    this.logOutLink.addEventListener('click', (event) => {
+      event.preventDefault();
+      this.dispatch(new LogOutAction()).finally(this._redirectToLoginPage);
+    });
   }
   
   /**
@@ -201,7 +207,7 @@ export class FileHubPage extends StateAwareComponent {
    * @param {Function} handler - callback.
    */
   onFailedAuthorization(handler) {
-    this._onFailedAuthorization = handler;
+    this._redirectToLoginPage = handler;
   }
   
   /**
@@ -212,7 +218,7 @@ export class FileHubPage extends StateAwareComponent {
    */
   _handleLoadError(loadError) {
     if (loadError instanceof AuthenticationError) {
-      this._onFailedAuthorization();
+      this._redirectToLoginPage();
     } else if (loadError instanceof PageNotFoundError) {
       this._onResourceNotFound();
     } else if (loadError instanceof GeneralServerError) {

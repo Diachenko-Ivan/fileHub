@@ -239,7 +239,7 @@ export default module('ApiService', function (hook) {
   test('should return authorization error on remove folder request.', function (assert) {
     testCommonErrors(assert, '/folder/id', 401, 'removeFolder', 'id');
   });
-
+  
   test('should return not-found error on remove folder request.', function (assert) {
     testCommonErrors(assert, '/folder/id', 404, 'removeFolder', 'id');
   });
@@ -255,8 +255,8 @@ export default module('ApiService', function (hook) {
   test('should return not-found error on on remove file request.', function (assert) {
     testCommonErrors(assert, '/file/id', 404, 'removeFile', 'id');
   });
-
-
+  
+  
   test('should return correct user.', function (assert) {
     const done = assert.async();
     assert.expect(2);
@@ -266,7 +266,7 @@ export default module('ApiService', function (hook) {
       },
     };
     const service = new ApiService(storageService);
-    const user = {name:'John'};
+    const user = {name: 'John'};
     fetchMock.once('/user', user);
     service.getUserInfo()
       .then((responseUser) => {
@@ -276,8 +276,8 @@ export default module('ApiService', function (hook) {
     assert.ok(fetchMock.called('/user', {
         method: 'GET',
         headers: {'Authorization': `Bearer token`},
-      }
-    ))
+      },
+    ));
   });
   
   test('should return authorization error on get user info.', function (assert) {
@@ -286,6 +286,29 @@ export default module('ApiService', function (hook) {
   
   test('should return server error on get user info.', function (assert) {
     testCommonErrors(assert, '/user', 500, 'getUserInfo');
+  });
+  
+  test('should log out user.', function (assert) {
+    const done = assert.async();
+    const storageService = {
+      getItem() {
+        return 'token';
+      },
+      removeItem() {
+        assert.step('Token removed');
+      },
+    };
+    const service = new ApiService(storageService);
+    fetchMock.once('/logout', 200);
+    service.logOut()
+      .then(() => {
+        assert.verifySteps(['Token removed'], 'Should remove authentication token.');
+        done();
+      });
+    assert.ok(fetchMock.called('/logout', {
+      method: 'POST',
+      headers: {'Authorization': 'Bearer token'},
+    }), 'Should send log out request with correct attributes.');
   });
 });
 
@@ -299,6 +322,8 @@ function testCommonErrors(assert, url, errorCode, apiServiceMethod, ...params) {
   assert.expect(1);
   const storageService = {
     getItem() {
+    },
+    removeItem() {
     },
   };
   const service = new ApiService(storageService);

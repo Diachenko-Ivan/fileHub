@@ -261,17 +261,29 @@ export default module('ApiService', function (hook) {
       },
     };
     const service = new ApiService(storageService);
-    const downloadingFile = new Blob(['a', 's']);
+    const downloadingFile = new Blob(['a', 's'], {type: 'application/json'});
     fetchMock.once('/file/id', downloadingFile);
     service.downloadFile('id')
       .then((blob) => {
-        assert.ok(blob, 'Should return file.');
+        assert.deepEqual(blob, downloadingFile, 'Should return correct file.');
         done();
       });
     assert.ok(fetchMock.called('/file/id', {
       method: 'GET',
       headers: {'Authorization': 'Bearer token'},
     }));
+  });
+  
+  test('should return authorization error on file download.', function (assert) {
+    testCommonErrors(assert, '/file/id', 401, 'downloadFile', 'id');
+  });
+  
+  test('should return server error on file download.', function (assert) {
+    testCommonErrors(assert, '/file/id', 500, 'downloadFile', 'id');
+  });
+  
+  test('should return not-found error on file download.', function (assert) {
+    testCommonErrors(assert, '/file/id', 404, 'downloadFile', 'id');
   });
 });
 

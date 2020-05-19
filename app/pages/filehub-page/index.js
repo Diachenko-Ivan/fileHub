@@ -157,7 +157,7 @@ export class FileHubPage extends StateAwareComponent {
     
     this.logOutLink.addEventListener('click', (event) => {
       event.preventDefault();
-      this.dispatch(new LogOutAction()).then(() => this._redirectToLoginPage());
+      this.dispatch(new LogOutAction()).finally(() => this._redirectToLoginPage());
     });
   }
   

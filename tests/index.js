@@ -34,5 +34,5 @@ import RemovingItemsMutatorTest from './states/mutator/remove-items-mutator'
 import RemoveItemErrorMutatorTest from './states/mutator/remove-item-error-mutator'
 import RemovedItemsMutatorTest from './states/mutator/removed-items-mutator'
 import UserErrorMutatorTest from './states/mutator/user-error-mutator'
-
+import LogOutAction from './states/actions/log-out-action'
 

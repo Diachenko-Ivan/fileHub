@@ -36,6 +36,13 @@ export class FileItemList extends Component {
    * @private
    */
   _loadingItemIds = new Set();
+  /**
+   * Contains list of item models.
+   *
+   * @type {AbstractItemModel[]}
+   * @private
+   */
+  _itemModels = [];
   
   /**
    * Creates new {@type FileList} component.
@@ -58,19 +65,27 @@ export class FileItemList extends Component {
   }
   
   /**
+   * @inheritdoc
+   */
+  initNestedComponents() {
+    this._sortedItems(this._itemModels).forEach((item) => {
+      const fileItem = this._fileItemFactory[item.type](item);
+      this._fileItems.push(fileItem);
+      fileItem.onRemoveIconClicked(this._removeListItemHandler);
+      fileItem.isLoading = this._loadingItemIds.has(fileItem.model.id);
+    });
+  }
+  
+  /**
    * Shows the list of file items.
    *
    * @param {AbstractItemModel[]} items - received file list.
    */
   set fileList(items) {
     this.rootContainer.firstElementChild.innerHTML = '';
-    this._fileItems.length = 0;
-    this._sortedItems(items).forEach((item) => {
-      const fileItem = this._fileItemFactory[item.type](item);
-      this._fileItems.push(fileItem);
-      fileItem.onRemoveIconClicked(this._removeListItemHandler);
-      fileItem.isLoading = this._loadingItemIds.has(fileItem.model.id);
-    });
+    this._fileItems = [];
+    this._itemModels = items;
+    this.initNestedComponents();
   }
   
   /**

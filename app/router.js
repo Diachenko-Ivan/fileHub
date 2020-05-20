@@ -127,6 +127,15 @@ export class Router {
   }
   
   /**
+   * Changes hash value.
+   *
+   * @param {string} hashUrl - new url hash.
+   */
+  redirectTo(hashUrl) {
+    this._window.location.hash = hashUrl;
+  }
+  
+  /**
    * Returns current window hash value.
    *
    * @return {string} hash value.

@@ -21,6 +21,17 @@ export class MockFileSystem {
   _files = [];
   
   /**
+   * @typedef FileObject
+   * @property {string} id - file id.
+   * @property {File} file - file.
+   */
+  /**
+   * Stores files with its id.
+   *
+   * @type {FileObject[]}
+   */
+  _fileObjects = [];
+  /**
    * Creates new mock file system with available files and folders.
    *
    * @param {FolderDescription[]} folders - array of folders.
@@ -30,8 +41,6 @@ export class MockFileSystem {
     this._folders = folders;
     this._files = files;
   }
-  
-  
   /**
    * Recursively deletes folder by its id.
    *
@@ -88,22 +97,26 @@ export class MockFileSystem {
     const files = this._files.filter((file) => file.parentId === id);
     return folders.concat(files);
   }
-  
+
   /**
-   * Used for tests.
+   * Saves new file to file system.
    *
-   * @return {FileDescription[]}
+   * @param {File} file - uploading file.
+   * @param {string} folderId - id of folder where file is saved.
+   * @return {FileModel} file object model.
    */
-  getFiles() {
-    return this._files;
-  }
-  
-  /**
-   * Used for tests.
-   *
-   * @return {FolderDescription[]}
-   */
-  getFolders() {
-    return this._folders;
+  saveFile(file, folderId) {
+    const fileId = Math.random().toString();
+    const fileItem = {
+      name: file.name,
+      id: fileId,
+      mimeType: file.type,
+      parentId: folderId,
+      size: file.size,
+      type: 'file'
+    };
+    this._files.push(fileItem);
+    this._fileObjects.push({file, id: fileId});
+    return fileItem;
   }
 }

@@ -12,8 +12,8 @@ export default module('FileItemList test', function (hook) {
   test('should render file item list component.', function (assert) {
     const fileItemList = new FileItemList(fixture);
     
-    fileItemList.renderFileList([{name: 'Documents', type: 'folder', filesCount: 10},
-      {name: '404.html', type: 'file', size: 4000, mimeType: 'text'}], []);
+    fileItemList.fileList = [{name: 'Documents', type: 'folder', filesCount: 10},
+      {name: '404.html', type: 'file', size: 4000, mimeType: 'text'}];
     
     const listTable = fixture.firstElementChild;
     const listBody = listTable.firstElementChild;
@@ -41,7 +41,7 @@ export default module('FileItemList test', function (hook) {
       {name: 'Main.java'},
       {name: 'hello.pdf'},
     ];
-    fileItemList.renderFileList(unsortedList, []);
+    fileItemList.fileList = unsortedList;
     const fileItems = fileItemList.getFileItems().map((value) => {
       return {name: value.model.name};
     });

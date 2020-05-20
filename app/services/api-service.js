@@ -181,6 +181,28 @@ export class ApiService {
   }
   
   /**
+   * Sends request for upload of new file to the folder.
+   *
+   * @param folderId - folder id.
+   * @param {File} file - file that is going to be saved.
+   * @return {Promise<Response>}
+   */
+  uploadFile(folderId, file) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return fetch(`/folder/${folderId}/file`, {
+      method: 'POST',
+      body: formData,
+      headers: this._getAuthenticationHeader()
+    }).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return this._handleCommonErrors(response);
+    });
+  }
+
+  /**
    * @return {ApiService} singleton.
    */
   static getInstance() {

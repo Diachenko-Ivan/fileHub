@@ -141,7 +141,7 @@ export class FileHubPage extends StateAwareComponent {
     });
     this.onStateChange('uploadingFolderIds', (state) => {
       this.uploadFileButton.isLoading = state.uploadingFolderIds.has(state.currentFolder.id);
-      this.fileList.loadingItems = new Set([...state.uploadingFolderIds, ...state.removingItemIds]);
+      this.fileList.loadingItems = new Set([...state.uploadingFolderIds, ...state.removingItemIds, ...state.downloadingFileIds]);
     });
     this.onStateChange('uploadErrorObject', (state) => {
       const error = state.uploadErrorObject.error;
@@ -155,7 +155,7 @@ export class FileHubPage extends StateAwareComponent {
       }
     });
     this.onStateChange('removingItemIds', (state) => {
-      this.fileList.loadingItems = new Set([...state.uploadingFolderIds, ...state.removingItemIds]);
+      this.fileList.loadingItems = new Set([...state.uploadingFolderIds, ...state.removingItemIds, ...state.downloadingFileIds]);
     });
     this.onStateChange('removeError', (state) => {
       const error = state.removeError;
@@ -168,6 +168,9 @@ export class FileHubPage extends StateAwareComponent {
     this.onStateChange('downloadedFileObject', (state) => {
       const downloadService = new DownloadService();
       downloadService.downloadFile(state.downloadedFileObject);
+    });
+    this.onStateChange('downloadingFileIds', (state) => {
+      this.fileList.loadingItems = new Set([...state.uploadingFolderIds, ...state.removingItemIds, ...state.downloadingFileIds]);
     });
     this.onStateChange('downloadErrorObject', (state) => {
       const {error, model} = state.downloadErrorObject;

@@ -42,5 +42,7 @@ import UserErrorMutatorTest from './states/mutator/user-error-mutator'
 import LogOutAction from './states/actions/log-out-action'
 import DownloadErrorMutatorTest from './states/mutator/download-error-mutator'
 import DownloadingFileMutatorTest from './states/mutator/downloading-file-mutator'
+import DownloadProcessMutatorTest from './states/mutator/download-process-mutator'
+import DownloadFinishedMutatorTest from './states/mutator/download-finished-mutator'
 
 

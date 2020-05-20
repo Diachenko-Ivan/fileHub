@@ -145,7 +145,7 @@ export class FileHubPage extends StateAwareComponent {
       const error = state.uploadErrorObject.error;
       const model = state.uploadErrorObject.model;
       if (error instanceof AuthenticationError) {
-        this._onFailedAuthorization();
+        this._redirectToLoginPage();
       } else if (error instanceof PageNotFoundError) {
         alert(`Failed to upload file in ${model.name} folder.`);
       } else if (error instanceof GeneralServerError) {

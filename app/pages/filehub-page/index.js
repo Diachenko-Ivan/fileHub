@@ -13,7 +13,7 @@ import {PageNotFoundError} from '../../models/errors/page-not-found-error';
 import {GeneralServerError} from '../../models/errors/server-error';
 import {GetFolderAction} from '../../states/actions/get-folder-action';
 import {DownloadFileAction} from '../../states/actions/download-action';
-import {DownloadAnchorService} from '../../services/dowload-anchor-service';
+import {DownloadService} from '../../services/dowload-anchor-service';
 
 /**
  * Class name for upload icon.
@@ -147,15 +147,14 @@ export class FileHubPage extends StateAwareComponent {
         alert(error.message);
       }
     });
-    this.onStateChange('downloadingFileObject', (state) => {
-      const downloadAnchorService = new DownloadAnchorService();
-      downloadAnchorService.createAndClickDownloadAnchor(state.downloadingFileObject);
+    this.onStateChange('downloadedFileObject', (state) => {
+      const downloadService = new DownloadService();
+      downloadService.downloadFile(state.downloadedFileObject);
     });
     this.onStateChange('downloadErrorObject', (state) => {
-      const error = state.downloadErrorObject.error;
-      const model = state.downloadErrorObject.model;
+      const {error, model} = state.downloadErrorObject;
       if (error instanceof AuthenticationError) {
-        this._onFailedAuthorization();
+        this._redirectToLoginPage();
       } else if (error instanceof PageNotFoundError) {
         alert(`Failed to download ${model.name} file. It can be deleted.`);
       } else if (error instanceof GeneralServerError) {
@@ -177,8 +176,8 @@ export class FileHubPage extends StateAwareComponent {
       this.dispatch(new LogOutAction()).finally(this._redirectToLoginPage);
     });
     
-    this.fileList.onDownloadFile((id) => {
-      this.dispatch(new DownloadFileAction(id));
+    this.fileList.onDownloadFile((model) => {
+      this.dispatch(new DownloadFileAction(model));
     });
   }
   

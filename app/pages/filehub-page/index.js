@@ -6,6 +6,8 @@ import {DirectoryPath} from '../../component/directory-path';
 import {GetFolderContentAction} from '../../states/actions/get-folder-content-action';
 import {RemoveItemAction} from '../../states/actions/remove-item-action';
 import {TitleService} from '../../services/title-service';
+import {UploadFileAction} from '../../states/actions/upload-file-action';
+import {UploadWindowService} from '../../services/upload-window-service';
 import {GetUserInfoAction} from '../../states/actions/user-info-action';
 import {LogOutAction} from '../../states/actions/log-out-action';
 import {AuthenticationError} from '../../models/errors/authentication-error';
@@ -107,7 +109,8 @@ export class FileHubPage extends StateAwareComponent {
       }
     });
     this.onStateChange('fileList', (state) => {
-      this.fileList.renderFileList(state.fileList, [...state.removingItemIds]);
+      this.uploadFileButton.isLoading = state.uploadingFolderIds.has(state.currentFolder.id);
+      this.fileList.fileList = state.fileList;
     });
     this.onStateChange('folderLoadError', (state) => {
       this._handleLoadError(state.folderLoadError);
@@ -134,8 +137,23 @@ export class FileHubPage extends StateAwareComponent {
     this.onStateChange('userError', (state) => {
       this._handleLoadError(state.userError);
     });
+    this.onStateChange('uploadingFolderIds', (state) => {
+      this.uploadFileButton.isLoading = state.uploadingFolderIds.has(state.currentFolder.id);
+      this.fileList.loadingItems = new Set([...state.uploadingFolderIds, ...state.removingItemIds]);
+    });
+    this.onStateChange('uploadErrorObject', (state) => {
+      const error = state.uploadErrorObject.error;
+      const model = state.uploadErrorObject.model;
+      if (error instanceof AuthenticationError) {
+        this._redirectToLoginPage();
+      } else if (error instanceof PageNotFoundError) {
+        alert(`Failed to upload file in ${model.name} folder.`);
+      } else if (error instanceof GeneralServerError) {
+        alert(`Server error! Failed to upload file in ${model.name} folder.`);
+      }
+    });
     this.onStateChange('removingItemIds', (state) => {
-      this.fileList.showLoadingItems(state.removingItemIds);
+      this.fileList.loadingItems = new Set([...state.uploadingFolderIds, ...state.removingItemIds]);
     });
     this.onStateChange('removeError', (state) => {
       const error = state.removeError;
@@ -151,6 +169,19 @@ export class FileHubPage extends StateAwareComponent {
    * @inheritdoc
    */
   addEventListener() {
+    const uploadWindowService = new UploadWindowService();
+    
+    this.uploadFileButton.onClick(() => {
+      uploadWindowService.openUploadWindow((file) => {
+        this.dispatch(new UploadFileAction(this.stateManager.state.currentFolder, file));
+      });
+    });
+    
+    this.fileList.onUploadFileToFolder((model) => {
+      uploadWindowService.openUploadWindow((file) => {
+        this.dispatch(new UploadFileAction(model, file));
+      });
+    });
     this.fileList.onRemoveListItem((model) => {
       this.dispatch(new RemoveItemAction(model));
     });

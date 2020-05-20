@@ -369,3 +369,27 @@ table tr.isSelected:hover {
     opacity: 0.1;
     pointer-events: none;
 }
+
+/**
+button loading
+ */
+.button .item-loader {
+    display: none;
+}
+.button .item-loader:after {
+    margin: 0;
+    border-color: #fff transparent #fff transparent;
+}
+.button.is-loading .item-loader {
+    display: inline-block;
+    width: 30px;
+    height: 18px;
+}
+
+.button.is-disabled {
+    pointer-events: none;
+ }
+
+.button.is-disabled .glyphicon {
+    display: none;
+}

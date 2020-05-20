@@ -112,6 +112,18 @@ export default module('FileHubPage', function () {
     assert.verifySteps(['User is unauthorized'], 'Should call method for authorization error.');
   });
   
+  test('should call method for authorization failed error on file upload.', function (assert) {
+    const state = {
+      uploadErrorObject: {},
+    };
+    const stateManager = new StateManager(state, {});
+    const fileHub = new FileHubPage(fixture, stateManager);
+    fileHub.onFailedAuthorization(() => assert.step('Authorization failed'));
+    stateManager.state.uploadErrorObject = {model:{}, error: new AuthenticationError()};
+    assert.verifySteps(['Authorization failed'], 'Should call method for authorization failed error.');
+  });
+  
+  
   test('should call method for failed authorization in item removing.', function (assert) {
     const state = {
       removeError: {},

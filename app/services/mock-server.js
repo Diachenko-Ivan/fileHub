@@ -64,6 +64,19 @@ export class MockServer {
       return 401;
     }, {delay: 500});
 
+    fetchMock.post('express:/folder/:folderId/file', (url, request) => {
+      if (this._hasAuthToken(request.headers)) {
+        const id = url.split('/')[2];
+        if (this._fileSystem.getFolder(id)) {
+          const file = request.body.get('file');
+          return this._fileSystem.saveFile(file, id);
+        } else {
+          return 404;
+        }
+      }
+      return 401;
+    }, {delay: 500});
+
     fetchMock.post('/logout', (url, request) => {
       if (this._hasAuthToken(request.headers)) {
         return 200;

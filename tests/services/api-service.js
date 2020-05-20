@@ -154,6 +154,42 @@ export default module('ApiService', function (hook) {
     testCommonErrors(assert, '/folder/id/content', 500, 'getFolderContent', 'id');
   });
   
+  test('should successfully send upload file.', function (assert) {
+    const done = assert.async();
+    assert.expect(4);
+    const fileItem = {name: 'file'};
+    const file = new File([JSON.stringify(fileItem)], 'file');
+    const storageService = {
+      getItem() {
+        return 'token';
+      },
+    };
+    const service = new ApiService(storageService);
+    fetchMock.once('/folder/id/file', (url, opts) => {
+      assert.deepEqual(opts.body.get('file'), file, 'Should send correct file.');
+      assert.equal(opts.method, 'POST', 'Should send request with correct http method.');
+      assert.deepEqual(opts.headers, {'Authorization': 'Bearer token'}, 'Should send correct header.');
+      return fileItem;
+    });
+    service.uploadFile('id', file)
+      .then((returnedFile) => {
+        assert.deepEqual(fileItem, returnedFile, 'Should return file object on status 200.');
+        done();
+      });
+  });
+  
+  test('should return server error on file upload.', function (assert) {
+    testCommonErrors(assert, '/folder/id/file', 500, 'uploadFile', 'id', new Blob());
+  });
+  
+  test('should return authorization error on file upload.', function (assert) {
+    testCommonErrors(assert, '/folder/id/file', 401, 'uploadFile', 'id', new Blob());
+  });
+  
+  test('should return not found error on file upload.', function (assert) {
+    testCommonErrors(assert, '/folder/id/file', 404, 'uploadFile', 'id', new Blob());
+  });
+  
   test('should return success after file deletion.', function (assert) {
     const done = assert.async();
     assert.expect(2);
@@ -292,6 +328,6 @@ function testCommonErrors(assert, url, errorCode, apiServiceMethod, ...params) {
   };
   const service = new ApiService(storageService);
   fetchMock.once(url, errorCode);
-  assert.rejects(service[apiServiceMethod](params), errorsMap[errorCode], `Should return ${errorsMap[errorCode].name}.`);
+  assert.rejects(service[apiServiceMethod](...params), errorsMap[errorCode], `Should return ${errorsMap[errorCode].name}.`);
   done();
 }

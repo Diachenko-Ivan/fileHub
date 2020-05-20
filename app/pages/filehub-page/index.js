@@ -207,7 +207,7 @@ export class FileHubPage extends StateAwareComponent {
       this.dispatch(new LogOutAction()).finally(this._redirectToLoginPage);
     });
     
-    this.fileList.onDownloadFile((model) => this.dispatch(new DownloadFileAction(model)));
+    this.fileList.onDownloadFile((model) => this.dispatch(new DownloadFileAction(model, new DownloadService())));
   }
   
   /**

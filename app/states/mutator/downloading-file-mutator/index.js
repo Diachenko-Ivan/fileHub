@@ -3,9 +3,9 @@ import {Mutator} from '../';
 /**
  * @inheritdoc
  */
-export class DownloadingFileMutator extends Mutator {
+export class DownloadedFileMutator extends Mutator {
   /**
-   * Creates new {@type DownloadingFileMutator} instance.
+   * Creates new {@type DownloadedFileMutator} instance.
    *
    * @param {DownloadFileObject} fileObject - model of downloading file.
    */
@@ -18,6 +18,6 @@ export class DownloadingFileMutator extends Mutator {
    * @inheritdoc
    */
   apply(state) {
-    state.downloadingFileObject = this.fileObject;
+    state.downloadedFileObject = this.fileObject;
   }
 }

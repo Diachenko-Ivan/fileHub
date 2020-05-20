@@ -68,10 +68,17 @@ export class FileListState {
    * @property {File} file - downloading file.
    */
   /**
-   * Current downloading file.
-   * @type DownloadFileObject
+   * Contains set of downloading file ids.
+   *
+   * @type {Set<string>}
    */
-  downloadingFileObject;
+  downloadingFileIds = new Set();
+  /**
+   * Current downloading file.
+   *
+   * @type {DownloadFileObject}
+   */
+  downloadedFileObject;
   /**
    * @typedef DownloadErrorObject
    * @property {FileModel} model - model of downloading file.

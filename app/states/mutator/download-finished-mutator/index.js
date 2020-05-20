@@ -11,13 +11,13 @@ export class DownloadFinishedMutator extends Mutator {
    */
   constructor(fileId) {
     super();
-    this.downloadingFileId = fileId;
+    this.downloadedFileId = fileId;
   }
   
   /**
    * @inheritdoc
    */
   apply(state) {
-    state.downloadingFileIds = new Set(Array.from(state.downloadingFileIds).filter((id) => id !== this.downloadingFileId));
+    state.downloadingFileIds = new Set(Array.from(state.downloadingFileIds).filter((id) => id !== this.downloadedFileId));
   }
 }

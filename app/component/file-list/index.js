@@ -7,14 +7,20 @@ import {FileComponent} from '../file-item/file';
  */
 export class FileItemList extends Component {
   /**
-   * Contains either file or folder.
+   * Contains functions that return file or folder component depending on type.
    *
-   * @type {{file: (function(Item): FileComponent), folder: (function(Item): FolderComponent)}}
+   * @type {{file: (function(FileModel): FileComponent), folder: (function(FolderModel): FolderComponent)}}
    * @private
    */
-  _fileItem = {
-    file: (item) => new FileComponent(this.rootContainer.firstElementChild, item),
-    folder: (item) => new FolderComponent(this.rootContainer.firstElementChild, item),
+  _fileItemFactory = {
+    file: (item) => {
+      return new FileComponent(this.rootContainer.firstElementChild, item);
+    },
+    folder: (item) => {
+      const folder = new FolderComponent(this.rootContainer.firstElementChild, item);
+      folder.onUploadFile(this._uploadFileHandler);
+      return folder;
+    },
   };
   /**
    * Contains files and folders.
@@ -22,18 +28,22 @@ export class FileItemList extends Component {
    * @type {FileItem[]}
    * @private
    */
-  _fileItems = [];
-
+  _fileItemComponents = [];
   /**
-   * @typedef Item
-   * @property {string} name - file or folder name.
-   * @property {string} type - folder or file.
-   * @property {string} mimeType - file mime type.
-   * @property {number} size - file size.
-   * @property {number} filesCount - number of files in folder.
-   * @property {string} id - id of folder or file.
-   * @property {string} parentId - id of parent folder.
+   * Contains list of loading items.
+   *
+   * @type {Set<string>}
+   * @private
    */
+  _loadingItemIds = new Set();
+  /**
+   * Contains list of item models.
+   *
+   * @type {AbstractItemModel[]}
+   * @private
+   */
+  _itemModels = [];
+  
   /**
    * Creates new {@type FileList} component.
    *
@@ -43,57 +53,105 @@ export class FileItemList extends Component {
     super(container);
     this.render();
   }
-
+  
   /**
    * @inheritdoc
    */
   markup() {
     return `<table data-element="file-list" class="content-table">
                 <tbody>
-                   
                 </tbody>
             </table>`;
   }
-
+  
+  /**
+   * @inheritdoc
+   */
+  initNestedComponents() {
+    this._sortedItems(this._itemModels).forEach((item) => {
+      const fileItem = this._fileItemFactory[item.type](item);
+      this._fileItemComponents.push(fileItem);
+      fileItem.onRemoveIconClicked(this._removeListItemHandler);
+      fileItem.onNameChange(this._onFileItemNameChange);
+      fileItem.isLoading = this._loadingItemIds.has(fileItem.model.id);
+    });
+  }
+  
   /**
    * Shows the list of file items.
    *
-   * @param {Item[]} items - received file list.
+   * @param {AbstractItemModel[]} items - received file list.
    */
-  renderFileList(items) {
+  set fileList(items) {
     this.rootContainer.firstElementChild.innerHTML = '';
-    this._sortedItems(items).forEach((item) => {
-      const fileItem = this._fileItem[item.type](item);
-      fileItem.onFirstClick(() => {
-        if (this._currentSelected) {
-          this._currentSelected.isSelected = false;
-          this._currentSelected.isEditing = false;
-        }
-        this._currentSelected = fileItem;
-      });
-      fileItem.onNameChange((model) => {
-        this._onFileItemNameChange(model);
-      });
-    });
+    this._fileItemComponents = [];
+    this._itemModels = items;
+    this.initNestedComponents();
   }
-
+  
   /**
-   * Sorts array of items where folders go first.
+   * Adds handler on remove file item action.
    *
-   * @param {Item[]} items - received file list.
-   * @return {[]} sorted array where folders go first.
+   * @param {Function} handler - executed when delete action is called.
+   */
+  onRemoveListItem(handler) {
+    this._removeListItemHandler = handler;
+  }
+  
+  /**
+   * Moves the list of concrete items in process loading state.
+   *
+   * @param {Set<string>} loadingItemIds - list of item ids that are being changed.
+   */
+  set loadingItems(loadingItemIds) {
+    this._loadingItemIds = loadingItemIds;
+    this._fileItemComponents.forEach((item) => item.isLoading = loadingItemIds.has(item.model.id));
+  }
+  
+  /**
+   * Sorts array of items alphabetically where folders go first.
+   *
+   * @param {AbstractItemModel[]} items - received file list.
+   * @return {AbstractItemModel[]} sorted array where folders go first.
    * @private
    */
   _sortedItems(items) {
-    const sortedArray = [];
+    const files = [];
+    const folders = [];
+    const sortByNameFunction = (firstItem, secondItem) => {
+      if (firstItem.name < secondItem.name) {
+        return -1;
+      }
+      return 1;
+    };
     items.forEach((item) => {
       if (item.type === 'folder') {
-        sortedArray.unshift(item);
+        folders.push(item);
       } else {
-        sortedArray.push(item);
+        files.push(item);
       }
     });
-    return sortedArray;
+    folders.sort(sortByNameFunction);
+    files.sort(sortByNameFunction);
+    return [...folders, ...files];
+  }
+  
+  /**
+   * Returns list of rendered file item components.
+   *
+   * @return {FileItem[]} list of rendered file item components.
+   */
+  getFileItems() {
+    return this._fileItemComponents;
+  }
+  
+  /**
+   * Registers function that executes when user clicked to folder upload icon.
+   *
+   * @param {Function} handler - callback for upload action.
+   */
+  onUploadFileToFolder(handler) {
+    this._uploadFileHandler = handler;
   }
 
   onFileItemNameChange(handler) {

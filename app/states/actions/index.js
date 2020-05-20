@@ -5,8 +5,8 @@ export class Action {
   /**
    * Executes current action.
    *
-   * @param {StateManager} stateManager
-   * @param {ApiService} apiService
+   * @param {StateManager} stateManager - application common state manager.
+   * @param {ApiService} apiService - service for sending requests to server.
    * @async
    */
   async apply(stateManager, apiService) {

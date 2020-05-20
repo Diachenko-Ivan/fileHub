@@ -1,9 +1,9 @@
 /*Common styles*/
 
 body {
-    font: 14px/28px Arial, Helvetica, sans-serif;
-    color: #000000;
-    background: #ffffff;
+    font: 14px/18px Arial, Helvetica, sans-serif;
+    color: #000;
+    background: #fff;
 }
 
 a {
@@ -15,26 +15,33 @@ a:hover {
     text-decoration: underline;
 }
 
-.input{
+.input {
     border: 2px solid #d3d3d3;
+    line-height: 23px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .input:focus {
     box-shadow: 0 0 5px #337ab7;
 }
 
-.header{
-    font-size: 30px;
-    border-bottom: 2px solid #999;
-    margin: 0 0 14px;
-    padding-bottom: 8px;
+.button {
+    font-size: 14px;
+    border: 0 solid;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 4px 14px;
+    background-color: #337ab7;
+    color: #fff;
+    line-height: 23px;
 }
 
-.button {
-    font-size: 18px;
-    border: 0px solid;
-    border-radius: 8px;
-    cursor: pointer;
+.button i {
+    top: 4px;
+    font-size: 20px;
 }
 
 .button:hover {
@@ -44,265 +51,243 @@ a:hover {
 .logo {
     position: absolute;
     width: 160px;
-    height: 70px;
-    top: -65px;
-    left: -2px;
+    height: 65px;
+    top: -70px;
+    left: 0;
 }
 
-.application-box{
+.user-menu {
+    position: absolute;
+    right: 9px;
+    top: -37px;
+}
+
+.user-menu li {
+    display: inline;
+    border-right: 1px solid #000;
+    padding: 0 11px 0 5px;
+}
+
+.user-menu li .glyphicon {
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+.user-menu :last-child {
+    border-style: none;
+}
+
+.application-box {
     box-sizing: border-box;
-    box-shadow: 0 0 20px #999999;
-    background-color: #ffffff;
-    border: 2px solid #999999;
+    box-shadow: 0 0 20px #999;
+    background-color: #fff;
+    border: 2px solid #999;
     border-radius: 8px;
-    margin: 100px auto 0px;
-    padding: 20px;
-    width: 900px;
+    margin: 100px auto 0;
+    width: 903px;
     position: relative;
+    padding: 20px;
+}
+
+.header {
+    font-size: 22px;
+    padding-bottom: 13px;
+    margin-bottom: 12px;
+    border-bottom: 2px solid #999;
+}
+
+.header i {
+    position: absolute;
+    top: 17px;
+    left: 416px;
+    font-size: 24px;
 }
 
 /*Styles for authentication and registration form*/
 
-.user-form{
-    width: 34%;
-    min-width: 600px;
-    padding: 28px;
+.form-box {
+    width: 465px;
 }
 
-.user-form .form-input {
-    border-radius: 7px;
+.form-box .input {
     width: 100%;
-    height: 33px;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 
-.user-form input::placeholder {
-    font-size: 18px;
-    padding: 20px 10px;
+.form-box .row {
+    margin: 0 0 13px;
 }
 
-
-.user-form .form-header .form-target {
+.form-box .row label {
     float: left;
+    width: 30%;
+    margin-top: 4px;
 }
 
-.user-form .form-header .user-icon {
-    float: right;
-}
-
-.user-form .form-header::after {
-    display: block;
-    clear: both;
-    content: "";
-}
-
-.user-form .header .user-icon i {
-    font-size: 30px;
-}
-
-.user-form .credential-container, .form-footer-container {
-    box-sizing: border-box;
-    margin: 0px auto 14px;
-}
-
-.user-form .credential-container label {
-    margin-top: 9px;
-    float: left;
-    font-size: 20px;
-    width: 35%;
-}
-
-.user-form .input-container, .form-footer-button-container {
+.form-box .row .input-container {
     width: 60%;
     float: right;
 }
 
-.user-form .credential-container .error-message {
-    color: red;
-    font-size: 17px;
-    line-height: 30px;
+.form-box .row .error-message {
+    color: #f00;
+    font-size: 12px;
 }
 
-.user-form .credential-container:after, .form-footer-container:after {
+.form-box .row:after {
     display: block;
     clear: both;
     content: "";
 }
 
-.user-form .form-footer-container{
-    margin-bottom: 0px;
+.form-box .row:last-child {
+    margin-bottom: 0;
 }
 
-.user-form .form-link {
+.form-box .form-link {
     float: right;
-    margin-top: 8px;
-    font-size: 16px;
+    margin-top: 5px;
+    font-size: 12px;
 }
 
-.user-form .form-button {
+.form-box .button {
     float: left;
-    padding: 13px 20px;
-    background-color: #337ab7;
-    color: #ffffff;
 }
 
-.user-form .form-button:hover {
-    background-color: #339ab7;
-}
 
 /*Styles for file explorer*/
 
-.file-explorer-container .footer {
-    font-size: 14px;
-    padding-top: 5px;
+.footer {
+    padding-top: 12px;
     border-top: 2px solid #999;
     text-align: center;
 }
 
 .file-explorer-container .main {
-    height: 600px;
+    height: 580px;
     overflow-y: auto;
 }
 
-.user-menu {
-    position: absolute;
-    right: 20px;
-    top: -40px;
-}
-
-.file-explorer-container .user-menu li {
-    display: inline;
-    border-right: 1px solid #000000;
-    padding-right: 5px;
-}
-
-.file-explorer-container .user-menu :last-child{
-    border-style: none;
-}
-
-.file-explorer-container .glyphicon {
-    font-size: 20px;
-    margin-right: 8px;
-    top: 5px;
-}
-
-
 .file-explorer-container .content-header {
-    padding: 10px 15px 20px;
+    padding: 16px 12px 20px;
     position: sticky;
     top: 0;
-    border-bottom: 2px solid #999;
+    border-bottom: 1px solid #999;
     z-index: 1;
     background-color: #fff;
 }
 
-.file-explorer-container .content-header .head-buttons {
-    position: absolute;
-    left: 500px;
-}
-
-.file-explorer-container .content-header .head-button {
-    padding: 4px 10px 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    float: right;
-    margin-left: 30px;
-    color: #ffffff;
-}
-
-.file-explorer-container .content-header .directory-path {
-    width: 56%;
-    font-size: 22px;
+.file-explorer-container .path-title {
+    font-size: 20px;
     font-weight: 600;
-    text-align: left;
-}
-
-.upload{
-    background-color: #337ab7;
-}
-
-.create {
-    background-color: darkcyan;
-}
-
-.file-explorer-container .content-table {
-    width: 100%;
-}
-
-.file-explorer-container .content-table tr {
-    border-bottom: 1px solid #999;
-    width: 100%;
-    font-size: 14px;
-}
-
-.file-explorer-container .content-table tbody tr:hover {
-    background-color: #f4f4f4;
-}
-
-.file-explorer-container tr .file-action-icons {
-    opacity: 0;
-}
-
-.file-explorer-container tbody tr:hover .file-action-icons {
-    opacity: 1;
-}
-
-.file-explorer-container .content-table td, th {
-    vertical-align: middle;
-    padding-top: 11px;
-    padding-bottom: 11px;
-}
-
-.file-explorer-container .content-table .arrow{
-    width: 4%;
-}
-
-.file-explorer-container .arrow .glyphicon-menu-right {
-    font-size: 12px;
-    margin-left: 8px;
-    top: 2px;
-}
-
-.file-explorer-container .content-table tr td .file-name i {
-    color: #000000;
-}
-
-.file-explorer-container .content-table tr td .file-name, .folder-name {
-    display: block;
-    width: 100%;
+    width: 500px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
 }
 
-.file-explorer-container .content-table tr td .file-name-editing .edit-input {
-    border-radius: 5px;
-    width: 62%;
-    line-height: 25px;
-    font-size: 14px;
-    padding-left: 5px;
+.file-explorer-container .path-title i {
+    top: 0;
+    margin-right: 9px;
+    font-size: 20px;
 }
 
-.file-explorer-container .content-table tr .file-count, .file-size {
-    width: 20%;
-    text-align: center;
+.file-explorer-container .content-header .head-buttons {
+    position: absolute;
+    right: 11px;
+    bottom: 12px;
 }
 
-.file-explorer-container .content-table tr .file-action-icons {
-    width: 20%;
+.file-explorer-container .content-header .button {
+    margin-left: 10px;
+    max-width: 150px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.table .glyphicon {
+    font-size: 20px;
+    margin-right: 9px;
+    top: 4px;
+}
+
+.table .glyphicon-menu-right {
+    font-size: 12px;
+    margin-left: 8px;
+    top: 2px;
+}
+
+.table tr {
+    border-bottom: 1px solid #999;
+}
+
+.table tbody tr:hover {
+    background-color: #f4f4f4;
+}
+
+.table tbody tr:hover .cell-action-icons i {
+    opacity: 1;
+}
+
+.table .cell-file-name .input {
+    width: 300px;
+    display: none;
+}
+
+.table .cell-file-name.editing .name {
+    display: none;
+}
+
+.table .cell-file-name.editing .input {
+    display: inline-block;
+}
+
+.table td {
+    padding: 12px 5px 12px;
+    line-height: 28px;
+}
+
+.table .cell-arrow {
+    width: 32px;
+}
+
+.table .cell-count {
+    width: 101px;
+}
+
+.table .cell-action-icons {
     text-align: right;
+    width: 118px;
 }
 
-.file-explorer-container .content-table tr .file-action-icons .glyphicon-upload {
-    color: 	#32CD32;
+.table .cell-action-icons i {
+    opacity: 0;
+    cursor: pointer;
 }
 
-.file-explorer-container .content-table tr .file-action-icons .glyphicon-download {
+.table .cell-file-name {
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.table .cell-action-icons .glyphicon-upload {
+    color: #32cd32;
+}
+
+.table .cell-action-icons .glyphicon-download {
     color: #76baec;
 }
 
-.file-explorer-container .content-table tr .file-action-icons .glyphicon-remove-circle {
-    color: #ff0000;
+.table .cell-action-icons .glyphicon-remove-circle {
+    color: #f00;
 }
 
 table tr.isSelected {

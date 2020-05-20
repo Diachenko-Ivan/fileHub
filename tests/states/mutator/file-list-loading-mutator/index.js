@@ -2,9 +2,9 @@ import {FileListLoadingMutator} from '../../../../app/states/mutator/file-list-l
 
 const {test, module} = QUnit;
 
-export default module('FileListLoadingMutator test', function (hook) {
+export default module('FileListLoadingMutator test', function () {
   let state;
-
+  
   test('should set loading.', function (assert) {
     state = {};
     const mutator = new FileListLoadingMutator(true);
@@ -12,7 +12,9 @@ export default module('FileListLoadingMutator test', function (hook) {
     assert.ok(state.isLoading, 'Should be loading.');
   });
   test('should cancel loading.', function (assert) {
-    state = {};
+    state = {
+      isLoading: true,
+    };
     const mutator = new FileListLoadingMutator(false);
     mutator.apply(state);
     assert.notOk(state.isLoading, 'Should not be loading.');

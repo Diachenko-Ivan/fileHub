@@ -1,55 +1,80 @@
-import {FileItemIcon} from '../file-item-icon';
+import {Icon} from '../file-item-icon';
 import {FileItem} from '../index.js';
+import {FolderModel} from '../../../models/item/folder';
 
 /**
  * Represents folder.
  */
 export class FolderComponent extends FileItem {
   /**
-   * @typedef FolderDescription
-   * @property {string} name - name of folder.
-   * @property {number} filesCount - number of files in folder.
-   * @property {string} id - folder id.
-   * @property {string} parentId - id of parent folder.
-   */
-  /**
    * Creates new {@type FolderComponent} component.
    *
    * @param {Element} container - outer container.
-   * @param {FolderDescription} folderDescription - container for folder properties.
+   * @param {FolderModel} folderDescription - container for folder properties.
    */
   constructor(container, folderDescription) {
-    super(container);
-    Object.assign(this, folderDescription);
-    this.render();
+    super(container, folderDescription);
   }
-
+  
   /**
    * @inheritdoc
    */
   markup() {
     return `<tr>
                 <td class="arrow"><i class="glyphicon glyphicon-menu-right"></i></td>
-                <td data-element="item-name">
+                <td class="cell-file-name" data-element="item-name">
+                    <i class="glyphicon glyphicon-folder-close"></i>
                     <span class="folder-name">
-                        <i class="glyphicon glyphicon-folder-close"></i>
-                        <a data-test="folder-name" data-element="folder-link" href="#/folder/${this.id}">${this.name}</a>
+                        <a data-test="folder-name" data-element="folder-link" href="#/folder/${this.model.id}">${this.model.name}</a>
                     </span>
+                    <input class="edit-input"/>
+                    <div data-element="loader" class="item-loader"></div>
                 </td>
-                <td data-test="file-count" class="file-count">${this.filesCount}</td>
+                <td data-test="file-count" class="file-count">${this._numberOfItems()}</td>
                 <td data-element="file-action-icons" class="file-action-icons">
                     </td>
                 </tr>`;
   }
-
+  
   /**
    * @inheritdoc
    */
   initNestedComponents() {
     const fileActionIcons = this.rootContainer.querySelector('[data-element="file-action-icons"]');
-
-    this.uploadIcon = new FileItemIcon(fileActionIcons, {styleClass: 'upload'});
-    this.removeIcon = new FileItemIcon(fileActionIcons, {styleClass: 'remove-circle'});
+    
+    this.uploadIcon = new Icon(fileActionIcons, {styleClass: 'upload'});
+    this.removeIcon = new Icon(fileActionIcons, {styleClass: 'remove-circle'});
+  }
+  
+  /**
+   * @inheritdoc
+   */
+  addEventListener() {
+    this.removeIcon.onClick(() => {
+      this.removeHandler(this.model);
+    });
+    this.uploadIcon.onClick(() => {
+      this._onUploadFile(this.model);
+    });
+  }
+  
+  /**
+   * Registers function that executes when user clicked to folder upload icon.
+   *
+   * @param {Function} handler - executes when user clicked to folder upload icon.
+   */
+  onUploadFile(handler) {
+    this._onUploadFile = (id) => handler(id);
+  }
+  
+  /**
+   * Returns readable string with number of file items.
+   *
+   * @return {string} string with number of file items.
+   * @private
+   */
+  _numberOfItems() {
+    return `${this.model.filesCount} ${this.model.filesCount === 1 ? 'item' : 'items'}`;
   }
 
   /**

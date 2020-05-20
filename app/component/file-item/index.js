@@ -1,9 +1,39 @@
 import {Component} from '../parent-component.js';
 
 /**
+ * Style class for disabling file icons.
+ * @type {string}
+ */
+const DISABLED_ICONS_CLASS = 'is-disabled';
+/**
+ * Style class for showing loader.
+ * @type {string}
+ */
+const LOADING_ITEM_CLASS = 'is-loading';
+
+/**
  * Represents either file or folder.
  */
 export class FileItem extends Component {
+  /**
+   * Model that stores item properties.
+   *
+   * @type {AbstractItemModel}
+   */
+  model;
+  /**
+   * Creates file item component.
+   *
+   * @param {Element} container - outer container.
+   * @param {AbstractItemModel} params
+   */
+  constructor(container, params) {
+    super(container);
+    this.model = params;
+    this.render();
+    this._itemName = this.rootContainer.querySelector('[data-element="item-name"]');
+  }
+  
   /**
    * @inheritdoc
    */
@@ -17,83 +47,38 @@ export class FileItem extends Component {
   }
   
   /**
-   * Registers function that is called on the first click on file item.
+   * Adds handler on remove action.
    *
-   * @param {Function} handler - called when click event is raised.
+   * @param {Function} handler - callback which is called when user clicked on remove icon.
    */
-  onFirstClick(handler) {
-    this._onFirstClick = () => handler();
+  onRemoveIconClicked(handler) {
+    this.removeHandler = (model) => handler(model);
   }
   
   /**
-   * Register function that is called when name is changed.
+   * Adds or removes loading wheel from file item.
    *
-   * @param {Function} handler - called when name is changed.
+   * @param {boolean} value - flag that defines loading state.
    */
-  onNameChange(handler) {
-    this._onNameChange = (model) => handler(model);
-  }
-  
-  /**
-   * Executed when user clicked the second time on file item.
-   */
-  onSecondClick() {
-  
-  }
-  
-  /**
-   * Defines either row is selected or not.
-   *
-   * @param {boolean} value - selected or not.
-   */
-  set isSelected(value) {
-    this._isSelected = value;
-    this.rootContainer.classList.toggle('isSelected', value);
-  }
-  
-  /**
-   * Either selected or not.
-   *
-   * @return {boolean} - selected or not.
-   */
-  get isSelected() {
-    return this._isSelected;
-  }
-  
-  /**
-   * Defines either row in editing mode or not.
-   *
-   * @param {boolean} value - selected or not.
-   */
-  set isEditing(value) {
-    this._isEditing = value;
-  }
-  
-  /**
-   * @return {boolean} - editing mode or not.
-   */
-  get isEditing() {
-    return this._isEditing;
-  }
-  
-  /**
-   * Used for handling clicks on the file or folder row.
-   */
-  handleClick() {
-    let timeout;
-    if (this.isSelected) {
-      timeout = setTimeout(() => {
-        this.isSelected = false;
-        this.isEditing = true;
-        this.onSecondClick();
-      }, 500);
-    } else if (this._isEditing) {
-      this.isSelected = true;
-      this.isEditing = false;
-     } else {
-      this.isSelected = true;
-      this._onFirstClick();
+  set isLoading(value) {
+    const loader = this._itemName.querySelector('[data-element="loader"]');
+    const actionIcons = this.rootContainer.querySelector('[data-element="file-action-icons"]');
+    if (value) {
+      loader.classList.add(LOADING_ITEM_CLASS);
+      actionIcons.classList.add(DISABLED_ICONS_CLASS);
+    } else {
+      loader.classList.remove(LOADING_ITEM_CLASS);
+      actionIcons.classList.remove(DISABLED_ICONS_CLASS);
     }
-    return timeout;
+    this._isLoading = value;
+  }
+  
+  /**
+   * Defines either items is loading or not.
+   *
+   * @return {boolean} loading flag.
+   */
+  get isLoading() {
+    return this._isLoading;
   }
 }

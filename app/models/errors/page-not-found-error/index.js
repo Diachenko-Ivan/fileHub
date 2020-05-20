@@ -4,7 +4,7 @@
 export class PageNotFoundError extends Error {
   /**
    * Creates instance of {@type PageNotFoundError}.
-   * @param message
+   * @param {string} message - error message.
    */
   constructor(message) {
     super();

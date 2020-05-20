@@ -165,10 +165,6 @@ export class FileHubPage extends StateAwareComponent {
         alert(error.message);
       }
     });
-    this.onStateChange('downloadedFileObject', (state) => {
-      const downloadService = new DownloadService();
-      downloadService.downloadFile(state.downloadedFileObject);
-    });
     this.onStateChange('downloadingFileIds', (state) => {
       this.fileList.loadingItems = new Set([...state.uploadingFolderIds, ...state.removingItemIds, ...state.downloadingFileIds]);
     });
@@ -177,7 +173,8 @@ export class FileHubPage extends StateAwareComponent {
       if (error instanceof AuthenticationError) {
         this._redirectToLoginPage();
       } else if (error instanceof PageNotFoundError) {
-        alert(`Failed to download ${model.name} file. It can be deleted.`);
+        alert(`Failed to download ${model.name} file. It does not exist.`);
+        this.dispatch(new GetFolderContentAction(state.locationParam.id));
       } else if (error instanceof GeneralServerError) {
         alert(`Server error! Failed to download ${model.name} file.`);
       }
@@ -210,9 +207,13 @@ export class FileHubPage extends StateAwareComponent {
       this.dispatch(new LogOutAction()).finally(this._redirectToLoginPage);
     });
     
-    this.fileList.onDownloadFile((model) => {
-      this.dispatch(new DownloadFileAction(model));
-    });
+    this.fileList.onDownloadFile((model) =>
+      this.dispatch(new DownloadFileAction(model))
+        .then(([model, file]) =>
+          new DownloadService().downloadFile({model, file}))
+        .catch(() => {
+        }),
+    );
   }
   
   /**

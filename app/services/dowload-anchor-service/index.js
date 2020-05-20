@@ -5,7 +5,7 @@ export class DownloadService {
   /**
    * Creates download anchor for starting file download.
    *
-   * @param {DownloadFileObject} fileObject - downloaded file.
+   * @param {{model: FileModel, file: Blob}} fileObject - downloaded file.
    */
   downloadFile(fileObject) {
     const anchor = document.createElement('a');

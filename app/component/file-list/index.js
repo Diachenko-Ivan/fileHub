@@ -28,7 +28,7 @@ export class FileItemList extends Component {
    * @type {FileItem[]}
    * @private
    */
-  _fileItems = [];
+  _fileItemComponents = [];
   /**
    * Contains list of loading items.
    *
@@ -70,7 +70,7 @@ export class FileItemList extends Component {
   initNestedComponents() {
     this._sortedItems(this._itemModels).forEach((item) => {
       const fileItem = this._fileItemFactory[item.type](item);
-      this._fileItems.push(fileItem);
+      this._fileItemComponents.push(fileItem);
       fileItem.onRemoveIconClicked(this._removeListItemHandler);
       fileItem.isLoading = this._loadingItemIds.has(fileItem.model.id);
     });
@@ -83,7 +83,7 @@ export class FileItemList extends Component {
    */
   set fileList(items) {
     this.rootContainer.firstElementChild.innerHTML = '';
-    this._fileItems = [];
+    this._fileItemComponents = [];
     this._itemModels = items;
     this.initNestedComponents();
   }
@@ -104,7 +104,7 @@ export class FileItemList extends Component {
    */
   set loadingItems(loadingItemIds) {
     this._loadingItemIds = loadingItemIds;
-    this._fileItems.forEach((item) => item.isLoading = loadingItemIds.has(item.model.id));
+    this._fileItemComponents.forEach((item) => item.isLoading = loadingItemIds.has(item.model.id));
   }
   
   /**
@@ -141,7 +141,7 @@ export class FileItemList extends Component {
    * @return {FileItem[]} list of rendered file item components.
    */
   getFileItems() {
-    return this._fileItems;
+    return this._fileItemComponents;
   }
   
   /**

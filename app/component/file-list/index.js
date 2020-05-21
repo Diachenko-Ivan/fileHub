@@ -73,6 +73,7 @@ export class FileItemList extends Component {
       this._fileItemComponents.push(fileItem);
       fileItem.onRemoveIconClicked(this._removeListItemHandler);
       fileItem.onNameChange(this._onFileItemNameChange);
+      fileItem.onClick(this._onItemClick);
       fileItem.isLoading = this._loadingItemIds.has(fileItem.model.id);
     });
   }
@@ -153,8 +154,34 @@ export class FileItemList extends Component {
   onUploadFileToFolder(handler) {
     this._uploadFileHandler = handler;
   }
-
+  
   onFileItemNameChange(handler) {
     this._onFileItemNameChange = (model) => handler(model);
+  }
+  
+  onItemClick(handler) {
+    this._onItemClick = handler;
+  }
+  
+  set selectedItem(value) {
+    this._processItem('_selectedItemComponent', 'isSelected', value);
+  }
+  
+  set editingItem(value) {
+    this._processItem('_editingItemComponent', 'isEditing', value);
+  }
+  
+  set renamingItem(value) {
+    this._processItem('_renamingItemComponent', 'isRenaming', value);
+  }
+  
+  _processItem(processingItem, propertySetter, value) {
+    if (this[processingItem]) {
+      this[processingItem][propertySetter] = false;
+    }
+    this[processingItem] = this._fileItemComponents.find((v) => v.model.id === value);
+    if (this[processingItem]) {
+      this[processingItem][propertySetter] = true;
+    }
   }
 }

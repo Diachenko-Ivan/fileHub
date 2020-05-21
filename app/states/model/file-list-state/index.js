@@ -72,4 +72,8 @@ export class FileListState {
    * @type {Error}
    */
   removeError;
+  
+  selectedItemId;
+  editingItemId;
+  renamingItemId;
 }

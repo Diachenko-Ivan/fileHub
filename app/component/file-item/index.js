@@ -21,6 +21,7 @@ export class FileItem extends Component {
    * @type {AbstractItemModel}
    */
   model;
+  
   /**
    * Creates file item component.
    *
@@ -44,6 +45,29 @@ export class FileItem extends Component {
     this.container.append(this.rootContainer);
     this.initNestedComponents();
     this.addEventListener();
+  }
+  
+  /**
+   * @inheritdoc
+   */
+  addEventListener() {
+    const input = this.rootContainer.querySelector('input');
+    this.rootContainer.addEventListener('click', (event) => {
+      if (event.detail === 1) {
+        this._onClick(this.model.id);
+      }
+    });
+    
+    input.addEventListener('blur', () => {
+      this._onClick();
+    });
+    
+    input.addEventListener('change', () => {
+      this.model.name = input.value;
+      this._onNameChange(this.model);
+    });
+    
+    input.addEventListener('click', (event) => event.stopPropagation());
   }
   
   /**
@@ -80,5 +104,37 @@ export class FileItem extends Component {
    */
   get isLoading() {
     return this._isLoading;
+  }
+  
+  onNameChange(handler) {
+    this._onNameChange = handler;
+  }
+  
+  set isEditing(value) {
+    const input = this.rootContainer.querySelector('input');
+    this._isEditing = value;
+    this._itemName.classList.toggle('editing', value);
+    input.value = this.model.name;
+    input.focus();
+  }
+  
+  /**
+   * Defines either row is selected or not.
+   *
+   * @param {boolean} value - selected or not.
+   */
+  set isSelected(value) {
+    this._isSelected = value;
+    this.rootContainer.classList.toggle('isSelected', value);
+  }
+  
+  set isRenaming(value) {
+    this._isRenaming = value;
+    this.rootContainer.querySelector('[data-test="name"]').innerHTML = '';
+    this.isLoading = value;
+  }
+  
+  onClick(handler) {
+    this._onClick = handler;
   }
 }

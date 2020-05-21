@@ -7,7 +7,7 @@ export class RenamingItemMutator extends Mutator {
   /**
    * Creates new {@type FolderMutator} instance.
    *
-   * @param {string} itemId - fid of renaming item.
+   * @param {string} itemId - id of renaming item.
    */
   constructor(itemId) {
     super();

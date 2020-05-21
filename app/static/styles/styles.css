@@ -327,10 +327,10 @@ a:hover {
 table tr.isSelected {
     background-color: #c0dbe8;
 }
-table tr.isSelected:hover {
-    background-color: #c0dbe8;
-}
 
+.table tr:hover:not(isSelected) {
+    background-color: #f4f4f4;
+}
 /** loading styles
  */
 .content-table .cell-file-name .item-loader{

@@ -26,6 +26,7 @@ const UPLOAD_ICON_CLASS = 'upload';
  */
 const PLUS_ICON_CLASS = 'plus';
 import {RenameItemAction} from '../../states/actions/item-name-change-action';
+import {ItemViewAction} from '../../states/actions/item-view-action';
 
 /**
  * Page for file hub explorer.
@@ -164,6 +165,15 @@ export class FileHubPage extends StateAwareComponent {
         alert(error.message);
       }
     });
+    this.onStateChange('selectedItemId', (state) => {
+      this.fileList.selectedItem = state.selectedItemId;
+    });
+    this.onStateChange('editingItemId', (state) => {
+      this.fileList.editingItem = state.editingItemId;
+    });
+    this.onStateChange('renamingItemId', (state) => {
+      this.fileList.renamingItem = state.renamingItemId;
+    });
   }
   
   /**
@@ -191,9 +201,13 @@ export class FileHubPage extends StateAwareComponent {
       event.preventDefault();
       this.dispatch(new LogOutAction()).finally(this._redirectToLoginPage);
     });
-  
+    
     this.fileList.onFileItemNameChange((model) => {
       this.dispatch(new RenameItemAction(model));
+    });
+    
+    this.fileList.onItemClick((id) => {
+      this.dispatch(new ItemViewAction(id));
     });
   }
   

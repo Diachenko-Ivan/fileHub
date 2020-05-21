@@ -39,7 +39,7 @@ export class FileComponent extends FileItem {
                     <td class="arrow"></td>
                     <td class="cell-file-name" data-element="item-name">
                         <i class="glyphicon glyphicon-${this._defineIcon(this.model.mimeType)}"></i>
-                        <span data-test="file-name" class="file-name">${this.model.name}</span>
+                        <span data-test="name" class="file-name">${this.model.name}</span>
                         <input class="edit-input"/>
                         <div data-element="loader" class="item-loader"></div>
                     </td>
@@ -63,6 +63,7 @@ export class FileComponent extends FileItem {
    * @inheritdoc
    */
   addEventListener() {
+    super.addEventListener();
     this.removeIcon.onClick(() => {
       this.removeHandler(this.model);
     });
@@ -96,54 +97,5 @@ export class FileComponent extends FileItem {
     const iconTypeByMimeType = Object.keys(FILE_ICON_TYPES).find((iconType) => mimeType.startsWith(iconType));
     const iconTypeKey = iconTypeByMimeType || 'other';
     return FILE_ICON_TYPES[iconTypeKey];
-  }
-
-  /**
-   * @inheritdoc
-   */
-  addEventListener() {
-    this._fileName = this.rootContainer.querySelector('[data-element="item-name"]');
-    this._fileName.addEventListener('click', () => {
-      this.handleClick();
-    });
-  }
-
-  /**
-   * @inheritdoc
-   */
-  onSecondClick() {
-    const input = this._fileName.querySelector('input');
-    input.value = this.name.split('.')[0];
-    input.addEventListener('change', () => {
-      this.name=`${input.value}.${this.name.split('.')[1]}`;
-      const {name, id, parentId, type, mimeType, size} = this;
-      this._onNameChange({name, id, parentId, type, mimeType, size});
-    });
-    input.addEventListener('click', (event)=>{
-      event.stopPropagation();
-    })
-  }
-
-  /**
-   * @inheritdoc
-   */
-  set isEditing(value){
-    super.isEditing = value;
-    this._fileName.innerHTML = '';
-    if (value) {
-      this._fileName.innerHTML = `
-            <span class="folder-name">
-                <i class="glyphicon glyphicon-${this._iconType}"></i>
-                <span class="file-name-editing">
-                    <input class="input edit-input">
-                </span>
-            </span>`;
-    } else {
-      this._fileName.innerHTML = `
-            <span class="folder-name">
-                <i class="glyphicon glyphicon-${this._iconType}"></i>
-                ${this.name}
-            </span>`;
-    }
   }
 }

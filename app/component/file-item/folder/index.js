@@ -24,7 +24,7 @@ export class FolderComponent extends FileItem {
                 <td class="arrow"><i class="glyphicon glyphicon-menu-right"></i></td>
                 <td class="cell-file-name" data-element="item-name">
                     <i class="glyphicon glyphicon-folder-close"></i>
-                    <span class="folder-name">
+                    <span class="folder-name" data-test="name">
                         <a data-test="folder-name" data-element="folder-link" href="#/folder/${this.model.id}">${this.model.name}</a>
                     </span>
                     <input class="edit-input"/>
@@ -50,11 +50,17 @@ export class FolderComponent extends FileItem {
    * @inheritdoc
    */
   addEventListener() {
+    super.addEventListener();
+    
     this.removeIcon.onClick(() => {
       this.removeHandler(this.model);
     });
     this.uploadIcon.onClick(() => {
       this._onUploadFile(this.model);
+    });
+  
+    this.rootContainer.addEventListener('dblclick', () => {
+
     });
   }
   
@@ -75,60 +81,5 @@ export class FolderComponent extends FileItem {
    */
   _numberOfItems() {
     return `${this.model.filesCount} ${this.model.filesCount === 1 ? 'item' : 'items'}`;
-  }
-
-  /**
-   * @inheritdoc
-   */
-  addEventListener() {
-    let timeout;
-    this._fileName = this.rootContainer.querySelector('[data-element="item-name"]');
-    this._fileName.addEventListener('click', () => {
-      timeout = this.handleClick();
-    });
-    this._fileName.addEventListener('dblclick', () => {
-      clearTimeout(timeout);
-      clearTimeout(timeout - 1);
-      window.location.hash = `/folder/${this.id}`;
-    });
-  }
-
-  /**
-   * @inheritdoc
-   */
-  onSecondClick() {
-    const input = this._fileName.querySelector('input');
-    input.value = this.name;
-    input.addEventListener('change', () => {
-      this.name = input.value;
-      const {name, id, parentId, type, filesCount} = this;
-      this._onNameChange({name, id, parentId, type, filesCount});
-    });
-    input.addEventListener('click', (event)=>{
-      event.stopPropagation();
-    })
-  }
-
-  /**
-   * @inheritdoc
-   */
-  set isEditing(value){
-    super.isEditing = value;
-    this._fileName.innerHTML = '';
-    if (value) {
-      this._fileName.innerHTML = `
-            <span class="folder-name">
-                <i class="glyphicon glyphicon-folder-close"></i>
-                <span class="file-name-editing">
-                    <input class="input edit-input" value="${this.name}">
-                </span>
-            </span>`;
-    } else {
-      this._fileName.innerHTML = `
-            <span class="folder-name">
-                <i class="glyphicon glyphicon-folder-close"></i>
-                <a data-test="folder-name" data-element="folder-link" href="#/folder/${this.id}">${this.name}</a>
-            </span>`;
-    }
   }
 }

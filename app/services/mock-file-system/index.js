@@ -102,7 +102,7 @@ export class MockFileSystem {
    * Renames folder with specific id.
    *
    * @param {string} id - folder id.
-   * @param {FolderItem} renamedFolder - renamed folder sent by user.
+   * @param {FolderModel} renamedFolder - renamed folder sent by user.
    */
   renameFolder(id, renamedFolder) {
     this._folders.forEach((folder) => {
@@ -113,9 +113,10 @@ export class MockFileSystem {
   }
 
   /**
+   * Renames file with specific id.
    *
    * @param {string} id - file id.
-   * @param {FileItem} renamedFile - renamed file sent by user.
+   * @param {FileModel} renamedFile - renamed file sent by user.
    */
   renameFile(id, renamedFile){
     this._files.forEach((file) => {

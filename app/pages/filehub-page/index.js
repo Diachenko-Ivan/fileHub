@@ -14,6 +14,7 @@ import {AuthenticationError} from '../../models/errors/authentication-error';
 import {PageNotFoundError} from '../../models/errors/page-not-found-error';
 import {GeneralServerError} from '../../models/errors/server-error';
 import {GetFolderAction} from '../../states/actions/get-folder-action';
+import {RenameItemAction} from '../../states/actions/item-name-change-action';
 
 /**
  * Class name for upload icon.
@@ -25,8 +26,6 @@ const UPLOAD_ICON_CLASS = 'upload';
  * @type {string}
  */
 const PLUS_ICON_CLASS = 'plus';
-import {RenameItemAction} from '../../states/actions/item-name-change-action';
-import {ItemViewAction} from '../../states/actions/item-view-action';
 
 /**
  * Page for file hub explorer.
@@ -144,8 +143,7 @@ export class FileHubPage extends StateAwareComponent {
       this.fileList.loadingItems = new Set([...state.uploadingFolderIds, ...state.removingItemIds]);
     });
     this.onStateChange('uploadErrorObject', (state) => {
-      const error = state.uploadErrorObject.error;
-      const model = state.uploadErrorObject.model;
+      const {model, error} = state.uploadErrorObject;
       if (error instanceof AuthenticationError) {
         this._redirectToLoginPage();
       } else if (error instanceof PageNotFoundError) {
@@ -165,14 +163,18 @@ export class FileHubPage extends StateAwareComponent {
         alert(error.message);
       }
     });
-    this.onStateChange('selectedItemId', (state) => {
-      this.fileList.selectedItem = state.selectedItemId;
+    this.onStateChange('renamingItemIds', (state) => {
+      this.fileList.renamingItems = state.renamingItemIds;
     });
-    this.onStateChange('editingItemId', (state) => {
-      this.fileList.editingItem = state.editingItemId;
-    });
-    this.onStateChange('renamingItemId', (state) => {
-      this.fileList.renamingItem = state.renamingItemId;
+    this.onStateChange('renameErrorObject', (state) => {
+      const {model, error} = state.renameErrorObject;
+      if (error instanceof AuthenticationError) {
+        this._redirectToLoginPage();
+      } else if (error instanceof PageNotFoundError) {
+        alert(`Failed to rename ${model.name} item. It does not exist.`);
+      } else if (error instanceof GeneralServerError) {
+        alert(`Server error! Failed to rename ${model.name} item.`);
+      }
     });
   }
   
@@ -202,9 +204,7 @@ export class FileHubPage extends StateAwareComponent {
       this.dispatch(new LogOutAction()).finally(this._redirectToLoginPage);
     });
     
-    this.fileList.onFileItemNameChange((model) => {
-      this.dispatch(new RenameItemAction(model));
-    });
+    this.fileList.onFileItemNameChange((model) => this.dispatch(new RenameItemAction(model)));
     
     this.fileList.onFolderDoubleClick((id) => this._onFolderDoubleClick(id));
   }

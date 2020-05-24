@@ -29,6 +29,7 @@ export class FolderComponent extends FileItem {
                     </span>
                     <input class="edit-input"/>
                     <div data-element="loader" class="item-loader"></div>
+                    <div class="rename-loader"><div></div><div></div><div></div></div>
                 </td>
                 <td data-test="file-count" class="file-count">${this._numberOfItems()}</td>
                 <td data-element="file-action-icons" class="file-action-icons">

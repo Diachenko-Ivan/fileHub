@@ -119,7 +119,7 @@ export default module('FileHubPage', function () {
     const stateManager = new StateManager(state, {});
     const fileHub = new FileHubPage(fixture, stateManager);
     fileHub.onFailedAuthorization(() => assert.step('Authorization failed'));
-    stateManager.state.uploadErrorObject = {model:{}, error: new AuthenticationError()};
+    stateManager.state.uploadErrorObject = {model: {}, error: new AuthenticationError()};
     assert.verifySteps(['Authorization failed'], 'Should call method for authorization failed error.');
   });
   
@@ -132,6 +132,17 @@ export default module('FileHubPage', function () {
     const fileHub = new FileHubPage(fixture, stateManager);
     fileHub.onFailedAuthorization(() => assert.step('Authorization failed'));
     stateManager.state.removeError = new AuthenticationError();
+    assert.verifySteps(['Authorization failed'], 'Should redirect to login page.');
+  });
+  
+  test('should call method for failed authorization in item renaming.', function (assert) {
+    const state = {
+      renameErrorObject: {},
+    };
+    const stateManager = new StateManager(state, {});
+    const fileHub = new FileHubPage(fixture, stateManager);
+    fileHub.onFailedAuthorization(() => assert.step('Authorization failed'));
+    stateManager.state.renameErrorObject = {error: new AuthenticationError(), model: {}};
     assert.verifySteps(['Authorization failed'], 'Should redirect to login page.');
   });
 });

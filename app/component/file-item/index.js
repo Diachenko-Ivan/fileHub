@@ -58,11 +58,7 @@ export class FileItem extends Component {
       }
       this._onClick();
     });
-    
-    document.addEventListener('click', (event) => {
-      console.log(event.target);
-    });
-    
+ 
     input.addEventListener('blur', () => {
       this.isEditing = false;
       this.isSelected = false;

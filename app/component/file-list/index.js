@@ -38,6 +38,13 @@ export class FileItemList extends Component {
    */
   _loadingItemIds = new Set();
   /**
+   * Contains list of renaming item ids.
+   *
+   * @type {Set<string>}
+   * @private
+   */
+  _renamingItemIds = new Set();
+  /**
    * Contains list of item models.
    *
    * @type {AbstractItemModel[]}
@@ -74,8 +81,9 @@ export class FileItemList extends Component {
       this._fileItemComponents.push(fileItem);
       fileItem.onRemoveIconClicked(this._removeListItemHandler);
       fileItem.onNameChange(this._onFileItemNameChange);
-      fileItem.onClick(this._onItemClick);
+      fileItem.onClick(this._getClickHandler(fileItem));
       fileItem.isLoading = this._loadingItemIds.has(fileItem.model.id);
+      fileItem.isRenaming = this._renamingItemIds.has(fileItem.model.id);
     });
   }
   
@@ -156,24 +164,44 @@ export class FileItemList extends Component {
     this._uploadFileHandler = handler;
   }
   
+  /**
+   * Registers handler for item name change.
+   *
+   * @param {Function} handler - callback that is called when item name is changed.
+   */
   onFileItemNameChange(handler) {
     this._onFileItemNameChange = (model) => handler(model);
   }
   
-  onItemClick(handler) {
-    this._onItemClick = handler;
+  /**
+   * Returns function that called when item is called.
+   *
+   * @param fileItem - clicked file item.
+   * @return {function} click handler.
+   * @private
+   */
+  _getClickHandler(fileItem) {
+    return () => {
+      if (fileItem.isSelected && !fileItem.isEditing) {
+        fileItem.isEditing = true;
+        return;
+      }
+      if (this._selectedItem) {
+        this._selectedItem.isSelected = false;
+      }
+      fileItem.isSelected = true;
+      this._selectedItem = fileItem;
+    };
   }
   
-  set selectedItem(value) {
-    this._processItem('_selectedItemComponent', 'isSelected', value);
-  }
-  
-  set editingItem(value) {
-    this._processItem('_editingItemComponent', 'isEditing', value);
-  }
-  
-  set renamingItem(value) {
-    this._processItem('_renamingItemComponent', 'isRenaming', value);
+  /**
+   * Shows items in renaming state.
+   *
+   * @param {Set<string>} renamingItemIds - ids of renaming items.
+   */
+  set renamingItems(renamingItemIds) {
+    this._renamingItemIds = renamingItemIds;
+    this._fileItemComponents.forEach((item) => item.isRenaming = renamingItemIds.has(item.model.id));
   }
   
   /**

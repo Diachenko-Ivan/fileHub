@@ -42,6 +42,7 @@ export class FolderComponent extends FileItem {
    */
   initNestedComponents() {
     const fileActionIcons = this.rootContainer.querySelector('[data-element="file-action-icons"]');
+    this.folderLink = this.rootContainer.querySelector('[data-element="folder-link"]');
     
     this.uploadIcon = new Icon(fileActionIcons, {styleClass: 'upload'});
     this.removeIcon = new Icon(fileActionIcons, {styleClass: 'remove-circle'});
@@ -59,10 +60,21 @@ export class FolderComponent extends FileItem {
     this.uploadIcon.onClick(() => {
       this._onUploadFile(this.model);
     });
-  
+    
     this.rootContainer.addEventListener('dblclick', () => {
-
+      this._onDoubleClick(this.model.id);
     });
+    
+    this.folderLink.addEventListener('click', (event) => event.stopPropagation());
+  }
+  
+  /**
+   * Registers handler for folder double click event.
+   *
+   * @param {Function} handler - handler for folder double click.
+   */
+  onDoubleClick(handler) {
+    this._onDoubleClick = handler;
   }
   
   /**

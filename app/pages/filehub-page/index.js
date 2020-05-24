@@ -206,9 +206,16 @@ export class FileHubPage extends StateAwareComponent {
       this.dispatch(new RenameItemAction(model));
     });
     
-    this.fileList.onItemClick((id) => {
-      this.dispatch(new ItemViewAction(id));
-    });
+    this.fileList.onFolderDoubleClick((id) => this._onFolderDoubleClick(id));
+  }
+  
+  /**
+   * Registers callback for folder double click.]
+   *
+   * @param {Function} handler - callback.
+   */
+  onFolderDoubleClick(handler) {
+    this._onFolderDoubleClick = handler;
   }
   
   /**

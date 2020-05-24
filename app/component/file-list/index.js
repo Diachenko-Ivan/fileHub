@@ -19,6 +19,7 @@ export class FileItemList extends Component {
     folder: (item) => {
       const folder = new FolderComponent(this.rootContainer.firstElementChild, item);
       folder.onUploadFile(this._uploadFileHandler);
+      folder.onDoubleClick(this._onFolderDoubleClick);
       return folder;
     },
   };
@@ -175,13 +176,12 @@ export class FileItemList extends Component {
     this._processItem('_renamingItemComponent', 'isRenaming', value);
   }
   
-  _processItem(processingItem, propertySetter, value) {
-    if (this[processingItem]) {
-      this[processingItem][propertySetter] = false;
-    }
-    this[processingItem] = this._fileItemComponents.find((v) => v.model.id === value);
-    if (this[processingItem]) {
-      this[processingItem][propertySetter] = true;
-    }
+  /**
+   * Registers function that is called on folder double click.
+   *
+   * @param {Function} handler - callback for double click.
+   */
+  onFolderDoubleClick(handler) {
+    this._onFolderDoubleClick = handler;
   }
 }

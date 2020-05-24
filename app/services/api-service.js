@@ -161,6 +161,25 @@ export class ApiService {
     }).finally(() => this.storageService.removeItem('token'));
   }
   
+  
+  /**
+   * Sends request for getting downloading file.
+   *
+   * @param {string} id - file id.
+   * @return {Promise<File>} downloading file.
+   */
+  downloadFile(id) {
+    return fetch(`/file/${id}`, {
+      method: 'GET',
+      headers: this._getAuthenticationHeader(),
+    }).then((response) => {
+      if (response.ok) {
+        return response.blob();
+      }
+      return this._handleCommonErrors(response);
+    });
+  }
+  
   /**
    * Sends request for upload of new file to the folder.
    *

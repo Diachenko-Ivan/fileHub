@@ -72,4 +72,20 @@ export class FileListState {
    * @type {Error}
    */
   removeError;
+  /**
+   * Contains set of downloading file ids.
+   *
+   * @type {Set<string>}
+   */
+  downloadingFileIds = new Set();
+  /**
+   * @typedef DownloadErrorObject
+   * @property {FileModel} model - model of downloading file.
+   * @property {Error} error - error in the result of download.
+   */
+  /**
+   * Error in the result of file download.
+   * @type {DownloadErrorObject}
+   */
+  downloadErrorObject;
 }

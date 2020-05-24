@@ -310,6 +310,41 @@ export default module('ApiService', function (hook) {
       headers: {'Authorization': 'Bearer token'},
     }), 'Should send log out request with correct attributes.');
   });
+  
+  test('should return correct model after item rename.', function (assert) {
+    const done = assert.async();
+    assert.expect(2);
+    const storageService = {
+      getItem() {
+        return 'token';
+      },
+    };
+    const model = {id: 'id', type: 'folder', name: 'docs'};
+    const service = new ApiService(storageService);
+    fetchMock.once('/folder/id', model);
+    service.renameItem(model)
+      .then((responseItem) => {
+        assert.deepEqual(responseItem, model, 'Should return correct model.');
+        done();
+      });
+    assert.ok(fetchMock.called('/folder/id', {
+      method: 'PUT',
+      headers: {'Authorization': 'Bearer token'},
+      body: model,
+    }), 'Should send request with correct attributes.');
+  });
+  
+  test('should return server error on item rename request.', function (assert) {
+    testCommonErrors(assert, '/folder/id', 500, 'renameItem', {id: 'id', type: 'folder', name: 'docs'});
+  });
+  
+  test('should return authorization error on item rename request.', function (assert) {
+    testCommonErrors(assert, '/folder/id', 401, 'renameItem', {id: 'id', type: 'folder', name: 'docs'});
+  });
+  
+  test('should return not-found error on item rename request.', function (assert) {
+    testCommonErrors(assert, '/folder/id', 404, 'renameItem', {id: 'id', type: 'folder', name: 'docs'});
+  });
 });
 
 function testCommonErrors(assert, url, errorCode, apiServiceMethod, ...params) {

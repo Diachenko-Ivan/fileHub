@@ -61,9 +61,7 @@ export class FolderComponent extends FileItem {
       this._onUploadFile(this.model);
     });
     
-    this.rootContainer.addEventListener('dblclick', () => {
-      this._onDoubleClick(this.model.id);
-    });
+    this.rootContainer.addEventListener('dblclick', () => this._onDoubleClick(this.model.id));
     
     this.folderLink.addEventListener('click', (event) => event.stopPropagation());
   }

@@ -223,8 +223,6 @@ export class FileHubPage extends StateAwareComponent {
     this.fileList.onDownloadFile((model) => this.dispatch(new DownloadFileAction(model, new DownloadService())));
     
     this.fileList.onFileItemNameChange((model) => this.dispatch(new RenameItemAction(model)));
-    
-    this.fileList.onFolderDoubleClick((id) => this._onFolderDoubleClick(id));
   }
   
   /**
@@ -233,7 +231,7 @@ export class FileHubPage extends StateAwareComponent {
    * @param {Function} handler - callback.
    */
   onFolderDoubleClick(handler) {
-    this._onFolderDoubleClick = handler;
+    this.fileList.onFolderDoubleClick(handler);
   }
   
   /**

@@ -235,10 +235,10 @@ a:hover {
     font-size: 14px;
 }
 
+
 .file-explorer-container .content-table tbody tr:hover {
     background-color: #f4f4f4;
 }
-
 .file-explorer-container tr .file-action-icons {
     opacity: 0;
 }
@@ -327,20 +327,23 @@ a:hover {
 table tr.isSelected {
     background-color: #c0dbe8;
 }
-
-.table tr:hover:not(isSelected) {
-    background-color: #f4f4f4;
+table tr:not(.isSelected):hover {
+    background: #f4f4f4;
 }
+
 /** loading styles
  */
 .content-table .cell-file-name .item-loader{
     display: none;
 }
 
-.content-table .cell-file-name .item-loader.is-loading{
+.content-table tr.is-loading .cell-file-name .item-loader {
     display: inline-block;
     width: 8px;
     height: 13px;;
+}
+.content-table tr.is-loading {
+    pointer-events: none;
 }
 .item-loader:after {
     content: "";
@@ -393,3 +396,60 @@ button loading
 .button.is-disabled .glyphicon {
     display: none;
 }
+
+/**Rename loader*/
+
+.content-table .cell-file-name .rename-loader{
+    display: none;
+}
+
+.content-table tr.is-renaming .rename-loader {
+    display: inline-block;
+    position: relative;
+    width: 15px;
+    height: 19px;
+}
+.content-table tr.is-renaming {
+  pointer-events: none;
+}
+
+.content-table tr.is-renaming .file-name,
+.content-table tr.is-renaming .folder-name{
+    display: none;
+}
+
+.rename-loader div {
+    display: inline-block;
+    position: absolute;
+    left: 8px;
+    width: 7px;
+    background: #636363;
+    animation: rename-loader 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+}
+
+.rename-loader div:nth-child(1) {
+    left: 8px;
+    animation-delay: -0.24s;
+}
+
+.rename-loader div:nth-child(2) {
+    left: 18px;
+    animation-delay: -0.12s;
+}
+
+.rename-loader div:nth-child(3) {
+    left: 28px;
+    animation-delay: 0s;
+}
+
+@keyframes rename-loader {
+    0% {
+        top: 3px;
+        height: 30px;
+    }
+    50%, 100% {
+        top: 8px;
+        height: 15px;
+    }
+}
+

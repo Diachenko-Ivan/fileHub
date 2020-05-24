@@ -345,6 +345,40 @@ export default module('ApiService', function (hook) {
   test('should return not-found error on item rename request.', function (assert) {
     testCommonErrors(assert, '/folder/id', 404, 'renameItem', {id: 'id', type: 'folder', name: 'docs'});
   });
+
+  test('should return downloaded file.', function (assert) {
+    assert.expect(2);
+    const done = assert.async();
+    const storageService = {
+      getItem() {
+        return 'token';
+      },
+    };
+    const service = new ApiService(storageService);
+    const downloadingFile = new Blob(['a', 's'], {type: 'application/json'});
+    fetchMock.once('/file/id', downloadingFile);
+    service.downloadFile('id')
+      .then((blob) => {
+        assert.deepEqual(blob, downloadingFile, 'Should return correct file.');
+        done();
+      });
+    assert.ok(fetchMock.called('/file/id', {
+      method: 'GET',
+      headers: {'Authorization': 'Bearer token'},
+    }));
+  });
+  
+  test('should return authorization error on file download.', function (assert) {
+    testCommonErrors(assert, '/file/id', 401, 'downloadFile', 'id');
+  });
+  
+  test('should return server error on file download.', function (assert) {
+    testCommonErrors(assert, '/file/id', 500, 'downloadFile', 'id');
+  });
+  
+  test('should return not-found error on file download.', function (assert) {
+    testCommonErrors(assert, '/file/id', 404, 'downloadFile', 'id');
+  });
 });
 
 function testCommonErrors(assert, url, errorCode, apiServiceMethod, ...params) {

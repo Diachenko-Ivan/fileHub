@@ -14,7 +14,9 @@ export class FileItemList extends Component {
    */
   _fileItemFactory = {
     file: (item) => {
-      return new FileComponent(this.rootContainer.firstElementChild, item);
+      const file = new FileComponent(this.rootContainer.firstElementChild, item);
+      file.onDownloadFile(this._onDownloadFile);
+      return file;
     },
     folder: (item) => {
       const folder = new FolderComponent(this.rootContainer.firstElementChild, item);
@@ -162,6 +164,15 @@ export class FileItemList extends Component {
    */
   onUploadFileToFolder(handler) {
     this._uploadFileHandler = handler;
+  }
+  
+  /**
+   * Registers a handler that is used for download action.
+   *
+   * @param {Function} handler - callback for download.
+   */
+  onDownloadFile(handler) {
+    this._onDownloadFile = handler;
   }
   
   /**

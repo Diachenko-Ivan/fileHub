@@ -2,6 +2,7 @@ import {Icon} from '../file-item-icon';
 import {FileItem} from '../index.js';
 import {FileModel} from '../../../models/item/file';
 
+
 /**
  * Contains icon classes for each file type.
  *
@@ -65,6 +66,9 @@ export class FileComponent extends FileItem {
    */
   addEventListener() {
     super.addEventListener();
+    
+    this.downloadIcon.onClick(() => this._onDownload(this.model));
+    
     this.removeIcon.onClick(() => {
       this.removeHandler(this.model);
     });
@@ -98,5 +102,14 @@ export class FileComponent extends FileItem {
     const iconTypeByMimeType = Object.keys(FILE_ICON_TYPES).find((iconType) => mimeType.startsWith(iconType));
     const iconTypeKey = iconTypeByMimeType || 'other';
     return FILE_ICON_TYPES[iconTypeKey];
+  }
+  
+  /**
+   * Registers a handler that is called when download icon is clicked.
+   *
+   * @param {Function} handler - callback for download.
+   */
+  onDownloadFile(handler) {
+    this._onDownload = handler;
   }
 }

@@ -38,7 +38,7 @@ export class RegistrationPage extends Component {
   addEventListener() {
     this.registrationForm.onSubmit((credentials) => {
       ApiService.getInstance().register(credentials)
-        .then(() => window.location.hash = '/login')
+        .then(this._onSuccessfulRegistration)
         .catch((error) => {
           if (error instanceof ValidationError) {
             this.registrationForm.showFieldErrors(error.errors);
@@ -47,5 +47,14 @@ export class RegistrationPage extends Component {
           }
         });
     });
+  }
+  
+  /**
+   * Registers a handler which will be called after successful registration.
+   *
+   * @param {Function} handler - callback for successful registration.
+   */
+  onSuccessfulRegistration(handler){
+    this._onSuccessfulRegistration = handler;
   }
 }

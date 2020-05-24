@@ -34,6 +34,19 @@ export default module('FileComponent test', function (hook) {
   test('should show correct file size 100 MB.', function (assert) {
     testFileSize(fixture, assert, 104857600, '100.0 MB');
   });
+  
+  test('should call download handler on download icon click.', function (assert) {
+    const expectedFileName = 'page.txt';
+    const size = 1024;
+    const fileComponent = new FileComponent(fixture, {name: expectedFileName, mimeType: 'text', size});
+    
+    fileComponent.onDownloadFile(() => assert.step('Download'));
+    
+    const downloadIcon = fixture.querySelector('[data-element="file-action-icons"]').firstElementChild;
+    downloadIcon.click();
+    
+    assert.verifySteps(['Download'], 'Should call download handler.')
+  });
 });
 
 function testFileSize(fixture, assert, size, expectedSize) {

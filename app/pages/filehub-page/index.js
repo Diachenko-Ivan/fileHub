@@ -14,6 +14,8 @@ import {AuthenticationError} from '../../models/errors/authentication-error';
 import {PageNotFoundError} from '../../models/errors/page-not-found-error';
 import {GeneralServerError} from '../../models/errors/server-error';
 import {GetFolderAction} from '../../states/actions/get-folder-action';
+import {DownloadFileAction} from '../../states/actions/download-action';
+import {DownloadService} from '../../services/dowload-anchor-service';
 
 /**
  * Class name for upload icon.
@@ -139,7 +141,7 @@ export class FileHubPage extends StateAwareComponent {
     });
     this.onStateChange('uploadingFolderIds', (state) => {
       this.uploadFileButton.isLoading = state.uploadingFolderIds.has(state.currentFolder.id);
-      this.fileList.loadingItems = new Set([...state.uploadingFolderIds, ...state.removingItemIds]);
+      this.fileList.loadingItems = new Set([...state.uploadingFolderIds, ...state.removingItemIds, ...state.downloadingFileIds]);
     });
     this.onStateChange('uploadErrorObject', (state) => {
       const error = state.uploadErrorObject.error;
@@ -153,7 +155,7 @@ export class FileHubPage extends StateAwareComponent {
       }
     });
     this.onStateChange('removingItemIds', (state) => {
-      this.fileList.loadingItems = new Set([...state.uploadingFolderIds, ...state.removingItemIds]);
+      this.fileList.loadingItems = new Set([...state.uploadingFolderIds, ...state.removingItemIds, ...state.downloadingFileIds]);
     });
     this.onStateChange('removeError', (state) => {
       const error = state.removeError;
@@ -161,6 +163,20 @@ export class FileHubPage extends StateAwareComponent {
         this._redirectToLoginPage();
       } else if (error instanceof GeneralServerError) {
         alert(error.message);
+      }
+    });
+    this.onStateChange('downloadingFileIds', (state) => {
+      this.fileList.loadingItems = new Set([...state.uploadingFolderIds, ...state.removingItemIds, ...state.downloadingFileIds]);
+    });
+    this.onStateChange('downloadErrorObject', (state) => {
+      const {error, model} = state.downloadErrorObject;
+      if (error instanceof AuthenticationError) {
+        this._redirectToLoginPage();
+      } else if (error instanceof PageNotFoundError) {
+        alert(`Failed to download ${model.name} file. It does not exist.`);
+        this.dispatch(new GetFolderContentAction(state.locationParam.id));
+      } else if (error instanceof GeneralServerError) {
+        alert(`Server error! Failed to download ${model.name} file.`);
       }
     });
   }
@@ -190,6 +206,8 @@ export class FileHubPage extends StateAwareComponent {
       event.preventDefault();
       this.dispatch(new LogOutAction()).finally(this._redirectToLoginPage);
     });
+    
+    this.fileList.onDownloadFile((model) => this.dispatch(new DownloadFileAction(model, new DownloadService())));
   }
   
   /**

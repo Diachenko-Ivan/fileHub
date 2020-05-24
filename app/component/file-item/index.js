@@ -53,13 +53,19 @@ export class FileItem extends Component {
   addEventListener() {
     const input = this.rootContainer.querySelector('input');
     this.rootContainer.addEventListener('click', (event) => {
-      if (event.detail === 1) {
-        this._onClick(this.model.id);
+      if (event.detail !== 1) {
+        return;
       }
+      this._onClick();
+    });
+    
+    document.addEventListener('click', (event) => {
+      console.log(event.target);
     });
     
     input.addEventListener('blur', () => {
-      this._onClick();
+      this.isEditing = false;
+      this.isSelected = false;
     });
     
     input.addEventListener('change', () => {
@@ -85,20 +91,19 @@ export class FileItem extends Component {
    * @param {boolean} value - flag that defines loading state.
    */
   set isLoading(value) {
-    const loader = this._itemName.querySelector('[data-element="loader"]');
     const actionIcons = this.rootContainer.querySelector('[data-element="file-action-icons"]');
     if (value) {
-      loader.classList.add(LOADING_ITEM_CLASS);
+      this.rootContainer.classList.add(LOADING_ITEM_CLASS);
       actionIcons.classList.add(DISABLED_ICONS_CLASS);
     } else {
-      loader.classList.remove(LOADING_ITEM_CLASS);
+      this.rootContainer.classList.remove(LOADING_ITEM_CLASS);
       actionIcons.classList.remove(DISABLED_ICONS_CLASS);
     }
     this._isLoading = value;
   }
   
   /**
-   * Defines either items is loading or not.
+   * Defines either item is loading or not.
    *
    * @return {boolean} loading flag.
    */
@@ -106,16 +111,35 @@ export class FileItem extends Component {
     return this._isLoading;
   }
   
+  /**
+   * Registers handler for item name change.
+   *
+   * @param {Function} handler - callback that is called when item name is changed.
+   */
   onNameChange(handler) {
     this._onNameChange = handler;
   }
   
+  /**
+   * Defines either row is editing or not.
+   *
+   * @param {boolean} value - editing or not.
+   */
   set isEditing(value) {
     const input = this.rootContainer.querySelector('input');
     this._isEditing = value;
     this._itemName.classList.toggle('editing', value);
     input.value = this.model.name;
     input.focus();
+  }
+  
+  /**
+   * Defines either item is editing or not.
+   *
+   * @return {boolean} flag of editing state.
+   */
+  get isEditing() {
+    return this._isEditing;
   }
   
   /**
@@ -128,12 +152,31 @@ export class FileItem extends Component {
     this.rootContainer.classList.toggle('isSelected', value);
   }
   
-  set isRenaming(value) {
-    this._isRenaming = value;
-    this.rootContainer.querySelector('[data-test="name"]').innerHTML = '';
-    this.isLoading = value;
+  /**
+   * Defines either item is selected or not.
+   *
+   * @return {boolean} flag of selected state.
+   */
+  get isSelected() {
+    return this._isSelected;
   }
   
+  /**
+   * Defines either row is renaming or not.
+   *
+   * @param {boolean} value - renaming or not.
+   */
+  set isRenaming(value) {
+    this._isRenaming = value;
+    this.rootContainer.classList.toggle('is-renaming', value);
+    this.rootContainer.querySelector('[data-element="file-action-icons"]').classList.toggle('is-disabled', value);
+  }
+  
+  /**
+   * Registers handler that is called when user clicked on item.
+   *
+   * @param {Function} handler - handler for item click.
+   */
   onClick(handler) {
     this._onClick = handler;
   }

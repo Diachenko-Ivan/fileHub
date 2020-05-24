@@ -8,6 +8,7 @@ import {StateManager} from './states/state-manager';
 import {ApiService} from './services/api-service.js';
 import {FileListState} from './states/model/file-list-state';
 import {
+  FILEHUB_PAGE_URL,
   FILEHUB_PAGE_URL_TEMPLATE,
   LOGIN_PAGE_URL,
   NOT_FOUND_PAGE_URL,
@@ -45,12 +46,19 @@ export class Application extends Component {
     const stateManager = new StateManager(fileListState, ApiService.getInstance());
     
     const pageMapping = {
-      [LOGIN_PAGE_URL]: () => new LoginPage(this.rootContainer),
-      [REGISTRATION_PAGE_URL]: () => new RegistrationPage(this.rootContainer),
+      [LOGIN_PAGE_URL]: (router) => {
+        const loginPage = new LoginPage(this.rootContainer);
+        loginPage.onSuccessfulAuthentication(() => router.redirectTo(FILEHUB_PAGE_URL));
+        return loginPage;
+      },
+      [REGISTRATION_PAGE_URL]: (router) => {
+        const registrationPage = new RegistrationPage(this.rootContainer);
+        registrationPage.onSuccessfulRegistration(() => router.redirectTo(LOGIN_PAGE_URL));
+      },
       [FILEHUB_PAGE_URL_TEMPLATE]: (router) => {
         const fileHubPage = new FileHubPage(this.rootContainer, stateManager);
         fileHubPage.onResourceNotFound(() => router.renderNotFoundPage());
-        fileHubPage.onFailedAuthorization(() => window.location.hash = '/login');
+        fileHubPage.onFailedAuthorization(() => router.redirectTo(LOGIN_PAGE_URL));
         return fileHubPage;
       },
       [NOT_FOUND_PAGE_URL]: () => new ErrorPage(this.rootContainer, 404, 'Sorry, this page was not found.'),

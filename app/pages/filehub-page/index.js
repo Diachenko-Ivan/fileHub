@@ -230,7 +230,7 @@ export class FileHubPage extends StateAwareComponent {
    *
    * @param {Function} handler - callback.
    */
-  onFolderDoubleClick(handler) {
+  onFolderChange(handler) {
     this.fileList.onFolderDoubleClick(handler);
   }
   

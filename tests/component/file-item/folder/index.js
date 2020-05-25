@@ -45,7 +45,7 @@ export default module('FolderComponent test', function (hook) {
     const classCount = fileElement.classList.length;
     file.isLoading = true;
     assert.equal(fileElement.classList.length, classCount + 1, 'Should contain class for showing loader.');
-    assert.ok(fileElement.classList.contains('is-selected'), 'Should contain correct class');
+    assert.ok(fileElement.classList.contains('is-loading'), 'Should contain correct class');
     file.isLoading = false;
     assert.equal(fileElement.classList.length, classCount, 'Should remove class for showing loader.');
   });

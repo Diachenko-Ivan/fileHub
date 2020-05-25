@@ -32,7 +32,6 @@ export class FileItem extends Component {
     super(container);
     this.model = params;
     this.render();
-    this._itemName = this.rootContainer.querySelector('[data-element="item-name"]');
   }
   
   /**

@@ -23,16 +23,17 @@ export class RenameItemAction extends Action {
    * @inheritdoc
    */
   async apply(stateManager, apiService) {
+    let possibleError;
     const model = this.model;
     stateManager.mutate(new RenamingItemsMutator(model.id));
     try {
       await apiService.renameItem(model);
     } catch (error) {
+      possibleError = error;
       stateManager.mutate(new RenameErrorMutator({model, error}));
     } finally {
-      const error = stateManager.state.renameErrorObject.error;
       stateManager.mutate(new RenamedItemsMutator(model.id));
-      if (error && !(error instanceof AuthenticationError)) {
+      if (!(possibleError && possibleError instanceof AuthenticationError)) {
         await stateManager.dispatch(new GetFolderContentAction(stateManager.state.currentFolder.id));
       }
     }

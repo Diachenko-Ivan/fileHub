@@ -67,9 +67,12 @@ export class FileItem extends Component {
     input.addEventListener('change', () => {
       this.model.name = input.value;
       this._onNameChange(this.model);
+      input.blur();
     });
     
     input.addEventListener('click', (event) => event.stopPropagation());
+    
+    
   }
   
   /**
@@ -124,7 +127,7 @@ export class FileItem extends Component {
   set isEditing(value) {
     const input = this.rootContainer.querySelector('input');
     this._isEditing = value;
-    this._itemName.classList.toggle('editing', value);
+    this.rootContainer.classList.toggle('editing', value);
     input.value = this.model.name;
     input.focus();
   }
@@ -145,7 +148,7 @@ export class FileItem extends Component {
    */
   set isSelected(value) {
     this._isSelected = value;
-    this.rootContainer.classList.toggle('isSelected', value);
+    this.rootContainer.classList.toggle('is-selected', value);
   }
   
   /**

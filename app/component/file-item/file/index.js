@@ -36,7 +36,7 @@ export class FileComponent extends FileItem {
    */
   markup() {
     return `
-                <tr>
+                <tr class="row">
                     <td class="arrow"></td>
                     <td class="cell-file-name" data-element="item-name">
                         <i class="glyphicon glyphicon-${this._defineIcon(this.model.mimeType)}"></i>

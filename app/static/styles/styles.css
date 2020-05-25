@@ -229,21 +229,20 @@ a:hover {
     width: 100%;
 }
 
-.file-explorer-container .content-table tr {
+.file-explorer-container .content-table .row {
     border-bottom: 1px solid #999;
     width: 100%;
     font-size: 14px;
 }
 
-
-.file-explorer-container .content-table tbody tr:hover {
+.content-table .row:hover {
     background-color: #f4f4f4;
 }
-.file-explorer-container tr .file-action-icons {
+.file-explorer-container .row .file-action-icons {
     opacity: 0;
 }
 
-.file-explorer-container tbody tr:hover .file-action-icons {
+.file-explorer-container tbody .row:hover .file-action-icons {
     opacity: 1;
 }
 
@@ -263,11 +262,11 @@ a:hover {
     top: 2px;
 }
 
-.file-explorer-container .content-table tr td .file-name i {
+.file-explorer-container .content-table .row td .file-name i {
     color: #000000;
 }
 
-.file-explorer-container .content-table tr td .cell-file-name {
+.file-explorer-container .content-table .row td .cell-file-name {
     display: block;
     width: 100%;
     text-overflow: ellipsis;
@@ -286,15 +285,15 @@ a:hover {
     display: none;
 }
 
-.content-table .cell-file-name.editing .file-name,
-.content-table .cell-file-name.editing .folder-name {
+.content-table .row.editing .file-name,
+.content-table .row.editing .folder-name {
     display: none;
 }
 
-.content-table .cell-file-name.editing .edit-input {
+.content-table .row.editing .edit-input {
     display: inline-block;
 }
-.file-explorer-container .content-table tr td .edit-input {
+.file-explorer-container .content-table .row .edit-input {
     border-radius: 5px;
     width: 62%;
     line-height: 25px;
@@ -302,32 +301,32 @@ a:hover {
     padding-left: 5px;
 }
 
-.file-explorer-container .content-table tr .file-count, .file-size {
+.file-explorer-container .content-table .row .file-count, .file-size {
     width: 20%;
     text-align: center;
 }
 
-.file-explorer-container .content-table tr .file-action-icons {
+.file-explorer-container .content-table .row .file-action-icons {
     width: 20%;
     text-align: right;
 }
 
-.file-explorer-container .content-table tr .file-action-icons .glyphicon-upload {
+.file-explorer-container .content-table .row .file-action-icons .glyphicon-upload {
     color: 	#32CD32;
 }
 
-.file-explorer-container .content-table tr .file-action-icons .glyphicon-download {
+.file-explorer-container .content-table .row .file-action-icons .glyphicon-download {
     color: #76baec;
 }
 
-.file-explorer-container .content-table tr .file-action-icons .glyphicon-remove-circle {
+.file-explorer-container .content-table .row .file-action-icons .glyphicon-remove-circle {
     color: #ff0000;
 }
 
-table tr.isSelected {
+.content-table .row.is-selected {
     background-color: #c0dbe8;
 }
-table tr:not(.isSelected):hover {
+ .content-table .row:not:hover(.is-selected) {
     background: #f4f4f4;
 }
 

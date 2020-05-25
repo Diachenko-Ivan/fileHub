@@ -20,7 +20,7 @@ export class FolderComponent extends FileItem {
    * @inheritdoc
    */
   markup() {
-    return `<tr>
+    return `<tr class="row">
                 <td class="arrow"><i class="glyphicon glyphicon-menu-right"></i></td>
                 <td class="cell-file-name" data-element="item-name">
                     <i class="glyphicon glyphicon-folder-close"></i>

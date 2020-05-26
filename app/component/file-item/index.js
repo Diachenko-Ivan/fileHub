@@ -70,8 +70,6 @@ export class FileItem extends Component {
     });
     
     input.addEventListener('click', (event) => event.stopPropagation());
-    
-    
   }
   
   /**

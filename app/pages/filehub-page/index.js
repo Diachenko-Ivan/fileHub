@@ -17,6 +17,7 @@ import {GetFolderAction} from '../../states/actions/get-folder-action';
 import {RenameItemAction} from '../../states/actions/item-name-change-action';
 import {DownloadFileAction} from '../../states/actions/download-action';
 import {DownloadService} from '../../services/dowload-anchor-service';
+import {CreateFolderAction} from '../../states/actions/create-folder-action';
 
 /**
  * Class name for upload icon.
@@ -205,6 +206,8 @@ export class FileHubPage extends StateAwareComponent {
         this.dispatch(new UploadFileAction(this.stateManager.state.currentFolder, file));
       });
     });
+    
+    this.createFolderButton.onClick(() => this.dispatch(new CreateFolderAction()));
     
     this.fileList.onUploadFileToFolder((model) => {
       uploadWindowService.openUploadWindow((file) => {

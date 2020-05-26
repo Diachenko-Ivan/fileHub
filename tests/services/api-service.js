@@ -345,7 +345,7 @@ export default module('ApiService', function (hook) {
   test('should return not-found error on item rename request.', function (assert) {
     testCommonErrors(assert, '/folder/id', 404, 'renameItem', {id: 'id', type: 'folder', name: 'docs'});
   });
-
+  
   test('should return downloaded file.', function (assert) {
     assert.expect(2);
     const done = assert.async();
@@ -378,6 +378,41 @@ export default module('ApiService', function (hook) {
   
   test('should return not-found error on file download.', function (assert) {
     testCommonErrors(assert, '/file/id', 404, 'downloadFile', 'id');
+  });
+  
+  test('should return new created folder.', function (assert) {
+    const done = assert.async();
+    const storageService = {
+      getItem() {
+        return 'token';
+      },
+    };
+    const service = new ApiService(storageService);
+    const renamedFolder = {name: 'NewName', parentId: 'id'};
+    const responseFolder = {name: 'NewName', id: 'afd', parentId: 'id', filesCount: 0};
+    fetchMock.once('/folder/id/folder', responseFolder);
+    service.getNewFolder(renamedFolder)
+      .then((folder) => {
+        assert.deepEqual(responseFolder, folder, 'Should return correct folder on success.');
+        done();
+      });
+    assert.ok(fetchMock.called(`/folder/${renamedFolder.parentId}/folder`, {
+      method: 'POST',
+      headers: {'Authorization': 'Bearer token'},
+      body: renamedFolder,
+    }));
+  });
+  
+  test('should return authorization error on folder creation.', function (assert) {
+    testCommonErrors(assert, `/folder/id/folder`, 401, 'getNewFolder', {parentId: 'id'});
+  });
+  
+  test('should return server error on folder creation.', function (assert) {
+    testCommonErrors(assert, `/folder/id/folder`, 500, 'getNewFolder', {parentId: 'id'});
+  });
+  
+  test('should return not-found error on folder creation..', function (assert) {
+    testCommonErrors(assert, `/folder/id/folder`, 404, 'getNewFolder', {parentId: 'id'});
   });
 });
 

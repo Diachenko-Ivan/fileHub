@@ -32,6 +32,13 @@ export class MockFileSystem {
    */
   _fileObjects = [];
   /**
+   * User as number for new folder.
+   * @type {number}
+   * @private
+   */
+  _counter = 0;
+  
+  /**
    * Creates new mock file system with available files and folders.
    *
    * @param {FolderDescription[]} folders - array of folders.
@@ -41,6 +48,7 @@ export class MockFileSystem {
     this._folders = folders;
     this._files = files;
   }
+  
   /**
    * Recursively deletes folder by its id.
    *
@@ -97,7 +105,7 @@ export class MockFileSystem {
     const files = this._files.filter((file) => file.parentId === id);
     return folders.concat(files);
   }
-
+  
   /**
    * Renames folder with specific id.
    *
@@ -111,21 +119,21 @@ export class MockFileSystem {
       }
     });
   }
-
+  
   /**
    * Renames file with specific id.
    *
    * @param {string} id - file id.
    * @param {FileModel} renamedFile - renamed file sent by user.
    */
-  renameFile(id, renamedFile){
+  renameFile(id, renamedFile) {
     this._files.forEach((file) => {
       if (id === file.id) {
         file.name = renamedFile.name;
       }
     });
   }
-
+  
   /**
    * Saves new file to file system.
    *
@@ -141,10 +149,27 @@ export class MockFileSystem {
       mimeType: file.type,
       parentId: folderId,
       size: file.size,
-      type: 'file'
+      type: 'file',
     };
     this._files.push(fileItem);
     this._fileObjects.push({file, id: fileId});
     return fileItem;
+  }
+  
+  /**
+   * Creates new folder.
+   *
+   * @param {string} id - parent id for new folder.
+   */
+  createFolder(id) {
+    const folder = {
+      name: `New folder ${++this._counter}`,
+      filesCount: 0,
+      parentId: id,
+      id: Math.random().toString(),
+      type: 'folder',
+    };
+    this._folders.push(folder);
+    return folder;
   }
 }

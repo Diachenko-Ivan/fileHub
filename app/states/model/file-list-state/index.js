@@ -104,4 +104,22 @@ export class FileListState {
    * @type {DownloadErrorObject}
    */
   downloadErrorObject;
+  /**
+   * Contains model of folder where new folder is being created in.
+   *
+   * @type {FolderModel}
+   */
+  newFolderSource;
+  /**
+   * Contains id of new created folder.
+   *
+   * @type {string}
+   */
+  newFolderId;
+  /**
+   * Error in the result of folder creation.
+   *
+   * @type {Error}
+   */
+  createFolderError;
 }

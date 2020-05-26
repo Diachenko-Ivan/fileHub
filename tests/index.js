@@ -47,3 +47,7 @@ import DownloadFinishedMutatorTest from './states/mutator/download-finished-muta
 import RenameProcessMutatorTest from './states/mutator/upload-finished-mutator'
 import RenameFinishedMutatorTest from './states/mutator/upload-process-mutator'
 import RenameErrorMutatorTest from './states/mutator/upload-error-mutator'
+import NewFolderMutatorTest from './states/mutator/new-folder-mutator'
+import NewFolderSourceMutatorTest from './states/mutator/new-folder-source-mutator'
+import CreateFolderErrorMutatorTest from './states/mutator/create-folder-error-mutator'
+import CreateFolderActionTest from './states/actions/create-folder-action'

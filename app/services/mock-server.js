@@ -150,12 +150,25 @@ export class MockServer {
       }
       return 401;
     }, {delay: 500});
-
+    
     fetchMock.get('express:/file/:fileId', (url, request) => {
       if (this._hasAuthToken(request.headers)) {
         const id = url.split('/')[2];
         if (this._fileSystem.getFile(id)) {
-          return new File([JSON.stringify({name:'s'})], 'name',{type:'application/json'});
+          return new File([JSON.stringify({name: 's'})], 'name', {type: 'application/json'});
+        } else {
+          return 404;
+        }
+      }
+      return 401;
+    }, {delay: 500});
+    
+    fetchMock.post('express:/folder/:folderId/folder', (url, request) => {
+      if (this._hasAuthToken(request.headers)) {
+        const id = url.split('/')[2];
+        const parentFolder = this._fileSystem.getFolder(id);
+        if (parentFolder) {
+          return this._fileSystem.createFolder(id);
         } else {
           return 404;
         }

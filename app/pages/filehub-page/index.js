@@ -113,7 +113,6 @@ export class FileHubPage extends StateAwareComponent {
       }
     });
     this.onStateChange('fileList', (state) => {
-      this.uploadFileButton.isLoading = state.uploadingFolderIds.has(state.currentFolder.id);
       this.fileList.fileList = state.fileList;
     });
     this.onStateChange('folderLoadError', (state) => {
@@ -127,6 +126,8 @@ export class FileHubPage extends StateAwareComponent {
       this.dispatch(new GetFolderContentAction(state.locationParam.id));
     });
     this.onStateChange('currentFolder', (state) => {
+      this.uploadFileButton.isLoading = state.uploadingFolderIds.has(state.currentFolder.id);
+      this.createFolderButton.isLoading = state.newFolderSourceId === state.currentFolder.id;
       this.directoryPath.folder = state.currentFolder;
       TitleService.getInstance().setTitle(`${state.currentFolder.name} - FileHub`);
     });
@@ -191,6 +192,23 @@ export class FileHubPage extends StateAwareComponent {
         alert(`Failed to rename ${model.name} item. It does not exist.`);
       } else if (error instanceof GeneralServerError) {
         alert(`Server error! Failed to rename ${model.name} item.`);
+      }
+    });
+    this.onStateChange('newFolderSource', (state) => {
+      this.createFolderButton.isLoading = state.newFolderSource === state.currentFolder;
+    });
+    this.onStateChange('newFolderId', (state) => {
+      this.fileList.newFolder = state.newFolderId;
+    });
+    this.onStateChange('createFolderError', (state) => {
+      const error = state.createFolderError;
+      if (error instanceof AuthenticationError) {
+        this._redirectToLoginPage();
+      } else if (error instanceof PageNotFoundError) {
+        alert(`Failed to create new folder to ${state.newFolderSource.name}. This folder does not exist.`);
+        this._onResourceNotFound();
+      } else if (error instanceof GeneralServerError) {
+        alert(`Server error! Failed to create new folder to ${state.newFolderSource.name}.`);
       }
     });
   }

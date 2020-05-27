@@ -203,6 +203,25 @@ export class ApiService {
   }
 
   /**
+   * Sends request for file or folder renaming.
+   *
+   * @param {AbstractItemModel} item - file or folder which user wants to rename.
+   * @return {Promise<Response>} result of renaming.
+   */
+  renameItem(item) {
+    return fetch(`/${item.type}/${item.id}`, {
+      method: 'PUT',
+      headers: this._getAuthenticationHeader(),
+      body: JSON.stringify(item)
+    }).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return this._handleCommonErrors(response);
+    });
+  }
+
+  /**
    * @return {ApiService} singleton.
    */
   static getInstance() {

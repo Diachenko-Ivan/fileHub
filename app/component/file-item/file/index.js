@@ -36,13 +36,14 @@ export class FileComponent extends FileItem {
    */
   markup() {
     return `
-                <tr>
+                <tr class="row">
                     <td class="arrow"></td>
                     <td class="cell-file-name" data-element="item-name">
                         <i class="glyphicon glyphicon-${this._defineIcon(this.model.mimeType)}"></i>
                         <span data-test="file-name" class="file-name">${this.model.name}</span>
                         <input class="edit-input"/>
                         <div data-element="loader" class="item-loader"></div>
+                        <div class="rename-loader"><div></div><div></div><div></div></div>
                     </td>
                     <td data-test="file-size" class="file-size">${this._getSizeWithMemoryUnit(this.model.size)}</td>
                     <td data-element="file-action-icons" class="file-action-icons">
@@ -64,6 +65,8 @@ export class FileComponent extends FileItem {
    * @inheritdoc
    */
   addEventListener() {
+    super.addEventListener();
+    
     this.downloadIcon.onClick(() => this._onDownload(this.model));
     
     this.removeIcon.onClick(() => {

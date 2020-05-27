@@ -9,7 +9,7 @@ export class MockServer {
    * Creates new {@type MockServer} instance with setting of mappings for concrete requests.
    */
   constructor() {
-    this._fileSystem = new MockFileSystem( [
+    this._fileSystem = new MockFileSystem([
       {name: 'Different', type: 'folder', filesCount: 10, id: '123', parentId: 'root'},
       {name: 'Root', type: 'folder', filesCount: 10, id: 'root'},
     ], [
@@ -17,7 +17,7 @@ export class MockServer {
       {name: 'hello.txt', type: 'file', mimeType: 'text', size: 100, id: 'qwe', parentId: '123'},
       {name: 'file.pdf', type: 'file', mimeType: 'text', size: 100, id: 'zxc', parentId: 'root'},
     ]);
-
+    
     fetchMock.post('/login', (url, request) => {
       const credentials = JSON.parse(request.body);
       if (credentials.login === 'admin' && credentials.password === 'Password1') {
@@ -25,20 +25,20 @@ export class MockServer {
       }
       return 401;
     });
-
+    
     fetchMock.post('/register', (url, request) => {
       const credentials = JSON.parse(request.body);
       if (credentials.login === 'admin') {
         return {
           body: {
-            errors: [{field: 'login', message: 'User with this login already exists.'}]
+            errors: [{field: 'login', message: 'User with this login already exists.'}],
           },
-          status: 422
+          status: 422,
         };
       }
       return 200;
     });
-
+    
     fetchMock.get('express:/folder/:folderId', (url, request) => {
       if (this._hasAuthToken(request.headers)) {
         const id = url.split('/')[2];
@@ -51,7 +51,7 @@ export class MockServer {
       }
       return 401;
     }, {delay: 500});
-
+    
     fetchMock.get('express:/folder/:folderId/content', (url, request) => {
       if (this._hasAuthToken(request.headers)) {
         const id = url.split('/')[2];
@@ -63,7 +63,7 @@ export class MockServer {
       }
       return 401;
     }, {delay: 500});
-
+    
     fetchMock.post('express:/folder/:folderId/file', (url, request) => {
       if (this._hasAuthToken(request.headers)) {
         const id = url.split('/')[2];
@@ -76,14 +76,44 @@ export class MockServer {
       }
       return 401;
     }, {delay: 500});
-
+    
     fetchMock.post('/logout', (url, request) => {
       if (this._hasAuthToken(request.headers)) {
         return 200;
       }
       return 401;
     }, {delay: 500});
-
+    
+    fetchMock.put('express:/file/:fileId', (url, request) => {
+      if (this._hasAuthToken(request.headers)) {
+        const id = url.split('/')[2];
+        const fileToRename = this._fileSystem.getFile(id);
+        if (fileToRename) {
+          const renamedFile = JSON.parse(request.body);
+          this._fileSystem.renameFile(id, renamedFile);
+          return fileToRename;
+        } else {
+          return 404;
+        }
+      }
+      return 401;
+    }, {delay: 500});
+    
+    fetchMock.put('express:/folder/:folderId', (url, request) => {
+      if (this._hasAuthToken(request.headers)) {
+        const id = url.split('/')[2];
+        const folderToRename = this._fileSystem.getFolder(id);
+        if (folderToRename) {
+          const renamedFolder = JSON.parse(request.body);
+          this._fileSystem.renameFolder(id, renamedFolder);
+          return folderToRename;
+        } else {
+          return 404;
+        }
+      }
+      return 401;
+    }, {delay: 500});
+    
     fetchMock.delete('express:/folder/:folderId', (url, request) => {
       if (this._hasAuthToken(request.headers)) {
         const id = url.split('/')[2];
@@ -96,11 +126,11 @@ export class MockServer {
       }
       return 401;
     }, {delay: 500});
-
+    
     fetchMock.delete('express:/file/:fileId', (url, request) => {
       if (this._hasAuthToken(request.headers)) {
         const id = url.split('/')[2];
-        const fileToRemove=this._fileSystem.getFile(id);
+        const fileToRemove = this._fileSystem.getFile(id);
         if (fileToRemove) {
           this._fileSystem.deleteFile(id);
           return 200;
@@ -110,12 +140,12 @@ export class MockServer {
       }
       return 401;
     }, {delay: 500});
-
+    
     fetchMock.get('/user', (url, request) => {
       if (this._hasAuthToken(request.headers)) {
         return {
           name: 'John',
-          id: 'qwerty'
+          id: 'qwerty',
         };
       }
       return 401;
@@ -133,7 +163,7 @@ export class MockServer {
       return 401;
     }, {delay: 500});
   }
-
+  
   /**
    * Checks authentication token to not be null.
    *

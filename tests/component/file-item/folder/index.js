@@ -41,12 +41,13 @@ export default module('FolderComponent test', function (hook) {
   
   test('should add and remove classes for loading wheel.', function (assert) {
     const file = new FolderComponent(fixture, {name: 'sas'});
-    const loader = fixture.querySelector('[data-element="item-name"] [data-element="loader"]');
-    const classCount = loader.classList.length;
+    const fileElement = fixture.firstElementChild;
+    const classCount = fileElement.classList.length;
     file.isLoading = true;
-    assert.equal(loader.classList.length, classCount + 1, 'Should contain class for showing loader.');
+    assert.equal(fileElement.classList.length, classCount + 1, 'Should contain class for showing loader.');
+    assert.ok(fileElement.classList.contains('is-loading'), 'Should contain correct class');
     file.isLoading = false;
-    assert.equal(loader.classList.length, classCount, 'Should remove class for showing loader.');
+    assert.equal(fileElement.classList.length, classCount, 'Should remove class for showing loader.');
   });
   
   test('should call remove handler if remove icon is clicked.', function (assert) {

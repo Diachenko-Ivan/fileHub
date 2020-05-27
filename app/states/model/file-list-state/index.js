@@ -73,6 +73,22 @@ export class FileListState {
    */
   removeError;
   /**
+   * Contains ids of items that are being renamed.
+   * @type {Set<string>}
+   */
+  renamingItemIds = new Set();
+  /**
+   * @typedef ErrorObject
+   * @property {AbstractItemModel} model - item model.
+   * @property {Error} error - error.
+   */
+  /**
+   * Contains error in the result of rename.
+   *
+   * @type {ErrorObject}
+   */
+  renameErrorObject;
+  /**
    * Contains set of downloading file ids.
    *
    * @type {Set<string>}

@@ -99,11 +99,39 @@ export class MockFileSystem {
   }
 
   /**
+   * Renames folder with specific id.
+   *
+   * @param {string} id - folder id.
+   * @param {FolderModel} renamedFolder - renamed folder sent by user.
+   */
+  renameFolder(id, renamedFolder) {
+    this._folders.forEach((folder) => {
+      if (id === folder.id) {
+        folder.name = renamedFolder.name;
+      }
+    });
+  }
+
+  /**
+   * Renames file with specific id.
+   *
+   * @param {string} id - file id.
+   * @param {FileModel} renamedFile - renamed file sent by user.
+   */
+  renameFile(id, renamedFile){
+    this._files.forEach((file) => {
+      if (id === file.id) {
+        file.name = renamedFile.name;
+      }
+    });
+  }
+
+  /**
    * Saves new file to file system.
    *
    * @param {File} file - uploading file.
    * @param {string} folderId - id of folder where file is saved.
-   * @return {FileModel} file object model.
+   * @return {FileDescription} file object model.
    */
   saveFile(file, folderId) {
     const fileId = Math.random().toString();

@@ -59,6 +59,7 @@ export class Application extends Component {
         const fileHubPage = new FileHubPage(this.rootContainer, stateManager);
         fileHubPage.onResourceNotFound(() => router.renderNotFoundPage());
         fileHubPage.onFailedAuthorization(() => router.redirectTo(LOGIN_PAGE_URL));
+        fileHubPage.onFolderChange((id) => router.redirectTo(`/folder/${id}`) )
         return fileHubPage;
       },
       [NOT_FOUND_PAGE_URL]: () => new ErrorPage(this.rootContainer, 404, 'Sorry, this page was not found.'),

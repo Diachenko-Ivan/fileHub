@@ -14,6 +14,7 @@ import {AuthenticationError} from '../../models/errors/authentication-error';
 import {PageNotFoundError} from '../../models/errors/page-not-found-error';
 import {GeneralServerError} from '../../models/errors/server-error';
 import {GetFolderAction} from '../../states/actions/get-folder-action';
+import {RenameItemAction} from '../../states/actions/item-name-change-action';
 import {DownloadFileAction} from '../../states/actions/download-action';
 import {DownloadService} from '../../services/dowload-anchor-service';
 
@@ -144,8 +145,7 @@ export class FileHubPage extends StateAwareComponent {
       this.fileList.loadingItems = new Set([...state.uploadingFolderIds, ...state.removingItemIds, ...state.downloadingFileIds]);
     });
     this.onStateChange('uploadErrorObject', (state) => {
-      const error = state.uploadErrorObject.error;
-      const model = state.uploadErrorObject.model;
+      const {model, error} = state.uploadErrorObject;
       if (error instanceof AuthenticationError) {
         this._redirectToLoginPage();
       } else if (error instanceof PageNotFoundError) {
@@ -179,6 +179,19 @@ export class FileHubPage extends StateAwareComponent {
         alert(`Server error! Failed to download ${model.name} file.`);
       }
     });
+    this.onStateChange('renamingItemIds', (state) => {
+      this.fileList.renamingItems = state.renamingItemIds;
+    });
+    this.onStateChange('renameErrorObject', (state) => {
+      const {model, error} = state.renameErrorObject;
+      if (error instanceof AuthenticationError) {
+        this._redirectToLoginPage();
+      } else if (error instanceof PageNotFoundError) {
+        alert(`Failed to rename ${model.name} item. It does not exist.`);
+      } else if (error instanceof GeneralServerError) {
+        alert(`Server error! Failed to rename ${model.name} item.`);
+      }
+    });
   }
   
   /**
@@ -208,6 +221,17 @@ export class FileHubPage extends StateAwareComponent {
     });
     
     this.fileList.onDownloadFile((model) => this.dispatch(new DownloadFileAction(model, new DownloadService())));
+    
+    this.fileList.onFileItemNameChange((model) => this.dispatch(new RenameItemAction(model)));
+  }
+  
+  /**
+   * Registers callback for folder double click.]
+   *
+   * @param {Function} handler - callback.
+   */
+  onFolderChange(handler) {
+    this.fileList.onFolderDoubleClick(handler);
   }
   
   /**

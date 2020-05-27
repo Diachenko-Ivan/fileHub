@@ -290,3 +290,9 @@ a:hover {
     color: #f00;
 }
 
+table tr.isSelected {
+    background-color: #c0dbe8;
+}
+table tr.isSelected:hover {
+    background-color: #c0dbe8;
+}

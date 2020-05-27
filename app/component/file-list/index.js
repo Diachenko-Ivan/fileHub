@@ -21,6 +21,7 @@ export class FileItemList extends Component {
     folder: (item) => {
       const folder = new FolderComponent(this.rootContainer.firstElementChild, item);
       folder.onUploadFile(this._uploadFileHandler);
+      folder.onDoubleClick(this._onFolderDoubleClick);
       return folder;
     },
   };
@@ -38,6 +39,13 @@ export class FileItemList extends Component {
    * @private
    */
   _loadingItemIds = new Set();
+  /**
+   * Contains list of renaming item ids.
+   *
+   * @type {Set<string>}
+   * @private
+   */
+  _renamingItemIds = new Set();
   /**
    * Contains list of item models.
    *
@@ -74,7 +82,10 @@ export class FileItemList extends Component {
       const fileItem = this._fileItemFactory[item.type](item);
       this._fileItemComponents.push(fileItem);
       fileItem.onRemoveIconClicked(this._removeListItemHandler);
+      fileItem.onNameChange(this._onFileItemNameChange);
+      fileItem.onClick(this._getClickHandler(fileItem));
       fileItem.isLoading = this._loadingItemIds.has(fileItem.model.id);
+      fileItem.isRenaming = this._renamingItemIds.has(fileItem.model.id);
     });
   }
   
@@ -162,5 +173,54 @@ export class FileItemList extends Component {
    */
   onDownloadFile(handler) {
     this._onDownloadFile = handler;
+  }
+  
+  /**
+   * Registers handler for item name change.
+   *
+   * @param {Function} handler - callback that is called when item name is changed.
+   */
+  onFileItemNameChange(handler) {
+    this._onFileItemNameChange = (model) => handler(model);
+  }
+  
+  /**
+   * Returns function that called when item is clicked.
+   *
+   * @param fileItem - clicked file item.
+   * @return {function} click handler.
+   * @private
+   */
+  _getClickHandler(fileItem) {
+    return () => {
+      if (fileItem.isSelected && !fileItem.isEditing) {
+        fileItem.isEditing = true;
+        return;
+      }
+      if (this._selectedItem) {
+        this._selectedItem.isSelected = false;
+      }
+      fileItem.isSelected = true;
+      this._selectedItem = fileItem;
+    };
+  }
+  
+  /**
+   * Shows items in renaming state.
+   *
+   * @param {Set<string>} renamingItemIds - ids of renaming items.
+   */
+  set renamingItems(renamingItemIds) {
+    this._renamingItemIds = renamingItemIds;
+    this._fileItemComponents.forEach((item) => item.isRenaming = renamingItemIds.has(item.model.id));
+  }
+  
+  /**
+   * Registers function that is called on folder double click.
+   *
+   * @param {Function} handler - callback for double click.
+   */
+  onFolderDoubleClick(handler) {
+    this._onFolderDoubleClick = handler;
   }
 }

@@ -187,7 +187,7 @@ export class FileItemList extends Component {
   /**
    * Returns function that called when item is clicked.
    *
-   * @param fileItem - clicked file item.
+   * @param {FileItem} fileItem - clicked file item.
    * @return {function} click handler.
    * @private
    */

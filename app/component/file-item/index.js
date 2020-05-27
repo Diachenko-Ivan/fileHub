@@ -64,7 +64,11 @@ export class FileItem extends Component {
     });
     
     input.addEventListener('change', () => {
-      this.model.name = input.value;
+      if (this.model.type === 'folder') {
+        this.model.name = input.value;
+      } else {
+        this.model.name = `${input.value}.${this.model.name.split('.')[1]}`;
+      }
       this._onNameChange(this.model);
       input.blur();
     });
@@ -125,7 +129,11 @@ export class FileItem extends Component {
     const input = this.rootContainer.querySelector('input');
     this._isEditing = value;
     this.rootContainer.classList.toggle('editing', value);
-    input.value = this.model.name;
+    if (this.model.type === 'folder') {
+      input.value = this.model.name;
+    } else {
+      input.value = this.model.name.split('.')[0];
+    }
     input.focus();
   }
   

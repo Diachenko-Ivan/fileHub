@@ -15,7 +15,7 @@ export class CreateFolderAction extends Action {
     const parentFolder = stateManager.state.currentFolder;
     stateManager.mutate(new NewFolderSourceMutator(parentFolder));
     try {
-      const newFolder = await apiService.getNewFolder({
+      const newFolder = await apiService.createFolder({
         type: 'folder',
         filesCount: 0,
         parentId: parentFolder.id,

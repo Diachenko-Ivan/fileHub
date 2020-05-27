@@ -391,7 +391,7 @@ export default module('ApiService', function (hook) {
     const renamedFolder = {name: 'NewName', parentId: 'id'};
     const responseFolder = {name: 'NewName', id: 'afd', parentId: 'id', filesCount: 0};
     fetchMock.once('/folder/id/folder', responseFolder);
-    service.getNewFolder(renamedFolder)
+    service.createFolder(renamedFolder)
       .then((folder) => {
         assert.deepEqual(responseFolder, folder, 'Should return correct folder on success.');
         done();
@@ -404,15 +404,15 @@ export default module('ApiService', function (hook) {
   });
   
   test('should return authorization error on folder creation.', function (assert) {
-    testCommonErrors(assert, `/folder/id/folder`, 401, 'getNewFolder', {parentId: 'id'});
+    testCommonErrors(assert, `/folder/id/folder`, 401, 'createFolder', {parentId: 'id'});
   });
   
   test('should return server error on folder creation.', function (assert) {
-    testCommonErrors(assert, `/folder/id/folder`, 500, 'getNewFolder', {parentId: 'id'});
+    testCommonErrors(assert, `/folder/id/folder`, 500, 'createFolder', {parentId: 'id'});
   });
   
   test('should return not-found error on folder creation..', function (assert) {
-    testCommonErrors(assert, `/folder/id/folder`, 404, 'getNewFolder', {parentId: 'id'});
+    testCommonErrors(assert, `/folder/id/folder`, 404, 'createFolder', {parentId: 'id'});
   });
 });
 

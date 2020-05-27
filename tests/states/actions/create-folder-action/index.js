@@ -13,7 +13,7 @@ export default module('CreateFolderAction', function () {
     const done = assert.async();
     const error = new Error('error');
     const apiService = {
-      getNewFolder() {
+      createFolder() {
         return Promise.reject(error);
       },
     };
@@ -49,7 +49,7 @@ export default module('CreateFolderAction', function () {
     const done = assert.async();
     const action = new CreateFolderAction();
     const apiService = {
-      getNewFolder() {
+      createFolder() {
         return Promise.resolve(model);
       },
     };

@@ -227,7 +227,7 @@ export class ApiService {
    * @param {FolderModel} folder - object sent to server.
    * @return {Promise<FolderModel>} new created folder.
    */
-  getNewFolder(folder) {
+  createFolder(folder) {
     return fetch(`/folder/${folder.parentId}/folder`, {
       method: 'POST',
       headers: this._getAuthenticationHeader(),

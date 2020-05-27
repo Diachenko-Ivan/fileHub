@@ -69,9 +69,7 @@ export class FileComponent extends FileItem {
     
     this.downloadIcon.onClick(() => this._onDownload(this.model));
     
-    this.removeIcon.onClick(() => {
-      this.removeHandler(this.model);
-    });
+    this.removeIcon.onClick(() => this.removeHandler(this.model));
   }
   
   /**

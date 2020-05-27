@@ -32,7 +32,7 @@ export class MockFileSystem {
    */
   _fileObjects = [];
   /**
-   * User as number for new folder.
+   * Used as number for new folder.
    * @type {number}
    * @private
    */

@@ -127,7 +127,7 @@ export class FileHubPage extends StateAwareComponent {
     });
     this.onStateChange('currentFolder', (state) => {
       this.uploadFileButton.isLoading = state.uploadingFolderIds.has(state.currentFolder.id);
-      this.createFolderButton.isLoading = state.newFolderSource === state.currentFolder;
+      this.createFolderButton.isLoading = state.newFolderSource && state.newFolderSource.id === state.currentFolder.id;
       this.directoryPath.folder = state.currentFolder;
       TitleService.getInstance().setTitle(`${state.currentFolder.name} - FileHub`);
     });
@@ -219,22 +219,19 @@ export class FileHubPage extends StateAwareComponent {
   addEventListener() {
     const uploadWindowService = new UploadWindowService();
     
-    this.uploadFileButton.onClick(() => {
-      uploadWindowService.openUploadWindow((file) => {
-        this.dispatch(new UploadFileAction(this.stateManager.state.currentFolder, file));
-      });
-    });
+    this.uploadFileButton.onClick(() =>
+      uploadWindowService.openUploadWindow((file) =>
+        this.dispatch(new UploadFileAction(this.stateManager.state.currentFolder, file))),
+    );
     
     this.createFolderButton.onClick(() => this.dispatch(new CreateFolderAction()));
     
-    this.fileList.onUploadFileToFolder((model) => {
-      uploadWindowService.openUploadWindow((file) => {
-        this.dispatch(new UploadFileAction(model, file));
-      });
-    });
-    this.fileList.onRemoveListItem((model) => {
-      this.dispatch(new RemoveItemAction(model));
-    });
+    this.fileList.onUploadFileToFolder((model) =>
+      uploadWindowService.openUploadWindow((file) =>
+        this.dispatch(new UploadFileAction(model, file))),
+    );
+    
+    this.fileList.onRemoveListItem((model) => this.dispatch(new RemoveItemAction(model)));
     
     this.logOutLink.addEventListener('click', (event) => {
       event.preventDefault();

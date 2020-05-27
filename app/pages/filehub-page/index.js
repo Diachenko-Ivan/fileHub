@@ -127,7 +127,7 @@ export class FileHubPage extends StateAwareComponent {
     });
     this.onStateChange('currentFolder', (state) => {
       this.uploadFileButton.isLoading = state.uploadingFolderIds.has(state.currentFolder.id);
-      this.createFolderButton.isLoading = state.newFolderSourceId === state.currentFolder.id;
+      this.createFolderButton.isLoading = state.newFolderSource === state.currentFolder;
       this.directoryPath.folder = state.currentFolder;
       TitleService.getInstance().setTitle(`${state.currentFolder.name} - FileHub`);
     });

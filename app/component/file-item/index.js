@@ -69,8 +69,8 @@ export class FileItem extends Component {
       } else {
         this.model.name = `${input.value}.${this.model.name.split('.')[1]}`;
       }
-      this._onNameChange(this.model);
       input.blur();
+      this._onNameChange(this.model);
     });
     
     input.addEventListener('click', (event) => event.stopPropagation());

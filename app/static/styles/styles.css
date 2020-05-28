@@ -1,9 +1,9 @@
 /*Common styles*/
 
 body {
-    font: 14px/28px Arial, Helvetica, sans-serif;
-    color: #000000;
-    background: #ffffff;
+    font: 14px/18px Arial, Helvetica, sans-serif;
+    color: #000;
+    background: #fff;
 }
 
 a {
@@ -15,26 +15,33 @@ a:hover {
     text-decoration: underline;
 }
 
-.input{
+.input {
     border: 2px solid #d3d3d3;
+    line-height: 23px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .input:focus {
     box-shadow: 0 0 5px #337ab7;
 }
 
-.header{
-    font-size: 30px;
-    border-bottom: 2px solid #999;
-    margin: 0 0 14px;
-    padding-bottom: 8px;
+.button {
+    font-size: 14px;
+    border: 0 solid;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 4px 14px;
+    background-color: #337ab7;
+    color: #fff;
+    line-height: 23px;
 }
 
-.button {
-    font-size: 18px;
-    border: 0px solid;
-    border-radius: 8px;
-    cursor: pointer;
+.button i {
+    top: 4px;
+    font-size: 20px;
 }
 
 .button:hover {
@@ -44,306 +51,295 @@ a:hover {
 .logo {
     position: absolute;
     width: 160px;
-    height: 70px;
-    top: -65px;
-    left: -2px;
+    height: 65px;
+    top: -70px;
+    left: 0;
 }
 
-.application-box{
+.user-menu {
+    position: absolute;
+    right: 9px;
+    top: -37px;
+}
+
+.user-menu li {
+    display: inline;
+    border-right: 1px solid #000;
+    padding: 0 11px 0 5px;
+}
+
+.user-menu li .glyphicon {
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+.user-menu :last-child {
+    border-style: none;
+}
+
+.application-box {
     box-sizing: border-box;
-    box-shadow: 0 0 20px #999999;
-    background-color: #ffffff;
-    border: 2px solid #999999;
+    box-shadow: 0 0 20px #999;
+    background-color: #fff;
+    border: 2px solid #999;
     border-radius: 8px;
-    margin: 100px auto 0px;
-    padding: 20px;
-    width: 900px;
+    margin: 100px auto 0;
+    width: 903px;
     position: relative;
+    padding: 20px;
+}
+
+.header {
+    font-size: 22px;
+    padding-bottom: 13px;
+    margin-bottom: 12px;
+    border-bottom: 2px solid #999;
+}
+
+.header i {
+    position: absolute;
+    top: 17px;
+    left: 416px;
+    font-size: 24px;
 }
 
 /*Styles for authentication and registration form*/
 
-.user-form{
-    width: 34%;
-    min-width: 600px;
-    padding: 28px;
+.form-box {
+    width: 465px;
 }
 
-.user-form .form-input {
-    border-radius: 7px;
+.form-box .input {
     width: 100%;
-    height: 33px;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 
-.user-form input::placeholder {
-    font-size: 18px;
-    padding: 20px 10px;
+.form-box .row {
+    margin: 0 0 13px;
 }
 
-
-.user-form .form-header .form-target {
+.form-box .row label {
     float: left;
+    width: 30%;
+    margin-top: 4px;
 }
 
-.user-form .form-header .user-icon {
-    float: right;
-}
-
-.user-form .form-header::after {
-    display: block;
-    clear: both;
-    content: "";
-}
-
-.user-form .header .user-icon i {
-    font-size: 30px;
-}
-
-.user-form .credential-container, .form-footer-container {
-    box-sizing: border-box;
-    margin: 0px auto 14px;
-}
-
-.user-form .credential-container label {
-    margin-top: 9px;
-    float: left;
-    font-size: 20px;
-    width: 35%;
-}
-
-.user-form .input-container, .form-footer-button-container {
+.form-box .row .input-container {
     width: 60%;
     float: right;
 }
 
-.user-form .credential-container .error-message {
-    color: red;
-    font-size: 17px;
-    line-height: 30px;
+.form-box .row .error-message {
+    color: #f00;
+    font-size: 12px;
 }
 
-.user-form .credential-container:after, .form-footer-container:after {
+.form-box .auth-error-message {
+    display: none;
+    color: #f00;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 7px;
+}
+
+.form-box .auth-error-message.shown {
+    display: block;
+}
+
+.form-box .row:after {
     display: block;
     clear: both;
     content: "";
 }
 
-.user-form .form-footer-container{
-    margin-bottom: 0px;
+.form-box > .row:last-child {
+    margin-bottom: 0;
 }
 
-.user-form .form-link {
+.form-box .form-link {
     float: right;
-    margin-top: 8px;
-    font-size: 16px;
+    margin-top: 5px;
+    font-size: 12px;
 }
 
-.user-form .form-button {
+.form-box .button {
     float: left;
-    padding: 13px 20px;
-    background-color: #337ab7;
-    color: #ffffff;
 }
 
-.user-form .form-button:hover {
-    background-color: #339ab7;
-}
 
 /*Styles for file explorer*/
 
-.file-explorer-container .footer {
-    font-size: 14px;
-    padding-top: 5px;
+.footer {
+    padding-top: 12px;
     border-top: 2px solid #999;
     text-align: center;
 }
 
 .file-explorer-container .main {
-    height: 600px;
+    height: 580px;
     overflow-y: auto;
 }
 
-.user-menu {
-    position: absolute;
-    right: 20px;
-    top: -40px;
-}
-
-.file-explorer-container .user-menu li {
-    display: inline;
-    border-right: 1px solid #000000;
-    padding-right: 5px;
-}
-
-.file-explorer-container .user-menu :last-child{
-    border-style: none;
-}
-
-.file-explorer-container .glyphicon {
-    font-size: 20px;
-    margin-right: 8px;
-    top: 5px;
-}
-
-
 .file-explorer-container .content-header {
-    padding: 10px 15px 20px;
+    padding: 16px 12px 20px;
     position: sticky;
     top: 0;
-    border-bottom: 2px solid #999;
+    border-bottom: 1px solid #999;
     z-index: 1;
     background-color: #fff;
 }
 
+.file-explorer-container .path-title {
+    font-size: 20px;
+    font-weight: 600;
+    width: 500px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.file-explorer-container .path-title i {
+    top: 0;
+    margin-right: 9px;
+    font-size: 20px;
+}
+
 .file-explorer-container .content-header .head-buttons {
     position: absolute;
-    left: 500px;
+    right: 11px;
+    bottom: 12px;
 }
 
-.file-explorer-container .content-header .head-button {
-    padding: 4px 10px 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    float: right;
-    margin-left: 30px;
-    color: #ffffff;
+.file-explorer-container .content-header .button {
+    margin-left: 10px;
+    max-width: 150px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
-.file-explorer-container .content-header .directory-path {
-    width: 56%;
-    font-size: 22px;
-    font-weight: 600;
-    text-align: left;
-}
-
-.upload{
-    background-color: #337ab7;
-}
-
-.create {
-    background-color: darkcyan;
-}
-
-.file-explorer-container .content-table {
+.table {
     width: 100%;
+    table-layout: fixed;
 }
 
-.file-explorer-container .content-table .row {
-    border-bottom: 1px solid #999;
-    width: 100%;
-    font-size: 14px;
+.table .glyphicon {
+    font-size: 20px;
+    margin-right: 9px;
+    top: 4px;
 }
 
-.content-table .row:hover {
-    background-color: #f4f4f4;
-}
-.file-explorer-container .row .file-action-icons {
-    opacity: 0;
-}
-
-.file-explorer-container tbody .row:hover .file-action-icons {
-    opacity: 1;
-}
-
-.file-explorer-container .content-table td, th {
-    vertical-align: middle;
-    padding-top: 11px;
-    padding-bottom: 11px;
-}
-
-.file-explorer-container .content-table .arrow{
-    width: 4%;
-}
-
-.file-explorer-container .arrow .glyphicon-menu-right {
+.table .glyphicon-menu-right {
     font-size: 12px;
     margin-left: 8px;
     top: 2px;
 }
 
-.file-explorer-container .content-table .row td .file-name i {
-    color: #000000;
+.table .item-row {
+    border-bottom: 1px solid #999;
 }
 
-.file-explorer-container .content-table .row td .cell-file-name {
-    display: block;
-    width: 100%;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+.table .item-row:hover {
+    background-color: #f4f4f4;
 }
 
-.content-table .cell-file-name {
-    display: block;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+.table tbody .item-row:hover .cell-action-icons i {
+    opacity: 1;
 }
- .cell-file-name .edit-input {
+
+.table .cell-file-name .input {
     width: 300px;
     display: none;
 }
 
-.content-table .row.editing .file-name,
-.content-table .row.editing .folder-name {
+.table .item-row.editing .name {
     display: none;
 }
 
-.content-table .row.editing .edit-input {
+.table .item-row.editing .input {
     display: inline-block;
 }
-.file-explorer-container .content-table .row .edit-input {
-    border-radius: 5px;
-    width: 62%;
-    line-height: 25px;
-    font-size: 14px;
-    padding-left: 5px;
+
+.table td {
+    padding: 12px 5px 12px;
+    line-height: 28px;
 }
 
-.file-explorer-container .content-table .row .file-count, .file-size {
-    width: 20%;
-    text-align: center;
+.table .cell-arrow {
+    width: 32px;
 }
 
-.file-explorer-container .content-table .row .file-action-icons {
-    width: 20%;
+.table .cell-count {
+    width: 101px;
+}
+
+.table .cell-action-icons {
     text-align: right;
+    width: 118px;
 }
 
-.file-explorer-container .content-table .row .file-action-icons .glyphicon-upload {
-    color: 	#32CD32;
+.table .cell-action-icons i {
+    opacity: 0;
+    cursor: pointer;
 }
 
-.file-explorer-container .content-table .row .file-action-icons .glyphicon-download {
+.table .cell-file-name {
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.table .cell-action-icons .glyphicon-upload {
+    color: #32cd32;
+}
+
+.table .cell-action-icons .glyphicon-download {
     color: #76baec;
 }
 
-.file-explorer-container .content-table .row .file-action-icons .glyphicon-remove-circle {
-    color: #ff0000;
+.table .cell-action-icons .glyphicon-remove-circle {
+    color: #f00;
 }
 
-.content-table .row.is-selected {
+/** Error page styles*/
+
+.error-code {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #a35959;
+}
+
+.not-found-message {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+/**Selected styles */
+.table .item-row.is-selected {
     background-color: #c0dbe8;
 }
- .content-table .row:not:hover(.is-selected) {
+
+.table .item-row:not:hover(.is-selected) {
     background: #f4f4f4;
 }
 
-/** loading styles
- */
-.content-table .cell-file-name .item-loader{
+/** loading styles*/
+.table .cell-file-name .item-loader {
     display: none;
 }
 
-.content-table tr.is-loading .cell-file-name .item-loader {
+.table .item-row.is-loading .cell-file-name .item-loader {
     display: inline-block;
     width: 8px;
     height: 13px;;
 }
-.content-table tr.is-loading {
+
+.table .item-row.is-loading {
     pointer-events: none;
 }
+
 .item-loader:after {
     content: "";
     display: block;
@@ -356,6 +352,7 @@ a:hover {
     border-color: #636363 transparent #636363 transparent;
     animation: item-loader 1.2s linear infinite;
 }
+
 @keyframes item-loader {
     0% {
         transform: rotate(0deg);
@@ -365,32 +362,27 @@ a:hover {
     }
 }
 
-.content-table .file-action-icons.is-disabled .glyphicon-download,
-.content-table .file-action-icons.is-disabled .glyphicon-upload,
-.content-table .file-action-icons.is-disabled .glyphicon-remove-circle {
-    opacity: 0.1;
-    pointer-events: none;
-}
-
 /**
 button loading
  */
 .button .item-loader {
     display: none;
 }
+
 .button .item-loader:after {
     margin: 0;
     border-color: #fff transparent #fff transparent;
 }
+
 .button.is-loading .item-loader {
     display: inline-block;
-    width: 30px;
-    height: 18px;
+    width: 21px;
+    height: 15px;
 }
 
 .button.is-disabled {
     pointer-events: none;
- }
+}
 
 .button.is-disabled .glyphicon {
     display: none;
@@ -398,22 +390,22 @@ button loading
 
 /**Rename loader*/
 
-.content-table .cell-file-name .rename-loader{
+.table .cell-file-name .rename-loader {
     display: none;
 }
 
-.content-table tr.is-renaming .rename-loader {
+.table .item-row.is-renaming .rename-loader {
     display: inline-block;
     position: relative;
     width: 15px;
     height: 19px;
 }
-.content-table tr.is-renaming {
-  pointer-events: none;
+
+.table .item-row.is-renaming {
+    pointer-events: none;
 }
 
-.content-table tr.is-renaming .file-name,
-.content-table tr.is-renaming .folder-name{
+.table .item-row.is-renaming .name {
     display: none;
 }
 
@@ -451,4 +443,48 @@ button loading
         height: 15px;
     }
 }
+
+/**
+List loading
+ */
+.list-loader {
+    display: none;
+}
+.list-loader.loading {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+    top: 100px;
+    left: 350px;
+}
+.list-loader.loading ~ .file-list {
+    display: none;
+}
+.list-loader:after {
+    content: " ";
+    display: block;
+    border-radius: 50%;
+    width: 0;
+    height: 0;
+    margin: 8px;
+    box-sizing: border-box;
+    border: 70px solid #636363;
+    border-color: #636363 transparent #636363 transparent;
+    animation: list-loader 1.2s infinite;
+}
+@keyframes list-loader {
+    0% {
+        transform: rotate(0);
+        animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    }
+    50% {
+        transform: rotate(900deg);
+        animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+    100% {
+        transform: rotate(1800deg);
+    }
+}
+
 

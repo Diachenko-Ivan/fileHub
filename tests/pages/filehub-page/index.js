@@ -156,6 +156,17 @@ export default module('FileHubPage', function () {
     stateManager.state.downloadErrorObject = {model: {name: '123'}, error: new AuthenticationError()};
     assert.verifySteps(['Authorization failed'], 'Should redirect to login page.');
   });
+  
+  test('should call method for failed authorization in folder creation.', function (assert) {
+    const state = {
+      createFolderError: {},
+    };
+    const stateManager = new StateManager(state, {});
+    const fileHub = new FileHubPage(fixture, stateManager);
+    fileHub.onFailedAuthorization(() => assert.step('Authorization failed'));
+    stateManager.state.createFolderError =  new AuthenticationError();
+    assert.verifySteps(['Authorization failed'], 'Should redirect to login page.');
+  });
 });
 
 

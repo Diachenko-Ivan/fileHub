@@ -193,7 +193,7 @@ export class ApiService {
     return fetch(`/folder/${folderId}/file`, {
       method: 'POST',
       body: formData,
-      headers: this._getAuthenticationHeader()
+      headers: this._getAuthenticationHeader(),
     }).then((response) => {
       if (response.ok) {
         return response.json();
@@ -201,7 +201,7 @@ export class ApiService {
       return this._handleCommonErrors(response);
     });
   }
-
+  
   /**
    * Sends request for file or folder renaming.
    *
@@ -212,7 +212,7 @@ export class ApiService {
     return fetch(`/${item.type}/${item.id}`, {
       method: 'PUT',
       headers: this._getAuthenticationHeader(),
-      body: JSON.stringify(item)
+      body: JSON.stringify(item),
     }).then((response) => {
       if (response.ok) {
         return response.json();
@@ -220,7 +220,26 @@ export class ApiService {
       return this._handleCommonErrors(response);
     });
   }
-
+  
+  /**
+   * Sends request for creating a new folder.
+   *
+   * @param {FolderModel} folder - object sent to server.
+   * @return {Promise<FolderModel>} new created folder.
+   */
+  createFolder(folder) {
+    return fetch(`/folder/${folder.parentId}/folder`, {
+      method: 'POST',
+      headers: this._getAuthenticationHeader(),
+      body: JSON.stringify(folder),
+    }).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return this._handleCommonErrors(response);
+    });
+  }
+  
   /**
    * @return {ApiService} singleton.
    */

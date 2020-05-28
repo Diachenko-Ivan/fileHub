@@ -187,7 +187,7 @@ export class FileItemList extends Component {
   /**
    * Returns function that called when item is clicked.
    *
-   * @param fileItem - clicked file item.
+   * @param {FileItem} fileItem - clicked file item.
    * @return {function} click handler.
    * @private
    */
@@ -222,5 +222,19 @@ export class FileItemList extends Component {
    */
   onFolderDoubleClick(handler) {
     this._onFolderDoubleClick = handler;
+  }
+  
+  /**
+   * Shows new folder in editing state.
+   *
+   * @param {string} id - id of new created folder.
+   */
+  set newFolder(id) {
+    const newFolderItem = this._fileItemComponents.find((item) => item.model.id === id);
+    if (newFolderItem) {
+      newFolderItem.isSelected = true;
+      newFolderItem.isEditing = true;
+      this._selectedItem = newFolderItem;
+    }
   }
 }

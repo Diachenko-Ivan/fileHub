@@ -54,12 +54,8 @@ export class FolderComponent extends FileItem {
   addEventListener() {
     super.addEventListener();
     
-    this.removeIcon.onClick(() => {
-      this.removeHandler(this.model);
-    });
-    this.uploadIcon.onClick(() => {
-      this._onUploadFile(this.model);
-    });
+    this.removeIcon.onClick(() => this.removeHandler(this.model));
+    this.uploadIcon.onClick(() => this._onUploadFile(this.model));
     
     this.rootContainer.addEventListener('dblclick', () => this._onDoubleClick(this.model.id));
     

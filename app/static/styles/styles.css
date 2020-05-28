@@ -370,14 +370,14 @@ button loading
 }
 
 .button .item-loader:after {
-    margin: 0;
+    margin: 3px 4px 0 0;
     border-color: #fff transparent #fff transparent;
 }
 
 .button.is-loading .item-loader {
     display: inline-block;
     width: 21px;
-    height: 15px;
+    height: 19px;
 }
 
 .button.is-disabled {

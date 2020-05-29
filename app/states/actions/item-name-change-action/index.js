@@ -34,9 +34,10 @@ export class RenameItemAction extends Action {
       stateManager.mutate(new RenameErrorMutator({model, error}));
     } finally {
       stateManager.mutate(new RenamedItemsMutator(model.id));
-      if (initialFolderId === stateManager.state.currentFolder.id
+      const currentFolderId = stateManager.state.currentFolder.id;
+      if (initialFolderId === currentFolderId
         && !(possibleError && possibleError instanceof AuthenticationError)) {
-        await stateManager.dispatch(new GetFolderContentAction(stateManager.state.currentFolder.id));
+        await stateManager.dispatch(new GetFolderContentAction(currentFolderId));
       }
     }
   }

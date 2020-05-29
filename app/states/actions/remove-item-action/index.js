@@ -38,9 +38,11 @@ export class RemoveItemAction extends Action {
       stateManager.mutate(new RemoveItemErrorMutator(e));
     } finally {
       stateManager.mutate(new RemovedItemsMutator(model.id));
-      if (initialFolderId === stateManager.state.currentFolder.id
+      const currentFolderId = stateManager.state.currentFolder.id;
+      console.log(currentFolderId, initialFolderId);
+      if (initialFolderId === currentFolderId
         && !(possibleError && possibleError instanceof AuthenticationError)) {
-        await stateManager.dispatch(new GetFolderContentAction(stateManager.state.currentFolder.id));
+        await stateManager.dispatch(new GetFolderContentAction(currentFolderId));
       }
     }
   }

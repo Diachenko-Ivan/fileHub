@@ -23,6 +23,7 @@ export class RenameItemAction extends Action {
    * @inheritdoc
    */
   async apply(stateManager, apiService) {
+    const initialFolderId = stateManager.state.currentFolder.id;
     let possibleError;
     const model = this.model;
     stateManager.mutate(new RenamingItemsMutator(model.id));
@@ -33,7 +34,8 @@ export class RenameItemAction extends Action {
       stateManager.mutate(new RenameErrorMutator({model, error}));
     } finally {
       stateManager.mutate(new RenamedItemsMutator(model.id));
-      if (!(possibleError && possibleError instanceof AuthenticationError)) {
+      if (initialFolderId === stateManager.state.currentFolder.id
+        && !(possibleError && possibleError instanceof AuthenticationError)) {
         await stateManager.dispatch(new GetFolderContentAction(stateManager.state.currentFolder.id));
       }
     }

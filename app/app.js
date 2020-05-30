@@ -62,7 +62,7 @@ export class Application extends Component {
         fileHubPage.onFolderChange((id) => router.redirectTo(`/folder/${id}`) )
         return fileHubPage;
       },
-      [NOT_FOUND_PAGE_URL]: () => new ErrorPage(this.rootContainer, 404, 'Sorry, this page was not found.'),
+      [NOT_FOUND_PAGE_URL]: () => new ErrorPage(this.rootContainer),
     };
     
     this.router = Router.builder()

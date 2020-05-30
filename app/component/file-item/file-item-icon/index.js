@@ -13,6 +13,7 @@ export class Icon extends Component {
   /**
    * @typedef IconDescription
    * @property {string} styleClass - type of icon.
+   * @property {string} title - icon title.
    */
   /**
    * Creates new {@type Icon} component.
@@ -30,7 +31,7 @@ export class Icon extends Component {
    * @inheritdoc
    */
   markup() {
-    return `<i data-element="icon" class="glyphicon glyphicon-${this.styleClass}"></i>`;
+    return `<i data-element="icon" title="${this.title}" class="glyphicon glyphicon-${this.styleClass}"></i>`;
   }
   
   /**

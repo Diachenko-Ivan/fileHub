@@ -4,6 +4,7 @@ import CredentialValidator from '../../services/validator';
 import {UserCredentials} from '../../models/user-credentials';
 import {MinLengthRule, NotEmptyRule, RegexpRule} from '../../services/validator/rules';
 import {Button} from '../button';
+import {LOGIN_PAGE_URL} from '../../config/router-config';
 
 /**
  * Used for defining login input.
@@ -31,35 +32,37 @@ export class RegistrationFormComponent extends Component {
     super(container);
     this.render();
   }
-
+  
   /**
    * @inheritdoc
    */
   markup() {
     return `
-       <form data-test="registration-form" class="application-box user-form">
-            <img alt="TeamDev" class="logo" src="../src/main/resources/teamdev.png"> 
-            <header class="header form-header">
-                <div class="form-target"><h1>Registration</h1></div>
-                <div class="user-icon"><i class="glyphicon glyphicon-user"></i></div>
+       <form data-test="registration-form" class="application-box form-box">
+            <img alt="TeamDev" class="logo" src="./static/images/teamdev.png">
+            <header class="header">
+                <h1>Registration</h1>
+                <i class="glyphicon glyphicon-user"></i>
             </header>
             <div data-element="inputs"></div>
-            <div class="form-footer-container">
-                <div data-element="button-link" class="form-footer-button-container">
-                   <a class="form-link" href="#/login">Already have an account?</a> 
+            <div class="row">
+                <div data-element="button-link" class="input-container">
+                    <a title="Already have an account?" class="form-link" href="#${LOGIN_PAGE_URL}">
+                       Already have an account?
+                    </a>
                 </div>
             </div>
-        </form>   
+       </form>
 `;
   }
-
+  
   /**
    * @inheritdoc
    */
   initNestedComponents() {
     const inputs = this.rootContainer.querySelector('[data-element="inputs"]');
     const buttonContainer = this.rootContainer.querySelector('[data-element="button-link"]');
-
+    
     this.loginInput = new FormInput(inputs, {
       inputId: 'login',
       inputType: 'text',
@@ -67,7 +70,7 @@ export class RegistrationFormComponent extends Component {
       inputPlaceholder: 'Login',
       labelText: 'Username',
     });
-
+    
     this.passwordInput = new FormInput(inputs, {
       inputId: 'password',
       inputType: 'password',
@@ -75,7 +78,7 @@ export class RegistrationFormComponent extends Component {
       inputPlaceholder: 'Password',
       labelText: 'Password',
     });
-
+    
     this.repeatPasswordInput = new FormInput(inputs, {
       inputId: 'repeatPassword',
       inputType: 'password',
@@ -83,33 +86,34 @@ export class RegistrationFormComponent extends Component {
       inputPlaceholder: 'Confirm password',
       labelText: 'Confirm Password',
     });
-
+    
     this.formButton = new Button(buttonContainer, {
-        buttonText: 'Register',
-        className: 'form-button',
-      });
+      buttonText: 'Register',
+      type: 'submit',
+      title: 'Register',
+    });
   }
-
+  
   /**
    * @inheritdoc
    */
   addEventListener() {
     const validator = new CredentialValidator();
-
+    
     this.rootContainer.addEventListener('submit', (event) => {
       event.preventDefault();
       event.stopPropagation();
     });
-
+    
     this.formButton.onClick(() => {
       this.loginInput.cleanErrorMessage();
       this.passwordInput.cleanErrorMessage();
       this.repeatPasswordInput.cleanErrorMessage();
-
+      
       const loginValue = this.loginInput.inputValue;
       const passwordValue = this.passwordInput.inputValue;
       const repeatPasswordValue = this.repeatPasswordInput.inputValue;
-
+      
       validator.validate(
         [{
           name: loginField, value: loginValue, rules: [
@@ -132,7 +136,7 @@ export class RegistrationFormComponent extends Component {
         .catch((errors) => this.showFieldErrors(errors));
     });
   }
-
+  
   /**
    *  Checks the equivalence of password and repeat-password.
    *
@@ -147,7 +151,7 @@ export class RegistrationFormComponent extends Component {
     }
     return true;
   }
-
+  
   /**
    * Shows errors in the result of registration.
    *
@@ -158,7 +162,7 @@ export class RegistrationFormComponent extends Component {
     this.loginInput.showErrorMessage(errorMap[loginField] || '');
     this.passwordInput.showErrorMessage(errorMap[passwordField] || '');
   }
-
+  
   /**
    * Register callback that will be invoked after success credentials validation.
    *

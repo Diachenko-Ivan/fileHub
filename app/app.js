@@ -69,7 +69,7 @@ export class Application extends Component {
       .appContainer(this.rootContainer)
       .window(window)
       .pageMapping(pageMapping)
-      .defaultUrl(LOGIN_PAGE_URL)
+      .defaultUrl(FILEHUB_PAGE_URL)
       .onDynamicHashChange((staticPart, requestParam) =>
         stateManager.dispatch(new DynamicRouteChangeAction(staticPart, requestParam)))
       .build();

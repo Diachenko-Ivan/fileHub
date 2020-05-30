@@ -60,7 +60,7 @@ export class Router {
    * @param {string} url - page url for first application load.
    */
   set defaultUrl(url) {
-    if (!this._pageMapping[url]) {
+    if (!this._getUrlTemplate(url)) {
       throw new Error('This url can not be default. It does not exist.');
     }
     this._defaultUrl = url;

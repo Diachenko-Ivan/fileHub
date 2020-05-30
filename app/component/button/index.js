@@ -25,7 +25,8 @@ export class Button extends Component {
   
   /**
    * @typedef ButtonDescription
-   * @property {string} className - button class.
+   * @property {string} title - button title.
+   * @property {string} type - button type.
    * @property {string} buttonText - text in button.
    * @property {string} iconClass - class of button icon if such exists.
    */
@@ -45,7 +46,10 @@ export class Button extends Component {
    * @inheritdoc
    */
   markup() {
-    return `<button data-test="button" class="button ${this.className}"><div data-element="loader" class="item-loader"></div>${this.buttonText}</button>`;
+    return `<button title="${this.title}" type="${this.type}" data-test="button" class="button">
+                <div data-element="loader" class="item-loader"></div>
+                    ${this.buttonText}
+            </button>`;
   }
   
   /**

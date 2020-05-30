@@ -22,7 +22,7 @@ export class FormInput extends Component {
     super(container);
     Object.assign(this, inputPropertiesDescriptor);
     this.render();
-    this._errorMessage = this.rootContainer.querySelector('.error-message');
+    this._errorMessage = this.rootContainer.querySelector('[data-test="error-message"]');
   }
 
   /**
@@ -31,15 +31,14 @@ export class FormInput extends Component {
   markup() {
     const {inputId, labelText, inputType, inputName, inputPlaceholder} = this;
     return `
-            <div data-test="form-input" class="credential-container">
-                <label id="input-label" for="${inputId}">${labelText}</label>
-
+            <div class="row">
+                <label for="${inputId}">${labelText}</label>
                 <div class="input-container">
-                    <input type="${inputType}" id="${inputId}" 
-                    name="${inputName}" placeholder="${inputPlaceholder}" class="input form-input"/>
-                    <div data-test="error-message" class="error-message"></div>
+                    <input class="input" id="${inputId}" type="${inputType}" placeholder="${inputPlaceholder}" name="${inputName}"/>
+                    <span data-test="error-message" class="error-message"></span>
                 </div>
             </div>
+       
 `;
   }
 

@@ -68,7 +68,7 @@ export class FileItemList extends Component {
    * @inheritdoc
    */
   markup() {
-    return `<table data-element="file-list" class="content-table">
+    return `<table data-element="file-list" class="table">
                 <tbody>
                 </tbody>
             </table>`;

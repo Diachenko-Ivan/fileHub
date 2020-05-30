@@ -4,6 +4,7 @@ import CredentialValidator from '../../services/validator';
 import {UserCredentials} from '../../models/user-credentials';
 import {MinLengthRule, NotEmptyRule, RegexpRule} from '../../services/validator/rules';
 import {Button} from '../button';
+import {REGISTRATION_PAGE_URL} from '../../config/router-config';
 
 /**
  * Used for defining login input.
@@ -30,7 +31,6 @@ export class LoginFormComponent extends Component {
   constructor(...containers) {
     super(...containers);
     this.render();
-    this._authenticationErrormessage = this.rootContainer.querySelector('[data-element="auth-error-message"]');
   }
 
   /**
@@ -38,17 +38,19 @@ export class LoginFormComponent extends Component {
    */
   markup() {
     return `
-        <form data-test="login-form" class="application-box user-form">
-            <img alt="TeamDev" class="logo" src="../src/main/resources/teamdev.png"> 
-            <header class="header form-header">
-                <div class="form-target"><h1>Login</h1></div>
-                <div class="user-icon"><i class="glyphicon glyphicon-user"></i></div>
+        <form data-test="login-form" class="application-box form-box">
+            <img alt="TeamDev" class="logo" src="./static/images/teamdev.png">
+            <header class="header">
+                <h1>Login</h1>
+                <i class="glyphicon glyphicon-user"></i>
             </header>
-            <div data-element="auth-error-message"></div>
+            <div class="auth-error-message" data-element="auth-error-message"></div>
             <div data-element="inputs"></div>
-            <div class="form-footer-container">
-                <div data-element="button-link" class="form-footer-button-container">
-                   <a class="form-link" href="#/registration">Don't have an account yet?</a> 
+            <div class="row">
+                <div data-element="button-link" class="input-container">
+                    <a title="Don't have an account yet?" class="form-link" href="#${REGISTRATION_PAGE_URL}">
+                        Don't have an account yet?
+                    </a>
                 </div>
             </div>
         </form>  
@@ -61,6 +63,8 @@ export class LoginFormComponent extends Component {
   initNestedComponents() {
     const inputs = this.rootContainer.querySelector('[data-element="inputs"]');
     const buttonContainer = this.rootContainer.querySelector('[data-element="button-link"]');
+   
+    this._authenticationErrormessage = this.rootContainer.querySelector('[data-element="auth-error-message"]');
 
     this.loginInput = new FormInput(inputs, {
       inputId: 'login',
@@ -80,7 +84,8 @@ export class LoginFormComponent extends Component {
 
     this.formButton = new Button(buttonContainer, {
       buttonText: 'Log In',
-      className: 'form-button',
+      title: 'Log In',
+      type: 'submit',
     });
   }
 
@@ -98,7 +103,7 @@ export class LoginFormComponent extends Component {
     this.formButton.onClick(() => {
       this.loginInput.cleanErrorMessage();
       this.passwordInput.cleanErrorMessage();
-      this._authenticationErrormessage.innerText = '';
+      this._authenticationErrormessage.classList.remove('shown');
 
       const loginValue = this.loginInput.inputValue;
       const passwordValue = this.passwordInput.inputValue;
@@ -128,6 +133,7 @@ export class LoginFormComponent extends Component {
    * @param message
    */
   showAuthenticationError(message) {
+    this._authenticationErrormessage.classList.add('shown');
     this._authenticationErrormessage.innerText = message;
   }
 

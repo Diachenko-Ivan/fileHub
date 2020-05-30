@@ -36,17 +36,18 @@ export class FileComponent extends FileItem {
    */
   markup() {
     return `
-                <tr class="row">
-                    <td class="arrow"></td>
+                <tr class="item-row">
+                    <td class="cell-arrow"></td>
                     <td class="cell-file-name" data-element="item-name">
                         <i class="glyphicon glyphicon-${this._defineIcon(this.model.mimeType)}"></i>
-                        <span data-test="file-name" class="file-name">${this.model.name}</span>
-                        <input class="edit-input"/>
+                        <span data-test="file-name" class="name">
+                            ${this.model.name}</span>
+                        <input class="input"/>
                         <div data-element="loader" class="item-loader"></div>
                         <div class="rename-loader"><div></div><div></div><div></div></div>
                     </td>
-                    <td data-test="file-size" class="file-size">${this._getSizeWithMemoryUnit(this.model.size)}</td>
-                    <td data-element="file-action-icons" class="file-action-icons">
+                    <td data-test="file-size" class="cell-count">${this._getSizeWithMemoryUnit(this.model.size)}</td>
+                    <td data-element="file-action-icons" class="cell-action-icons">
                     </td>
                 </tr>`;
   }
@@ -57,8 +58,8 @@ export class FileComponent extends FileItem {
   initNestedComponents() {
     const fileActionIcons = this.rootContainer.querySelector('[data-element="file-action-icons"]');
     
-    this.downloadIcon = new Icon(fileActionIcons, {styleClass: 'download'});
-    this.removeIcon = new Icon(fileActionIcons, {styleClass: 'remove-circle'});
+    this.downloadIcon = new Icon(fileActionIcons, {styleClass: 'download', title: 'Download file'});
+    this.removeIcon = new Icon(fileActionIcons, {styleClass: 'remove-circle', title: 'Remove file'});
   }
   
   /**

@@ -48,6 +48,10 @@ a:hover {
     background-color: #339ab7;
 }
 
+.button:focus {
+    outline-width: 0;
+}
+
 .logo {
     position: absolute;
     width: 160px;

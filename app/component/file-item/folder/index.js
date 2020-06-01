@@ -20,21 +20,24 @@ export class FolderComponent extends FileItem {
    * @inheritdoc
    */
   markup() {
-    return `<tr class="row">
-                <td class="arrow"><i class="glyphicon glyphicon-menu-right"></i></td>
+    return `
+            <tr class="item-row">
+                <td class="cell-arrow">
+                    <i class="glyphicon glyphicon-menu-right"></i>
+                </td>
                 <td class="cell-file-name" data-element="item-name">
                     <i class="glyphicon glyphicon-folder-close"></i>
-                    <span class="folder-name" data-test="name">
-                        <a data-test="folder-name" data-element="folder-link" href="#/folder/${this.model.id}">${this.model.name}</a>
+                    <span class="name" data-test="name">
+                        <a data-test="folder-name" title="${this.model.name}" data-element="folder-link" href="#/folder/${this.model.id}">${this.model.name}</a>
                     </span>
-                    <input class="edit-input"/>
+                    <input class="input"/>
                     <div data-element="loader" class="item-loader"></div>
                     <div class="rename-loader"><div></div><div></div><div></div></div>
                 </td>
-                <td data-test="file-count" class="file-count">${this._numberOfItems()}</td>
-                <td data-element="file-action-icons" class="file-action-icons">
-                    </td>
-                </tr>`;
+                <td data-test="file-count" class="cell-count">${this._numberOfItems()}</td>
+                <td data-element="file-action-icons" class="cell-action-icons">
+                </td>
+            </tr>`;
   }
   
   /**
@@ -44,8 +47,8 @@ export class FolderComponent extends FileItem {
     const fileActionIcons = this.rootContainer.querySelector('[data-element="file-action-icons"]');
     this.folderLink = this.rootContainer.querySelector('[data-element="folder-link"]');
     
-    this.uploadIcon = new Icon(fileActionIcons, {styleClass: 'upload'});
-    this.removeIcon = new Icon(fileActionIcons, {styleClass: 'remove-circle'});
+    this.uploadIcon = new Icon(fileActionIcons, {styleClass: 'upload', title: 'Upload file'});
+    this.removeIcon = new Icon(fileActionIcons, {styleClass: 'remove-circle', title: 'Remove folder'});
   }
   
   /**

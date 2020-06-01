@@ -18,6 +18,7 @@ import {RenameItemAction} from '../../states/actions/item-name-change-action';
 import {DownloadFileAction} from '../../states/actions/download-action';
 import {DownloadService} from '../../services/dowload-anchor-service';
 import {CreateFolderAction} from '../../states/actions/create-folder-action';
+import {FILEHUB_PAGE_URL} from '../../config/router-config';
 import {ToastService} from '../../services/toasts-service';
 
 /**
@@ -48,26 +49,27 @@ export class FileHubPage extends StateAwareComponent {
    * @inheritdoc
    */
   markup() {
-    return `<section class="application-box file-explorer-container">
-        <img alt="TeamDev" class="logo" src="../src/main/resources/teamdev.png">
+    return `
+        <section class="application-box file-explorer-container">
+        <img alt="TeamDev" class="logo" src="./static/images/teamdev.png">
         <ul class="user-menu">
-            <li data-element="user-info" class="username"></li>
-            <li><a data-element="log-out" href="#">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>
+            <li data-element="user-info"></li>
+            <li><a title="Log out" data-element="log-out" href="#">Log out <i class="glyphicon glyphicon-log-out"></i></a></li>
         </ul>
-
-        <header class="header file-explorer-header"><a href="#"><h1>File Explorer</h1></a></header>
-
+        <header class="header">
+            <h1><a title="File Explorer" href="#${FILEHUB_PAGE_URL}">File Explorer</a></h1>
+        </header>
         <div data-element="main" class="main">
             <div class="content-header">
                 <span data-element="directory-path"></span>
-                <span data-element="head-buttons" class="head-buttons">             
-                </span>
+                <div data-element="head-buttons" class="head-buttons">
+                </div>
             </div>
-            <div data-element="progress-bar"></div>
-            <div data-element="file-list"></div>
+            <div class="list-loader" data-element="list-loader"></div>
+            <div class="file-list" data-element="file-list"></div>
         </div>
         <footer class="footer">
-            Copyright &copy; 2020 <a href="#">TeamDev</a>. All rights reserved.
+            <p>Copyright &copy; 2020 <a href="https://www.teamdev.com/">TeamDev</a>. All rights reserved.</p>
         </footer>
     </section>`;
   }
@@ -80,19 +82,21 @@ export class FileHubPage extends StateAwareComponent {
     const headButtonsContainer = this._getContainer('head-buttons');
     this.fileListContainer = this._getContainer('file-list');
     const directoryPathContainer = this._getContainer('directory-path');
-    this.progressBarContainer = this._getContainer('progress-bar');
+    this.progressBarContainer = this._getContainer('list-loader');
     
     this.directoryPath = new DirectoryPath(directoryPathContainer);
     this.userDetails = new UserDetails(userDetailsContainer);
-    this.uploadFileButton = new Button(headButtonsContainer, {
-      buttonText: 'Upload File',
-      className: 'head-button upload',
-      iconClass: UPLOAD_ICON_CLASS,
-    });
     this.createFolderButton = new Button(headButtonsContainer, {
       buttonText: 'Create Folder',
-      className: 'head-button create',
       iconClass: PLUS_ICON_CLASS,
+      type: 'button',
+      title: 'Create Folder',
+    });
+    this.uploadFileButton = new Button(headButtonsContainer, {
+      buttonText: 'Upload File',
+      iconClass: UPLOAD_ICON_CLASS,
+      type: 'button',
+      title: 'Upload File',
     });
     
     this.logOutLink = this._getContainer('log-out');
@@ -107,11 +111,7 @@ export class FileHubPage extends StateAwareComponent {
    */
   initState() {
     this.onStateChange('isLoading', (state) => {
-      if (state.isLoading) {
-        this.progressBarContainer.innerHTML = '<h2>Loading...</h2>';
-      } else {
-        this.progressBarContainer.innerHTML = '';
-      }
+      this.progressBarContainer.classList.toggle('loading', state.isLoading);
     });
     this.onStateChange('fileList', (state) => {
       this.fileList.fileList = state.fileList;
@@ -176,8 +176,7 @@ export class FileHubPage extends StateAwareComponent {
       if (error instanceof AuthenticationError) {
         this._redirectToLoginPage();
       } else if (error instanceof PageNotFoundError) {
-        new ToastService().show()
-        // alert(`Failed to download ${model.name} file. It does not exist.`);
+        alert(`Failed to download ${model.name} file. It does not exist.`);
         this.dispatch(new GetFolderContentAction(state.locationParam.id));
       } else if (error instanceof GeneralServerError) {
         alert(`Server error! Failed to download ${model.name} file.`);

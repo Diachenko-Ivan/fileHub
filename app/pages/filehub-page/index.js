@@ -18,6 +18,7 @@ import {RenameItemAction} from '../../states/actions/item-name-change-action';
 import {DownloadFileAction} from '../../states/actions/download-action';
 import {DownloadService} from '../../services/dowload-anchor-service';
 import {CreateFolderAction} from '../../states/actions/create-folder-action';
+import {ToastService} from '../../services/toasts-service';
 
 /**
  * Class name for upload icon.
@@ -175,7 +176,8 @@ export class FileHubPage extends StateAwareComponent {
       if (error instanceof AuthenticationError) {
         this._redirectToLoginPage();
       } else if (error instanceof PageNotFoundError) {
-        alert(`Failed to download ${model.name} file. It does not exist.`);
+        new ToastService().show()
+        // alert(`Failed to download ${model.name} file. It does not exist.`);
         this.dispatch(new GetFolderContentAction(state.locationParam.id));
       } else if (error instanceof GeneralServerError) {
         alert(`Server error! Failed to download ${model.name} file.`);

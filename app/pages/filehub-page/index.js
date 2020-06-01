@@ -272,18 +272,25 @@ export class FileHubPage extends StateAwareComponent {
   }
   
   /**
-   * Handles error with concrete type.
+   * @typedef ErrorHandlers
+   * @property {Function} authErrorHandler - handler for authentication error.
+   * @property {Function} notFoundErrorHandler - handler for 404 error.
+   * @property {Function} serverErrorHandler - handler for 500 error.
+   */
+  /**
+   * Handles common errors in application.
    *
-   * @param {Error} loadError - folder or folder content load error.
+   * @param {Error} error - error in application.
+   * @param {ErrorHandlers} errorHandlers - contains handlers for different error types.
    * @private
    */
-  _handleLoadError(loadError) {
-    if (loadError instanceof AuthenticationError) {
-      this._redirectToLoginPage();
-    } else if (loadError instanceof PageNotFoundError) {
-      this._onResourceNotFound();
-    } else if (loadError instanceof GeneralServerError) {
-      alert(loadError.message);
+  _handleCommonErrors(error, errorHandlers) {
+    if (error instanceof AuthenticationError) {
+      errorHandlers.authErrorHandler();
+    } else if (error instanceof PageNotFoundError) {
+      errorHandlers.notFoundErrorHandler();
+    } else if (error instanceof GeneralServerError) {
+      errorHandlers.serverErrorHandler();
     }
   }
   

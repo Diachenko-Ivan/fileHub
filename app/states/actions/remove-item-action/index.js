@@ -3,6 +3,7 @@ import {GetFolderContentAction} from '../get-folder-content-action';
 import {RemovingItemsMutator} from '../../mutator/remove-items-mutator';
 import {RemoveItemErrorMutator} from '../../mutator/remove-item-error-mutator';
 import {RemovedItemsMutator} from '../../mutator/remove-finished-item-mutator';
+import {AuthenticationError} from '../../../models/errors/authentication-error';
 
 /**
  * Action that is responsible for removing item.
@@ -22,6 +23,8 @@ export class RemoveItemAction extends Action {
    * @inheritdoc
    */
   async apply(stateManager, apiService) {
+    const initialFolderId = stateManager.state.currentFolder.id;
+    let possibleError;
     const model = this.model;
     stateManager.mutate(new RemovingItemsMutator(model.id));
     try {
@@ -31,10 +34,15 @@ export class RemoveItemAction extends Action {
         await apiService.removeFile(model.id);
       }
     } catch (e) {
+      possibleError = e;
       stateManager.mutate(new RemoveItemErrorMutator(e));
     } finally {
       stateManager.mutate(new RemovedItemsMutator(model.id));
-      await stateManager.dispatch(new GetFolderContentAction(stateManager.state.currentFolder.id));
+      const currentFolderId = stateManager.state.currentFolder.id;
+      if (initialFolderId === currentFolderId
+        && !(possibleError && possibleError instanceof AuthenticationError)) {
+        await stateManager.dispatch(new GetFolderContentAction(currentFolderId));
+      }
     }
   }
 }

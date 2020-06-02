@@ -37,19 +37,16 @@ const PLUS_ICON_CLASS = 'plus';
  */
 export class FileHubPage extends StateAwareComponent {
   /**
-   * Used for showing pop-up messages.
+   * Creates new instance.
    *
-   * @type {ToastService}
-   * @private
+   * @param container - outer container.
+   * @param {StateManager} stateManager - used to make operations with state.
+   * @param {ToastService} toastService - service for showing pop-up messages.
    */
-  _toastService = new ToastService();
-  
-  /**
-   * @inheritdoc
-   */
-  constructor(container, stateManager) {
+  constructor(container, stateManager, toastService) {
     super(container, stateManager);
     this.render();
+    this._toastService = toastService;
     TitleService.getInstance().setTitle('Root - FileHub');
   }
   
@@ -134,7 +131,7 @@ export class FileHubPage extends StateAwareComponent {
       this._handleCommonErrors(state.loadError, {
         notFoundErrorHandler: () => this._onResourceNotFound(),
         serverErrorHandler: () => this._toastService.showErrorMessage(`Server error! Failed to load folder.`),
-      }, () =>  state.loadError = null);
+      }, () => state.loadError = null);
     });
     this.onStateChange('locationParam', (state) => {
       this.dispatch(new GetFolderAction(state.locationParam.id));

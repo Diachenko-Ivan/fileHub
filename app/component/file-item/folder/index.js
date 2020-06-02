@@ -21,7 +21,8 @@ export class FolderComponent extends FileItem {
    */
   markup() {
     return `
-            <tr class="item-row">
+            <tr class="item-row ${this.getRootElementClasses(
+              {_isLoading: 'is-loading', _isEditing: 'editing', _isRenaming: 'is-renaming', _isSelected: 'is-selected'})}">
                 <td class="cell-arrow">
                     <i class="glyphicon glyphicon-menu-right"></i>
                 </td>
@@ -46,7 +47,7 @@ export class FolderComponent extends FileItem {
   initNestedComponents() {
     const fileActionIcons = this.rootContainer.querySelector('[data-element="file-action-icons"]');
     this.folderLink = this.rootContainer.querySelector('[data-element="folder-link"]');
-    
+// debugger
     this.uploadIcon = new Icon(fileActionIcons, {styleClass: 'upload', title: 'Upload file'});
     this.removeIcon = new Icon(fileActionIcons, {styleClass: 'remove-circle', title: 'Remove folder'});
   }
@@ -54,15 +55,22 @@ export class FolderComponent extends FileItem {
   /**
    * @inheritdoc
    */
-  addEventListener() {
-    super.addEventListener();
+  addNestedEventListeners() {
+    super.addNestedEventListeners();
     
     this.removeIcon.onClick(() => this.removeHandler(this.model));
     this.uploadIcon.onClick(() => this._onUploadFile(this.model));
     
-    this.rootContainer.addEventListener('dblclick', () => this._onDoubleClick(this.model.id));
-    
     this.folderLink.addEventListener('click', (event) => event.stopPropagation());
+  }
+  
+  /**
+   * @inheritdoc
+   */
+  addRootContainerEventListeners() {
+    super.addRootContainerEventListeners();
+    
+    this.rootContainer.addEventListener('dblclick', () => this._onDoubleClick(this.model.id));
   }
   
   /**

@@ -36,7 +36,8 @@ export class FileComponent extends FileItem {
    */
   markup() {
     return `
-                <tr class="item-row">
+                <tr class="item-row ${this.getRootElementClasses(
+                  {_isLoading: 'is-loading', _isEditing: 'editing', _isRenaming: 'is-renaming', _isSelected: 'is-selected'})}">
                     <td class="cell-arrow"></td>
                     <td class="cell-file-name" data-element="item-name">
                         <i class="glyphicon glyphicon-${this._defineIcon(this.model.mimeType)}"></i>
@@ -65,8 +66,8 @@ export class FileComponent extends FileItem {
   /**
    * @inheritdoc
    */
-  addEventListener() {
-    super.addEventListener();
+  addNestedEventListeners() {
+    super.addNestedEventListeners();
     
     this.downloadIcon.onClick(() => this._onDownload(this.model));
     

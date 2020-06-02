@@ -5,6 +5,7 @@ import {PageNotFoundError} from '../../../app/models/errors/page-not-found-error
 import {GetFolderAction} from '../../../app/states/actions/get-folder-action';
 import {GetFolderContentAction} from '../../../app/states/actions/get-folder-content-action';
 import {GetUserInfoAction} from '../../../app/states/actions/user-info-action';
+import {GeneralServerError} from '../../../app/models/errors/server-error';
 
 const {test, module} = QUnit;
 
@@ -39,6 +40,19 @@ export default module('FileHubPage', function () {
     assert.verifySteps(['Not found'], 'Should call method for resource not found error.');
   });
   
+  test('should show pop-up with server error in getting of folder.', function (assert) {
+    const state = {
+      folderLoadError: {},
+    };
+    const toastService = {
+      showErrorMessage: () => assert.step('Showed server error.'),
+    };
+    const stateManager = new StateManager(state, {});
+    new FileHubPage(fixture, stateManager, toastService);
+    stateManager.state.loadError = new GeneralServerError();
+    assert.verifySteps(['Showed server error.'], 'Should show pop-up server error message.');
+  });
+  
   test('should call method for failed authorization in getting of folder content.', function (assert) {
     const state = {
       loadError: {},
@@ -59,6 +73,19 @@ export default module('FileHubPage', function () {
     fileHub.onResourceNotFound(() => assert.step('Not found content'));
     stateManager.state.loadError = new PageNotFoundError();
     assert.verifySteps(['Not found content'], 'Should call method for resource not found error.');
+  });
+  
+  test('should show pop-up with server error in getting of folder content.', function (assert) {
+    const state = {
+      loadError: {},
+    };
+    const toastService = {
+      showErrorMessage: () => assert.step('Showed server error.'),
+    };
+    const stateManager = new StateManager(state, {});
+    new FileHubPage(fixture, stateManager, toastService);
+    stateManager.state.loadError = new GeneralServerError();
+    assert.verifySteps(['Showed server error.'], 'Should show pop-up server error message.');
   });
   
   test('should dispatch actions for getting user info, folder and folder content.', function (assert) {
@@ -112,6 +139,19 @@ export default module('FileHubPage', function () {
     assert.verifySteps(['User is unauthorized'], 'Should call method for authorization error.');
   });
   
+  test('should show pop-up with server error in getting of user info.', function (assert) {
+    const state = {
+      uploadErrorObject: {},
+    };
+    const toastService = {
+      showErrorMessage: () => assert.step('Showed server error.'),
+    };
+    const stateManager = new StateManager(state, {});
+    new FileHubPage(fixture, stateManager, toastService);
+    stateManager.state.uploadErrorObject = {error: new GeneralServerError(), model: {}};
+    assert.verifySteps(['Showed server error.'], 'Should show pop-up server error message.');
+  });
+  
   test('should call method for authorization failed error on file upload.', function (assert) {
     const state = {
       uploadErrorObject: {},
@@ -123,6 +163,31 @@ export default module('FileHubPage', function () {
     assert.verifySteps(['Authorization failed'], 'Should call method for authorization failed error.');
   });
   
+  test('should show pop-up with not-found error on file upload.', function (assert) {
+    const state = {
+      uploadErrorObject: {},
+    };
+    const toastService = {
+      showErrorMessage: () => assert.step('Showed not found error'),
+    };
+    const stateManager = new StateManager(state, {});
+    new FileHubPage(fixture, stateManager, toastService);
+    stateManager.state.uploadErrorObject = {error: new PageNotFoundError(), model: {}};
+    assert.verifySteps(['Showed not found error'], 'Should show pop-up server error message.');
+  });
+  
+  test('should show pop-up with server error on file upload.', function (assert) {
+    const state = {
+      uploadErrorObject: {},
+    };
+    const toastService = {
+      showErrorMessage: () => assert.step('Showed server error.'),
+    };
+    const stateManager = new StateManager(state, {});
+    new FileHubPage(fixture, stateManager, toastService);
+    stateManager.state.uploadErrorObject = {error: new GeneralServerError(), model: {}};
+    assert.verifySteps(['Showed server error.'], 'Should show pop-up server error message.');
+  });
   
   test('should call method for failed authorization in item removing.', function (assert) {
     const state = {
@@ -133,6 +198,19 @@ export default module('FileHubPage', function () {
     fileHub.onFailedAuthorization(() => assert.step('Authorization failed'));
     stateManager.state.removeError = new AuthenticationError();
     assert.verifySteps(['Authorization failed'], 'Should redirect to login page.');
+  });
+  
+  test('should show pop-up with server error in item removing.', function (assert) {
+    const state = {
+      removeError: {},
+    };
+    const toastService = {
+      showErrorMessage: () => assert.step('Showed server error.'),
+    };
+    const stateManager = new StateManager(state, {});
+    new FileHubPage(fixture, stateManager, toastService);
+    stateManager.state.removeError = new GeneralServerError();
+    assert.verifySteps(['Showed server error.'], 'Should show pop-up server error message.');
   });
   
   test('should call method for failed authorization in item renaming.', function (assert) {
@@ -146,6 +224,32 @@ export default module('FileHubPage', function () {
     assert.verifySteps(['Authorization failed'], 'Should redirect to login page.');
   });
   
+  test('should show pop-up with server error in item renaming.', function (assert) {
+    const state = {
+      renameErrorObject: {},
+    };
+    const toastService = {
+      showErrorMessage: () => assert.step('Showed server error.'),
+    };
+    const stateManager = new StateManager(state, {});
+    new FileHubPage(fixture, stateManager, toastService);
+    stateManager.state.renameErrorObject = {error: new GeneralServerError(), model: {}};
+    assert.verifySteps(['Showed server error.'], 'Should show pop-up server error message.');
+  });
+  
+  test('should show pop-up with not-found error in item renaming.', function (assert) {
+    const state = {
+      renameErrorObject: {},
+    };
+    const toastService = {
+      showErrorMessage: () => assert.step('Showed not found message'),
+    };
+    const stateManager = new StateManager(state, {});
+    new FileHubPage(fixture, stateManager, toastService);
+    stateManager.state.renameErrorObject = {error: new PageNotFoundError(), model: {}};
+    assert.verifySteps(['Showed not found message'], 'Should show pop-up server error message.');
+  });
+  
   test('should call method for failed authorization in file download.', function (assert) {
     const state = {
       downloadErrorObject: {},
@@ -157,6 +261,19 @@ export default module('FileHubPage', function () {
     assert.verifySteps(['Authorization failed'], 'Should redirect to login page.');
   });
   
+  test('should show pop-up with server error in file download.', function (assert) {
+    const state = {
+      downloadErrorObject: {},
+    };
+    const toastService = {
+      showErrorMessage: () => assert.step('Showed server error.'),
+    };
+    const stateManager = new StateManager(state, {});
+    new FileHubPage(fixture, stateManager, toastService);
+    stateManager.state.downloadErrorObject = {error: new GeneralServerError(), model: {}};
+    assert.verifySteps(['Showed server error.'], 'Should show pop-up server error message.');
+  });
+  
   test('should call method for failed authorization in folder creation.', function (assert) {
     const state = {
       createFolderError: {},
@@ -164,8 +281,37 @@ export default module('FileHubPage', function () {
     const stateManager = new StateManager(state, {});
     const fileHub = new FileHubPage(fixture, stateManager);
     fileHub.onFailedAuthorization(() => assert.step('Authorization failed'));
-    stateManager.state.createFolderError =  new AuthenticationError();
+    stateManager.state.createFolderError = new AuthenticationError();
     assert.verifySteps(['Authorization failed'], 'Should redirect to login page.');
+  });
+  
+  test('should show pop-up with server error in folder creation.', function (assert) {
+    const state = {
+      createFolderError: {},
+      newFolderSource: {},
+    };
+    const toastService = {
+      showErrorMessage: () => assert.step('Showed server error.'),
+    };
+    const stateManager = new StateManager(state, {});
+    new FileHubPage(fixture, stateManager, toastService);
+    stateManager.state.createFolderError = new GeneralServerError();
+    assert.verifySteps(['Showed server error.'], 'Should show pop-up server error message.');
+  });
+  
+  test('should call method and show pop-up for not found error in folder creation.', function (assert) {
+    const state = {
+      createFolderError: {},
+      newFolderSource: {},
+    };
+    const toastService = {
+      showErrorMessage: () => assert.step('Show 404 error message'),
+    };
+    const stateManager = new StateManager(state, {});
+    const fileHub = new FileHubPage(fixture, stateManager, toastService);
+    fileHub.onResourceNotFound(() => assert.step('Show 404 page'));
+    stateManager.state.createFolderError = new PageNotFoundError();
+    assert.verifySteps(['Show 404 error message', 'Show 404 page'], 'Should show pop-up server error message.');
   });
 });
 

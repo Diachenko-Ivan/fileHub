@@ -51,11 +51,49 @@ export class Component {
   addEventListener() {
 
   }
-
+  
+  /**
+   * Adds event listeners for root element.
+   */
+  addRootContainerEventListeners() {
+  
+  }
+  
+  /**
+   * Re-renders current component.
+   */
+  rerender() {
+    this.rootContainer.innerHTML = '';
+    const fakeElement = document.createElement(this._fakeElement);
+    
+    fakeElement.innerHTML = this.markup();
+    const fakeRootElement = fakeElement.firstElementChild;
+    this.rootContainer.innerHTML = fakeRootElement.innerHTML;
+    this.rootContainer.classList = fakeRootElement.classList;
+    this.initNestedComponents();
+    this.addNestedEventListeners();
+  }
+  
+  /**
+   * Returns classes for root element.
+   *
+   * @param {object} classProperties
+   * @return {string} row with style classes.
+   */
+  getRootElementClasses(classProperties) {
+    let classes = '';
+    Object.keys(classProperties).forEach((key) => {
+      if (this[key]) {
+        classes = `${classes} ${classProperties[key]}`;
+      }
+    });
+    return classes;
+  }
+  
   /**
    * Executes before component is destroyed.
    */
   destroy() {
-
+  
   }
 }

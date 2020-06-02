@@ -49,7 +49,7 @@ export default module('FileHubPage', function () {
     };
     const stateManager = new StateManager(state, {});
     new FileHubPage(fixture, stateManager, toastService);
-    stateManager.state.loadError = new GeneralServerError();
+    stateManager.state.folderLoadError = new GeneralServerError();
     assert.verifySteps(['Showed server error.'], 'Should show pop-up server error message.');
   });
   

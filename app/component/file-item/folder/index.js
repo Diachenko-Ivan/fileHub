@@ -1,11 +1,11 @@
 import {Icon} from '../file-item-icon';
-import {FileItem} from '../index.js';
+import {AbstractItemComponent} from '../index.js';
 import {FolderModel} from '../../../models/item/folder';
 
 /**
  * Represents folder.
  */
-export class FolderComponent extends FileItem {
+export class FolderComponent extends AbstractItemComponent {
   /**
    * Creates new {@type FolderComponent} component.
    *

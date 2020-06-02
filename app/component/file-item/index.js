@@ -3,7 +3,7 @@ import {Component} from '../parent-component.js';
 /**
  * Represents either file or folder.
  */
-export class FileItem extends Component {
+export class AbstractItemComponent extends Component {
   /**
    * Model that stores item properties.
    *

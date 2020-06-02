@@ -1,5 +1,5 @@
 import {Icon} from '../file-item-icon';
-import {FileItem} from '../index.js';
+import {AbstractItemComponent} from '../index.js';
 import {FileModel} from '../../../models/item/file';
 
 
@@ -20,7 +20,7 @@ const FILE_ICON_TYPES = {
 /**
  * Represents file in file list.
  */
-export class FileComponent extends FileItem {
+export class FileComponent extends AbstractItemComponent {
   /**
    * Creates new {@type FileComponent} component.
    *

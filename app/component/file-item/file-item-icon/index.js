@@ -37,7 +37,7 @@ export class Icon extends Component {
   /**
    * @inheritdoc
    */
-  addEventListener() {
+  addRootContainerEventListeners() {
     this.rootContainer.addEventListener('click', (event) => {
       event.stopPropagation();
       this._handlers.forEach((handler) => handler());

@@ -125,28 +125,16 @@ export class FileHubPage extends StateAwareComponent {
       this.fileList.fileList = state.fileList;
     });
     this.onStateChange('folderLoadError', (state) => {
-      const folderLoadError = state.folderLoadError;
-      if (!folderLoadError) {
-        return;
-      }
-      this._handleCommonErrors(folderLoadError, {
-        authErrorHandler: () => this._redirectToLoginPage(),
+      this._handleCommonErrors(state.folderLoadError, {
         notFoundErrorHandler: () => this._onResourceNotFound(),
         serverErrorHandler: () => this._toastService.showErrorMessage(`Server error! Failed to load folder.`),
-      });
-      state.folderLoadError = null;
+      }, () => state.folderLoadError = null);
     });
     this.onStateChange('loadError', (state) => {
-      const loadError = state.loadError;
-      if (!loadError) {
-        return;
-      }
-      this._handleCommonErrors(loadError, {
-        authErrorHandler: () => this._redirectToLoginPage(),
+      this._handleCommonErrors(state.loadError, {
         notFoundErrorHandler: () => this._onResourceNotFound(),
         serverErrorHandler: () => this._toastService.showErrorMessage(`Server error! Failed to load folder.`),
-      });
-      state.loadError = null;
+      }, () =>  state.loadError = null);
     });
     this.onStateChange('locationParam', (state) => {
       this.dispatch(new GetFolderAction(state.locationParam.id));
@@ -167,15 +155,9 @@ export class FileHubPage extends StateAwareComponent {
       this.userDetails.username = state.user.name;
     });
     this.onStateChange('userError', (state) => {
-      const error = state.userError;
-      if (!error) {
-        return;
-      }
-      this._handleCommonErrors(error, {
-        authErrorHandler: () => this._redirectToLoginPage(),
+      this._handleCommonErrors(state.userError, {
         serverErrorHandler: () => this._toastService.showErrorMessage('Server error! Failed to get user.'),
-      });
-      state.userError = null;
+      }, () => state.userError = null);
     });
     this.onStateChange('uploadingFolderIds', (state) => {
       this.uploadFileButton.isLoading = state.uploadingFolderIds.has(state.currentFolder.id);
@@ -187,27 +169,19 @@ export class FileHubPage extends StateAwareComponent {
       }
       const {model, error} = state.uploadErrorObject;
       this._handleCommonErrors(error, {
-        authErrorHandler: () => this._redirectToLoginPage(),
         notFoundErrorHandler: () => this._toastService.showErrorMessage(
           `Failed to upload file in ${model.name} folder. it does not exist`),
         serverErrorHandler: () => this._toastService.showErrorMessage(
           `Server error! Failed to upload file in ${model.name} folder.`),
-      });
-      state.uploadErrorObject = null;
+      }, () => state.uploadErrorObject = null);
     });
     this.onStateChange('removingItemIds', (state) => {
       this.fileList.loadingItems = new Set([...state.uploadingFolderIds, ...state.removingItemIds, ...state.downloadingFileIds]);
     });
     this.onStateChange('removeError', (state) => {
-      const error = state.removeError;
-      if (!error) {
-        return;
-      }
-      this._handleCommonErrors(error, {
-        authErrorHandler: () => this._redirectToLoginPage(),
+      this._handleCommonErrors(state.removeError, {
         serverErrorHandler: () => this._toastService.showErrorMessage('Server error! Failed to remove item.'),
-      });
-      state.removeError = null;
+      }, () => state.removeError = null);
     });
     this.onStateChange('downloadingFileIds', (state) => {
       this.fileList.loadingItems = new Set([...state.uploadingFolderIds, ...state.removingItemIds, ...state.downloadingFileIds]);
@@ -218,14 +192,12 @@ export class FileHubPage extends StateAwareComponent {
       }
       const {error, model} = state.downloadErrorObject;
       this._handleCommonErrors(error, {
-        authErrorHandler: () => this._redirectToLoginPage(),
         notFoundErrorHandler: () => {
           this._toastService.showErrorMessage(`Failed to download ${model.name} file. It does not exist.`);
           this.dispatch(new GetFolderContentAction(state.locationParam.id));
         },
         serverErrorHandler: () => this._toastService.showErrorMessage(`Failed to download ${model.name} file.`),
-      });
-      state.downloadErrorObject = null;
+      }, () => state.downloadErrorObject = null);
     });
     this.onStateChange('renamingItemIds', (state) => {
       this.fileList.renamingItems = state.renamingItemIds;
@@ -236,11 +208,9 @@ export class FileHubPage extends StateAwareComponent {
       }
       const {model, error} = state.renameErrorObject;
       this._handleCommonErrors(error, {
-        authErrorHandler: () => this._redirectToLoginPage(),
         notFoundErrorHandler: () => this._toastService.showErrorMessage(`Failed to rename ${model.name} item. It does not exist.`),
         serverErrorHandler: () => this._toastService.showErrorMessage(`Server error! Failed to rename ${model.name} item.`),
-      });
-      state.renameErrorObject = null;
+      }, () => state.renameErrorObject = null);
     });
     this.onStateChange('newFolderSource', (state) => {
       this.createFolderButton.isLoading = state.newFolderSource === state.currentFolder;
@@ -249,12 +219,7 @@ export class FileHubPage extends StateAwareComponent {
       this.fileList.newFolder = state.newFolderId;
     });
     this.onStateChange('createFolderError', (state) => {
-      if (!state.createFolderError) {
-        return;
-      }
-      const error = state.createFolderError;
-      this._handleCommonErrors(error, {
-        authErrorHandler: () => this._redirectToLoginPage(),
+      this._handleCommonErrors(state.createFolderError, {
         notFoundErrorHandler: () => {
           this._toastService.showErrorMessage(
             `Failed to create new folder to ${state.newFolderSource.name}. This folder does not exist.`);
@@ -262,8 +227,7 @@ export class FileHubPage extends StateAwareComponent {
         },
         serverErrorHandler: () => this._toastService.showErrorMessage(
           `Server error! Failed to create new folder to ${state.newFolderSource.name}.`),
-      });
-      state.createFolderError = null;
+      }, () => state.createFolderError = null);
     });
   }
   
@@ -298,7 +262,7 @@ export class FileHubPage extends StateAwareComponent {
   }
   
   /**
-   * Registers callback for folder double click.]
+   * Registers callback for folder double click.
    *
    * @param {Function} handler - callback.
    */
@@ -335,6 +299,7 @@ export class FileHubPage extends StateAwareComponent {
    *
    * @param {Error} error - error in application.
    * @param {ErrorHandlers} errorHandlers - contains handlers for different error types.
+   * @param {Function} callback - callback that is invoked after successful error handling.
    * @private
    */
   _handleCommonErrors(error, errorHandlers, callback) {

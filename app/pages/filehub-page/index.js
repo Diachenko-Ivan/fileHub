@@ -337,14 +337,18 @@ export class FileHubPage extends StateAwareComponent {
    * @param {ErrorHandlers} errorHandlers - contains handlers for different error types.
    * @private
    */
-  _handleCommonErrors(error, errorHandlers) {
+  _handleCommonErrors(error, errorHandlers, callback) {
+    if (!error) {
+      return;
+    }
     if (error instanceof AuthenticationError) {
-      errorHandlers.authErrorHandler();
+      this._redirectToLoginPage();
     } else if (error instanceof PageNotFoundError) {
       errorHandlers.notFoundErrorHandler();
     } else if (error instanceof GeneralServerError) {
       errorHandlers.serverErrorHandler();
     }
+    callback();
   }
   
   /**

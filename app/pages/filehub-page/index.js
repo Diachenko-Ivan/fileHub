@@ -216,7 +216,7 @@ export class FileHubPage extends StateAwareComponent {
   /**
    * @inheritdoc
    */
-  addEventListener() {
+  addNestedEventListeners() {
     const uploadWindowService = new UploadWindowService();
     
     this.uploadFileButton.onClick(() =>

@@ -3,6 +3,14 @@
  */
 export class Component {
   /**
+   * Tag name of fake element.
+   *
+   * @type {string}
+   * @private
+   */
+  _fakeElement = 'div';
+  
+  /**
    * Creates new {@type Component} instance.
    *
    * @param {Element} container - outer container for current component.
@@ -10,7 +18,7 @@ export class Component {
   constructor(container) {
     this.init(container);
   }
-
+  
   /**
    * Initializes component.
    *
@@ -19,37 +27,38 @@ export class Component {
   init(container) {
     this.container = container;
   }
-
+  
   /**
    * Initializes root container with component`s html markup.
    */
   render() {
-    const fakeComponent = document.createElement('div');
-    fakeComponent.innerHTML = `${this.markup()}`;
+    const fakeComponent = document.createElement(this._fakeElement);
+    fakeComponent.innerHTML = this.markup();
     this.rootContainer = fakeComponent.firstElementChild;
     this.container.append(this.rootContainer);
     this.initNestedComponents();
-    this.addEventListener();
+    this.addRootContainerEventListeners();
+    this.addNestedEventListeners();
   }
-
+  
   /**
    * Returns html markup for current component.
    */
   markup() {
   }
-
+  
   /**
    * Initializes inner {@type Element} components for current component if it has them.
    */
   initNestedComponents() {
-
+  
   }
-
+  
   /**
-   * Adds event handlers for current component.
+   * Adds event handlers for nested elements of current component.
    */
-  addEventListener() {
-
+  addNestedEventListeners() {
+  
   }
   
   /**

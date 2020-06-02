@@ -16,7 +16,7 @@ export class AbstractItemComponent extends Component {
    * @type {string}
    * @private
    */
-  _fakeElement = 'tbody'
+  _fakeElementTag = 'tbody'
   /**
    * Creates file item component.
    *
@@ -33,7 +33,7 @@ export class AbstractItemComponent extends Component {
    * @inheritdoc
    */
   addNestedEventListeners() {
-    const input = this.rootContainer.querySelector('input');
+    const input = this._getInput();
     
     input.addEventListener('blur', () => {
       this.isEditing = false;
@@ -101,7 +101,7 @@ export class AbstractItemComponent extends Component {
   set isEditing(value) {
     this._isEditing = value;
     this.rerender();
-    const input = this.rootContainer.querySelector('input');
+    const input = this._getInput();
     if (this.model.type === 'folder') {
       input.value = this.model.name;
     } else {

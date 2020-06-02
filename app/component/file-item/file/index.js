@@ -112,4 +112,14 @@ export class FileComponent extends AbstractItemComponent {
   onDownloadFile(handler) {
     this._onDownload = handler;
   }
+  
+  /**
+   * Returns input from component markup.
+   *
+   * @return {Element} input.
+   * @private
+   */
+  _getInput() {
+    return this.rootContainer.querySelector('input');
+  }
 }

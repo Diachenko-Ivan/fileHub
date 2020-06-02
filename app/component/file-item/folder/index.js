@@ -100,4 +100,14 @@ export class FolderComponent extends AbstractItemComponent {
   _numberOfItems() {
     return `${this.model.filesCount} ${this.model.filesCount === 1 ? 'item' : 'items'}`;
   }
+  
+  /**
+   * Returns input from component markup.
+   *
+   * @return {Element} input.
+   * @private
+   */
+  _getInput() {
+    return this.rootContainer.querySelector('input');
+  }
 }

@@ -47,7 +47,7 @@ export class FolderComponent extends FileItem {
   initNestedComponents() {
     const fileActionIcons = this.rootContainer.querySelector('[data-element="file-action-icons"]');
     this.folderLink = this.rootContainer.querySelector('[data-element="folder-link"]');
-// debugger
+
     this.uploadIcon = new Icon(fileActionIcons, {styleClass: 'upload', title: 'Upload file'});
     this.removeIcon = new Icon(fileActionIcons, {styleClass: 'remove-circle', title: 'Remove folder'});
   }

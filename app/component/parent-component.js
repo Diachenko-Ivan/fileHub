@@ -8,7 +8,7 @@ export class Component {
    * @type {string}
    * @private
    */
-  _fakeElement = 'div';
+  _fakeElementTag = 'div';
   
   /**
    * Creates new {@type Component} instance.
@@ -32,9 +32,7 @@ export class Component {
    * Initializes root container with component`s html markup.
    */
   render() {
-    const fakeComponent = document.createElement(this._fakeElement);
-    fakeComponent.innerHTML = this.markup();
-    this.rootContainer = fakeComponent.firstElementChild;
+    this.rootContainer = this._getRootElement();
     this.container.append(this.rootContainer);
     this.initNestedComponents();
     this.addRootContainerEventListeners();
@@ -73,10 +71,7 @@ export class Component {
    */
   rerender() {
     this.rootContainer.innerHTML = '';
-    const fakeElement = document.createElement(this._fakeElement);
-    
-    fakeElement.innerHTML = this.markup();
-    const fakeRootElement = fakeElement.firstElementChild;
+    const fakeRootElement = this._getRootElement();
     this.rootContainer.innerHTML = fakeRootElement.innerHTML;
     this.rootContainer.classList = fakeRootElement.classList;
     this.initNestedComponents();
@@ -84,9 +79,22 @@ export class Component {
   }
   
   /**
+   * Creates fake element for component render.
+   *
+   * @return {Element} fake element.
+   * @private
+   */
+  _getRootElement() {
+    const fakeElement = document.createElement(this._fakeElementTag);
+    
+    fakeElement.innerHTML = this.markup();
+    return fakeElement.firstElementChild;
+  }
+  
+  /**
    * Returns classes for root element.
    *
-   * @param {object} classProperties
+   * @param {object} classProperties - object where key is component property and value is style class.
    * @return {string} row with style classes.
    */
   getRootElementClasses(classProperties) {

@@ -17,6 +17,7 @@ export class ToastService {
   showErrorMessage(message) {
     this._toasted.show(message, {
       type: 'error',
+      theme: 'alive',
       action: {
         theme: 'alive',
         text: 'Ok',

@@ -35,10 +35,13 @@ export default module('DirectoryPath test', function (hook) {
     const anchor = fixture.querySelector(`a[href="${url}"]`);
     
     assert.ok(anchor, 'Should contain anchor link with the same href.');
-    
-    directoryPathComponent.folder = {name: 'Folder', id: '123'};
-    const absentAnchor = fixture.getElementsByTagName('a')[0];
-    
-    assert.notOk(absentAnchor, 'Should not contain anchor link if is root.');
+  });
+  
+  test('should set directory path to loading state.', function (assert) {
+    const directoryPathComponent = new DirectoryPath(fixture);
+    const directoryPathElement = fixture.firstElementChild;
+    assert.notOk(directoryPathElement.classList.contains('is-loading'), 'Should not contain style class when it is firstly rendered.');
+    directoryPathComponent.isLoading = true;
+    assert.ok(directoryPathElement.classList.contains('is-loading'), 'Should contain style class.');
   });
 });

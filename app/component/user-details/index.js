@@ -18,8 +18,9 @@ export class UserDetails extends Component {
    * @inheritdoc
    */
   markup() {
-    return `<span><i class="glyphicon glyphicon-user"></i>
-            <span data-element="username"></span></span>`;
+    return `<span class="user-details ${this.getRootElementClasses({_isLoading: 'is-loading'})}">
+            <i class="glyphicon glyphicon-user"></i>
+            <span class="username" data-element="username"></span></span>`;
   }
   
   /**
@@ -28,7 +29,16 @@ export class UserDetails extends Component {
    * @param {string} value - user name.
    */
   set username(value) {
-    this._username = value;
     this.rootContainer.querySelector('[data-element="username"]').innerText = value;
+  }
+  
+  /**
+   * Defines either user detail is loading or not
+   *
+   * @param {boolean} value - loading or not.
+   */
+  set isLoading(value) {
+    this._isLoading = value;
+    this.rerender();
   }
 }

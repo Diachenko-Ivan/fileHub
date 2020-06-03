@@ -22,7 +22,7 @@ export class FolderComponent extends AbstractItemComponent {
   markup() {
     return `
             <tr class="item-row ${this.getRootElementClasses(
-              {_isLoading: 'is-loading', _isEditing: 'editing', _isRenaming: 'is-renaming', _isSelected: 'is-selected'})}">
+      {_isLoading: 'is-loading', _isEditing: 'editing', _isRenaming: 'is-renaming', _isSelected: 'is-selected'})}">
                 <td class="cell-arrow">
                     <i class="glyphicon glyphicon-menu-right"></i>
                 </td>
@@ -47,9 +47,11 @@ export class FolderComponent extends AbstractItemComponent {
   initNestedComponents() {
     const fileActionIcons = this.rootContainer.querySelector('[data-element="file-action-icons"]');
     this.folderLink = this.rootContainer.querySelector('[data-element="folder-link"]');
-
+    
     this.uploadIcon = new Icon(fileActionIcons, {styleClass: 'upload', title: 'Upload file'});
     this.removeIcon = new Icon(fileActionIcons, {styleClass: 'remove-circle', title: 'Remove folder'});
+    
+    this._input = this.rootContainer.querySelector('input');
   }
   
   /**
@@ -107,7 +109,7 @@ export class FolderComponent extends AbstractItemComponent {
    * @return {Element} input.
    * @private
    */
-  _getInput() {
-    return this.rootContainer.querySelector('input');
+  get input() {
+    return this._input;
   }
 }

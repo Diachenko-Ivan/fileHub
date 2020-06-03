@@ -33,7 +33,7 @@ export class AbstractItemComponent extends Component {
    * @inheritdoc
    */
   addNestedEventListeners() {
-    const input = this._getInput();
+    const input = this.input;
     
     input.addEventListener('blur', () => {
       this.isEditing = false;
@@ -101,7 +101,7 @@ export class AbstractItemComponent extends Component {
   set isEditing(value) {
     this._isEditing = value;
     this.rerender();
-    const input = this._getInput();
+    const input = this.input;
     if (this.model.type === 'folder') {
       input.value = this.model.name;
     } else {

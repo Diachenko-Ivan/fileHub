@@ -92,7 +92,7 @@ export class LoginFormComponent extends Component {
   /**
    * @inheritdoc
    */
-  addEventListener() {
+  addNestedEventListeners() {
     const validator = new CredentialValidator();
 
     this.rootContainer.addEventListener('submit', (event) => {

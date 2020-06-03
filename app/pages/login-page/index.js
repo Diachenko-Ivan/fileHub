@@ -35,7 +35,7 @@ export class LoginPage extends Component {
   /**
    * @inheritdoc
    */
-  addEventListener() {
+  addNestedEventListeners() {
     this.loginForm.onSubmit((credentials) => {
       ApiService.getInstance().logIn(credentials)
         .then(this._onSuccessfulAuthentication)

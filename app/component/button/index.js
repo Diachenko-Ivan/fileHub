@@ -46,7 +46,8 @@ export class Button extends Component {
    * @inheritdoc
    */
   markup() {
-    return `<button title="${this.title}" type="${this.type}" data-test="button" class="button">
+    return `<button title="${this.title}" type="${this.type}" data-test="button"
+                class="button ${this.getRootElementClasses({_isLoading: `${LOADING_BUTTON_CLASS} ${DISABLED_BUTTON_CLASS}`})}">
                 <div data-element="loader" class="item-loader"></div>
                     ${this.buttonText}
             </button>`;
@@ -76,28 +77,17 @@ export class Button extends Component {
   /**
    *@inheritdoc
    */
-  addEventListener() {
+  addRootContainerEventListeners() {
     this.rootContainer.addEventListener('click', () => this.handlers.forEach((handler) => handler()));
   }
   
   /**
-   * Sets new class to button icon.
-   * @param {string} value - style name.
+   * Sets button in loading state.
+   *
+   * @param {boolean} value - either button is loading or not.
    */
-  set buttonIconClass(value) {
-    if (this.iconClass !== value) {
-      this.buttonIcon.classList.remove(`glyphicon-${this.iconClass}`);
-      this.iconClass = value;
-      this.buttonIcon.classList.add(`glyphicon-${this.iconClass}`);
-    }
-  }
-  
   set isLoading(value) {
-    if (value) {
-      this.rootContainer.classList.add(LOADING_BUTTON_CLASS, DISABLED_BUTTON_CLASS);
-    } else {
-      this.rootContainer.classList.remove(LOADING_BUTTON_CLASS, DISABLED_BUTTON_CLASS);
-    }
     this._isLoading = value;
+    this.rerender();
   }
 }

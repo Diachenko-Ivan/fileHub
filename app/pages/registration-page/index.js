@@ -35,7 +35,7 @@ export class RegistrationPage extends Component {
   /**
    * @inheritdoc
    */
-  addEventListener() {
+  addNestedEventListeners() {
     this.registrationForm.onSubmit((credentials) => {
       ApiService.getInstance().register(credentials)
         .then(this._onSuccessfulRegistration)

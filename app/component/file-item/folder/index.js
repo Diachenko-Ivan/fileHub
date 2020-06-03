@@ -1,11 +1,11 @@
 import {Icon} from '../file-item-icon';
-import {FileItem} from '../index.js';
+import {AbstractItemComponent} from '../index.js';
 import {FolderModel} from '../../../models/item/folder';
 
 /**
  * Represents folder.
  */
-export class FolderComponent extends FileItem {
+export class FolderComponent extends AbstractItemComponent {
   /**
    * Creates new {@type FolderComponent} component.
    *
@@ -21,7 +21,8 @@ export class FolderComponent extends FileItem {
    */
   markup() {
     return `
-            <tr class="item-row">
+            <tr class="item-row ${this.getRootElementClasses(
+      {_isLoading: 'is-loading', _isEditing: 'editing', _isRenaming: 'is-renaming', _isSelected: 'is-selected'})}">
                 <td class="cell-arrow">
                     <i class="glyphicon glyphicon-menu-right"></i>
                 </td>
@@ -30,7 +31,7 @@ export class FolderComponent extends FileItem {
                     <span class="name" data-test="name">
                         <a data-test="folder-name" title="${this.model.name}" data-element="folder-link" href="#/folder/${this.model.id}">${this.model.name}</a>
                     </span>
-                    <input class="input"/>
+                    <input data-element="input" class="input"/>
                     <div data-element="loader" class="item-loader"></div>
                     <div class="rename-loader"><div></div><div></div><div></div></div>
                 </td>
@@ -54,15 +55,22 @@ export class FolderComponent extends FileItem {
   /**
    * @inheritdoc
    */
-  addEventListener() {
-    super.addEventListener();
+  addNestedEventListeners() {
+    super.addNestedEventListeners();
     
     this.removeIcon.onClick(() => this.removeHandler(this.model));
     this.uploadIcon.onClick(() => this._onUploadFile(this.model));
     
-    this.rootContainer.addEventListener('dblclick', () => this._onDoubleClick(this.model.id));
-    
     this.folderLink.addEventListener('click', (event) => event.stopPropagation());
+  }
+  
+  /**
+   * @inheritdoc
+   */
+  addRootContainerEventListeners() {
+    super.addRootContainerEventListeners();
+    
+    this.rootContainer.addEventListener('dblclick', () => this._onDoubleClick(this.model.id));
   }
   
   /**
@@ -91,5 +99,15 @@ export class FolderComponent extends FileItem {
    */
   _numberOfItems() {
     return `${this.model.filesCount} ${this.model.filesCount === 1 ? 'item' : 'items'}`;
+  }
+  
+  /**
+   * Returns input from component markup.
+   *
+   * @return {Element} input.
+   * @private
+   */
+  get input() {
+    return this.rootContainer.querySelector('[data-element="input"]');
   }
 }

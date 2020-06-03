@@ -43,7 +43,7 @@ export class FileComponent extends AbstractItemComponent {
                         <i class="glyphicon glyphicon-${this._defineIcon(this.model.mimeType)}"></i>
                         <span data-test="file-name" class="name">
                             ${this.model.name}</span>
-                        <input class="input"/>
+                        <input data-element="input" class="input"/>
                         <div data-element="loader" class="item-loader"></div>
                         <div class="rename-loader"><div></div><div></div><div></div></div>
                     </td>
@@ -61,8 +61,6 @@ export class FileComponent extends AbstractItemComponent {
     
     this.downloadIcon = new Icon(fileActionIcons, {styleClass: 'download', title: 'Download file'});
     this.removeIcon = new Icon(fileActionIcons, {styleClass: 'remove-circle', title: 'Remove file'});
-    
-    this._input = this.rootContainer.querySelector('input');
   }
   
   /**
@@ -122,6 +120,6 @@ export class FileComponent extends AbstractItemComponent {
    * @private
    */
   get input() {
-    return this._input;
+    return this.rootContainer.querySelector('[data-element="input"]');
   }
 }

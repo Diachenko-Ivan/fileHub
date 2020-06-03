@@ -31,7 +31,7 @@ export class FolderComponent extends AbstractItemComponent {
                     <span class="name" data-test="name">
                         <a data-test="folder-name" title="${this.model.name}" data-element="folder-link" href="#/folder/${this.model.id}">${this.model.name}</a>
                     </span>
-                    <input class="input"/>
+                    <input data-element="input" class="input"/>
                     <div data-element="loader" class="item-loader"></div>
                     <div class="rename-loader"><div></div><div></div><div></div></div>
                 </td>
@@ -50,8 +50,6 @@ export class FolderComponent extends AbstractItemComponent {
     
     this.uploadIcon = new Icon(fileActionIcons, {styleClass: 'upload', title: 'Upload file'});
     this.removeIcon = new Icon(fileActionIcons, {styleClass: 'remove-circle', title: 'Remove folder'});
-    
-    this._input = this.rootContainer.querySelector('input');
   }
   
   /**
@@ -110,6 +108,6 @@ export class FolderComponent extends AbstractItemComponent {
    * @private
    */
   get input() {
-    return this._input;
+    return this.rootContainer.querySelector('[data-element="input"]');
   }
 }

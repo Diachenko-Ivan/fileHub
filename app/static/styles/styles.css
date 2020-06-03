@@ -489,4 +489,41 @@ List loading
     }
 }
 
+/**Directory path*/
+
+.file-explorer-container .path-title .item-loader {
+    display: none;
+    height: 20px;
+}
+
+.file-explorer-container .path-title .nav-icon-link {
+    display: none;
+}
+
+.file-explorer-container .path-title.is-loading .glyphicon-folder-close,
+.file-explorer-container .path-title.is-loading .nav-icon-link {
+    display: none;
+}
+
+.file-explorer-container .path-title.is-loading .item-loader {
+    display: inline-block;
+}
+
+.path-title.is-inner .nav-icon-link {
+    display: inline-block;
+}
+
+.path-title.is-inner .glyphicon-folder-close {
+    display: none;
+}
+
+/**User details*/
+
+.user-details.is-loading .username {
+    display: none;
+}
+
+.user-details.is-loading:after {
+    content: 'Loading...';
+}
 

@@ -64,8 +64,8 @@ export default module('GetFolderAction', function () {
       .then(() => {
         assert.verifySteps([
             'FolderLoadingMutator true',
-            `FolderMutator ${folder}`,
-            'FolderLoadingMutator false'],
+            'FolderLoadingMutator false',
+            `FolderMutator ${folder}`,],
           'Should call mutators in the correct order.');
         done();
       });

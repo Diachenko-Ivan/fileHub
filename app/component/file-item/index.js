@@ -1,22 +1,22 @@
 import {Component} from '../parent-component.js';
 
 /**
- * Style class for showing loader.
- * @type {string}
- */
-const LOADING_ITEM_CLASS = 'is-loading';
-
-/**
  * Represents either file or folder.
  */
-export class FileItem extends Component {
+export class AbstractItemComponent extends Component {
   /**
    * Model that stores item properties.
    *
    * @type {AbstractItemModel}
    */
   model;
-  
+  /**
+   * Tag name of fake element.
+   *
+   * @type {string}
+   * @private
+   */
+  _fakeElementTag = 'tbody'
   /**
    * Creates file item component.
    *
@@ -32,27 +32,9 @@ export class FileItem extends Component {
   /**
    * @inheritdoc
    */
-  render() {
-    const fakeComponent = document.createElement('tbody');
-    fakeComponent.innerHTML = this.markup();
-    this.rootContainer = fakeComponent.firstElementChild;
-    this.container.append(this.rootContainer);
-    this.initNestedComponents();
-    this.addEventListener();
-  }
-  
-  /**
-   * @inheritdoc
-   */
-  addEventListener() {
-    const input = this.rootContainer.querySelector('input');
-    this.rootContainer.addEventListener('click', (event) => {
-      if (event.detail !== 1) {
-        return;
-      }
-      this._onClick();
-    });
- 
+  addNestedEventListeners() {
+    const input = this.input;
+    
     input.addEventListener('blur', () => {
       this.isEditing = false;
       this.isSelected = false;
@@ -72,6 +54,18 @@ export class FileItem extends Component {
   }
   
   /**
+   * @inheritdoc
+   */
+  addRootContainerEventListeners() {
+    this.rootContainer.addEventListener('click', (event) => {
+      if (event.detail !== 1) {
+        return;
+      }
+      this._onClick();
+    });
+  }
+  
+  /**
    * Adds handler on remove action.
    *
    * @param {Function} handler - callback which is called when user clicked on remove icon.
@@ -86,17 +80,8 @@ export class FileItem extends Component {
    * @param {boolean} value - flag that defines loading state.
    */
   set isLoading(value) {
-    this.rootContainer.classList.toggle(LOADING_ITEM_CLASS, value);
     this._isLoading = value;
-  }
-  
-  /**
-   * Defines either item is loading or not.
-   *
-   * @return {boolean} loading flag.
-   */
-  get isLoading() {
-    return this._isLoading;
+    this.rerender();
   }
   
   /**
@@ -114,9 +99,9 @@ export class FileItem extends Component {
    * @param {boolean} value - editing or not.
    */
   set isEditing(value) {
-    const input = this.rootContainer.querySelector('input');
     this._isEditing = value;
-    this.rootContainer.classList.toggle('editing', value);
+    this.rerender();
+    const input = this.input;
     if (this.model.type === 'folder') {
       input.value = this.model.name;
     } else {
@@ -141,7 +126,7 @@ export class FileItem extends Component {
    */
   set isSelected(value) {
     this._isSelected = value;
-    this.rootContainer.classList.toggle('is-selected', value);
+    this.rerender();
   }
   
   /**
@@ -160,7 +145,7 @@ export class FileItem extends Component {
    */
   set isRenaming(value) {
     this._isRenaming = value;
-    this.rootContainer.classList.toggle('is-renaming', value);
+    this.rerender();
   }
   
   /**

@@ -1,5 +1,5 @@
 import {Icon} from '../file-item-icon';
-import {FileItem} from '../index.js';
+import {AbstractItemComponent} from '../index.js';
 import {FileModel} from '../../../models/item/file';
 
 
@@ -20,7 +20,7 @@ const FILE_ICON_TYPES = {
 /**
  * Represents file in file list.
  */
-export class FileComponent extends FileItem {
+export class FileComponent extends AbstractItemComponent {
   /**
    * Creates new {@type FileComponent} component.
    *
@@ -36,13 +36,14 @@ export class FileComponent extends FileItem {
    */
   markup() {
     return `
-                <tr class="item-row">
+                <tr class="item-row ${this.getRootElementClasses(
+      {_isLoading: 'is-loading', _isEditing: 'editing', _isRenaming: 'is-renaming', _isSelected: 'is-selected'})}">
                     <td class="cell-arrow"></td>
                     <td class="cell-file-name" data-element="item-name">
                         <i class="glyphicon glyphicon-${this._defineIcon(this.model.mimeType)}"></i>
                         <span data-test="file-name" class="name">
                             ${this.model.name}</span>
-                        <input class="input"/>
+                        <input data-element="input" class="input"/>
                         <div data-element="loader" class="item-loader"></div>
                         <div class="rename-loader"><div></div><div></div><div></div></div>
                     </td>
@@ -65,8 +66,8 @@ export class FileComponent extends FileItem {
   /**
    * @inheritdoc
    */
-  addEventListener() {
-    super.addEventListener();
+  addNestedEventListeners() {
+    super.addNestedEventListeners();
     
     this.downloadIcon.onClick(() => this._onDownload(this.model));
     
@@ -110,5 +111,15 @@ export class FileComponent extends FileItem {
    */
   onDownloadFile(handler) {
     this._onDownload = handler;
+  }
+  
+  /**
+   * Returns input from component markup.
+   *
+   * @return {Element} input.
+   * @private
+   */
+  get input() {
+    return this.rootContainer.querySelector('[data-element="input"]');
   }
 }

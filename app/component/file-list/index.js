@@ -28,7 +28,7 @@ export class FileItemList extends Component {
   /**
    * Contains files and folders.
    *
-   * @type {FileItem[]}
+   * @type {AbstractItemComponent[]}
    * @private
    */
   _fileItemComponents = [];
@@ -151,7 +151,7 @@ export class FileItemList extends Component {
   /**
    * Returns list of rendered file item components.
    *
-   * @return {FileItem[]} list of rendered file item components.
+   * @return {AbstractItemComponent[]} list of rendered file item components.
    */
   getFileItems() {
     return this._fileItemComponents;
@@ -187,7 +187,7 @@ export class FileItemList extends Component {
   /**
    * Returns function that called when item is clicked.
    *
-   * @param {FileItem} fileItem - clicked file item.
+   * @param {AbstractItemComponent} fileItem - clicked file item.
    * @return {function} click handler.
    * @private
    */

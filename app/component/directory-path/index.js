@@ -11,7 +11,7 @@ export class DirectoryPath extends Component {
    * @type {FolderModel}
    * @private
    */
-  _folder = new FolderModel({type: 'folder'});
+  _folder;
   
   /**
    * @inheritdoc
@@ -26,10 +26,10 @@ export class DirectoryPath extends Component {
    */
   markup() {
     return `<div class="path-title ${this.getRootElementClasses({_isLoading: 'is-loading', _isInner: 'is-inner'})}">
-              <a class="nav-icon-link" title="Level up" href="#/folder/${this._folder.parentId}"><i class="glyphicon glyphicon-level-up"></i></a>
+              <a class="nav-icon-link" title="Level up" href="#/folder/${this._folder ? this._folder.parentId : ''}"><i class="glyphicon glyphicon-level-up"></i></a>
               <i class="glyphicon glyphicon-folder-close"></i>
               <div data-element="loader" class="item-loader"></div>
-              <strong class="directory-path" data-element="folder-name">/ ${this._folder.name || ''}</strong>
+              <strong class="directory-path" data-element="folder-name">/ ${this._folder ? this._folder.name : ''}</strong>
             </div>`;
   }
   

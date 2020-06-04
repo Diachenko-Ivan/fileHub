@@ -50,7 +50,6 @@ export class DirectoryPath extends Component {
    * @param {boolean} value - loading or not.
    */
   set isLoading(value) {
-    this._folder.name = '';
     this._isLoading = value;
     this.rerender();
   }

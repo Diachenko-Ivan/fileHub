@@ -509,6 +509,14 @@ List loading
     display: inline-block;
 }
 
+.file-explorer-container .path-title.is-loading .directory-path {
+    display: none;
+}
+
+.file-explorer-container .path-title.is-loading:after{
+    content: '/';
+}
+
 .path-title.is-inner .nav-icon-link {
     display: inline-block;
 }

@@ -1,12 +1,11 @@
-import {RemoveStatePropertyMutator} from '../../../../app/states/mutator/remove-state-property-mutator';
-import {RemoveStatePropertyAction} from '../../../../app/states/actions/remove-state-property-action';
+import {ClearErrorAction} from '../../../../app/states/actions/remove-state-property-action';
 
 const {test, module} = QUnit;
 
-export default module('RemoveStatePropertyMutator', function () {
+export default module('ClearErrorAction', function () {
   
   test('should call RemoveStatePropertyMutator.', function (assert) {
-    const action = new RemoveStatePropertyAction('userError');
+    const action = new ClearErrorAction('userError');
     assert.expect(2);
     const done = assert.async();
     const mockStateManager = {
@@ -16,7 +15,7 @@ export default module('RemoveStatePropertyMutator', function () {
     };
     action.apply(mockStateManager, {})
       .then(() => {
-        assert.verifySteps([`RemoveStatePropertyMutator userError`], 'Should call RemoveStatePropertyMutator.');
+        assert.verifySteps([`ClearErrorMutator userError`], 'Should call RemoveStatePropertyMutator.');
         done();
       });
   });

@@ -3,7 +3,7 @@ import {Mutator} from '../';
 /**
  * @inheritdoc
  */
-export class RemoveStatePropertyMutator extends Mutator {
+export class ClearErrorMutator extends Mutator {
   /**
    * Creates new {@type RemovingItemsMutator} instance.
    *

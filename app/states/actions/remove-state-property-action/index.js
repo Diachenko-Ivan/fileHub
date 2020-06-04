@@ -1,13 +1,13 @@
 import {Action} from '../';
-import {RemoveStatePropertyMutator} from '../../mutator/remove-state-property-mutator';
+import {ClearErrorMutator} from '../../mutator/remove-state-property-mutator';
 
 /**
  * Action that is responsible for state property null setting.
  */
-export class RemoveStatePropertyAction extends Action {
+export class ClearErrorAction extends Action {
   
   /**
-   * Creates new {@type RemoveStatePropertyAction} instance.
+   * Creates new {@type ClearErrorAction} instance.
    *
    * @param {string} propertyName - file model.
    */
@@ -20,6 +20,6 @@ export class RemoveStatePropertyAction extends Action {
    * @inheritdoc
    */
   async apply(stateManager, apiService) {
-    stateManager.mutate(new RemoveStatePropertyMutator(this.propertyName));
+    stateManager.mutate(new ClearErrorMutator(this.propertyName));
   }
 }

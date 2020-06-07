@@ -9,8 +9,8 @@ export class StateAwareComponent extends Component {
   /**
    * Creates new instance.
    *
-   * @param container
-   * @param {StateManager} stateManager -
+   * @param container - outer container.
+   * @param {StateManager} stateManager - used to make operations with state.
    */
   constructor(container, stateManager) {
     super(container);

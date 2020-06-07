@@ -15,6 +15,7 @@ import {
   REGISTRATION_PAGE_URL,
 } from './config/router-config';
 import {DynamicRouteChangeAction} from './states/actions/dynamic-route-change-action';
+import {ToastService} from './services/toasts-service';
 
 
 /**
@@ -56,7 +57,7 @@ export class Application extends Component {
         registrationPage.onSuccessfulRegistration(() => router.redirectTo(LOGIN_PAGE_URL));
       },
       [FILEHUB_PAGE_URL_TEMPLATE]: (router) => {
-        const fileHubPage = new FileHubPage(this.rootContainer, stateManager);
+        const fileHubPage = new FileHubPage(this.rootContainer, stateManager, new ToastService());
         fileHubPage.onResourceNotFound(() => router.renderNotFoundPage());
         fileHubPage.onFailedAuthorization(() => router.redirectTo(LOGIN_PAGE_URL));
         fileHubPage.onFolderChange((id) => router.redirectTo(`/folder/${id}`) )

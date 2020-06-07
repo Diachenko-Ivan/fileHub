@@ -207,7 +207,7 @@ export class FileHubPage extends StateAwareComponent {
       const {model, error} = state.renameErrorObject;
       this._handleCommonErrors(error, {
         notFoundErrorHandler: () => this._toastService.showErrorMessage(`Failed to rename item to ${model.name}. It does not exist.`),
-        serverErrorHandler: () => this._toastService.showErrorMessage(`Server error! Failed to rename ${model.name} item.`),
+        serverErrorHandler: () => this._toastService.showErrorMessage(`Server error! Failed to rename item to ${model.name}.`),
       }, () => this.dispatch(new ClearErrorAction('renameErrorObject')));
     });
     this.onStateChange('newFolderSource', (state) => {

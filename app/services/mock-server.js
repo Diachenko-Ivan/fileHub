@@ -18,7 +18,7 @@ export class MockServer {
       {name: 'file.pdf', type: 'file', mimeType: 'text', size: 100, id: 'zxc', parentId: 'root'},
     ]);
     
-    fetchMock.post('/login', (url, request) => {
+    fetchMock.post('/api/login', (url, request) => {
       const credentials = JSON.parse(request.body);
       if (credentials.login === 'admin' && credentials.password === 'Password1') {
         return {token: 'authentication_token'};
@@ -26,7 +26,7 @@ export class MockServer {
       return 401;
     });
     
-    fetchMock.post('/register', (url, request) => {
+    fetchMock.post('/api/register', (url, request) => {
       const credentials = JSON.parse(request.body);
       if (credentials.login === 'admin') {
         return {
@@ -39,9 +39,9 @@ export class MockServer {
       return 200;
     });
     
-    fetchMock.get('express:/folder/:folderId', (url, request) => {
+    fetchMock.get('express:/api/folder/:folderId', (url, request) => {
       if (this._hasAuthToken(request.headers)) {
-        const id = url.split('/')[2];
+        const id = url.split('/')[3];
         const folder = this._fileSystem.getFolder(id);
         if (folder) {
           return folder;
@@ -52,9 +52,9 @@ export class MockServer {
       return 401;
     }, {delay: 500});
     
-    fetchMock.get('express:/folder/:folderId/content', (url, request) => {
+    fetchMock.get('express:/api/folder/:folderId/content', (url, request) => {
       if (this._hasAuthToken(request.headers)) {
-        const id = url.split('/')[2];
+        const id = url.split('/')[3];
         if (this._fileSystem.getFolder(id)) {
           return this._fileSystem.getFolderContent(id);
         } else {
@@ -64,9 +64,9 @@ export class MockServer {
       return 401;
     }, {delay: 500});
     
-    fetchMock.post('express:/folder/:folderId/file', (url, request) => {
+    fetchMock.post('express:/api/folder/:folderId/file', (url, request) => {
       if (this._hasAuthToken(request.headers)) {
-        const id = url.split('/')[2];
+        const id = url.split('/')[3];
         if (this._fileSystem.getFolder(id)) {
           const file = request.body.get('file');
           return this._fileSystem.saveFile(file, id);
@@ -77,16 +77,16 @@ export class MockServer {
       return 401;
     }, {delay: 500});
     
-    fetchMock.post('/logout', (url, request) => {
+    fetchMock.post('/api/logout', (url, request) => {
       if (this._hasAuthToken(request.headers)) {
         return 200;
       }
       return 401;
     }, {delay: 500});
     
-    fetchMock.put('express:/file/:fileId', (url, request) => {
+    fetchMock.put('express:/api/file/:fileId', (url, request) => {
       if (this._hasAuthToken(request.headers)) {
-        const id = url.split('/')[2];
+        const id = url.split('/')[3];
         const fileToRename = this._fileSystem.getFile(id);
         if (fileToRename) {
           const renamedFile = JSON.parse(request.body);
@@ -99,9 +99,9 @@ export class MockServer {
       return 401;
     }, {delay: 500});
     
-    fetchMock.put('express:/folder/:folderId', (url, request) => {
+    fetchMock.put('express:/api/folder/:folderId', (url, request) => {
       if (this._hasAuthToken(request.headers)) {
-        const id = url.split('/')[2];
+        const id = url.split('/')[3];
         const folderToRename = this._fileSystem.getFolder(id);
         if (folderToRename) {
           const renamedFolder = JSON.parse(request.body);
@@ -114,9 +114,9 @@ export class MockServer {
       return 401;
     }, {delay: 500});
     
-    fetchMock.delete('express:/folder/:folderId', (url, request) => {
+    fetchMock.delete('express:/api/folder/:folderId', (url, request) => {
       if (this._hasAuthToken(request.headers)) {
-        const id = url.split('/')[2];
+        const id = url.split('/')[3];
         if (this._fileSystem.getFolder(id)) {
           this._fileSystem.deleteFolder(id);
           return 200;
@@ -127,9 +127,9 @@ export class MockServer {
       return 401;
     }, {delay: 500});
     
-    fetchMock.delete('express:/file/:fileId', (url, request) => {
+    fetchMock.delete('express:/api/file/:fileId', (url, request) => {
       if (this._hasAuthToken(request.headers)) {
-        const id = url.split('/')[2];
+        const id = url.split('/')[3];
         const fileToRemove = this._fileSystem.getFile(id);
         if (fileToRemove) {
           this._fileSystem.deleteFile(id);
@@ -141,7 +141,7 @@ export class MockServer {
       return 401;
     }, {delay: 500});
     
-    fetchMock.get('/user', (url, request) => {
+    fetchMock.get('/api/user', (url, request) => {
       if (this._hasAuthToken(request.headers)) {
         return {
           name: 'John',
@@ -151,9 +151,9 @@ export class MockServer {
       return 401;
     }, {delay: 500});
     
-    fetchMock.get('express:/file/:fileId', (url, request) => {
+    fetchMock.get('express:/api/file/:fileId', (url, request) => {
       if (this._hasAuthToken(request.headers)) {
-        const id = url.split('/')[2];
+        const id = url.split('/')[3];
         if (this._fileSystem.getFile(id)) {
           return new File([JSON.stringify({name: 's'})], 'name', {type: 'application/json'});
         } else {
@@ -163,9 +163,9 @@ export class MockServer {
       return 401;
     }, {delay: 500});
     
-    fetchMock.post('express:/folder/:folderId/folder', (url, request) => {
+    fetchMock.post('express:/api/folder/:folderId/folder', (url, request) => {
       if (this._hasAuthToken(request.headers)) {
-        const id = url.split('/')[2];
+        const id = url.split('/')[3];
         const parentFolder = this._fileSystem.getFolder(id);
         if (parentFolder) {
           return this._fileSystem.createFolder(id);

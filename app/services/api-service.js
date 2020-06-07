@@ -26,7 +26,7 @@ export class ApiService {
    * @return {Promise} result of login.
    */
   logIn(userCredentials) {
-    return fetch('/login', {
+    return fetch('/api/login', {
       method: 'POST',
       body: JSON.stringify(userCredentials),
     }).then((response) => {
@@ -46,7 +46,7 @@ export class ApiService {
    * @return {Promise} result of registration.
    */
   register(userCredentials) {
-    return fetch('/register', {
+    return fetch('/api/register', {
       method: 'POST',
       body: JSON.stringify(userCredentials),
     }).then((response) => {
@@ -64,7 +64,7 @@ export class ApiService {
    * @return {Promise} either object with file list or error if server is gone down.
    */
   getFolder(folderId) {
-    return fetch(`/folder/${folderId}`, {
+    return fetch(`/api/folder/${folderId}`, {
         method: 'GET',
         headers: this._getAuthenticationHeader(),
       },
@@ -83,7 +83,7 @@ export class ApiService {
    * @return {Promise} either object with file list or error if server is gone down.
    */
   getFolderContent(folderId) {
-    return fetch(`/folder/${folderId}/content`, {
+    return fetch(`/api/folder/${folderId}/content`, {
         method: 'GET',
         headers: this._getAuthenticationHeader(),
       },
@@ -102,7 +102,7 @@ export class ApiService {
    * @return {Promise} object with user name an id or server error.
    */
   getUserInfo() {
-    return fetch('/user', {
+    return fetch('/api/user', {
       method: 'GET',
       headers: this._getAuthenticationHeader(),
     }).then((response) => {
@@ -120,7 +120,7 @@ export class ApiService {
    * @return {Promise<Response>} successful or unsuccessful result of deletion.
    */
   removeFolder(id) {
-    return fetch(`/folder/${id}`, {
+    return fetch(`/api/folder/${id}`, {
       method: 'DELETE',
       headers: this._getAuthenticationHeader(),
     }).then((response) => {
@@ -138,7 +138,7 @@ export class ApiService {
    * @return {Promise<Response>} successful or unsuccessful result of deletion.
    */
   removeFile(id) {
-    return fetch(`/file/${id}`, {
+    return fetch(`/api/file/${id}`, {
       method: 'DELETE',
       headers: this._getAuthenticationHeader(),
     }).then((response) => {
@@ -155,7 +155,7 @@ export class ApiService {
    * @return {Promise<Response>}
    */
   logOut() {
-    return fetch('/logout', {
+    return fetch('/api/logout', {
       method: 'POST',
       headers: this._getAuthenticationHeader(),
     }).finally(() => this.storageService.removeItem('token'));
@@ -169,7 +169,7 @@ export class ApiService {
    * @return {Promise<File>} downloading file.
    */
   downloadFile(id) {
-    return fetch(`/file/${id}`, {
+    return fetch(`/api/file/${id}`, {
       method: 'GET',
       headers: this._getAuthenticationHeader(),
     }).then((response) => {
@@ -190,7 +190,7 @@ export class ApiService {
   uploadFile(folderId, file) {
     const formData = new FormData();
     formData.append('file', file);
-    return fetch(`/folder/${folderId}/file`, {
+    return fetch(`/api/folder/${folderId}/file`, {
       method: 'POST',
       body: formData,
       headers: this._getAuthenticationHeader(),
@@ -209,7 +209,7 @@ export class ApiService {
    * @return {Promise<Response>} result of renaming.
    */
   renameItem(item) {
-    return fetch(`/${item.type}/${item.id}`, {
+    return fetch(`/api/${item.type}/${item.id}`, {
       method: 'PUT',
       headers: this._getAuthenticationHeader(),
       body: JSON.stringify(item),
@@ -228,7 +228,7 @@ export class ApiService {
    * @return {Promise<FolderModel>} new created folder.
    */
   createFolder(folder) {
-    return fetch(`/folder/${folder.parentId}/folder`, {
+    return fetch(`/api/folder/${folder.parentId}/folder`, {
       method: 'POST',
       headers: this._getAuthenticationHeader(),
       body: JSON.stringify(folder),

@@ -48,6 +48,11 @@ export class FileListState {
    */
   user;
   /**
+   * Username loading flag.
+   * @type {boolean}
+   */
+  isUserLoading;
+  /**
    * Error in the result of getting user.
    * @type {Error}
    */

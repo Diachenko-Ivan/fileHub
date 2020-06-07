@@ -20,4 +20,12 @@ export default module('UserDetails test', function (hook) {
     assert.ok(userDetailsComponent, 'Should render user details component.');
     assert.strictEqual(userDetailsComponent.innerText, username, 'Should render correct username.');
   });
+  
+  test('should set username to loading state.', function (assert) {
+    const userDetails = new UserDetails(fixture);
+    const userDetailsComponent = fixture.firstElementChild;
+    
+    userDetails.isLoading = true;
+    assert.ok(userDetailsComponent.classList.contains('is-loading'), 'Should contain style class.');
+  });
 });

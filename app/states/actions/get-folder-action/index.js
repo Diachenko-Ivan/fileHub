@@ -21,15 +21,19 @@ export class GetFolderAction extends Action {
    * @inheritdoc
    */
   async apply(stateManager, apiService) {
+    let possibleError;
+    let folderResponse;
     stateManager.mutate(new FolderLoadingMutator(true));
     try {
-      const folderResponse = await apiService.getFolder(this.folderId);
-      stateManager.mutate(new FolderMutator(folderResponse));
-      return folderResponse;
+      folderResponse = await apiService.getFolder(this.folderId);
     } catch (e) {
+      possibleError = e;
       stateManager.mutate(new FolderLoadErrorMutator(e));
     } finally {
       stateManager.mutate(new FolderLoadingMutator(false));
+      if (!possibleError) {
+        stateManager.mutate(new FolderMutator(folderResponse));
+      }
     }
   }
 }

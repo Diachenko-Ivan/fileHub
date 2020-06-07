@@ -52,3 +52,5 @@ import NewFolderSourceMutatorTest from './states/mutator/new-folder-source-mutat
 import CreateFolderErrorMutatorTest from './states/mutator/create-folder-error-mutator'
 import CreateFolderActionTest from './states/actions/create-folder-action'
 import UserLoadingMutatorTest from './states/mutator/user-info-loading-mutator'
+import RemoveStatePropertyAction from './states/actions/remove-state-property-action'
+import RemoveStatePropertyMutator from './states/mutator/remove-state-property-mutator'

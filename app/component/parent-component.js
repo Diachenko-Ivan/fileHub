@@ -94,6 +94,8 @@ export class Component {
   /**
    * Returns classes for root element depending on component style properties(isSelected, isLoading etc.).
    *
+   * <p>If "classProperties" object`s key is true property in current component then object`s value is its style class.
+   *
    * @param {Object<string, string>} classProperties - object where key is component property and value is style class.
    * @return {string} row with style classes.
    */

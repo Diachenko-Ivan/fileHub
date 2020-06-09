@@ -19,7 +19,7 @@ public abstract class ItemDto {
      */
     protected String parentId;
     /**
-     * Default folder type.
+     * Item type.
      */
     protected String type;
 

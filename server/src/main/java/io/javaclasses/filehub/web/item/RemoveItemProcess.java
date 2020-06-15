@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 /**
  * Used for item removing;
  */
-public interface RemoveItemService {
+public interface RemoveItemProcess {
     /**
      * Removes item depending on its id.
      *

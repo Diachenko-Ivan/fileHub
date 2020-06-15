@@ -31,23 +31,39 @@ public class FileDto extends ItemDto {
         this.type = "file";
     }
 
+    /**
+     * Returns file mime type.
+     *
+     * @return file mime type.
+     */
     public String mimeType() {
         return mimeType;
     }
 
+    /**
+     * Sets new mime type.
+     *
+     * @param mimeType mime type value.
+     */
     public void setMimeType(String mimeType) {
         this.mimeType = mimeType;
     }
 
+    /**
+     * Returns file size.
+     *
+     * @return file size in bytes.
+     */
     public long size() {
         return size;
     }
 
+    /**
+     * Sets new file size.
+     *
+     * @param size number of bytes.
+     */
     public void setSize(long size) {
         this.size = size;
-    }
-
-    public String type() {
-        return type;
     }
 }

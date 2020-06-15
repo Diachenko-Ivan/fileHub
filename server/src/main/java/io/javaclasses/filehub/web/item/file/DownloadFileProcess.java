@@ -1,7 +1,6 @@
 package io.javaclasses.filehub.web.item.file;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 /**
  * Used for client file download.
@@ -9,6 +8,7 @@ import java.io.FileNotFoundException;
 public interface DownloadFileProcess {
     /**
      * Downloads file depending on its id that is equal to {@code fileId}.
+     * <p>If file does not exist method returns <i>null</i>.
      *
      * @param fileId id of file that is going to be downloaded.
      * @return client file.

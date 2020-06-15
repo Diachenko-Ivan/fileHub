@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 /**
  * Used for uploading file into folder.
  */
-public interface UploadFileService {
+public interface UploadFileProcess {
     /**
      * Uploads {@code file} into folder with id {@code folderId}
      *

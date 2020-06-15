@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 /**
  * Used for file renaming.
  */
-public interface RenameFileService {
+public interface RenameFileProcess {
     /**
      * Renames file depending on its id.
      *

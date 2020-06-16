@@ -36,30 +36,64 @@ public abstract class ItemDto {
         this.parentId = parentId;
     }
 
+    /**
+     * Used for getting of item`s id.
+     *
+     * @return item id.
+     */
     public String id() {
         return id;
     }
 
+    /**
+     * Sets item`s new id.
+     *
+     * @param id item`s new id.
+     */
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * Used for getting of item`s name.
+     *
+     * @return item`s name.
+     */
     public String name() {
         return name;
     }
 
+    /**
+     * Sets item`s new name.
+     *
+     * @param name item`s new name.
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Used for getting of item`s parent folder id.
+     *
+     * @return id of parent folder.
+     */
     public String parentId() {
         return parentId;
     }
 
+    /**
+     * Sets new item`s parent folder id.
+     *
+     * @param parentId id of parent folder.
+     */
     public void setParentId(String parentId) {
         this.parentId = parentId;
     }
 
+    /**
+     * Compares items by their ids.
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -68,6 +102,9 @@ public abstract class ItemDto {
         return Objects.equals(id, itemDto.id);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return Objects.hash(id);

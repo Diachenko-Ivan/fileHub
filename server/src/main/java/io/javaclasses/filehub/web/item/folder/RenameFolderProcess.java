@@ -3,9 +3,9 @@ package io.javaclasses.filehub.web.item.folder;
 import java.io.FileNotFoundException;
 
 /**
- * Used for renaming of folder.
+ * Used for folder renaming.
  */
-public interface RenameFolderService {
+public interface RenameFolderProcess {
     /**
      * Renames folder depending on its id.
      *

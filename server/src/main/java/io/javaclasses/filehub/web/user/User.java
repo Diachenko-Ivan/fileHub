@@ -40,38 +40,82 @@ public class User {
         this.credentials = credentials;
     }
 
+    /**
+     * Used for getting of user id.
+     *
+     * @return user id.
+     */
     public String id() {
         return id;
     }
 
+    /**
+     * Sets user new id.
+     *
+     * @param id user new id.
+     */
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * Used for getting of user name.
+     *
+     * @return user id.
+     */
     public String name() {
         return name;
     }
 
+    /**
+     * Sets user new name.
+     *
+     * @param name user new name.
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Returns user credentials that are used for authentication.
+     *
+     * @return user credentials.
+     */
     public UserCredentials credentials() {
         return credentials;
     }
 
+    /**
+     * Sets user new credentials.
+     *
+     * @param credentials user credentials.
+     */
     public void setCredentials(UserCredentials credentials) {
         this.credentials = credentials;
     }
 
+    /**
+     * Returns user authentication token.
+     *
+     * @return user token.
+     */
     public String token() {
         return token;
     }
 
+    /**
+     * Sets user new authentication token.
+     *
+     * @param token user token.
+     */
     public void setToken(String token) {
         this.token = token;
     }
 
+    /**
+     * Compares users their ids.
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -80,6 +124,9 @@ public class User {
         return id.equals(user.id);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return Objects.hash(id);

@@ -42,6 +42,10 @@ public class UserCredentials {
         this.password = password;
     }
 
+    /**
+     * Compares user credentials.
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

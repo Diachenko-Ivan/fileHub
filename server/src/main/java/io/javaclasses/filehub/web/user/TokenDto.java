@@ -18,10 +18,20 @@ public class TokenDto {
         this.token = token;
     }
 
+    /**
+     * Returns user`s token.
+     *
+     * @return token value.
+     */
     public String token() {
         return token;
     }
 
+    /**
+     * Sets new token for user.
+     *
+     * @param token token value.
+     */
     public void setToken(String token) {
         this.token = token;
     }

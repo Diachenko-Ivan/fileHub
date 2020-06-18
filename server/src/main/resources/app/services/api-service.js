@@ -1,0 +1,300 @@
+import {UserCredentials} from '../models/user-credentials/index.js';
+import {ValidationError} from '../models/errors/validation-error/index.js';
+import {GeneralServerError} from '../models/errors/server-error/index.js';
+import {AuthenticationError} from '../models/errors/authentication-error/index.js';
+import {StorageService} from './storage-service/index.js';
+import {PageNotFoundError} from '../models/errors/page-not-found-error/index.js';
+import {GeneralError} from '../models/errors/general-error/index.js';
+
+/**
+ * Used for fulfilling requests to server.
+ */
+export class ApiService {
+  /**
+   * Creates new Api Service.
+   *
+   * @param {StorageService} storageService - used for storing token and etc.
+   */
+  constructor(storageService) {
+    this.storageService = storageService;
+  }
+
+  /**
+   * Sends request for user authentication and returns its result.
+   *
+   * @param {UserCredentials} userCredentials - user`s login form credentials.
+   * @return {Promise} result of login.
+   */
+  logIn(userCredentials) {
+    return fetch('/api/login', {
+      method: 'POST',
+      body: JSON.stringify(userCredentials),
+    }).then((response) => {
+      if (response.ok) {
+        return response.json().then((data) => this.storageService.setItem('token', data.token));
+      } else if (response.status === 401) {
+        throw new AuthenticationError('No users found with this login and password.');
+      }
+      return this._handleCommonErrors(response);
+    });
+  }
+
+  /**
+   * Sends request for registration of new user and returns result of registration.
+   *
+   * @param {UserCredentials} userCredentials - user`s registration form credentials.
+   * @return {Promise} result of registration.
+   */
+  register(userCredentials) {
+    return fetch('/api/register', {
+      method: 'POST',
+      body: JSON.stringify(userCredentials),
+    }).then((response) => {
+      if (response.ok) {
+        return true;
+      }
+      return this._handleCommonErrors(response);
+    });
+  }
+
+  /**
+   * Tries to get folder by its id.
+   *
+   * @param {string} folderId - folder id.
+   * @return {Promise} either object with file list or error if server is gone down.
+   */
+  getFolder(folderId) {
+    return fetch(`/api/folder/${folderId}`, {
+      method: 'GET',
+      headers: this._getAuthenticationHeader(),
+    },
+    ).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return this._handleCommonErrors(response);
+    });
+  }
+
+  /**
+   * Tries to get folder content.
+   *
+   * @param {string} folderId - folder id.
+   * @return {Promise} either object with file list or error if server is gone down.
+   */
+  getFolderContent(folderId) {
+    return fetch(`/api/folder/${folderId}/content`, {
+      method: 'GET',
+      headers: this._getAuthenticationHeader(),
+    },
+    ).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return this._handleCommonErrors(response);
+    });
+  }
+
+
+  /**
+   * Gets user info from server.
+   *
+   * @return {Promise} object with user name an id or server error.
+   */
+  getUserInfo() {
+    return fetch('/api/user', {
+      method: 'GET',
+      headers: this._getAuthenticationHeader(),
+    }).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return this._handleCommonErrors(response);
+    });
+  }
+
+  /**
+   * Removes folder.
+   *
+   * @param {string} id - folder id.
+   * @return {Promise<Response>} successful or unsuccessful result of deletion.
+   */
+  removeFolder(id) {
+    return fetch(`/api/folder/${id}`, {
+      method: 'DELETE',
+      headers: this._getAuthenticationHeader(),
+    }).then((response) => {
+      if (response.ok) {
+        return `Folder with id ${id} deleted.`;
+      }
+      return this._handleCommonErrors(response);
+    });
+  }
+
+  /**
+   * Removes file.
+   *
+   * @param {string} id - file id.
+   * @return {Promise<Response>} successful or unsuccessful result of deletion.
+   */
+  removeFile(id) {
+    return fetch(`/api/file/${id}`, {
+      method: 'DELETE',
+      headers: this._getAuthenticationHeader(),
+    }).then((response) => {
+      if (response.ok) {
+        return `File with id ${id} deleted.`;
+      }
+      return this._handleCommonErrors(response);
+    });
+  }
+
+  /**
+   * Sends request for user logout.
+   *
+   * @return {Promise<Response>}
+   */
+  logOut() {
+    return fetch('/api/logout', {
+      method: 'POST',
+      headers: this._getAuthenticationHeader(),
+    }).finally(() => this.storageService.removeItem('token'));
+  }
+
+
+  /**
+   * Sends request for getting downloading file.
+   *
+   * @param {string} id - file id.
+   * @return {Promise<File>} downloading file.
+   */
+  downloadFile(id) {
+    return fetch(`/api/file/${id}`, {
+      method: 'GET',
+      headers: this._getAuthenticationHeader(),
+    }).then((response) => {
+      if (response.ok) {
+        return response.blob();
+      }
+      return this._handleCommonErrors(response);
+    });
+  }
+
+  /**
+   * Sends request for upload of new file to the folder.
+   *
+   * @param {string} folderId - folder id.
+   * @param {File} file - file that is going to be saved.
+   * @return {Promise<Response>}
+   */
+  uploadFile(folderId, file) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return fetch(`/api/folder/${folderId}/file`, {
+      method: 'POST',
+      body: formData,
+      headers: this._getAuthenticationHeader(),
+    }).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return this._handleCommonErrors(response);
+    });
+  }
+
+  /**
+   * Sends request for file or folder renaming.
+   *
+   * @param {AbstractItemModel} item - file or folder which user wants to rename.
+   * @return {Promise<Response>} result of renaming.
+   */
+  renameItem(item) {
+    return fetch(`/api/${item.type}/${item.id}`, {
+      method: 'PUT',
+      headers: this._getAuthenticationHeader(),
+      body: JSON.stringify(item),
+    }).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return this._handleCommonErrors(response);
+    });
+  }
+
+  /**
+   * Sends request for creating a new folder.
+   *
+   * @param {FolderModel} folder - object sent to server.
+   * @return {Promise<FolderModel>} new created folder.
+   */
+  createFolder(folder) {
+    return fetch(`/api/folder/${folder.parentId}/folder`, {
+      method: 'POST',
+      headers: this._getAuthenticationHeader(),
+      body: JSON.stringify(folder),
+    }).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return this._handleCommonErrors(response);
+    });
+  }
+
+  /**
+   * @return {ApiService} singleton.
+   */
+  static getInstance() {
+    return service;
+  }
+
+  /**
+   * Returns authentication header with token.
+   *
+   * @return {{Authorization: string}}
+   */
+  _getAuthenticationHeader() {
+    return {
+      'Authorization':
+        `Bearer ${this.storageService.getItem('token')}`,
+    };
+  }
+
+  /**
+   * Handles errors that can come from request.
+   *
+   * @param {Response} response - response object from server.
+   * @private
+   */
+  async _handleCommonErrors(response) {
+    const availableCodesToErrorMap = {
+      401: () => {
+        this.storageService.removeItem('token');
+        return new AuthenticationError();
+      },
+      404: () => new PageNotFoundError(),
+      422: (error) => new ValidationError(error),
+      500: (errorText) => new GeneralServerError(errorText),
+    };
+    const status = response.status;
+    const errorHandler = availableCodesToErrorMap[status];
+    if (errorHandler) {
+      let errorObject;
+      try {
+        errorObject = await response.json();
+      } catch (e) {
+        errorObject = await response.text();
+      }
+      throw errorHandler(errorObject);
+    } else {
+      const textFromServer = await response.text();
+      throw new GeneralError(status, textFromServer);
+    }
+  }
+}
+
+/**
+ * Only copy of ApiService that is available on each page.
+ *
+ * @type {ApiService}
+ */
+const service = new ApiService(new StorageService(localStorage));

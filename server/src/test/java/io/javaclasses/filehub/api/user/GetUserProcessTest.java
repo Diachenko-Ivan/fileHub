@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.api.user;
 
+import io.javaclasses.filehub.storage.user.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -1,6 +1,6 @@
 package io.javaclasses.filehub.api.item.folder;
 
-import io.javaclasses.filehub.web.api.item.ItemDto;
+import io.javaclasses.filehub.api.item.ItemDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

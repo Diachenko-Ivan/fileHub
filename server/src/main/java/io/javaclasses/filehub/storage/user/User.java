@@ -1,4 +1,4 @@
-package io.javaclasses.filehub.web.user;
+package io.javaclasses.filehub.storage.user;
 
 import com.google.gson.annotations.Expose;
 

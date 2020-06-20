@@ -1,61 +1,35 @@
 package io.javaclasses.filehub.storage.user;
 
-import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import io.javaclasses.filehub.storage.Record;
 
 import java.util.Objects;
 
 /**
- * Represent client.
+ * Represents client.
  */
-public class User {
-    /**
-     * User`s id.
-     */
-    private String id;
+public class User extends Record<UserId> {
     /**
      * User name.
      */
-    private String name;
+    @SerializedName("name")
+    private String login;
     /**
-     * User`s application access token.
+     * User`s password.
      */
-    @Expose(serialize = false, deserialize = false)
-    private String token;
-    /**
-     * User`s credentials.
-     */
-    @Expose(serialize = false, deserialize = false)
-    private UserCredentials credentials;
+    private String password;
 
     /**
      * Creates new {@link User} instance.
      *
-     * @param id          user`s id
-     * @param name        username
-     * @param credentials user`s credentials.
+     * @param id       user`s id
+     * @param login    username
+     * @param password user`s password.
      */
-    public User(String id, String name, UserCredentials credentials) {
-        this.id = id;
-        this.name = name;
-        this.credentials = credentials;
-    }
-
-    /**
-     * Used for getting of user id.
-     *
-     * @return user id.
-     */
-    public String id() {
-        return id;
-    }
-
-    /**
-     * Sets user new id.
-     *
-     * @param id user new id.
-     */
-    public void setId(String id) {
-        this.id = id;
+    public User(UserId id, String login, String password) {
+        super(id);
+        this.login = login;
+        this.password = password;
     }
 
     /**
@@ -63,17 +37,17 @@ public class User {
      *
      * @return user id.
      */
-    public String name() {
-        return name;
+    public String login() {
+        return login;
     }
 
     /**
      * Sets user new name.
      *
-     * @param name user new name.
+     * @param login user new name.
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     /**
@@ -81,39 +55,21 @@ public class User {
      *
      * @return user credentials.
      */
-    public UserCredentials credentials() {
-        return credentials;
+    public String password() {
+        return password;
     }
 
     /**
      * Sets user new credentials.
      *
-     * @param credentials user credentials.
+     * @param password user credentials.
      */
-    public void setCredentials(UserCredentials credentials) {
-        this.credentials = credentials;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     /**
-     * Returns user authentication token.
-     *
-     * @return user token.
-     */
-    public String token() {
-        return token;
-    }
-
-    /**
-     * Sets user new authentication token.
-     *
-     * @param token user token.
-     */
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    /**
-     * Compares users their ids.
+     * Compares users by their ids.
      * {@inheritDoc}
      */
     @Override

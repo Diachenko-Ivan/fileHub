@@ -24,4 +24,14 @@ public class UserStorage implements Storage<UserId, User> {
         Preconditions.checkNotNull(users);
         this.users = users;
     }
+
+    /**
+     * Adds new user to storage.
+     *
+     * @param user added user.
+     */
+    public synchronized void add(User user) {
+        Preconditions.checkNotNull(user);
+        users.put(user.id(), user);
+    }
 }

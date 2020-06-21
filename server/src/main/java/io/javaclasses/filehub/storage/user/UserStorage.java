@@ -34,4 +34,31 @@ public class UserStorage implements Storage<UserId, User> {
         Preconditions.checkNotNull(user);
         users.put(user.id(), user);
     }
+
+    /**
+     * Returns user by his login and password.
+     *
+     * @param login    user login.
+     * @param password user password.
+     * @return {@link Optional<User>} with the same login and password.
+     */
+    public synchronized Optional<User> findByLoginAndPassword(String login, String password) {
+        return this.users.values()
+                .stream()
+                .filter(u -> u.login().equals(login) && u.password().equals(password))
+                .findFirst();
+    }
+
+    /**
+     * Returns user by his login.
+     *
+     * @param login user login.
+     * @return {@link Optional<User>} with the same login.
+     */
+    public synchronized Optional<User> findByLogin(String login) {
+        return this.users.values()
+                .stream()
+                .filter(u -> u.login().equals(login))
+                .findFirst();
+    }
 }

@@ -29,7 +29,7 @@ public class TokenStorage implements Storage<TokenId, TokenRecord> {
      *
      * @param record token which will be saved.
      */
-    public void add(TokenRecord record) {
+    public synchronized void add(TokenRecord record) {
         Preconditions.checkNotNull(record);
         tokens.put(record.token(), record);
     }
@@ -40,7 +40,7 @@ public class TokenStorage implements Storage<TokenId, TokenRecord> {
      * @param tokenValue value of the token which will be removed.
      * @return removed token.
      */
-    public TokenRecord remove(String tokenValue) {
+    public synchronized TokenRecord remove(String tokenValue) {
         Preconditions.checkNotNull(tokenValue);
         return this.tokens.remove(tokenValue);
     }
@@ -52,7 +52,7 @@ public class TokenStorage implements Storage<TokenId, TokenRecord> {
      * @param tokenValue value if the token which is being found.
      * @return token or null.
      */
-    public TokenRecord findByToken(String tokenValue) {
+    public synchronized TokenRecord findByToken(String tokenValue) {
         Preconditions.checkNotNull(tokenValue);
         return this.tokens.get(tokenValue);
     }

@@ -1,12 +1,15 @@
 package io.javaclasses.filehub.web;
 
 import io.javaclasses.filehub.api.user.*;
+import io.javaclasses.filehub.storage.user.TokenRecord;
 import io.javaclasses.filehub.storage.user.TokenStorage;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserStorage;
+import io.javaclasses.filehub.web.deserializer.AuthenticateUserDeserializer;
 import io.javaclasses.filehub.web.deserializer.RegisterUserDeserializer;
 import io.javaclasses.filehub.web.serializer.BusyLoginExceptionSerializer;
 import io.javaclasses.filehub.web.serializer.CredentialValidationExceptionSerializer;
+import io.javaclasses.filehub.web.serializer.TokenSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Filter;
@@ -71,6 +74,19 @@ public class WebApplication {
                 logger.warn("Unsuccessful registration. Login is already busy.");
                 response.status(422);
                 return new BusyLoginExceptionSerializer().serialize(e);
+            }
+        });
+
+        post("/api/login", (request, response) -> {
+            logger.info("Request to '/api/login' url.");
+            try {
+                AuthenticateUser authenticateUser = new AuthenticateUserDeserializer().deserialize(request.body());
+                TokenRecord tokenRecord = new Authentication(userStorage).logIn(authenticateUser);
+                authorizationService.createSession(tokenRecord);
+                return new TokenSerializer().serialize(tokenRecord);
+            } catch (AuthenticationException e) {
+                response.status(401);
+                return "No user with these credentials.";
             }
         });
     }

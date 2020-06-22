@@ -1,6 +1,7 @@
 package io.javaclasses.filehub.api.user;
 
 import com.google.common.base.Preconditions;
+import io.javaclasses.filehub.storage.user.TokenRecord;
 import io.javaclasses.filehub.storage.user.TokenStorage;
 import io.javaclasses.filehub.storage.user.UserStorage;
 
@@ -28,5 +29,15 @@ public class AuthorizationService {
         Preconditions.checkNotNull(userStorage);
         this.tokenStorage = tokenStorage;
         this.userStorage = userStorage;
+    }
+
+    /**
+     * Creates new session for user saving {@link TokenRecord} instance.
+     *
+     * @param record token for saving in storage.
+     */
+    public void createSession(TokenRecord record) {
+        Preconditions.checkNotNull(record);
+        this.tokenStorage.add(record);
     }
 }

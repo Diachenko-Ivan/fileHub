@@ -5,6 +5,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.javaclasses.filehub.storage.user.TokenRecord;
 
+import static com.google.common.base.Preconditions.*;
+
 /**
  * JSON serializer for {@link TokenRecord}.
  */
@@ -23,7 +25,7 @@ public class TokenSerializer {
      * @return JSON string.
      */
     public String serialize(TokenRecord token) {
-        Preconditions.checkNotNull(token);
+        checkNotNull(token);
         return gson.toJson(token);
     }
 }

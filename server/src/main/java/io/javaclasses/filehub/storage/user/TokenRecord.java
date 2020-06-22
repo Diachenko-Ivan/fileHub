@@ -6,6 +6,8 @@ import io.javaclasses.filehub.storage.Record;
 
 import java.util.Date;
 
+import static com.google.common.base.Preconditions.*;
+
 /**
  * Represents user access token.
  */
@@ -31,9 +33,9 @@ public class TokenRecord extends Record<TokenId> {
      */
     public TokenRecord(TokenId tokenId, String tokenValue, UserId userId, Date expirationDate) {
         super(tokenId);
-        Preconditions.checkNotNull(tokenValue);
-        Preconditions.checkNotNull(userId);
-        Preconditions.checkNotNull(expirationDate);
+        checkNotNull(tokenValue);
+        checkNotNull(userId);
+        checkNotNull(expirationDate);
         this.token = tokenValue;
         this.userId = userId;
         this.expirationDate = expirationDate;

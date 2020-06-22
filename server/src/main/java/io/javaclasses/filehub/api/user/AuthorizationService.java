@@ -9,6 +9,8 @@ import io.javaclasses.filehub.storage.user.UserStorage;
 import java.util.Date;
 import java.util.Optional;
 
+import static com.google.common.base.Preconditions.*;
+
 /**
  * Used for user authorization and getting information about already authorized user.
  */
@@ -29,8 +31,8 @@ public class AuthorizationService {
      * @param userStorage  storage for user info.
      */
     public AuthorizationService(TokenStorage tokenStorage, UserStorage userStorage) {
-        Preconditions.checkNotNull(tokenStorage);
-        Preconditions.checkNotNull(userStorage);
+        checkNotNull(tokenStorage);
+        checkNotNull(userStorage);
         this.tokenStorage = tokenStorage;
         this.userStorage = userStorage;
     }
@@ -44,7 +46,7 @@ public class AuthorizationService {
      * @return authorized user or null.
      */
     public User authorizedUser(String tokenValue) {
-        Preconditions.checkNotNull(tokenValue);
+        checkNotNull(tokenValue);
         TokenRecord token = tokenStorage.findByToken(tokenValue);
 
         if (token == null) {
@@ -65,7 +67,7 @@ public class AuthorizationService {
      * @param record token for saving in storage.
      */
     public void createSession(TokenRecord record) {
-        Preconditions.checkNotNull(record);
+        checkNotNull(record);
         this.tokenStorage.add(record);
     }
 }

@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.google.common.base.Preconditions.*;
+
 /**
  * Implements user authentication functionality.
  */
@@ -29,7 +31,7 @@ public class Authentication implements AuthenticationProcess {
      * @param userStorage {@link UserStorage} instance.
      */
     public Authentication(UserStorage userStorage) {
-        Preconditions.checkNotNull(userStorage);
+        checkNotNull(userStorage);
         this.userStorage = userStorage;
     }
 
@@ -38,7 +40,7 @@ public class Authentication implements AuthenticationProcess {
      */
     @Override
     public TokenRecord logIn(AuthenticateUser authenticateUser) throws AuthenticationException {
-        Preconditions.checkNotNull(authenticateUser);
+        checkNotNull(authenticateUser);
         String hashedPassword = StringHashCreator.hashedString(authenticateUser.password());
         Optional<User> existentUser = userStorage.findByLoginAndPassword(authenticateUser.login(), hashedPassword);
         if (existentUser.isEmpty()) {

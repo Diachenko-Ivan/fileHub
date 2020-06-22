@@ -5,6 +5,8 @@ import io.javaclasses.filehub.storage.Storage;
 
 import java.util.HashMap;
 
+import static com.google.common.base.Preconditions.*;
+
 /**
  * Used for executing CRUD operation with token.
  */
@@ -20,7 +22,7 @@ public class TokenStorage implements Storage<TokenId, TokenRecord> {
      * @param tokens initial map.
      */
     public TokenStorage(HashMap<String, TokenRecord> tokens) {
-        Preconditions.checkNotNull(tokens);
+        checkNotNull(tokens);
         this.tokens = tokens;
     }
 
@@ -30,7 +32,7 @@ public class TokenStorage implements Storage<TokenId, TokenRecord> {
      * @param record token which will be saved.
      */
     public synchronized void add(TokenRecord record) {
-        Preconditions.checkNotNull(record);
+        checkNotNull(record);
         tokens.put(record.token(), record);
     }
 
@@ -41,7 +43,7 @@ public class TokenStorage implements Storage<TokenId, TokenRecord> {
      * @return removed token.
      */
     public synchronized TokenRecord remove(String tokenValue) {
-        Preconditions.checkNotNull(tokenValue);
+        checkNotNull(tokenValue);
         return this.tokens.remove(tokenValue);
     }
 
@@ -53,7 +55,7 @@ public class TokenStorage implements Storage<TokenId, TokenRecord> {
      * @return token or null.
      */
     public synchronized TokenRecord findByToken(String tokenValue) {
-        Preconditions.checkNotNull(tokenValue);
+        checkNotNull(tokenValue);
         return this.tokens.get(tokenValue);
     }
 }

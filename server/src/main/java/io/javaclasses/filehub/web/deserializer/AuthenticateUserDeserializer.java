@@ -7,6 +7,8 @@ import io.javaclasses.filehub.api.user.RegisterUser;
 
 import java.lang.reflect.Type;
 
+import static com.google.common.base.Preconditions.*;
+
 /**
  * JSON deserializer for {@link AuthenticateUser} command.
  */
@@ -34,7 +36,7 @@ public class AuthenticateUserDeserializer implements JsonDeserializer<Authentica
      * @return deserialized instance.
      */
     public AuthenticateUser deserialize(String json) {
-        Preconditions.checkNotNull(json);
+        checkNotNull(json);
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(RegisterUser.class, this)
                 .create();

@@ -1,9 +1,7 @@
 package io.javaclasses.filehub.web;
 
-import io.javaclasses.filehub.api.user.BusyLoginException;
-import io.javaclasses.filehub.api.user.CredentialValidationException;
-import io.javaclasses.filehub.api.user.RegisterUser;
-import io.javaclasses.filehub.api.user.Registration;
+import io.javaclasses.filehub.api.user.*;
+import io.javaclasses.filehub.storage.user.TokenStorage;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserStorage;
 import io.javaclasses.filehub.web.deserializer.RegisterUserDeserializer;
@@ -11,6 +9,7 @@ import io.javaclasses.filehub.web.serializer.BusyLoginExceptionSerializer;
 import io.javaclasses.filehub.web.serializer.CredentialValidationExceptionSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import spark.Filter;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -29,6 +28,14 @@ public class WebApplication {
      * Storage for operations with user {@link User}.
      */
     private final UserStorage userStorage = new UserStorage(new HashMap<>());
+    /**
+     * Storage for operations with token. Used by {@link AuthorizationService}.
+     */
+    private final TokenStorage tokenStorage = new TokenStorage(new HashMap<>());
+    /**
+     * Service that works with authorization session.
+     */
+    private final AuthorizationService authorizationService = new AuthorizationService(tokenStorage, userStorage);
 
     /**
      * Starts application.
@@ -46,6 +53,7 @@ public class WebApplication {
     private void run() {
         port(8080);
         staticFiles.location("/app/");
+        this.filter();
 
         post("/api/register", (request, response) -> {
             logger.info("Request to '/api/register' url.");
@@ -64,6 +72,26 @@ public class WebApplication {
                 response.status(422);
                 return new BusyLoginExceptionSerializer().serialize(e);
             }
+        });
+    }
+
+    /**
+     * Filters incoming requests.
+     */
+    private void filter() {
+        path("/api", () -> {
+            Filter authorizationFilter = (request, response) -> {
+                String authorizationToken = request.headers("Authorization").split(" ")[1];
+                logger.debug("Authorization process. Token: " + authorizationToken);
+                User user = authorizationService.authorizedUser(authorizationToken);
+                if (user == null) {
+                    halt(401);
+                }
+            };
+            before("/folder/*", authorizationFilter);
+            before("/file/*", authorizationFilter);
+            before("/user", authorizationFilter);
+            before("/logout", authorizationFilter);
         });
     }
 }

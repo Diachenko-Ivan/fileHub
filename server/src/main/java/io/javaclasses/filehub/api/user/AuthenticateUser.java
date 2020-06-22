@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.api.user;
 
+import com.google.common.base.Preconditions;
 import io.javaclasses.filehub.api.Command;
 
 /**
@@ -22,6 +23,8 @@ public class AuthenticateUser implements Command {
      * @param password user password.
      */
     public AuthenticateUser(String login, String password) {
+        Preconditions.checkNotNull(login);
+        Preconditions.checkNotNull(password);
         this.login = login;
         this.password = password;
     }

@@ -65,6 +65,8 @@ public class WebApplication {
                 RegisterUser registerUserCommand = new RegisterUserDeserializer().deserialize(request.body());
                 new Registration(userStorage).register(registerUserCommand);
                 response.status(200);
+                logger.info("User with login " + registerUserCommand.login()
+                        + " and password " + registerUserCommand.password() + " was registered.");
                 return "User is registered";
             } catch (CredentialValidationException e) {
                 logger.warn("User credentials are not validated:" + Arrays.toString(e.failedCredentials()));
@@ -83,8 +85,10 @@ public class WebApplication {
                 AuthenticateUser authenticateUser = new AuthenticateUserDeserializer().deserialize(request.body());
                 TokenRecord tokenRecord = new Authentication(userStorage).logIn(authenticateUser);
                 authorizationService.createSession(tokenRecord);
+                logger.info("User with login " + authenticateUser.login() + " was authenticated.");
                 return new TokenSerializer().serialize(tokenRecord);
             } catch (AuthenticationException e) {
+                logger.warn("User was not authenticated.");
                 response.status(401);
                 return "No user with these credentials.";
             }
@@ -101,8 +105,11 @@ public class WebApplication {
                 logger.debug("Authorization process. Token: " + authorizationToken);
                 User user = authorizationService.authorizedUser(authorizationToken);
                 if (user == null) {
+                    logger.warn("User with token " + authorizationToken
+                            + " failed authorization to " + request.pathInfo() + " request.");
                     halt(401);
                 }
+                logger.debug("User " + user.login() + " passed authorization to " + request.pathInfo() + " request.");
             };
             before("/folder/*", authorizationFilter);
             before("/file/*", authorizationFilter);

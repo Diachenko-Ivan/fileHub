@@ -1,6 +1,5 @@
 package io.javaclasses.filehub.api.user;
 
-import com.google.common.base.Preconditions;
 import io.javaclasses.filehub.api.Command;
 
 import static com.google.common.base.Preconditions.checkNotNull;

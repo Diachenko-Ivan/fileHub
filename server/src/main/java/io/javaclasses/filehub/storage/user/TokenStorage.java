@@ -1,11 +1,10 @@
 package io.javaclasses.filehub.storage.user;
 
-import com.google.common.base.Preconditions;
 import io.javaclasses.filehub.storage.Storage;
 
 import java.util.HashMap;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Used for executing CRUD operation with token.

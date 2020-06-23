@@ -1,6 +1,5 @@
 package io.javaclasses.filehub.api.user;
 
-import com.google.common.base.Preconditions;
 import io.javaclasses.filehub.storage.user.TokenRecord;
 import io.javaclasses.filehub.storage.user.TokenStorage;
 import io.javaclasses.filehub.storage.user.User;
@@ -9,7 +8,7 @@ import io.javaclasses.filehub.storage.user.UserStorage;
 import java.util.Date;
 import java.util.Optional;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Used for user authorization and getting information about already authorized user.

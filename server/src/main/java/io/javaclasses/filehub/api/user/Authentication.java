@@ -1,6 +1,5 @@
 package io.javaclasses.filehub.api.user;
 
-import com.google.common.base.Preconditions;
 import io.javaclasses.filehub.storage.user.TokenId;
 import io.javaclasses.filehub.storage.user.TokenRecord;
 import io.javaclasses.filehub.storage.user.User;
@@ -10,7 +9,7 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Implements user authentication functionality.

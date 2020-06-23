@@ -1,13 +1,12 @@
 package io.javaclasses.filehub.web.deserializer;
 
-import com.google.common.base.Preconditions;
 import com.google.gson.*;
 import io.javaclasses.filehub.api.user.AuthenticateUser;
 import io.javaclasses.filehub.api.user.RegisterUser;
 
 import java.lang.reflect.Type;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * JSON deserializer for {@link AuthenticateUser} command.

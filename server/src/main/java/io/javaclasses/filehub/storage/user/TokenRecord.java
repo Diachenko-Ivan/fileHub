@@ -1,12 +1,11 @@
 package io.javaclasses.filehub.storage.user;
 
-import com.google.common.base.Preconditions;
 import com.google.gson.annotations.Expose;
 import io.javaclasses.filehub.storage.Record;
 
 import java.util.Date;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Represents user access token.

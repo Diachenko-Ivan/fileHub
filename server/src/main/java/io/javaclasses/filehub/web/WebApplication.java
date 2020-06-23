@@ -96,6 +96,14 @@ public class WebApplication {
                 return "No user with these credentials.";
             }
         });
+
+        get("/api/user", (request, response) -> {
+            response.type("application/json");
+            String accessToken = request.headers(AUTHORIZATION_HEADER).split(" ")[1];
+            User authorizedUser = authorizationService.authorizedUser(accessToken);
+            UserDto userToSerialize = new UserDto(authorizedUser.id().value(), authorizedUser.login());
+            return new UserSerializer().serialize(userToSerialize);
+        });
     }
 
     /**

@@ -80,6 +80,7 @@ public class WebApplication {
         });
 
         post("/api/login", (request, response) -> {
+            response.type("application/json");
             logger.info("Request to '/api/login' url.");
             try {
                 AuthenticateUser authenticateUser = new AuthenticateUserDeserializer().deserialize(request.body());

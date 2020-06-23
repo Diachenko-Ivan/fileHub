@@ -1,15 +1,13 @@
 package io.javaclasses.filehub.web;
 
 import io.javaclasses.filehub.api.user.*;
-import io.javaclasses.filehub.storage.user.TokenRecord;
-import io.javaclasses.filehub.storage.user.TokenStorage;
-import io.javaclasses.filehub.storage.user.User;
-import io.javaclasses.filehub.storage.user.UserStorage;
+import io.javaclasses.filehub.storage.user.*;
 import io.javaclasses.filehub.web.deserializer.AuthenticateUserDeserializer;
 import io.javaclasses.filehub.web.deserializer.RegisterUserDeserializer;
 import io.javaclasses.filehub.web.serializer.BusyLoginExceptionSerializer;
 import io.javaclasses.filehub.web.serializer.CredentialValidationExceptionSerializer;
 import io.javaclasses.filehub.web.serializer.TokenSerializer;
+import io.javaclasses.filehub.web.serializer.UserSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Filter;
@@ -27,6 +25,10 @@ public class WebApplication {
      * For logging.
      */
     private static final Logger logger = LoggerFactory.getLogger(WebApplication.class);
+    /**
+     * Name of header where access token must be stored.
+     */
+    private static final String AUTHORIZATION_HEADER = "Authorization";
     /**
      * Storage for operations with user {@link User}.
      */
@@ -102,7 +104,7 @@ public class WebApplication {
     private void filter() {
         path("/api", () -> {
             Filter authorizationFilter = (request, response) -> {
-                String authorizationToken = request.headers("Authorization").split(" ")[1];
+                String authorizationToken = request.headers(AUTHORIZATION_HEADER).split(" ")[1];
                 logger.debug("Authorization process. Token: " + authorizationToken);
                 User user = authorizationService.authorizedUser(authorizationToken);
                 if (user == null) {

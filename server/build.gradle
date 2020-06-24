@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id "net.ltgt.errorprone" version "1.1.0"
 }
 
 group 'org.example'
@@ -33,6 +34,9 @@ dependencies {
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
     compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.30'
     compile group: 'com.sparkjava', name: 'spark-template-velocity', version: '2.7.1'
+
+    errorprone "com.google.errorprone:error_prone_core:2.4.0"
+    errorproneJavac "com.google.errorprone:error_prone_core:2.4.0"
 }
 
 test {

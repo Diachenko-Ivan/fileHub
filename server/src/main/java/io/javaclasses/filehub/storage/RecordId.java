@@ -2,22 +2,24 @@ package io.javaclasses.filehub.storage;
 
 import java.util.Objects;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
- * Represents id for {@link Record}.
+ * Represents unique identifier for {@link Record}.
  */
-public abstract class Id {
+public abstract class RecordId {
     /**
      * Id value.
      */
-    protected String value;
+    private final String value;
 
     /**
-     * Creates new {@link Id} instance.
+     * Creates new {@link RecordId} instance.
      *
      * @param value record id.
      */
-    public Id(String value) {
-        this.value = value;
+    protected RecordId(String value) {
+        this.value = checkNotNull(value);
     }
 
     /**
@@ -37,7 +39,7 @@ public abstract class Id {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Id id1 = (Id) o;
+        RecordId id1 = (RecordId) o;
         return Objects.equals(value, id1.value);
     }
 

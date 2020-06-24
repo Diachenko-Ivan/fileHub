@@ -1,16 +1,18 @@
 package io.javaclasses.filehub.api.user;
 
-import com.google.common.base.Preconditions;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
- * Represents error for user credential.
+ * Value object that contains name of credential that failed validation
+ * and corresponding error message.
  * <p>Used for serialization.
  */
-public class FailedCredential {
+public class NotValidCredential {
     /**
-     * Name of field with error.
+     * Name of credential.
      */
     @SerializedName("field")
     @Expose
@@ -23,20 +25,19 @@ public class FailedCredential {
     private final String errorMessage;
 
     /**
-     * Creates new {@link FailedCredential}
+     * Creates new {@link NotValidCredential} instance.
      *
-     * @param fieldName field name.
+     * @param fieldName credential name.
      * @param message   error message.
      */
-    public FailedCredential(String fieldName, String message) {
-        Preconditions.checkNotNull(fieldName);
-        Preconditions.checkNotNull(message);
-        this.fieldName = fieldName;
-        this.errorMessage = message;
+    public NotValidCredential(String fieldName, String message) {
+        this.fieldName = checkNotNull(fieldName);
+        this.errorMessage = checkNotNull(message);
     }
 
     /**
-     * Returns string representation of {@link FailedCredential} instance.
+     * Returns string representation of {@link NotValidCredential} instance.
+     * <p>Used for logging.
      * {@inheritDoc}
      */
     @Override

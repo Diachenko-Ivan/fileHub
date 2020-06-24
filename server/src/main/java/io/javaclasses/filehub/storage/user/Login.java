@@ -9,7 +9,7 @@ import java.util.Objects;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Value object that represents {@link User} login credential.
+ * Value object that represents login credential.
  */
 @Immutable
 public final class Login {
@@ -49,6 +49,7 @@ public final class Login {
     }
 
     /**
+     * Compares logins by their values.
      * {@inheritDoc}
      */
     @Override

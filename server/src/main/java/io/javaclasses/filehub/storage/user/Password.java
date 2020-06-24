@@ -43,6 +43,10 @@ public final class Password {
         return value;
     }
 
+    /**
+     * Compares passwords by their values.
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -51,6 +55,9 @@ public final class Password {
         return Objects.equals(value, password.value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return Objects.hash(value);

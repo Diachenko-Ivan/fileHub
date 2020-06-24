@@ -39,7 +39,7 @@ public class Registration implements RegistrationProcess {
     @Override
     public void register(RegisterUser registerUser) throws BusyLoginException {
         Preconditions.checkNotNull(registerUser);
-        String hashedPassword = StringHashCreator.hashedString(registerUser.password());
+        String hashedPassword = PasswordHashCreator.hashedPassword(registerUser.password().value());
 
         if (storage.findByLogin(registerUser.login()).isPresent()) {
             throw new BusyLoginException("User with this login already exists.");

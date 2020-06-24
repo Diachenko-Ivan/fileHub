@@ -1,17 +1,17 @@
 package io.javaclasses.filehub.storage;
 
-import com.google.common.base.Preconditions;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Represents anything that can be stored in memory.
+ * Data structure that can be saved in {@link Storage}.
  *
  * @param <I> record id type.
  */
-public abstract class Record<I extends Id> {
+public abstract class Record<I extends RecordId> {
     /**
      * Id value.
      */
-    protected I id;
+    private final I id;
 
     /**
      * Creates new {@link Record} instance.
@@ -19,8 +19,7 @@ public abstract class Record<I extends Id> {
      * @param id id value.
      */
     public Record(I id) {
-        Preconditions.checkNotNull(id);
-        this.id = id;
+        this.id = checkNotNull(id);
     }
 
     /**

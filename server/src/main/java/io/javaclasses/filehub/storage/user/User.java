@@ -1,23 +1,28 @@
 package io.javaclasses.filehub.storage.user;
 
+import com.google.errorprone.annotations.Immutable;
 import com.google.gson.annotations.SerializedName;
 import io.javaclasses.filehub.storage.Record;
 
 import java.util.Objects;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
- * Represents client.
+ * Subject that can executes actions in application.
+ * <p>Saved in {@link UserStorage}.</p>
  */
-public class User extends Record<UserId> {
+@Immutable
+public final class User extends Record<UserId> {
     /**
      * User name.
      */
     @SerializedName("name")
-    private String login;
+    private final String login;
     /**
-     * User`s password.
+     * User`s hashed password.
      */
-    private String password;
+    private final String password;
 
     /**
      * Creates new {@link User} instance.
@@ -28,8 +33,8 @@ public class User extends Record<UserId> {
      */
     public User(UserId id, String login, String password) {
         super(id);
-        this.login = login;
-        this.password = password;
+        this.login = checkNotNull(login);
+        this.password = checkNotNull(password);
     }
 
     /**
@@ -41,14 +46,6 @@ public class User extends Record<UserId> {
         return login;
     }
 
-    /**
-     * Sets user new name.
-     *
-     * @param login user new name.
-     */
-    public void setLogin(String login) {
-        this.login = login;
-    }
 
     /**
      * Returns user credentials that are used for authentication.
@@ -60,15 +57,6 @@ public class User extends Record<UserId> {
     }
 
     /**
-     * Sets user new credentials.
-     *
-     * @param password user credentials.
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
      * Compares users by their ids.
      * {@inheritDoc}
      */
@@ -77,7 +65,7 @@ public class User extends Record<UserId> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id.equals(user.id);
+        return this.id().equals(user.id());
     }
 
     /**
@@ -85,6 +73,6 @@ public class User extends Record<UserId> {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(this.id());
     }
 }

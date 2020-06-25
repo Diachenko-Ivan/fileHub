@@ -44,13 +44,18 @@ public class Registration implements AbstractProcess {
         String hashedPassword = PasswordHashCreator.hashedPassword(registerUser.password().value());
 
         if (storage.findByLogin(registerUser.login().value()).isPresent()) {
-            logger.warn("Unsuccessful registration. Login " + registerUser.login().value() + " is already taken.");
+            if (logger.isWarnEnabled()) {
+                logger.warn("Unsuccessful registration. Login " + registerUser.login().value() + " is already taken.");
+            }
             throw new LoginIsTakenException("User with this login already exists.");
         }
         User userForRegistration = new User(
                 new UserId(UUID.randomUUID().toString()), registerUser.login().value(), hashedPassword);
 
         storage.add(userForRegistration);
-        logger.debug("User with login " + userForRegistration.login() + " is successfully registered.");
+        if (logger.isInfoEnabled()) {
+            logger.info("User with login " + userForRegistration.login() + " and id: " + userForRegistration.id()
+                    + " is successfully registered.");
+        }
     }
 }

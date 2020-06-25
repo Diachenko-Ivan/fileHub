@@ -1,12 +1,10 @@
 package io.javaclasses.filehub.api.user;
 
-import io.javaclasses.filehub.storage.user.User;
-import io.javaclasses.filehub.storage.user.UserId;
-import io.javaclasses.filehub.storage.user.UserStorage;
+import com.google.common.testing.NullPointerTester;
+import io.javaclasses.filehub.storage.user.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.Optional;
 
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -15,45 +13,43 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("RegistrationUserServiceTest should ")
 class RegistrationProcessTest {
 
-    @DisplayName("test acceptance of null parameters to constructor.")
+    @DisplayName("test acceptance of null parameters to constructor and methods.")
     @Test
-    void testConstructorNullParams() {
-        assertThrows(NullPointerException.class, () -> new Registration(null),
-                "Should throw NullPointerException due to null constructor parameters.");
-    }
-
-    @DisplayName("test acceptance of null parameters to register() method.")
-    @Test
-    void testRegistrationNullParams() {
-        assertThrows(NullPointerException.class,
-                () -> new Registration(new UserStorage(new HashMap<>())).register(null),
-                "Should throw NullPointerException due to null method parameters.");
+    void testNullParams() {
+        NullPointerTester tester = new NullPointerTester();
+        tester.setDefault(Login.class, new Login("asdff"));
+        tester.setDefault(Password.class, new Password("Qwerty123"));
+        tester.testAllPublicConstructors(RegisterUser.class);
+        tester.testAllPublicInstanceMethods(new Registration(new UserStorage()));
     }
 
     @Test
     @DisplayName("test successful registration of new user.")
     void testSuccessfulRegistration() {
-        String login = "john";
-        String password = "Password1";
-        HashMap<UserId, User> userHashMap = new HashMap<>();
-        UserStorage mockStorage = new UserStorage(userHashMap){
+        boolean[] isAddCalled = {false};
+        Login login = new Login("john");
+        Password password = new Password("Password1");
+        UserStorage mockStorage = new UserStorage() {
             @Override
             public synchronized void add(User user) {
-                assertWithMessage("Should transfer to storage User with correct login.")
-                        .that(user.login()).isEqualTo(login);
+                isAddCalled[0] = true;
+                assertWithMessage("Should transfer to storage correct user.")
+                        .that(user.login()).isEqualTo(login.value());
             }
         };
-        RegistrationProcess registrationService = new Registration(mockStorage);
+        Registration registrationService = new Registration(mockStorage);
         assertDoesNotThrow(() -> registrationService.register(new RegisterUser(login, password)),
-                "Should not throw BusyLoginException since user with such login does not exist.");
+                "Should not throw LoginIsTakenException since user with such login does not exist.");
+        assertWithMessage("Should call add method from UserStorage.")
+                .that(isAddCalled[0])
+                .isTrue();
     }
 
     @Test
     @DisplayName("test registration user with already existent login.")
     void testRegistrationOfUserWithExistentLogin() {
-        String repeatedLogin = "john";
-        HashMap<UserId, User> userHashMap = new HashMap<>();
-        UserStorage mockStorage = new UserStorage(userHashMap) {
+        Login repeatedLogin = new Login("john");
+        UserStorage mockStorage = new UserStorage() {
             @Override
             public synchronized void add(User user) {
                 fail("Should not call storage add method.");
@@ -61,12 +57,12 @@ class RegistrationProcessTest {
 
             @Override
             public synchronized Optional<User> findByLogin(String login) {
-                return Optional.of(new User(new UserId("id"), repeatedLogin, "Password1"));
+                return Optional.of(new User(new UserId("id"), login, "Password1"));
             }
         };
-        RegistrationProcess registration = new Registration(mockStorage);
-        assertThrows(BusyLoginException.class,
-                () -> registration.register(new RegisterUser(repeatedLogin, "Password2")),
+        Registration registration = new Registration(mockStorage);
+        assertThrows(LoginIsTakenException.class,
+                () -> registration.register(new RegisterUser(repeatedLogin, new Password("Password2"))),
                 "Should throw BusyLoginException because user with such login is already registered.");
     }
 }

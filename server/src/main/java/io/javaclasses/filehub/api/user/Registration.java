@@ -1,6 +1,6 @@
 package io.javaclasses.filehub.api.user;
 
-import com.google.common.base.Preconditions;
+import io.javaclasses.filehub.api.AbstractProcess;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserId;
 import io.javaclasses.filehub.storage.user.UserStorage;
@@ -9,8 +9,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
- * Implements user registration functionality.
+ * Represents registration process that can handle {@link RegisterUser} command.
  */
 public class Registration implements AbstractProcess {
     /**
@@ -18,7 +20,7 @@ public class Registration implements AbstractProcess {
      */
     private static final Logger logger = LoggerFactory.getLogger(Registration.class);
     /**
-     * Executes operations with user.
+     * Storage for users {@link User}.
      */
     private final UserStorage storage;
 
@@ -28,8 +30,7 @@ public class Registration implements AbstractProcess {
      * @param storage {@link UserStorage} instance.
      */
     public Registration(UserStorage storage) {
-        Preconditions.checkNotNull(storage);
-        this.storage = storage;
+        this.storage = checkNotNull(storage);
     }
 
     /**
@@ -38,9 +39,8 @@ public class Registration implements AbstractProcess {
      * @param registerUser value object that contains user credentials for registration.
      * @throws LoginIsTakenException if user with this login already exists.
      */
-    @Override
-    public void register(RegisterUser registerUser) throws BusyLoginException {
-        Preconditions.checkNotNull(registerUser);
+    public void register(RegisterUser registerUser) throws LoginIsTakenException {
+        checkNotNull(registerUser);
         String hashedPassword = PasswordHashCreator.hashedPassword(registerUser.password().value());
 
         if (storage.findByLogin(registerUser.login().value()).isPresent()) {
@@ -51,6 +51,6 @@ public class Registration implements AbstractProcess {
                 new UserId(UUID.randomUUID().toString()), registerUser.login().value(), hashedPassword);
 
         storage.add(userForRegistration);
-        logger.debug("User with login %20s is successfully registered.", userForRegistration.login());
+        logger.debug("User with login " + userForRegistration.login() + " is successfully registered.");
     }
 }

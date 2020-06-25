@@ -1,7 +1,6 @@
 package io.javaclasses.filehub.storage.user;
 
-import com.google.common.base.Preconditions;
-import io.javaclasses.filehub.storage.Storage;
+import io.javaclasses.filehub.storage.InMemoryStorage;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -9,7 +8,7 @@ import java.util.Optional;
 /**
  * Used for executing CRUD operations with user {@link User}.
  */
-public class UserStorage implements Storage<UserId, User> {
+public class UserStorage extends InMemoryStorage<UserId, User> {
     /**
      * Stores users {@link User}.
      */

@@ -29,7 +29,7 @@ public final class RegisterUser implements Command {
      * @param login    user login.
      * @param password user password.
      */
-    public RegisterUser(Login login, Password password) throws CredentialsAreNotValidException {
+    public RegisterUser(Login login, Password password) {
         this.login = checkNotNull(login);
         this.password = checkNotNull(password);
     }

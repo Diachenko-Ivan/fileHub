@@ -1,9 +1,12 @@
 package io.javaclasses.filehub.web.deserializer;
 
-import com.google.gson.JsonParseException;
+import com.google.common.testing.NullPointerTester;
+import com.google.gson.*;
 import io.javaclasses.filehub.api.user.RegisterUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Type;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -13,10 +16,11 @@ class RegisterUserDeserializerTest {
 
     @DisplayName("test acceptance of null parameters to deserialize() method.")
     @Test
-    void testNullMethodParam() {
-        assertThrows(NullPointerException.class,
-                () -> new RegisterUserDeserializer().deserialize(null),
-                "Should throw NullPointerException due to null method parameters.");
+    void testNullMethodParam() throws NoSuchMethodException {
+        NullPointerTester tester = new NullPointerTester();
+        tester.ignore(RegisterUserDeserializer.class.getMethod("deserialize",
+                JsonElement.class, Type.class, JsonDeserializationContext.class));
+        tester.testAllPublicInstanceMethods(new RegisterUserDeserializer());
     }
 
     @DisplayName("test successful deserialization.")

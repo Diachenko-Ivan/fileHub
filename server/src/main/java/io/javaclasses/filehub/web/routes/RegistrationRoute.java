@@ -8,7 +8,6 @@ import io.javaclasses.filehub.api.user.Registration;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserStorage;
 import io.javaclasses.filehub.web.deserializer.RegisterUserDeserializer;
-import io.javaclasses.filehub.web.serializer.BusyLoginExceptionSerializer;
 import io.javaclasses.filehub.web.serializer.CredentialsAreNotValidExceptionSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +48,9 @@ public class RegistrationRoute implements Route {
      */
     @Override
     public Object handle(Request request, Response response) {
-        logger.info("Request to '/api/register' url.");
+        if (logger.isInfoEnabled()) {
+            logger.info("Request to '/api/register' url.");
+        }
         response.type("application/json");
         try {
             RegisterUser registerUserCommand = new RegisterUserDeserializer().deserialize(request.body());
@@ -57,14 +58,19 @@ public class RegistrationRoute implements Route {
             response.status(200);
             return "User is registered";
         } catch (CredentialsAreNotValidException e) {
-            logger.warn("User credentials are not validated:" + Arrays.toString(e.failedCredentials()));
+            if (logger.isWarnEnabled()) {
+                logger.warn("User credentials are not validated:" + Arrays.toString(e.failedCredentials()));
+            }
             response.status(422);
             return new CredentialsAreNotValidExceptionSerializer().serialize(e);
         } catch (LoginIsTakenException e) {
-            response.status(422);
-            return new BusyLoginExceptionSerializer().serialize(e);
+            response.status(400);
+            return "User with this login already exists.";
         } catch (JsonParseException e) {
-            logger.warn("Failed to parse incoming request for registration.");
+            if (logger.isWarnEnabled()) {
+                logger.warn("Failed to parse request body: " +
+                        request.body() + " for incoming request for registration.");
+            }
             response.status(422);
             return "Failed JSON deserialization. Incorrect parameters.";
         }

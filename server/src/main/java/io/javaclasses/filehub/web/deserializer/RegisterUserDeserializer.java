@@ -1,11 +1,14 @@
 package io.javaclasses.filehub.web.deserializer;
 
-import com.google.common.base.Preconditions;
 import com.google.gson.*;
-import io.javaclasses.filehub.api.user.CredentialValidationException;
+import io.javaclasses.filehub.api.user.CredentialsAreNotValidException;
 import io.javaclasses.filehub.api.user.RegisterUser;
+import io.javaclasses.filehub.storage.user.Login;
+import io.javaclasses.filehub.storage.user.Password;
 
 import java.lang.reflect.Type;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Used for deserialization JSON to a {@link RegisterUser} instance.
@@ -16,13 +19,13 @@ public class RegisterUserDeserializer implements JsonDeserializer<RegisterUser> 
      */
     @Override
     public RegisterUser deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-            throws CredentialValidationException {
+            throws CredentialsAreNotValidException {
         JsonObject object = json.getAsJsonObject();
 
-        String login = object.getAsJsonPrimitive("login").getAsString();
-        String password = object.getAsJsonPrimitive("password").getAsString();
+        String loginValue = object.getAsJsonPrimitive("login").getAsString();
+        String passwordValue = object.getAsJsonPrimitive("password").getAsString();
 
-        return new RegisterUser(login, password);
+        return new RegisterUser(new Login(loginValue), new Password(passwordValue));
     }
 
     /**
@@ -32,7 +35,7 @@ public class RegisterUserDeserializer implements JsonDeserializer<RegisterUser> 
      * @return {@link RegisterUser} deserialize instance.
      */
     public RegisterUser deserialize(String json) {
-        Preconditions.checkNotNull(json);
+        checkNotNull(json);
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(RegisterUser.class, this)
                 .create();

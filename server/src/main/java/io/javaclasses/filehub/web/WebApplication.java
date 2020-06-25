@@ -1,34 +1,30 @@
 package io.javaclasses.filehub.web;
 
-import io.javaclasses.filehub.api.user.BusyLoginException;
-import io.javaclasses.filehub.api.user.CredentialValidationException;
-import io.javaclasses.filehub.api.user.RegisterUser;
-import io.javaclasses.filehub.api.user.Registration;
+import io.javaclasses.filehub.api.AbstractProcess;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserStorage;
-import io.javaclasses.filehub.web.deserializer.RegisterUserDeserializer;
-import io.javaclasses.filehub.web.serializer.BusyLoginExceptionSerializer;
-import io.javaclasses.filehub.web.serializer.CredentialValidationExceptionSerializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.javaclasses.filehub.web.routes.RegistrationRoute;
+import spark.Route;
 
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 import static spark.Spark.*;
 
 /**
- * Represents application server that can catch client requests.
+ * Represents File Hub application, configs server which based on {@link spark.Spark}
+ * and registers routes {@link spark.Route} for incoming client requests.
  */
 public class WebApplication {
     /**
-     * For logging.
+     * Storage for users {@link User}.
+     * <p>Used by {@link AbstractProcess}.
      */
-    private static final Logger logger = LoggerFactory.getLogger(WebApplication.class);
+    private final UserStorage userStorage = new UserStorage();
     /**
-     * Storage for operations with user {@link User}.
+     * Map that contains key as a request path {@link RequestPath} and value as appropriate {@link Route}.
      */
-    private final UserStorage userStorage = new UserStorage(new HashMap<>());
+    private final Map<RequestPath, Route> routeMapping = new HashMap<>();
 
     /**
      * Starts application.
@@ -37,33 +33,24 @@ public class WebApplication {
      */
     public static void main(String[] args) {
         WebApplication application = new WebApplication();
+        application.registerRoutes();
         application.run();
     }
 
     /**
-     * Starts server.
+     * Starts and configures server.
      */
     private void run() {
         port(8080);
         staticFiles.location("/app/");
 
-        post("/api/register", (request, response) -> {
-            logger.info("Request to '/api/register' url.");
-            response.type("application/json");
-            try {
-                RegisterUser registerUserCommand = new RegisterUserDeserializer().deserialize(request.body());
-                new Registration(userStorage).register(registerUserCommand);
-                response.status(200);
-                return "User is registered";
-            } catch (CredentialValidationException e) {
-                logger.warn("User credentials are not validated:" + Arrays.toString(e.failedCredentials()));
-                response.status(422);
-                return new CredentialValidationExceptionSerializer().serialize(e);
-            } catch (BusyLoginException e) {
-                logger.warn("Unsuccessful registration. Login is already busy.");
-                response.status(422);
-                return new BusyLoginExceptionSerializer().serialize(e);
-            }
-        });
+        post(RequestPath.REGISTRATION.toString(), routeMapping.get(RequestPath.REGISTRATION));
+    }
+
+    /**
+     * Registers routes with appropriate request paths.
+     */
+    private void registerRoutes() {
+        routeMapping.put(RequestPath.REGISTRATION, new RegistrationRoute(userStorage));
     }
 }

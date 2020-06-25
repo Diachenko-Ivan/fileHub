@@ -2,7 +2,6 @@ package io.javaclasses.filehub.storage.user;
 
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.user.CredentialsAreNotValidException;
-import io.javaclasses.filehub.api.user.NotValidCredential;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +19,7 @@ class LoginTest {
         tester.testAllPublicConstructors(Login.class);
     }
 
-    @DisplayName("test throwing of CredentialValidationExceptions due to non-validated login value.")
+    @DisplayName("test throwing of CredentialValidationException due to non-validated login value.")
     @Test
     void testNonValidatedValue() {
         assertThrows(CredentialsAreNotValidException.class, () -> new Login("bad_login"),

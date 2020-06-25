@@ -63,6 +63,6 @@ class RegistrationProcessTest {
         Registration registration = new Registration(mockStorage);
         assertThrows(LoginIsTakenException.class,
                 () -> registration.register(new RegisterUser(repeatedLogin, new Password("Password2"))),
-                "Should throw BusyLoginException because user with such login is already registered.");
+                "Should throw LoginIsTakenException because user with such login is already registered.");
     }
 }

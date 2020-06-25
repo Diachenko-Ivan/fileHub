@@ -11,7 +11,7 @@ import java.lang.reflect.Type;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Used for deserialization JSON to a {@link RegisterUser} instance.
+ * Used for deserialization from JSON to a {@link RegisterUser} instance.
  */
 public class RegisterUserDeserializer implements JsonDeserializer<RegisterUser> {
     /**

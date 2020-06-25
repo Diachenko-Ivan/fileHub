@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.web.deserializer;
 
+import com.google.gson.JsonParseException;
 import io.javaclasses.filehub.api.user.RegisterUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,8 +26,16 @@ class RegisterUserDeserializerTest {
         String registerUserJson = "{\"login\":\"robert\", \"password\": \"Password1\"}";
         RegisterUser deserializedCommand = deserializer.deserialize(registerUserJson);
         assertWithMessage("Login should be correctly deserialized but it is not.")
-                .that(deserializedCommand.login()).isEqualTo("robert");
+                .that(deserializedCommand.login().value()).isEqualTo("robert");
         assertWithMessage("Password should be correctly deserialized but it is not.")
-                .that(deserializedCommand.password()).isEqualTo("Password1");
+                .that(deserializedCommand.password().value()).isEqualTo("Password1");
+    }
+
+    @DisplayName("test successful deserialization.")
+    @Test
+    void testParseException() {
+        RegisterUserDeserializer deserializer = new RegisterUserDeserializer();
+        assertThrows(JsonParseException.class, () -> deserializer.deserialize("bad_json"),
+                "Should throw JsonParseException due to bad json string.");
     }
 }

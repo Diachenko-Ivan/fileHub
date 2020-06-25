@@ -12,8 +12,7 @@ import java.util.UUID;
 /**
  * Implements user registration functionality.
  */
-public class Registration implements RegistrationProcess {
-
+public class Registration implements AbstractProcess {
     /**
      * For logging.
      */
@@ -34,7 +33,10 @@ public class Registration implements RegistrationProcess {
     }
 
     /**
-     * {@inheritDoc}
+     * Registers new user in application.
+     *
+     * @param registerUser value object that contains user credentials for registration.
+     * @throws LoginIsTakenException if user with this login already exists.
      */
     @Override
     public void register(RegisterUser registerUser) throws BusyLoginException {

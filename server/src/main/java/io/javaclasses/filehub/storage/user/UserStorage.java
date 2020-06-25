@@ -25,7 +25,7 @@ public class UserStorage extends InMemoryStorage<UserId, User> {
     public synchronized void add(User user) {
         checkNotNull(user);
         if (users.putIfAbsent(user.id(), user) != null) {
-            throw new IllegalArgumentException("User with such id is saved.");
+            throw new IllegalArgumentException("User with such id is already saved.");
         }
     }
 

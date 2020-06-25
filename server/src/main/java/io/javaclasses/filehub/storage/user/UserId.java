@@ -10,7 +10,7 @@ import io.javaclasses.filehub.storage.RecordId;
 public final class UserId extends RecordId {
     /**
      * Creates new {@link UserId} instance.
-     * {@inheritDoc}
+     * @param id user id value.
      */
     public UserId(String id) {
         super(id);

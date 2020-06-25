@@ -1,6 +1,5 @@
 package io.javaclasses.filehub.web;
 
-import io.javaclasses.filehub.api.AbstractProcess;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserStorage;
 import io.javaclasses.filehub.web.routes.RegistrationRoute;
@@ -18,13 +17,12 @@ import static spark.Spark.*;
 public class WebApplication {
     /**
      * Storage for users {@link User}.
-     * <p>Used by {@link AbstractProcess}.
      */
     private final UserStorage userStorage = new UserStorage();
     /**
      * Map that contains key as a request path {@link RequestPath} and value as appropriate {@link Route}.
      */
-    private final Map<RequestPath, Route> routeMapping = new HashMap<>();
+    private final Map<RequestPath, Route> routeMappings = new HashMap<>();
 
     /**
      * Starts application.
@@ -44,13 +42,13 @@ public class WebApplication {
         port(8080);
         staticFiles.location("/app/");
 
-        post(RequestPath.REGISTRATION.toString(), routeMapping.get(RequestPath.REGISTRATION));
+        post(RequestPath.REGISTRATION.toString(), routeMappings.get(RequestPath.REGISTRATION));
     }
 
     /**
      * Registers routes with appropriate request paths.
      */
     private void registerRoutes() {
-        routeMapping.put(RequestPath.REGISTRATION, new RegistrationRoute(userStorage));
+        routeMappings.put(RequestPath.REGISTRATION, new RegistrationRoute(userStorage));
     }
 }

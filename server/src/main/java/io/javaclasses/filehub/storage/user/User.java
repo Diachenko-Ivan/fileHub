@@ -20,15 +20,15 @@ public final class User extends Record<UserId> {
     @SerializedName("name")
     private final String login;
     /**
-     * User`s hashed password.
+     * User hashed password.
      */
     private final String password;
 
     /**
      * Creates new {@link User} instance.
      *
-     * @param id       user`s id
-     * @param login    username
+     * @param id       user`s id.
+     * @param login    user name.
      * @param password user`s password.
      */
     public User(UserId id, String login, String password) {

@@ -18,7 +18,7 @@ public abstract class Record<I extends RecordId> {
      *
      * @param id id value.
      */
-    public Record(I id) {
+    protected Record(I id) {
         this.id = checkNotNull(id);
     }
 

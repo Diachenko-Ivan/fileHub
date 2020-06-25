@@ -15,7 +15,7 @@ class CredentialsAreNotValidExceptionSerializerTest {
     @Test
     void testNullParam() {
         NullPointerTester tester = new NullPointerTester();
-        tester.testAllPublicInstanceMethods(CredentialsAreNotValidExceptionSerializer.class);
+        tester.testAllPublicInstanceMethods(new CredentialsAreNotValidExceptionSerializer());
     }
 
     @DisplayName("test correctness of serialized json.")

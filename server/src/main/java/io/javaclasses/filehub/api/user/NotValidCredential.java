@@ -16,7 +16,7 @@ public class NotValidCredential {
      */
     @SerializedName("field")
     @Expose
-    private final String fieldName;
+    private final String credentialName;
     /**
      * Detailed error message for field.
      */
@@ -27,11 +27,11 @@ public class NotValidCredential {
     /**
      * Creates new {@link NotValidCredential} instance.
      *
-     * @param fieldName credential name.
+     * @param credentialName credential name.
      * @param message   error message.
      */
-    public NotValidCredential(String fieldName, String message) {
-        this.fieldName = checkNotNull(fieldName);
+    public NotValidCredential(String credentialName, String message) {
+        this.credentialName = checkNotNull(credentialName);
         this.errorMessage = checkNotNull(message);
     }
 
@@ -42,8 +42,8 @@ public class NotValidCredential {
      */
     @Override
     public String toString() {
-        return "FailedCredential{" +
-                "fieldName='" + fieldName + '\'' +
+        return "NotValidCredential{" +
+                "credentialName='" + credentialName + '\'' +
                 ", errorMessage='" + errorMessage + '\'' +
                 '}';
     }

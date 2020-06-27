@@ -4,6 +4,7 @@ import {ApiService} from '../../services/api-service.js';
 import {TitleService} from '../../services/title-service/index.js';
 import {GeneralServerError} from '../../models/errors/server-error/index.js';
 import {ValidationError} from '../../models/errors/validation-error/index.js';
+import {GeneralError} from '../../models/errors/general-error/index.js';
 
 /**
  * Page which is designed for registration form.
@@ -43,7 +44,9 @@ export class RegistrationPage extends Component {
           if (error instanceof ValidationError) {
             this.registrationForm.showFieldErrors(error.errors);
           } else if (error instanceof GeneralServerError) {
-            alert(error.message);
+            this._toastService.showErrorMessage(error.message);
+          } else if (error instanceof GeneralError) {
+            this._toastService.showErrorMessage(error.message);
           }
         });
     });

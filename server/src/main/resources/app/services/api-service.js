@@ -295,7 +295,7 @@ export class ApiService {
     const errorHandler = availableCodesToErrorMap[status];
     if (errorHandler) {
       let errorObject;
-      if (status===422) {
+      if (status === 422) {
         errorObject = await response.json();
       } else {
         errorObject = await response.text();

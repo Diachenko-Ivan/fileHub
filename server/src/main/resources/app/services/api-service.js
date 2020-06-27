@@ -58,6 +58,22 @@ export class ApiService {
   }
 
   /**
+   * Sends request for getting of root folder id.
+   * @return {Promise<string>}
+   */
+  getRootFolderId() {
+    return fetch('/api/folder/root', {
+      method: 'GET',
+      headers: this._getAuthenticationHeader(),
+    }).then((response) => {
+      if (response.ok) {
+        return response.text();
+      }
+      return this._handleCommonErrors(response);
+    });
+  }
+
+  /**
    * Tries to get folder by its id.
    *
    * @param {string} folderId - folder id.
@@ -279,9 +295,9 @@ export class ApiService {
     const errorHandler = availableCodesToErrorMap[status];
     if (errorHandler) {
       let errorObject;
-      try {
+      if (status===422) {
         errorObject = await response.json();
-      } catch (e) {
+      } else {
         errorObject = await response.text();
       }
       throw errorHandler(errorObject);

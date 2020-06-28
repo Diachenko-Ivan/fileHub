@@ -57,10 +57,10 @@ jacocoTestReport {
 jacocoTestCoverageVerification {
     dependsOn jacocoTestReport
     afterEvaluate {
-         classDirectories = files(classDirectories.files.collect {
+        classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it,
                     exclude: ['src/io/javaclasses/filehub/web/**'])
-        })
+        }))
     }
     violationRules {
         rule {

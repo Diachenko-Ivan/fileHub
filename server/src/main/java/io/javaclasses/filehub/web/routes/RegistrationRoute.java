@@ -18,6 +18,8 @@ import spark.Route;
 import java.util.Arrays;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
+import static javax.servlet.http.HttpServletResponse.SC_OK;
 
 /**
  * Route that handles request for registration of user.
@@ -57,7 +59,7 @@ public class RegistrationRoute implements Route {
         try {
             RegisterUser registerUserCommand = new RegisterUserDeserializer().deserialize(request.body());
             new Registration(userStorage).register(registerUserCommand);
-            response.status(200);
+            response.status(SC_OK);
             return "User is registered";
         } catch (CredentialsAreNotValidException e) {
             if (logger.isWarnEnabled()) {
@@ -66,7 +68,7 @@ public class RegistrationRoute implements Route {
             response.status(422);
             return new CredentialsAreNotValidExceptionSerializer().serialize(e);
         } catch (LoginIsTakenException e) {
-            response.status(400);
+            response.status(SC_BAD_REQUEST);
             return "User with this login already exists.";
         } catch (JsonParseException e) {
             if (logger.isWarnEnabled()) {

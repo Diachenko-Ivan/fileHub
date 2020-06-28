@@ -7,10 +7,9 @@ import io.javaclasses.filehub.storage.user.UserStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.UUID;
-
 import static com.google.common.base.Preconditions.checkNotNull;
-import static io.javaclasses.filehub.api.user.PasswordHasher.*;
+import static io.javaclasses.filehub.api.IdGenerator.generateId;
+import static io.javaclasses.filehub.api.user.PasswordHasher.hash;
 
 /**
  * Represents registration process that can handle {@link RegisterUser} command.
@@ -51,7 +50,7 @@ public class Registration implements Process {
             throw new LoginIsTakenException("User with this login already exists.");
         }
         User userForRegistration = new User(
-                new UserId(UUID.randomUUID().toString()), registerUser.login().value(), hashedPassword);
+                new UserId(generateId()), registerUser.login().value(), hashedPassword);
 
         storage.add(userForRegistration);
         if (logger.isInfoEnabled()) {

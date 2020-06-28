@@ -43,18 +43,18 @@ public class Registration implements Process {
         checkNotNull(registerUser);
         String hashedPassword = hash(registerUser.password().value());
 
-        if (storage.findByLogin(registerUser.login().value()).isPresent()) {
+        if (storage.find(registerUser.login()).isPresent()) {
             if (logger.isWarnEnabled()) {
                 logger.warn("Unsuccessful registration. Login " + registerUser.login().value() + " is already taken.");
             }
             throw new LoginIsTakenException("User with this login already exists.");
         }
         User userForRegistration = new User(
-                new UserId(generateId()), registerUser.login().value(), hashedPassword);
+                new UserId(generateId()), registerUser.login(), hashedPassword);
 
         storage.add(userForRegistration);
         if (logger.isInfoEnabled()) {
-            logger.info("User with login " + userForRegistration.login() + " and id: " + userForRegistration.id()
+            logger.info("User with login " + userForRegistration.login().value() + " and id: " + userForRegistration.id()
                     + " is successfully registered.");
         }
     }

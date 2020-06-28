@@ -9,7 +9,7 @@ import java.util.Objects;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Subject that can executes actions in application.
+ * Subject that uses FileHub application.
  * <p>Saved in {@link UserStorage}.</p>
  */
 @Immutable
@@ -18,23 +18,23 @@ public final class User extends Record<UserId> {
      * User name.
      */
     @SerializedName("name")
-    private final String login;
+    private final Login login;
     /**
      * User hashed password.
      */
-    private final String password;
+    private final String hashedPassword;
 
     /**
      * Creates new {@link User} instance.
      *
      * @param id       user`s id.
      * @param login    user name.
-     * @param password user`s password.
+     * @param hashedPassword user`s password.
      */
-    public User(UserId id, String login, String password) {
+    public User(UserId id, Login login, String hashedPassword) {
         super(id);
         this.login = checkNotNull(login);
-        this.password = checkNotNull(password);
+        this.hashedPassword = checkNotNull(hashedPassword);
     }
 
     /**
@@ -42,7 +42,7 @@ public final class User extends Record<UserId> {
      *
      * @return user id.
      */
-    public String login() {
+    public Login login() {
         return login;
     }
 
@@ -53,7 +53,7 @@ public final class User extends Record<UserId> {
      * @return user credentials.
      */
     public String password() {
-        return password;
+        return hashedPassword;
     }
 
     /**

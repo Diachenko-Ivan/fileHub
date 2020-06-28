@@ -19,7 +19,7 @@ public class UserStorage extends InMemoryStorage<UserId, User> {
      * @return {@link Optional<User>} with the same {@code login} and {@code password}
      * or {@code Optional.empty()} if user with such login and password was not found.
      */
-    public synchronized Optional<User> findByLoginAndPassword(String login, String password) {
+    public synchronized Optional<User> find(Login login, String hashedPassword) {
         checkNotNull(login);
         checkNotNull(hashedPassword);
         return this.records().values()
@@ -35,7 +35,7 @@ public class UserStorage extends InMemoryStorage<UserId, User> {
      * @return {@link Optional<User>} with the same login value
      * or {@code Optional.empty()} if user was not found.
      */
-    public synchronized Optional<User> findByLogin(String value) {
+    public synchronized Optional<User> find(Login value) {
         checkNotNull(value);
         return this.records().values()
                 .stream()

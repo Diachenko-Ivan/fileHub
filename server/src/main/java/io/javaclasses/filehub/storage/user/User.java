@@ -1,6 +1,7 @@
 package io.javaclasses.filehub.storage.user;
 
 import com.google.gson.annotations.Expose;
+import io.javaclasses.filehub.api.user.RegisterUser;
 
 import java.util.Objects;
 
@@ -25,7 +26,7 @@ public class User {
      * User`s credentials.
      */
     @Expose(serialize = false, deserialize = false)
-    private UserCredentials credentials;
+    private RegisterUser credentials;
 
     /**
      * Creates new {@link User} instance.
@@ -34,7 +35,7 @@ public class User {
      * @param name        username
      * @param credentials user`s credentials.
      */
-    public User(String id, String name, UserCredentials credentials) {
+    public User(String id, String name, RegisterUser credentials) {
         this.id = id;
         this.name = name;
         this.credentials = credentials;
@@ -81,7 +82,7 @@ public class User {
      *
      * @return user credentials.
      */
-    public UserCredentials credentials() {
+    public RegisterUser credentials() {
         return credentials;
     }
 
@@ -90,7 +91,7 @@ public class User {
      *
      * @param credentials user credentials.
      */
-    public void setCredentials(UserCredentials credentials) {
+    public void setCredentials(RegisterUser credentials) {
         this.credentials = credentials;
     }
 

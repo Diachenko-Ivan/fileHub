@@ -9,7 +9,7 @@ import java.util.Objects;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Value object that represents {@link User} password credential.
+ * Value object for password credential.
  */
 @Immutable
 public final class Password {

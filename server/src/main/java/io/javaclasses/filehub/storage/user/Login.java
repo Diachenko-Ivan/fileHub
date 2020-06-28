@@ -9,7 +9,7 @@ import java.util.Objects;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Value object that represents login credential.
+ * Value object for login name credential.
  */
 @Immutable
 public final class Login {

@@ -8,7 +8,7 @@ import io.javaclasses.filehub.storage.user.Password;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Exception that is thrown when client credentials({@link Login} or {@link Password}) are not successfully validated.
+ * Exception that is thrown when client credentials({@link Login} or {@link Password}) are invalid.
  */
 public class CredentialsAreNotValidException extends RuntimeException {
     /**

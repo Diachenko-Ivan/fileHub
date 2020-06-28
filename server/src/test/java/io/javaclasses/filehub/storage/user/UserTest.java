@@ -11,6 +11,7 @@ class UserTest {
     void testNullConstructorParameters() {
         NullPointerTester tester = new NullPointerTester();
         tester.setDefault(UserId.class, new UserId("id"));
+        tester.setDefault(Login.class, new Login("login"));
         tester.testAllPublicConstructors(User.class);
     }
 }

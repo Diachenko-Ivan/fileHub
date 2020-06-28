@@ -13,11 +13,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Used for converting of password string to hash.
  */
-public class PasswordHashCreator {
+public class PasswordHasher {
     /**
      * For logging.
      */
-    private static final Logger logger = LoggerFactory.getLogger(PasswordHashCreator.class);
+    private static final Logger logger = LoggerFactory.getLogger(PasswordHasher.class);
     /**
      * Name of hash function.
      */
@@ -29,7 +29,7 @@ public class PasswordHashCreator {
      * @param password string for hashing.
      * @return hashed string.
      */
-    public static String hashedPassword(String password) {
+    public synchronized static String hash(String password) {
         checkNotNull(password);
         try {
             MessageDigest digest = MessageDigest.getInstance(HASH_FUNCTION);

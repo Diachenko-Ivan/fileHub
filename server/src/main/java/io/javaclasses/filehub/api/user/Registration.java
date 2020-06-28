@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.util.UUID;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static io.javaclasses.filehub.api.user.PasswordHasher.*;
 
 /**
  * Represents registration process that can handle {@link RegisterUser} command.
@@ -41,7 +42,7 @@ public class Registration implements Process {
      */
     public void register(RegisterUser registerUser) throws LoginIsTakenException {
         checkNotNull(registerUser);
-        String hashedPassword = PasswordHashCreator.hashedPassword(registerUser.password().value());
+        String hashedPassword = hash(registerUser.password().value());
 
         if (storage.findByLogin(registerUser.login().value()).isPresent()) {
             if (logger.isWarnEnabled()) {

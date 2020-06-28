@@ -33,6 +33,14 @@ export class FileListState {
    */
   location;
   /**
+   * Id of user root folder.
+   */
+  rootFolderId;
+  /**
+   * Error in the result of getting of user id.
+   */
+  rootFolderIdError;
+  /**
    * Current open folder.
    *
    * @type {FolderModel}

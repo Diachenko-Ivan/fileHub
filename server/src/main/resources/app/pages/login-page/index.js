@@ -4,11 +4,14 @@ import {ApiService} from '../../services/api-service.js';
 import {TitleService} from '../../services/title-service/index.js';
 import {AuthenticationError} from '../../models/errors/authentication-error/index.js';
 import {GeneralServerError} from '../../models/errors/server-error/index.js';
+import {ToastService} from '../../services/toasts-service/index.js';
+import {GeneralError} from '../../models/errors/general-error/index.js';
 
 /**
  * Page which is designed for login form.
  */
 export class LoginPage extends Component {
+  _toastService = new ToastService();
   /**
    * @inheritdoc
    */
@@ -43,7 +46,9 @@ export class LoginPage extends Component {
           if (error instanceof AuthenticationError) {
             this.loginForm.showAuthenticationError(error.message);
           } else if (error instanceof GeneralServerError) {
-            alert(error.message);
+            this._toastService.showErrorMessage(error.message);
+          } else if (error instanceof GeneralError) {
+            this._toastService.showErrorMessage(error.message);
           }
         });
     });

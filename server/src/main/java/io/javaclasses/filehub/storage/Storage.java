@@ -1,8 +1,8 @@
 package io.javaclasses.filehub.storage;
 
 /**
- * Abstract base that represents application storage.
- * <p>Executes CRUD operations with specific {@link Record}.</p>
+ * An abstract base that represents persistent storage in the FileHub application.
+ * <p>Provides CRUD operations with specific {@link Record}.</p>
  *
  * @param <I> record id.
  * @param <R> record type.

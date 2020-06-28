@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static java.util.Optional.of;
 
 /**
  * Implementation of {@link Storage} in JVM memory.
@@ -38,10 +37,12 @@ public abstract class InMemoryStorage<I extends RecordId, R extends Record<I>>
      */
     @Override
     public Optional<R> find(I id) {
-        return of(records.get(id));
+        return Optional.of(records.get(id));
     }
 
     /**
+     * Returns {@link HashMap} of {@link Record}.
+     *
      * @return map of records.
      */
     public HashMap<I, R> records() {

@@ -9,8 +9,8 @@ import io.javaclasses.filehub.storage.user.User;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Command that represents client intention to be registered.
- * <p>Plays role of value object that stores {@link User} login {@link Login} and password {@link Password}.</p>
+ * Command to register user {@link User} in FileHub application.
+ * <p>Contains {@link User} login {@link Login} and password {@link Password}.</p>
  */
 @Immutable
 public final class RegisterUser implements Command {

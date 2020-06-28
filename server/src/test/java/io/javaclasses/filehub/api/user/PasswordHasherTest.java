@@ -29,7 +29,7 @@ class PasswordHasherTest {
                 .that(PasswordHasher.hash(stringToHash)).isNotNull();
     }
 
-    @DisplayName("return not null value in result of hashing.")
+    @DisplayName("return the same hash in multithreading access.")
     @Test
     void testMultithreadingAccess() throws Exception {
         String passwordToHash = "testPassword";

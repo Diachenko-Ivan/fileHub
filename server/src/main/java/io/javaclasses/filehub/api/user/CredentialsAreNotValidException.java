@@ -12,27 +12,27 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class CredentialsAreNotValidException extends RuntimeException {
     /**
-     * Array of non validated credentials {@link NotValidCredential}.
+     * Array of non validated credentials {@link DataValidationError}.
      */
     @Expose
     @SerializedName("errors")
-    private final NotValidCredential[] notValidCredentials;
+    private final DataValidationError[] dataValidationErrors;
 
     /**
      * Creates new {@link CredentialsAreNotValidException} instance.
      *
-     * @param notValidCredentials array of failed credentials.
+     * @param dataValidationErrors array of failed credentials.
      */
-    public CredentialsAreNotValidException(NotValidCredential[] notValidCredentials) {
-        this.notValidCredentials = checkNotNull(notValidCredentials);
+    public CredentialsAreNotValidException(DataValidationError[] dataValidationErrors) {
+        this.dataValidationErrors = checkNotNull(dataValidationErrors);
     }
 
     /**
      * Returns array of failed credentials.
      *
-     * @return array of {@link NotValidCredential}.
+     * @return array of {@link DataValidationError}.
      */
-    public NotValidCredential[] failedCredentials() {
-        return notValidCredentials;
+    public DataValidationError[] failedCredentials() {
+        return dataValidationErrors;
     }
 }

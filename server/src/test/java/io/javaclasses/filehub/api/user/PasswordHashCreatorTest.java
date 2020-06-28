@@ -13,8 +13,8 @@ class PasswordHashCreatorTest {
     @Test
     void testNullParams() {
         NullPointerTester tester = new NullPointerTester();
-        tester.testAllPublicConstructors(NotValidCredential.class);
-        tester.testAllPublicStaticMethods(NotValidCredential.class);
+        tester.testAllPublicConstructors(DataValidationError.class);
+        tester.testAllPublicStaticMethods(DataValidationError.class);
     }
 
     @DisplayName("test returning of not null value in result of hashing.")

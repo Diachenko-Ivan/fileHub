@@ -20,7 +20,7 @@ import java.util.Arrays;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Route that handles incoming request for registration.
+ * Route that handles request for registration of user.
  */
 public class RegistrationRoute implements Route {
     /**
@@ -39,7 +39,9 @@ public class RegistrationRoute implements Route {
      */
     public RegistrationRoute(UserStorage userStorage) {
         this.userStorage = checkNotNull(userStorage);
-        logger.info("RegistrationRoute is registered.");
+        if (logger.isInfoEnabled()) {
+            logger.info("RegistrationRoute is registered.");
+        }
     }
 
     /**

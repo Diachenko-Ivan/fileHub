@@ -1,6 +1,6 @@
 package io.javaclasses.filehub.api.user;
 
-import io.javaclasses.filehub.api.AbstractProcess;
+import io.javaclasses.filehub.api.Process;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserId;
 import io.javaclasses.filehub.storage.user.UserStorage;
@@ -14,7 +14,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Represents registration process that can handle {@link RegisterUser} command.
  */
-public class Registration implements AbstractProcess {
+public class Registration implements Process {
     /**
      * For logging.
      */

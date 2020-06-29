@@ -1,9 +1,6 @@
 package io.javaclasses.filehub.api.user;
 
-import io.javaclasses.filehub.storage.user.TokenRecord;
-import io.javaclasses.filehub.storage.user.TokenStorage;
-import io.javaclasses.filehub.storage.user.User;
-import io.javaclasses.filehub.storage.user.UserStorage;
+import io.javaclasses.filehub.storage.user.*;
 
 import java.util.Date;
 import java.util.Optional;
@@ -30,10 +27,8 @@ public class AuthorizationService {
      * @param userStorage  storage for user info.
      */
     public AuthorizationService(TokenStorage tokenStorage, UserStorage userStorage) {
-        checkNotNull(tokenStorage);
-        checkNotNull(userStorage);
-        this.tokenStorage = tokenStorage;
-        this.userStorage = userStorage;
+        this.tokenStorage = checkNotNull(tokenStorage);
+        this.userStorage = checkNotNull(userStorage);
     }
 
 
@@ -46,16 +41,17 @@ public class AuthorizationService {
      */
     public User authorizedUser(String tokenValue) {
         checkNotNull(tokenValue);
-        TokenRecord token = tokenStorage.findByToken(tokenValue);
+        Optional<TokenRecord> token = tokenStorage.find(new TokenId(tokenValue));
 
-        if (token == null) {
+        if (!token.isPresent()) {
             return null;
         }
-        if (new Date().after(token.expirationDate())) {
-            tokenStorage.remove(token.token());
+        TokenRecord tokenRecord = token.get();
+        if (new Date().after(tokenRecord.expirationDate())) {
+            tokenStorage.remove(tokenRecord.id());
             return null;
         }
-        Optional<User> userById = userStorage.findById(token.userId());
+        Optional<User> userById = userStorage.find(tokenRecord.userId());
 
         return userById.orElse(null);
     }

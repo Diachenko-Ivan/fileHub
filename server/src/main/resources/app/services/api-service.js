@@ -31,7 +31,7 @@ export class ApiService {
       body: JSON.stringify(userCredentials),
     }).then((response) => {
       if (response.ok) {
-        return response.json().then((data) => this.storageService.setItem('token', data.token));
+        return response.text().then((token) => this.storageService.setItem('token', token));
       } else if (response.status === 401) {
         throw new AuthenticationError('No users found with this login and password.');
       }

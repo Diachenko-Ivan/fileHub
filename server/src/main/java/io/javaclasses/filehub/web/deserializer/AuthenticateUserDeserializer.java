@@ -3,6 +3,8 @@ package io.javaclasses.filehub.web.deserializer;
 import com.google.gson.*;
 import io.javaclasses.filehub.api.user.AuthenticateUser;
 import io.javaclasses.filehub.api.user.RegisterUser;
+import io.javaclasses.filehub.storage.user.Login;
+import io.javaclasses.filehub.storage.user.Password;
 
 import java.lang.reflect.Type;
 
@@ -25,7 +27,7 @@ public class AuthenticateUserDeserializer implements JsonDeserializer<Authentica
         String login = object.getAsJsonPrimitive("login").getAsString();
         String password = object.getAsJsonPrimitive("password").getAsString();
 
-        return new AuthenticateUser(login, password);
+        return new AuthenticateUser(new Login(login), new Password(password));
     }
 
     /**

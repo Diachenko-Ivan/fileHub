@@ -45,8 +45,7 @@ public class Authentication implements AuthenticationProcess {
         if (existentUser.isEmpty()) {
             throw new AuthenticationException();
         }
-        return new TokenRecord(new TokenId(UUID.randomUUID().toString()),
-                UUID.randomUUID().toString(),
+        return new TokenRecord(new TokenId(generateId()),
                 existentUser.get().id(),
                 new Date(new Date().getTime() + EXPIRATION_INTERVAL));
     }

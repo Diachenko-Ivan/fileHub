@@ -33,6 +33,17 @@ public abstract class InMemoryStorage<I extends RecordId, R extends Record<I>>
     }
 
     /**
+     * Removes record by its identifier.
+     *
+     * @param id {@link Record} identifier.
+     * @return removed record of null if there was no mapped with this {@code id} record.
+     */
+    public synchronized R remove(I id) {
+        checkNotNull(id);
+        return this.records.remove(id);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

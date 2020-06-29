@@ -1,12 +1,13 @@
 package io.javaclasses.filehub.storage.user;
 
-import io.javaclasses.filehub.storage.Id;
+import com.google.errorprone.annotations.Immutable;
+import io.javaclasses.filehub.storage.RecordId;
 
 /**
- * Used as id for {@link TokenRecord}.
+ * Identifier for {@link TokenRecord}.
  */
-public class TokenId extends Id {
-
+@Immutable
+public final class TokenId extends RecordId {
     /**
      * Creates new {@link TokenId} instance.
      *

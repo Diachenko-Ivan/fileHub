@@ -42,14 +42,4 @@ public class UserStorage extends InMemoryStorage<UserId, User> {
                 .filter(u -> u.login().equals(value))
                 .findFirst();
     }
-
-    /**
-     * Returns user by his id.
-     *
-     * @param id id of user that is being searched.
-     * @return found {@link Optional<User>} or Optional.empty() if user is not found.
-     */
-    public synchronized Optional<User> findById(UserId id) {
-        return Optional.of(this.users.get(id));
-    }
 }

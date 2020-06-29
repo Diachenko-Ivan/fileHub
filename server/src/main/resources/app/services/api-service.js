@@ -31,7 +31,7 @@ export class ApiService {
       body: JSON.stringify(userCredentials),
     }).then((response) => {
       if (response.ok) {
-        return response.json().then((data) => this.storageService.setItem('token', data.token));
+        return response.text().then((token) => this.storageService.setItem('token', token));
       } else if (response.status === 401) {
         throw new AuthenticationError('No users found with this login and password.');
       }
@@ -52,6 +52,22 @@ export class ApiService {
     }).then((response) => {
       if (response.ok) {
         return true;
+      }
+      return this._handleCommonErrors(response);
+    });
+  }
+
+  /**
+   * Sends request for getting of root folder id.
+   * @return {Promise<string>}
+   */
+  getRootFolderId() {
+    return fetch('/api/folder/root', {
+      method: 'GET',
+      headers: this._getAuthenticationHeader(),
+    }).then((response) => {
+      if (response.ok) {
+        return response.text();
       }
       return this._handleCommonErrors(response);
     });
@@ -279,9 +295,9 @@ export class ApiService {
     const errorHandler = availableCodesToErrorMap[status];
     if (errorHandler) {
       let errorObject;
-      try {
+      if (status === 422) {
         errorObject = await response.json();
-      } catch (e) {
+      } else {
         errorObject = await response.text();
       }
       throw errorHandler(errorObject);

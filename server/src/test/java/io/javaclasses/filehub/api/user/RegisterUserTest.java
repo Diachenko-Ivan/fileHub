@@ -1,10 +1,13 @@
 package io.javaclasses.filehub.api.user;
 
+import com.google.common.testing.NullPointerTester;
+import io.javaclasses.filehub.storage.user.Login;
+import io.javaclasses.filehub.storage.user.Password;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @DisplayName("RegisterUserTest should ")
 class RegisterUserTest {
@@ -12,19 +15,21 @@ class RegisterUserTest {
     @DisplayName("test acceptance of null parameters to constructor.")
     @Test
     void testConstructorNullParams() {
-        assertThrows(NullPointerException.class, () -> new RegisterUser(null, null),
-                "Should throw NullPointerException due to null constructor parameters.");
+        NullPointerTester tester = new NullPointerTester();
+        tester.setDefault(Login.class, new Login("login"));
+        tester.setDefault(Password.class, new Password("Password1"));
+        tester.testAllPublicConstructors(RegisterUser.class);
     }
 
-    @DisplayName("test throwing of CredentialValidationExceptions due to non-validated credentials.")
+    @DisplayName("test creation of instance.")
     @Test
-    void testUnacceptableValues() {
-        try {
-            new RegisterUser("bad_login", "bad_password");
-            fail("Should throw CredentialValidationException due to bad credentials.");
-        } catch (CredentialValidationException e) {
-            assertWithMessage("Should contain 2 failed credentials since " +
-                    "login and password are not validated").that(e.failedCredentials()).hasLength(2);
-        }
+    void testSuccessfulInstanceCreation() {
+        assertDoesNotThrow(() -> {
+            RegisterUser registerUserCommand =
+                    new RegisterUser(new Login("goodLogin"), new Password("goodPassword1"));
+            assertWithMessage("Created RegisterUser command should not be null.")
+                    .that(registerUserCommand)
+                    .isNotNull();
+        }, "Should not throw any exception.");
     }
 }

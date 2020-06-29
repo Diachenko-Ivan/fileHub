@@ -17,7 +17,7 @@ export class GeneralError extends Error {
    * @param {string} message - error message.
    */
   constructor(status, message) {
-    super();
+    super(message);
     this.status = status;
   }
 }

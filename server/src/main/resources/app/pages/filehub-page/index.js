@@ -21,7 +21,7 @@ import {CreateFolderAction} from '../../states/actions/create-folder-action/inde
 import {FILEHUB_PAGE_URL} from '../../config/router-config/index.js';
 import {ToastService} from '../../services/toasts-service/index.js';
 import {ClearErrorAction} from '../../states/actions/remove-state-property-action/index.js';
-
+import {GetRootFolderIdAction} from '../../states/actions/get-root-folder-id-action/index.js';
 /**
  * Class name for upload icon.
  *
@@ -138,8 +138,19 @@ export class FileHubPage extends StateAwareComponent {
       }, () => this.dispatch(new ClearErrorAction('loadError')));
     });
     this.onStateChange('locationParam', (state) => {
-      this.dispatch(new GetFolderAction(state.locationParam.id));
-      this.dispatch(new GetFolderContentAction(state.locationParam.id));
+      if (state.locationParam.id === 'root') {
+        this.dispatch(new GetRootFolderIdAction());
+      } else {
+        this.dispatch(new GetFolderAction(state.locationParam.id));
+        this.dispatch(new GetFolderContentAction(state.locationParam.id));
+      }
+    });
+    this.onStateChange('rootFolderId', (state) => {
+      window.location.hash = `/folder/${state.rootFolderId}`;
+    });
+    this.onStateChange('rootFolderIdError', (state) => {
+      this._handleCommonErrors(state.rootFolderIdError, {},
+        () => this.dispatch(new ClearErrorAction('rootFolderIdError')));
     });
     this.onStateChange('currentFolder', (state) => {
       this.uploadFileButton.isLoading = state.uploadingFolderIds.has(state.currentFolder.id);

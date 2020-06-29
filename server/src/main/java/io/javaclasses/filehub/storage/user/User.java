@@ -1,35 +1,40 @@
 package io.javaclasses.filehub.storage.user;
 
+import com.google.errorprone.annotations.Immutable;
 import com.google.gson.annotations.SerializedName;
 import io.javaclasses.filehub.storage.Record;
 
 import java.util.Objects;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
- * Represents client.
+ * Subject that uses FileHub application.
+ * <p>Saved in {@link UserStorage}.</p>
  */
-public class User extends Record<UserId> {
+@Immutable
+public final class User extends Record<UserId> {
     /**
      * User name.
      */
     @SerializedName("name")
-    private String login;
+    private final Login login;
     /**
-     * User`s password.
+     * User hashed password.
      */
-    private String password;
+    private final String hashedPassword;
 
     /**
      * Creates new {@link User} instance.
      *
-     * @param id       user`s id
-     * @param login    username
-     * @param password user`s password.
+     * @param id       user`s id.
+     * @param login    user name.
+     * @param hashedPassword user`s password.
      */
-    public User(UserId id, String login, String password) {
+    public User(UserId id, Login login, String hashedPassword) {
         super(id);
-        this.login = login;
-        this.password = password;
+        this.login = checkNotNull(login);
+        this.hashedPassword = checkNotNull(hashedPassword);
     }
 
     /**
@@ -37,18 +42,10 @@ public class User extends Record<UserId> {
      *
      * @return user id.
      */
-    public String login() {
+    public Login login() {
         return login;
     }
 
-    /**
-     * Sets user new name.
-     *
-     * @param login user new name.
-     */
-    public void setLogin(String login) {
-        this.login = login;
-    }
 
     /**
      * Returns user credentials that are used for authentication.
@@ -56,16 +53,7 @@ public class User extends Record<UserId> {
      * @return user credentials.
      */
     public String password() {
-        return password;
-    }
-
-    /**
-     * Sets user new credentials.
-     *
-     * @param password user credentials.
-     */
-    public void setPassword(String password) {
-        this.password = password;
+        return hashedPassword;
     }
 
     /**
@@ -77,7 +65,7 @@ public class User extends Record<UserId> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id.equals(user.id);
+        return this.id().equals(user.id());
     }
 
     /**
@@ -85,6 +73,6 @@ public class User extends Record<UserId> {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(this.id());
     }
 }

@@ -1,64 +1,45 @@
 package io.javaclasses.filehub.storage.user;
 
-import com.google.common.base.Preconditions;
-import io.javaclasses.filehub.storage.Storage;
+import io.javaclasses.filehub.storage.InMemoryStorage;
 
-import java.util.HashMap;
 import java.util.Optional;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
- * Used for executing CRUD operations with user {@link User}.
+ * Implementation of in-memory application storage for saving of {@link User}.
  */
-public class UserStorage implements Storage<UserId, User> {
-    /**
-     * Stores users {@link User}.
-     */
-    private final HashMap<UserId, User> users;
+public class UserStorage extends InMemoryStorage<UserId, User> {
 
     /**
-     * Creates new {@link UserStorage} instance.
-     *
-     * @param users initial map.
-     */
-    public UserStorage(HashMap<UserId, User> users) {
-        Preconditions.checkNotNull(users);
-        this.users = users;
-    }
-
-    /**
-     * Adds new user to storage.
-     *
-     * @param user added user.
-     */
-    public synchronized void add(User user) {
-        Preconditions.checkNotNull(user);
-        users.put(user.id(), user);
-    }
-
-    /**
-     * Returns user by his login and password.
+     * Returns user by his {@code login} and {@code password}.
      *
      * @param login    user login.
-     * @param password user password.
-     * @return {@link Optional<User>} with the same login and password.
+     * @param hashedPassword user hashed password.
+     * @return {@link Optional<User>} with the same {@code login} and {@code password}
+     * or {@code Optional.empty()} if user with such login and password was not found.
      */
-    public synchronized Optional<User> findByLoginAndPassword(String login, String password) {
-        return this.users.values()
+    public synchronized Optional<User> find(Login login, String hashedPassword) {
+        checkNotNull(login);
+        checkNotNull(hashedPassword);
+        return this.records().values()
                 .stream()
-                .filter(u -> u.login().equals(login) && u.password().equals(password))
+                .filter(u -> u.login().equals(login) && u.password().equals(hashedPassword))
                 .findFirst();
     }
 
     /**
-     * Returns user by his login.
+     * Returns user {@link Optional<User>} by his login value.
      *
-     * @param login user login.
-     * @return {@link Optional<User>} with the same login.
+     * @param value user login.
+     * @return {@link Optional<User>} with the same login value
+     * or {@code Optional.empty()} if user was not found.
      */
-    public synchronized Optional<User> findByLogin(String login) {
-        return this.users.values()
+    public synchronized Optional<User> find(Login value) {
+        checkNotNull(value);
+        return this.records().values()
                 .stream()
-                .filter(u -> u.login().equals(login))
+                .filter(u -> u.login().equals(value))
                 .findFirst();
     }
 

@@ -1,31 +1,27 @@
 package io.javaclasses.filehub.api.user;
 
-import com.google.common.base.Preconditions;
+import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.api.Command;
+import io.javaclasses.filehub.storage.user.Login;
+import io.javaclasses.filehub.storage.user.Password;
+import io.javaclasses.filehub.storage.user.User;
 
-import java.util.LinkedList;
-import java.util.List;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Command that stores login and password for registration.
+ * Command to register user {@link User} in FileHub application.
+ * <p>Contains {@link User} login {@link Login} and password {@link Password}.</p>
  */
-public class RegisterUser implements Command {
+@Immutable
+public final class RegisterUser implements Command {
     /**
-     * Regular expression for password credential.
+     * User login for registration.
      */
-    public static final String PASSWORD_REGEXP = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[0-9a-zA-Z]{8,}$";
+    private final Login login;
     /**
-     * Regular expression for login credential.
+     * User password for registration.
      */
-    public static final String LOGIN_REGEXP = "^([a-zA-Z0-9]){4,}$";
-    /**
-     * User login.
-     */
-    private final String login;
-    /**
-     * User password.
-     */
-    private final String password;
+    private final Password password;
 
     /**
      * Creates new {@link RegisterUser} instance.
@@ -33,42 +29,26 @@ public class RegisterUser implements Command {
      * @param login    user login.
      * @param password user password.
      */
-    public RegisterUser(String login, String password) throws CredentialValidationException {
-        Preconditions.checkNotNull(login);
-        Preconditions.checkNotNull(password);
-        List<FailedCredential> errors = new LinkedList<>();
-        if (!login.matches(LOGIN_REGEXP)) {
-            errors.add(new FailedCredential("login",
-                    "Login should not be null and " +
-                            "should have uppercase or lowercase letters and digits, min length is 4 chars."));
-        }
-        if (!password.matches(PASSWORD_REGEXP)) {
-            errors.add(new FailedCredential("password",
-                    "Password should not be null and should have at least one uppercase and" +
-                            " lowercase letter and digit, min length is 8 chars."));
-        }
-        if (errors.size() != 0) {
-            throw new CredentialValidationException(errors.toArray(new FailedCredential[0]));
-        }
-        this.login = login;
-        this.password = password;
+    public RegisterUser(Login login, Password password) {
+        this.login = checkNotNull(login);
+        this.password = checkNotNull(password);
     }
 
     /**
-     * Returns login credential value.
+     * Returns login credential.
      *
      * @return login value.
      */
-    public String login() {
+    public Login login() {
         return login;
     }
 
     /**
-     * Returns password credential value.
+     * Returns password credential.
      *
      * @return password value.
      */
-    public String password() {
+    public Password password() {
         return password;
     }
 }

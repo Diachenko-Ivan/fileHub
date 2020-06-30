@@ -38,7 +38,7 @@ class PasswordHasherTest {
 
         ExecutorService executorService = Executors.newFixedThreadPool(100);
         for (int i = 0; i < 100; i++) {
-            assertWithMessage("")
+            assertWithMessage("Hashes have to be equal in each thread but they do not.")
                     .that(executorService.submit(passwordHash).get())
                     .isEqualTo(expectedHash);
         }

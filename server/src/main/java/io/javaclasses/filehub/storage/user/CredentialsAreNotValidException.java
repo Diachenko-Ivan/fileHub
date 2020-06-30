@@ -1,9 +1,8 @@
-package io.javaclasses.filehub.api.user;
+package io.javaclasses.filehub.storage.user;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import io.javaclasses.filehub.storage.user.Login;
-import io.javaclasses.filehub.storage.user.Password;
+import io.javaclasses.filehub.api.user.DataValidationError;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

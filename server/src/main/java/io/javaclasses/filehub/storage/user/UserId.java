@@ -4,7 +4,7 @@ import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.storage.RecordId;
 
 /**
- * Represents id for {@link User} record.
+ * Identifier for {@link User} record.
  */
 @Immutable
 public final class UserId extends RecordId {

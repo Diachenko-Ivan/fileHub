@@ -28,7 +28,7 @@ public abstract class InMemoryStorage<I extends RecordId, R extends Record<I>>
     public synchronized void add(R record) {
         checkNotNull(record);
         if (records.putIfAbsent(record.id(), record) != null) {
-            throw new IllegalArgumentException(record.getClass().getSimpleName() + " with such id is already exists.");
+            throw new IllegalArgumentException(record.getClass().getSimpleName() + " with such identifier exists.");
         }
     }
 
@@ -48,7 +48,7 @@ public abstract class InMemoryStorage<I extends RecordId, R extends Record<I>>
      */
     @Override
     public Optional<R> find(I id) {
-        return Optional.of(records.get(id));
+        return Optional.ofNullable(records.get(id));
     }
 
     /**

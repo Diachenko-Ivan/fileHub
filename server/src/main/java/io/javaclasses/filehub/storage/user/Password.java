@@ -1,7 +1,6 @@
 package io.javaclasses.filehub.storage.user;
 
 import com.google.errorprone.annotations.Immutable;
-import io.javaclasses.filehub.api.user.CredentialsAreNotValidException;
 import io.javaclasses.filehub.api.user.DataValidationError;
 
 import java.util.Objects;

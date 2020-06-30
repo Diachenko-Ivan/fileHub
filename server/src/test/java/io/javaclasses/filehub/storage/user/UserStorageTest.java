@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DisplayName("UserStorage should ")
 class UserStorageTest {
 
-    @DisplayName("mot accept null parameters to methods.")
+    @DisplayName("not accept null parameters to methods.")
     @Test
     void testNullParams() {
         NullPointerTester tester = new NullPointerTester();
@@ -73,5 +73,20 @@ class UserStorageTest {
         assertWithMessage("User found by login and password in not equal or null.")
                 .that(userByLogin)
                 .isEqualTo(userToAdd);
+    }
+
+    @DisplayName("return empty result by incorrect login or password.")
+    @Test
+    void testFailFindByLoginIncorrectNameOrPassword() {
+        UserStorage storage = new UserStorage();
+        Login loginName = new Login("linus");
+        String password = "torvald";
+        User userToAdd = new User(new UserId("id"), loginName, password);
+        storage.add(userToAdd);
+
+        User userByLogin = storage.find(loginName, "another_password").orElse(null);
+        assertWithMessage("User found by incorrect login or password must be null.")
+                .that(userByLogin)
+                .isNull();
     }
 }

@@ -56,18 +56,8 @@ public class WebApplication {
      * Filters requests.
      */
     private void filter() {
+        Filter authorizationFilter = new AuthorizationFilter();
         path("/api", () -> {
-            Filter authorizationFilter = (request, response) -> {
-                String authorizationToken = request.headers("Authorization").split(" ")[1];
-                logger.debug("Authorization process. Token: " + authorizationToken);
-                User user = authorizationService.authorizedUser(authorizationToken);
-                if (user == null) {
-                    logger.warn("User with token " + authorizationToken
-                            + " failed authorization to " + request.pathInfo() + " request.");
-                    halt(401);
-                }
-                logger.debug("User " + user.login() + " passed authorization to " + request.pathInfo() + " request.");
-            };
             before("/folder/*", authorizationFilter);
             before("/file/*", authorizationFilter);
             before("/user", authorizationFilter);

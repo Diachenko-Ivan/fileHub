@@ -1,6 +1,7 @@
 package io.javaclasses.filehub.storage.user;
 
 import com.google.common.testing.NullPointerTester;
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -33,5 +34,11 @@ class PasswordTest {
                     .that(goodPassword)
                     .isNotNull();
         });
+    }
+
+    @DisplayName("implement correct equal and hashcode methods.")
+    @Test
+    public void equalsContract() {
+        EqualsVerifier.forClass(Password.class).verify();
     }
 }

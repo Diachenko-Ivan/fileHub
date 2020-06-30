@@ -2,10 +2,11 @@ package io.javaclasses.filehub.web.routes;
 
 import io.javaclasses.filehub.api.user.AuthenticateUser;
 import io.javaclasses.filehub.api.user.Authentication;
-import io.javaclasses.filehub.api.user.UserIsNotAuthenticatedException;
 import io.javaclasses.filehub.api.user.CredentialsAreNotValidException;
+import io.javaclasses.filehub.api.user.UserIsNotAuthenticatedException;
 import io.javaclasses.filehub.storage.user.TokenRecord;
 import io.javaclasses.filehub.storage.user.TokenStorage;
+import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserStorage;
 import io.javaclasses.filehub.web.deserializer.AuthenticateUserDeserializer;
 import org.slf4j.Logger;
@@ -13,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import io.javaclasses.filehub.storage.user.User;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -59,7 +59,7 @@ public class AuthenticationRoute implements Route {
             AuthenticateUser authenticateUser = new AuthenticateUserDeserializer().deserialize(request.body());
             TokenRecord tokenRecord = new Authentication(userStorage, tokenStorage).logIn(authenticateUser);
             if (logger.isInfoEnabled()) {
-                logger.info("User with login " + authenticateUser.login() + " was authenticated.");
+                logger.info("User with login " + authenticateUser.login().value() + " was authenticated.");
             }
             return tokenRecord.id();
         } catch (UserIsNotAuthenticatedException | CredentialsAreNotValidException e) {

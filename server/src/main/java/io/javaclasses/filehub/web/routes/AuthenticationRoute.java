@@ -16,6 +16,7 @@ import spark.Response;
 import spark.Route;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
 /**
  * Implementation of {@link Route} that handles requests for user authentication.
@@ -63,7 +64,7 @@ public class AuthenticationRoute implements Route {
             }
             return tokenRecord.id();
         } catch (UserIsNotAuthenticatedException | CredentialsAreNotValidException e) {
-            response.status(401);
+            response.status(SC_UNAUTHORIZED);
             return "No user with these credentials.";
         }
     }

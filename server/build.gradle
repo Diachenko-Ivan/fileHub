@@ -23,6 +23,7 @@ dependencies {
 
     testCompile("org.junit.jupiter:junit-jupiter-params:${junitParamsVersion}")
 
+    testCompile group: 'nl.jqno.equalsverifier', name: 'equalsverifier', version: '3.4.1'
     testCompile group: 'com.google.guava', name: 'guava-testlib', version: "${guavaVersion}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitEngineVersion}"
 

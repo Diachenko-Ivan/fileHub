@@ -47,7 +47,7 @@ public class AuthorizationFilter implements Filter {
     @Override
     public void handle(Request request, Response response) {
         String authorizationHeaderValue = request.headers("Authorization");
-        if (authorizationHeaderValue == null || authorizationHeaderValue.split(" ").length !=2) {
+        if (authorizationHeaderValue == null || authorizationHeaderValue.split(" ").length != 2) {
             halt(SC_UNAUTHORIZED);
         }
         String authorizationToken = get(on(' ').split(authorizationHeaderValue), 1);

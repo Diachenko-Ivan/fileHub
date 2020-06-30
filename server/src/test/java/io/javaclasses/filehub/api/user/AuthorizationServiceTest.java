@@ -39,7 +39,7 @@ class AuthorizationServiceTest {
         AuthorizationService service = new AuthorizationService(mockTokenStorage);
         UserId userId = service.authorizedUserId("any_token");
 
-        assertWithMessage("User is not null but must be because access token is not found.")
+        assertWithMessage("User identifier is not null but must be because access token is not found.")
                 .that(userId)
                 .isNull();
     }
@@ -64,7 +64,7 @@ class AuthorizationServiceTest {
         AuthorizationService service = new AuthorizationService(mockTokenStorage);
         UserId userid = service.authorizedUserId("any_token");
 
-        assertWithMessage("User is not null but must be because access token is expired.")
+        assertWithMessage("User identifier is not null but must be because access token is expired.")
                 .that(userid)
                 .isNull();
         assertWithMessage("Token removing should be called but it was not.")
@@ -91,10 +91,10 @@ class AuthorizationServiceTest {
         AuthorizationService service = new AuthorizationService(mockTokenStorage);
         UserId authorizedUserId = service.authorizedUserId(tokenId);
 
-        assertWithMessage("Authorized user is null.")
+        assertWithMessage("Authorized user identifier is null.")
                 .that(authorizedUserId)
                 .isNotNull();
-        assertWithMessage("Authorized user id is not equal to user id from token record.")
+        assertWithMessage("Authorized user identifier is not equal to user identifier from token record.")
                 .that(authorizedUserId)
                 .isEqualTo(userIdInToken);
     }

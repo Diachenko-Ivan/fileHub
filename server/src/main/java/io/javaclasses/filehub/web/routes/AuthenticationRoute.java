@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.web.routes;
 
+import com.google.gson.JsonParseException;
 import io.javaclasses.filehub.api.user.AuthenticateUser;
 import io.javaclasses.filehub.api.user.Authentication;
 import io.javaclasses.filehub.api.user.UserIsNotAuthenticatedException;
@@ -62,6 +63,9 @@ public class AuthenticationRoute implements Route {
         } catch (UserIsNotAuthenticatedException | CredentialsAreNotValidException e) {
             response.status(SC_UNAUTHORIZED);
             return "No user with these credentials.";
+        } catch (JsonParseException e) {
+            response.status(422);
+            return "Unable to process request body";
         }
     }
 }

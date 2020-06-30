@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.api.user;
 
+import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.storage.user.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,128 +10,91 @@ import java.util.HashMap;
 import java.util.Optional;
 
 import static com.google.common.truth.Truth.assertWithMessage;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@DisplayName("AuthorizationServiceTest should ")
+@DisplayName("AuthorizationService should ")
 class AuthorizationServiceTest {
 
-    @DisplayName("test acceptance of null parameters to constructor.")
+    @DisplayName("not accept null parameters to constructor and method.")
     @Test
-    void testConstructorNullParams() {
-        assertThrows(NullPointerException.class, () -> new AuthorizationService(null, null),
-                "Should throw NullPointerException due to null constructor parameters.");
+    void testNullParams() {
+        NullPointerTester tester = new NullPointerTester();
+        tester.testAllPublicConstructors(AuthorizationService.class);
+        tester.testAllPublicInstanceMethods(new AuthorizationService(new TokenStorage()));
     }
 
-    @DisplayName("test acceptance of null parameters to authorizedUser() method.")
-    @Test
-    void testRegistrationNullParams() {
-        assertThrows(NullPointerException.class,
-                () -> new AuthorizationService(new TokenStorage(new HashMap<>()), new UserStorage(new HashMap<>()))
-                        .authorizedUser(null),
-                "Should throw NullPointerException due to null method parameters.");
-    }
 
-    @DisplayName("test null returning from authorizedUser() method if token is not found")
+    @DisplayName("return null from authorizedUserId() method if token is not found.")
     @Test
     void testAuthorizedUserByNotFoundToken() {
-        UserStorage userStorage = new UserStorage(new HashMap<>());
-        TokenStorage mockTokenStorage = new TokenStorage(new HashMap<>()) {
+        TokenStorage mockTokenStorage = new TokenStorage() {
             @Override
-            public TokenRecord findByToken(String tokenValue) {
-                return null;
+            public Optional<TokenRecord> find(TokenId id) {
+                return empty();
             }
         };
-        AuthorizationService service = new AuthorizationService(mockTokenStorage, userStorage);
-        User userByToken = service.authorizedUser("any_token");
-        assertWithMessage("Authorized user should be null because access token is not found.")
-                .that(userByToken)
+        AuthorizationService service = new AuthorizationService(mockTokenStorage);
+        UserId userId = service.authorizedUserId("any_token");
+
+        assertWithMessage("User is not null but must be because access token is not found.")
+                .that(userId)
                 .isNull();
     }
 
-    @DisplayName("test null returning from authorizedUser() method if token expired.")
+    @DisplayName("return null from authorizedUserId() method if token is expired.")
     @Test
     void testAuthorizedUserByExpiredToken() {
         final boolean[] isRemoveCalled = {false};
-        UserStorage userStorage = new UserStorage(new HashMap<>());
-        TokenStorage mockTokenStorage = new TokenStorage(new HashMap<>()) {
+        TokenStorage mockTokenStorage = new TokenStorage() {
             @Override
-            public TokenRecord findByToken(String tokenValue) {
-                return new TokenRecord(new TokenId("tokeid"), "tokenvalue",
-                        new UserId("userid"), new Date(new Date().getTime() - 10000));
+            public Optional<TokenRecord> find(TokenId id) {
+                return of(new TokenRecord(new TokenId("tokeid"),
+                        new UserId("userid"), new Date(new Date().getTime() - 10000)));
             }
 
             @Override
-            public TokenRecord remove(String tokenValue) {
+            public synchronized TokenRecord remove(TokenId id) {
                 isRemoveCalled[0] = true;
                 return null;
             }
         };
-        AuthorizationService service = new AuthorizationService(mockTokenStorage, userStorage);
-        User userByToken = service.authorizedUser("any_token");
-        assertWithMessage("Authorized user should be null because access token is expired.")
-                .that(userByToken)
+        AuthorizationService service = new AuthorizationService(mockTokenStorage);
+        UserId userid = service.authorizedUserId("any_token");
+
+        assertWithMessage("User is not null but must be because access token is expired.")
+                .that(userid)
                 .isNull();
         assertWithMessage("Token removing should be called but it was not.")
                 .that(isRemoveCalled[0])
                 .isTrue();
     }
 
-    @DisplayName("test returning of user from authorizedUser() method.")
+    @DisplayName("return authorized user identifier.")
     @Test
     void testSuccessfulUserAuthorization() {
-        User authorizedUser = new User(new UserId("authorized-user"), "john", "smith");
-        UserStorage mockUserStorage = new UserStorage(new HashMap<>()) {
+        String tokenId = "any_token";
+        UserId userIdInToken = new UserId("userid");
+
+        TokenStorage mockTokenStorage = new TokenStorage() {
             @Override
-            public synchronized Optional<User> findById(UserId id) {
-                return Optional.of(authorizedUser);
+            public Optional<TokenRecord> find(TokenId id) {
+                if (id.value().equals(tokenId)) {
+                    return of(new TokenRecord(new TokenId(tokenId),
+                            userIdInToken, new Date(new Date().getTime() + 10000)));
+                }
+                return empty();
             }
         };
-        TokenStorage mockTokenStorage = new TokenStorage(new HashMap<>()) {
-            @Override
-            public TokenRecord findByToken(String tokenValue) {
-                return new TokenRecord(new TokenId("tokeid"), "tokenvalue",
-                        new UserId("userid"), new Date(new Date().getTime() + 10000));
-            }
-        };
-        AuthorizationService service = new AuthorizationService(mockTokenStorage, mockUserStorage);
-        User userByToken = service.authorizedUser("any_token");
-        assertWithMessage("Authorized user should not be null.")
-                .that(userByToken)
+        AuthorizationService service = new AuthorizationService(mockTokenStorage);
+        UserId authorizedUserId = service.authorizedUserId(tokenId);
+
+        assertWithMessage("Authorized user is null.")
+                .that(authorizedUserId)
                 .isNotNull();
-        assertWithMessage("Authorized user should be equal to found by id user.")
-                .that(userByToken)
-                .isEqualTo(authorizedUser);
-    }
-
-    @DisplayName("test acceptance of null parameters to createSession() method.")
-    @Test
-    void testCreateSessionNullParam() {
-        assertThrows(NullPointerException.class, () ->
-                        new AuthorizationService(new TokenStorage(new HashMap<>()), new UserStorage(new HashMap<>()))
-                                .createSession(null),
-                "Should throw NullPointerException due to null method parameters.");
-    }
-
-
-    @DisplayName("test call of token storage add method in create session.")
-    @Test
-    void testCallOfAddMethod() {
-        boolean[] isAddCalled = {false};
-        TokenRecord record = new TokenRecord(new TokenId("tokeid"), "tokenvalue",
-                new UserId("userid"), new Date(new Date().getTime() + 10000));
-        TokenStorage mockTokenStorage = new TokenStorage(new HashMap<>()) {
-            @Override
-            public void add(TokenRecord transferredRecord) {
-                assertWithMessage("Transferred token record should be equal with record in createSession() param")
-                        .that(transferredRecord)
-                        .isEqualTo(record);
-                isAddCalled[0] = true;
-            }
-        };
-        AuthorizationService service = new AuthorizationService(mockTokenStorage, new UserStorage(new HashMap<>()));
-        service.createSession(record);
-        assertWithMessage("Method for token adding should be called.")
-                .that(isAddCalled[0])
-                .isTrue();
+        assertWithMessage("Authorized user id is not equal to user id from token record.")
+                .that(authorizedUserId)
+                .isEqualTo(userIdInToken);
     }
 }

@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Used for converting of password string to hash.
+ * Converter of password string to hash.
  */
 public class PasswordHasher {
     /**

@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.web.deserializer;
 
 import com.google.gson.*;
-import io.javaclasses.filehub.api.user.CredentialsAreNotValidException;
+import io.javaclasses.filehub.storage.user.CredentialsAreNotValidException;
 import io.javaclasses.filehub.api.user.RegisterUser;
 import io.javaclasses.filehub.storage.user.Login;
 import io.javaclasses.filehub.storage.user.Password;

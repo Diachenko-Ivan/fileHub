@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.web.routes;
 
 import com.google.gson.JsonParseException;
-import io.javaclasses.filehub.api.user.CredentialsAreNotValidException;
+import io.javaclasses.filehub.storage.user.CredentialsAreNotValidException;
 import io.javaclasses.filehub.api.user.LoginIsTakenException;
 import io.javaclasses.filehub.api.user.RegisterUser;
 import io.javaclasses.filehub.api.user.Registration;

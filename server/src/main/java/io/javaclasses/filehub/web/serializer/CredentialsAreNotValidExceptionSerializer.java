@@ -2,7 +2,7 @@ package io.javaclasses.filehub.web.serializer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.javaclasses.filehub.api.user.CredentialsAreNotValidException;
+import io.javaclasses.filehub.storage.user.CredentialsAreNotValidException;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

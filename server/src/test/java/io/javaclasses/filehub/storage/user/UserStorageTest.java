@@ -74,4 +74,19 @@ class UserStorageTest {
                 .that(userByLogin)
                 .isEqualTo(userToAdd);
     }
+
+    @DisplayName("return empty result by incorrect login or password.")
+    @Test
+    void testFailFindByLoginIncorrectNameOrPassword() {
+        UserStorage storage = new UserStorage();
+        Login loginName = new Login("linus");
+        String password = "torvald";
+        User userToAdd = new User(new UserId("id"), loginName, password);
+        storage.add(userToAdd);
+
+        User userByLogin = storage.find(loginName, "another_password").orElse(null);
+        assertWithMessage("User found by incorrect login or password must be null.")
+                .that(userByLogin)
+                .isNull();
+    }
 }

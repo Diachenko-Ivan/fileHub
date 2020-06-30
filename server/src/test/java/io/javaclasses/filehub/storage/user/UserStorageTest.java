@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DisplayName("UserStorage should ")
 class UserStorageTest {
 
-    @DisplayName("mot accept null parameters to methods.")
+    @DisplayName("not accept null parameters to methods.")
     @Test
     void testNullParams() {
         NullPointerTester tester = new NullPointerTester();

@@ -53,7 +53,9 @@ public class Authentication implements Process {
     public TokenRecord logIn(AuthenticateUser authenticateUser) throws AuthenticationException {
         checkNotNull(authenticateUser);
         String hashedPassword = hash(authenticateUser.password().value());
+
         Optional<User> existentUser = userStorage.find(authenticateUser.login(), hashedPassword);
+
         if (!existentUser.isPresent()) {
             if (logger.isWarnEnabled()) {
                 logger.warn("User with login " + authenticateUser.login().value()
@@ -61,9 +63,11 @@ public class Authentication implements Process {
             }
             throw new AuthenticationException();
         }
+
         TokenRecord tokenRecord = new TokenRecord(new TokenId(generateId()),
                 existentUser.get().id(),
                 new Date(new Date().getTime() + EXPIRATION_INTERVAL));
+
         tokenStorage.add(tokenRecord);
         return tokenRecord;
     }

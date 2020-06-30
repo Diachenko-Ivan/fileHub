@@ -2,12 +2,8 @@ package io.javaclasses.filehub.web.routes;
 
 import io.javaclasses.filehub.api.user.AuthenticateUser;
 import io.javaclasses.filehub.api.user.Authentication;
-import io.javaclasses.filehub.api.user.CredentialsAreNotValidException;
 import io.javaclasses.filehub.api.user.UserIsNotAuthenticatedException;
-import io.javaclasses.filehub.storage.user.TokenRecord;
-import io.javaclasses.filehub.storage.user.TokenStorage;
-import io.javaclasses.filehub.storage.user.User;
-import io.javaclasses.filehub.storage.user.UserStorage;
+import io.javaclasses.filehub.storage.user.*;
 import io.javaclasses.filehub.web.deserializer.AuthenticateUserDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

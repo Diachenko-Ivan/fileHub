@@ -36,7 +36,7 @@ public class AuthenticateUserDeserializer implements JsonDeserializer<Authentica
      * Returns deserialized {@link AuthenticateUser} instance from JSON.
      *
      * @param json json string that is being deserialized from JSON.
-     * @return deserialized instance.
+     * @return deserialized instance or {@code null} if {@code json} is empty.
      */
     public AuthenticateUser deserialize(String json) {
         checkNotNull(json);

@@ -14,6 +14,7 @@ import spark.Response;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Splitter.on;
 import static com.google.common.collect.Iterables.get;
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 import static spark.Spark.halt;
 
 /**
@@ -45,7 +46,11 @@ public class AuthorizationFilter implements Filter {
      */
     @Override
     public void handle(Request request, Response response) {
-        String authorizationToken = get(on(' ').split(request.headers("Authorization")), 1);
+        String authorizationHeaderValue = request.headers("Authorization");
+        if (authorizationHeaderValue == null || authorizationHeaderValue.split(" ").length !=2) {
+            halt(SC_UNAUTHORIZED);
+        }
+        String authorizationToken = get(on(' ').split(authorizationHeaderValue), 1);
 
         UserId userId = new AuthorizationService(tokenStorage).authorizedUserId(authorizationToken);
         if (userId == null) {
@@ -53,7 +58,7 @@ public class AuthorizationFilter implements Filter {
                 logger.warn("User with token " + authorizationToken
                         + " failed authorization to " + request.pathInfo() + " request.");
             }
-            halt(401);
+            halt(SC_UNAUTHORIZED);
         }
         if (logger.isDebugEnabled()) {
             logger.debug("User with token " + authorizationToken

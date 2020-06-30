@@ -2,7 +2,7 @@ package io.javaclasses.filehub.web.routes;
 
 import io.javaclasses.filehub.api.user.AuthenticateUser;
 import io.javaclasses.filehub.api.user.Authentication;
-import io.javaclasses.filehub.api.user.AuthenticationException;
+import io.javaclasses.filehub.api.user.UserIsNotAuthenticatedException;
 import io.javaclasses.filehub.api.user.CredentialsAreNotValidException;
 import io.javaclasses.filehub.storage.user.TokenRecord;
 import io.javaclasses.filehub.storage.user.TokenStorage;
@@ -62,7 +62,7 @@ public class AuthenticationRoute implements Route {
                 logger.info("User with login " + authenticateUser.login() + " was authenticated.");
             }
             return tokenRecord.id();
-        } catch (AuthenticationException | CredentialsAreNotValidException e) {
+        } catch (UserIsNotAuthenticatedException | CredentialsAreNotValidException e) {
             response.status(401);
             return "No user with these credentials.";
         }

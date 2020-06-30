@@ -5,7 +5,6 @@ import io.javaclasses.filehub.storage.user.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.Optional;
 
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -78,7 +77,7 @@ class AuthenticationProcessTest {
         };
         Authentication process = new Authentication(mockUserStorage, mockTokenStorage);
 
-        assertThrows(AuthenticationException.class, () ->
+        assertThrows(UserIsNotAuthenticatedException.class, () ->
                         process.logIn(new AuthenticateUser(new Login("login"), new Password("Password1"))),
                 "Should throw AuthenticationException because user does not exist.");
 

@@ -47,10 +47,10 @@ public class Authentication implements Process {
      * Authenticates user handling {@link AuthenticateUser} command.
      *
      * @param authenticateUser login and password.
-     * @throws AuthenticationException if user with these credentials {@code authenticateUser.login()}
+     * @throws UserIsNotAuthenticatedException if user with these credentials {@code authenticateUser.login()}
      *                                 and {@code authenticateUser.password()} is not found.
      */
-    public TokenRecord logIn(AuthenticateUser authenticateUser) throws AuthenticationException {
+    public TokenRecord logIn(AuthenticateUser authenticateUser) throws UserIsNotAuthenticatedException {
         checkNotNull(authenticateUser);
         String hashedPassword = hash(authenticateUser.password().value());
 
@@ -61,7 +61,7 @@ public class Authentication implements Process {
                 logger.warn("User with login " + authenticateUser.login().value()
                         + " and password " + authenticateUser.password().value() + " was not authenticated.");
             }
-            throw new AuthenticationException();
+            throw new UserIsNotAuthenticatedException();
         }
 
         TokenRecord tokenRecord = new TokenRecord(new TokenId(generateId()),

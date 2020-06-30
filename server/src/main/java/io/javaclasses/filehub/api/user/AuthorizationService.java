@@ -12,7 +12,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class AuthorizationService {
     /**
-     * Storage for tokens {}.
+     * Storage for tokens {@link TokenRecord}.
      */
     private final TokenStorage tokenStorage;
 
@@ -45,15 +45,5 @@ public class AuthorizationService {
             return null;
         }
         return tokenRecord.userId();
-    }
-
-    /**
-     * Creates new session for user saving {@link TokenRecord} instance.
-     *
-     * @param record token for saving in storage.
-     */
-    public void createSession(TokenRecord record) {
-        checkNotNull(record);
-        this.tokenStorage.add(record);
     }
 }

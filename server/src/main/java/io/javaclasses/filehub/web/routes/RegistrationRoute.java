@@ -22,7 +22,7 @@ import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_OK;
 
 /**
- * Route that handles request for registration of user.
+ * Implementation of {@link Route} that handles request for registration of user.
  */
 public class RegistrationRoute implements Route {
     /**
@@ -47,7 +47,7 @@ public class RegistrationRoute implements Route {
     }
 
     /**
-     * Invoked at the registration request.
+     * Handles request for user registration.
      * {@inheritDoc}
      */
     @Override

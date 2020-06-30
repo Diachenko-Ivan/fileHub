@@ -8,40 +8,34 @@ import java.util.Optional;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Used for user authorization and getting information about already authorized user.
+ * Service for getting of identifier of authorized user {@link User}.
  */
 public class AuthorizationService {
     /**
-     * Storage for token reading and creating.
+     * Storage for tokens {}.
      */
     private final TokenStorage tokenStorage;
-    /**
-     * Used for reading of users.
-     */
-    private final UserStorage userStorage;
 
     /**
      * Creates new {@link AuthorizationService} instance.
      *
-     * @param tokenStorage storage for token info.
-     * @param userStorage  storage for user info.
+     * @param tokenStorage storage for tokens {@link TokenRecord}.
      */
-    public AuthorizationService(TokenStorage tokenStorage, UserStorage userStorage) {
+    public AuthorizationService(TokenStorage tokenStorage) {
         this.tokenStorage = checkNotNull(tokenStorage);
-        this.userStorage = checkNotNull(userStorage);
     }
 
 
     /**
-     * Returns authorized user by {@code token}.
-     * <p>If user is not found by token or token is already expired method returns null.
+     * Returns authorized user identifier by {@code tokenValue}.
+     * <p>If user is not found by token or token is already expired method returns <i>null</i>.
      *
-     * @param tokenValue user access token value.
-     * @return authorized user or null.
+     * @param tokenId user access token identifier.
+     * @return identifier of authorized user or {@code null} if user is not authorized.
      */
-    public User authorizedUser(String tokenValue) {
-        checkNotNull(tokenValue);
-        Optional<TokenRecord> token = tokenStorage.find(new TokenId(tokenValue));
+    public UserId authorizedUserId(String tokenId) {
+        checkNotNull(tokenId);
+        Optional<TokenRecord> token = tokenStorage.find(new TokenId(tokenId));
 
         if (!token.isPresent()) {
             return null;
@@ -51,9 +45,7 @@ public class AuthorizationService {
             tokenStorage.remove(tokenRecord.id());
             return null;
         }
-        Optional<User> userById = userStorage.find(tokenRecord.userId());
-
-        return userById.orElse(null);
+        return tokenRecord.userId();
     }
 
     /**

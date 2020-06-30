@@ -4,6 +4,7 @@ import io.javaclasses.filehub.api.user.AuthorizationService;
 import io.javaclasses.filehub.storage.user.TokenStorage;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserStorage;
+import io.javaclasses.filehub.web.routes.AuthenticationRoute;
 import io.javaclasses.filehub.web.routes.RegistrationRoute;
 import spark.Filter;
 
@@ -19,9 +20,9 @@ public class WebApplication {
      */
     private final UserStorage userStorage = new UserStorage();
     /**
-     * Storage for operations with token. Used by {@link AuthorizationService}.
+     * Storage for access tokens.
      */
-    private final TokenStorage tokenStorage = new TokenStorage(new HashMap<>());
+    private final TokenStorage tokenStorage = new TokenStorage();
     /**
      * Service that works with authorization session.
      */
@@ -43,30 +44,16 @@ public class WebApplication {
     private void run() {
         port(8080);
         staticFiles.location("/app/");
+        this.filter();
 
         path("/api", () -> {
             post("/register", new RegistrationRoute(userStorage));
-        });
-
-        post("/api/login", (request, response) -> {
-            response.type("application/json");
-            logger.info("Request to '/api/login' url.");
-            try {
-                AuthenticateUser authenticateUser = new AuthenticateUserDeserializer().deserialize(request.body());
-                TokenRecord tokenRecord = new Authentication(userStorage).logIn(authenticateUser);
-                authorizationService.createSession(tokenRecord);
-                logger.info("User with login " + authenticateUser.login() + " was authenticated.");
-                return new TokenSerializer().serialize(tokenRecord);
-            } catch (AuthenticationException e) {
-                logger.warn("User was not authenticated.");
-                response.status(401);
-                return "No user with these credentials.";
-            }
+            post("/login", new AuthenticationRoute(userStorage, tokenStorage));
         });
     }
 
     /**
-     * Filters incoming requests.
+     * Filters requests.
      */
     private void filter() {
         path("/api", () -> {

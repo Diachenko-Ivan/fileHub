@@ -23,10 +23,6 @@ public class WebApplication {
      * Storage for access tokens.
      */
     private final TokenStorage tokenStorage = new TokenStorage();
-    /**
-     * Service that works with authorization session.
-     */
-    private final AuthorizationService authorizationService = new AuthorizationService(tokenStorage, userStorage);
 
     /**
      * Starts application.
@@ -56,7 +52,7 @@ public class WebApplication {
      * Filters requests.
      */
     private void filter() {
-        Filter authorizationFilter = new AuthorizationFilter();
+        Filter authorizationFilter = new AuthorizationFilter(tokenStorage);
         path("/api", () -> {
             before("/folder/*", authorizationFilter);
             before("/file/*", authorizationFilter);

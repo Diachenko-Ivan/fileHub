@@ -56,7 +56,8 @@ public class AuthorizationFilter implements Filter {
             halt(401);
         }
         if (logger.isDebugEnabled()) {
-            logger.debug("User with id " + userId + " passed authorization to " + request.pathInfo() + " request.");
+            logger.debug("User with token " + authorizationToken
+                    + " passed authorization to " + request.pathInfo() + " request.");
         }
     }
 }

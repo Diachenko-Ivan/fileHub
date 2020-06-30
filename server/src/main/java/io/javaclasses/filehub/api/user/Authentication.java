@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.api.user;
 
+import io.javaclasses.filehub.api.Process;
 import io.javaclasses.filehub.storage.user.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,7 @@ import static io.javaclasses.filehub.api.user.PasswordHasher.hash;
 /**
  * Implements user authentication functionality.
  */
-public class Authentication implements AuthenticationProcess {
+public class Authentication implements Process {
     /**
      * For logging.
      */
@@ -39,9 +40,12 @@ public class Authentication implements AuthenticationProcess {
     }
 
     /**
-     * {@inheritDoc}
+     * Authenticates user handling {@link AuthenticateUser} command.
+     *
+     * @param authenticateUser login and password.
+     * @throws AuthenticationException if user with these credentials {@code authenticateUser.login()}
+     *                                 and {@code authenticateUser.password()} is not found.
      */
-    @Override
     public TokenRecord logIn(AuthenticateUser authenticateUser) throws AuthenticationException {
         checkNotNull(authenticateUser);
         String hashedPassword = hash(authenticateUser.password().value());

@@ -5,12 +5,13 @@ import io.javaclasses.filehub.storage.user.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static io.javaclasses.filehub.api.IdGenerator.generateId;
 import static io.javaclasses.filehub.api.user.PasswordHasher.hash;
+import static java.time.Instant.now;
+import static java.time.Instant.ofEpochSecond;
 
 /**
  * The application process that handles {@link AuthenticateUser} command.
@@ -21,9 +22,9 @@ public class Authentication implements Process {
      */
     private static final Logger logger = LoggerFactory.getLogger(Authentication.class);
     /**
-     * Time in milliseconds after which token will expire.
+     * Time in seconds after which token will expire.
      */
-    private static final int EXPIRATION_INTERVAL = 900000;
+    private static final int EXPIRATION_INTERVAL = 900;
     /**
      * Storage for users {@link User}.
      */
@@ -48,7 +49,7 @@ public class Authentication implements Process {
      *
      * @param authenticateUser login and password.
      * @throws UserIsNotAuthenticatedException if user with these credentials {@code authenticateUser.login()}
-     *                                 and {@code authenticateUser.password()} is not found.
+     *                                         and {@code authenticateUser.password()} is not found.
      */
     public TokenRecord logIn(AuthenticateUser authenticateUser) throws UserIsNotAuthenticatedException {
         checkNotNull(authenticateUser);
@@ -66,7 +67,7 @@ public class Authentication implements Process {
 
         TokenRecord tokenRecord = new TokenRecord(new TokenId(generateId()),
                 existentUser.get().id(),
-                new Date(new Date().getTime() + EXPIRATION_INTERVAL));
+                ofEpochSecond(now().getEpochSecond() + EXPIRATION_INTERVAL));
 
         tokenStorage.add(tokenRecord);
         return tokenRecord;

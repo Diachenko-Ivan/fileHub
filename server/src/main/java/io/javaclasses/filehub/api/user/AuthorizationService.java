@@ -2,7 +2,7 @@ package io.javaclasses.filehub.api.user;
 
 import io.javaclasses.filehub.storage.user.*;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -25,7 +25,6 @@ public class AuthorizationService {
         this.tokenStorage = checkNotNull(tokenStorage);
     }
 
-
     /**
      * Returns authorized user identifier by {@code tokenValue}.
      * <p>If user is not found by token or token is already expired method returns <i>null</i>.
@@ -41,7 +40,7 @@ public class AuthorizationService {
             return null;
         }
         TokenRecord tokenRecord = token.get();
-        if (new Date().after(tokenRecord.expirationDate())) {
+        if (Instant.now().isAfter(tokenRecord.expirationDate())) {
             tokenStorage.remove(tokenRecord.id());
             return null;
         }

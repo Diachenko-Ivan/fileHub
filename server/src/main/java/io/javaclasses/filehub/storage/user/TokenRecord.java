@@ -2,22 +2,22 @@ package io.javaclasses.filehub.storage.user;
 
 import io.javaclasses.filehub.storage.Record;
 
-import java.util.Date;
+import java.time.Instant;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Represents user access token.
+ * Data structure that contains information about authorization session.
  */
 public final class TokenRecord extends Record<TokenId> {
     /**
-     * User id.
+     * User identifier.
      */
     private final UserId userId;
     /**
      * Token expiration date.
      */
-    private final Date expirationDate;
+    private final Instant expirationDate;
 
     /**
      * Creates new {@link TokenRecord} instance.
@@ -26,7 +26,7 @@ public final class TokenRecord extends Record<TokenId> {
      * @param userId         user identifier.
      * @param expirationDate token expiration date.
      */
-    public TokenRecord(TokenId tokenId, UserId userId, Date expirationDate) {
+    public TokenRecord(TokenId tokenId, UserId userId, Instant expirationDate) {
         super(tokenId);
         checkNotNull(userId);
         checkNotNull(expirationDate);
@@ -48,7 +48,7 @@ public final class TokenRecord extends Record<TokenId> {
      *
      * @return token value.
      */
-    public Date expirationDate() {
+    public Instant expirationDate() {
         return expirationDate;
     }
 

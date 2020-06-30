@@ -1,18 +1,19 @@
 package io.javaclasses.filehub.api.user;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.storage.user.*;
+import io.javaclasses.filehub.storage.user.TokenId;
+import io.javaclasses.filehub.storage.user.TokenRecord;
+import io.javaclasses.filehub.storage.user.TokenStorage;
+import io.javaclasses.filehub.storage.user.UserId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Optional;
 
 import static com.google.common.truth.Truth.assertWithMessage;
+import static java.time.Instant.now;
+import static java.time.Instant.ofEpochSecond;
 import static java.util.Optional.empty;
-import static java.util.Optional.of;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("AuthorizationService should ")
 class AuthorizationServiceTest {
@@ -50,8 +51,8 @@ class AuthorizationServiceTest {
         TokenStorage mockTokenStorage = new TokenStorage() {
             @Override
             public Optional<TokenRecord> find(TokenId id) {
-                return of(new TokenRecord(new TokenId("tokeid"),
-                        new UserId("userid"), new Date(new Date().getTime() - 10000)));
+                return Optional.of(new TokenRecord(new TokenId("tokeid"),
+                        new UserId("userid"), ofEpochSecond(now().getEpochSecond() - 400)));
             }
 
             @Override
@@ -81,8 +82,8 @@ class AuthorizationServiceTest {
             @Override
             public Optional<TokenRecord> find(TokenId id) {
                 if (id.value().equals(tokenId)) {
-                    return of(new TokenRecord(new TokenId(tokenId),
-                            userIdInToken, new Date(new Date().getTime() + 10000)));
+                    return Optional.of(new TokenRecord(new TokenId(tokenId),
+                            userIdInToken, ofEpochSecond(now().getEpochSecond() + 400)));
                 }
                 return empty();
             }

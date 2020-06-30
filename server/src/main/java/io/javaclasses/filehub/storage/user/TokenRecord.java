@@ -30,10 +30,8 @@ public final class TokenRecord extends Record<TokenId> {
      */
     public TokenRecord(TokenId tokenId, UserId userId, Instant expirationDate) {
         super(tokenId);
-        checkNotNull(userId);
-        checkNotNull(expirationDate);
-        this.userId = userId;
-        this.expirationDate = expirationDate;
+        this.userId = checkNotNull(userId);
+        this.expirationDate = checkNotNull(expirationDate);
     }
 
     /**

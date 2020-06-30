@@ -37,7 +37,7 @@ public abstract class InMemoryStorage<I extends RecordId, R extends Record<I>>
      */
     @Override
     public Optional<R> find(I id) {
-        return Optional.of(records.get(id));
+        return Optional.ofNullable(records.get(id));
     }
 
     /**

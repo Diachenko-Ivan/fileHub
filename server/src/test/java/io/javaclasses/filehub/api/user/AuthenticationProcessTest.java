@@ -1,70 +1,89 @@
 package io.javaclasses.filehub.api.user;
 
-import io.javaclasses.filehub.storage.user.TokenRecord;
-import io.javaclasses.filehub.storage.user.User;
-import io.javaclasses.filehub.storage.user.UserId;
-import io.javaclasses.filehub.storage.user.UserStorage;
+import com.google.common.testing.NullPointerTester;
+import io.javaclasses.filehub.storage.user.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import static com.google.common.truth.Truth.assertWithMessage;
+import static java.util.Optional.empty;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@DisplayName("AuthenticationProcessTest should ")
+@DisplayName("AuthenticationProcess should ")
 class AuthenticationProcessTest {
 
-    @DisplayName("test acceptance of null parameters to constructor.")
+    @DisplayName("not accept null parameters to constructor and method.")
     @Test
-    void testNullConstructorParameters() {
-        assertThrows(NullPointerException.class, () -> new Authentication(null),
-                "Should throw NullPointerException due to null constructor parameters.");
+    void testNullParameters() {
+        NullPointerTester tester = new NullPointerTester();
+        tester.testAllPublicConstructors(AuthorizationService.class);
+        tester.testAllPublicInstanceMethods(new AuthorizationService(new TokenStorage()));
     }
 
-    @DisplayName("test acceptance of null parameters to logIn() method.")
-    @Test
-    void testNullParametersToLogIn() {
-        assertThrows(NullPointerException.class, () -> new Authentication(new UserStorage(new HashMap<>())).logIn(null),
-                "Should throw NullPointerException due to null constructor parameters.");
-    }
-
-    @DisplayName("test successful authentication of existent user.")
+    @DisplayName("authenticate existent user.")
     @Test
     void testSuccessfulLogin() {
-        HashMap<UserId, User> users = new HashMap<>();
-        UserStorage mockStorage = new UserStorage(users) {
+        boolean[] isAddCalled = {false};
+
+        TokenStorage mockTokenStorage = new TokenStorage() {
             @Override
-            public synchronized Optional<User> findByLoginAndPassword(String login, String password) {
-                return Optional.of(new User(new UserId("qwe"), "login", "password"));
+            public synchronized void add(TokenRecord record) {
+                isAddCalled[0] = true;
             }
         };
-        AuthenticationProcess process = new Authentication(mockStorage);
+
+        UserStorage mockUserStorage = new UserStorage() {
+            @Override
+            public synchronized Optional<User> find(Login login, String hashedPassword) {
+                return Optional.of(new User(new UserId("qwe"), new Login("login"), "password"));
+            }
+        };
+        Authentication process = new Authentication(mockUserStorage, mockTokenStorage);
 
         assertDoesNotThrow(() -> {
-                    TokenRecord token = process.logIn(new AuthenticateUser("newlogin", "newpassword"));
-                    assertWithMessage("Token should not be null but it is.").that(token).isNotNull();
+                    TokenRecord token = process.logIn(
+                            new AuthenticateUser(new Login("login"), new Password("Password1")));
+
+                    assertWithMessage("Token should not be null but it is.")
+                            .that(token)
+                            .isNotNull();
+
+                    assertWithMessage("The token was not added to the storage.")
+                            .that(isAddCalled[0])
+                            .isTrue();
                 },
-                "Should not throw AuthenticationException because user exists but it did.");
+                "Authentication error was thrown but it should not because user exists.");
     }
 
-    @DisplayName("test failed authentication of nonexistent user.")
+    @DisplayName("fail authentication of nonexistent user.")
     @Test
     void testUnsuccessfulLogin() {
-        HashMap<UserId, User> users = new HashMap<>();
-        UserStorage mockStorage = new UserStorage(users) {
+        boolean[] isAddCalled = {false};
+
+        TokenStorage mockTokenStorage = new TokenStorage() {
             @Override
-            public synchronized Optional<User> findByLoginAndPassword(String login, String password) {
-                return Optional.empty();
+            public synchronized void add(TokenRecord record) {
+                isAddCalled[0] = true;
             }
         };
-        AuthenticationProcess process = new Authentication(mockStorage);
+        UserStorage mockUserStorage = new UserStorage() {
+            @Override
+            public synchronized Optional<User> find(Login login, String hashedPassword) {
+                return empty();
+            }
+        };
+        Authentication process = new Authentication(mockUserStorage, mockTokenStorage);
 
         assertThrows(AuthenticationException.class, () ->
-                        process.logIn(new AuthenticateUser("newlogin", "newpassword")),
+                        process.logIn(new AuthenticateUser(new Login("login"), new Password("Password1"))),
                 "Should throw AuthenticationException because user does not exist.");
+
+        assertWithMessage("Token must not be added to storage after unsuccessful authentication.")
+                .that(isAddCalled[0])
+                .isFalse();
     }
 }

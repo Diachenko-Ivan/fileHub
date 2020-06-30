@@ -13,7 +13,7 @@ import static io.javaclasses.filehub.api.IdGenerator.generateId;
 import static io.javaclasses.filehub.api.user.PasswordHasher.hash;
 
 /**
- * Implements user authentication functionality.
+ * The application process that handles {@link AuthenticateUser} command.
  */
 public class Authentication implements Process {
     /**
@@ -23,11 +23,15 @@ public class Authentication implements Process {
     /**
      * Time in milliseconds after which token will expire.
      */
-    public static final int EXPIRATION_INTERVAL = 900000;
+    private static final int EXPIRATION_INTERVAL = 900000;
     /**
-     * Executes operations with user.
+     * Storage for users {@link User}.
      */
     private final UserStorage userStorage;
+    /**
+     * Storage for access tokens {@link TokenRecord}.
+     */
+    private final TokenStorage tokenStorage;
 
     /**
      * Creates new {@link Authentication} process instance.
@@ -35,8 +39,8 @@ public class Authentication implements Process {
      * @param userStorage {@link UserStorage} instance.
      */
     public Authentication(UserStorage userStorage, TokenStorage tokenStorage) {
-        checkNotNull(userStorage);
-        this.userStorage = userStorage;
+        this.userStorage = checkNotNull(userStorage);
+        this.tokenStorage = checkNotNull(tokenStorage);
     }
 
     /**
@@ -53,12 +57,14 @@ public class Authentication implements Process {
         if (!existentUser.isPresent()) {
             if (logger.isWarnEnabled()) {
                 logger.warn("User with login " + authenticateUser.login().value()
-                        + " and password " + authenticateUser.password().value() + " was not authenticated");
+                        + " and password " + authenticateUser.password().value() + " was not authenticated.");
             }
             throw new AuthenticationException();
         }
-        return new TokenRecord(new TokenId(generateId()),
+        TokenRecord tokenRecord = new TokenRecord(new TokenId(generateId()),
                 existentUser.get().id(),
                 new Date(new Date().getTime() + EXPIRATION_INTERVAL));
+        tokenStorage.add(tokenRecord);
+        return tokenRecord;
     }
 }

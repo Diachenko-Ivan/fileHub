@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Optional;
 
 import static com.google.common.truth.Truth.assertWithMessage;
-import static java.util.Optional.empty;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -23,24 +22,33 @@ class AuthenticationProcessTest {
         tester.testAllPublicInstanceMethods(new AuthorizationService(new TokenStorage()));
     }
 
-    @DisplayName("authenticate existent user.")
-    @Test
-    void testSuccessfulLogin() {
-        boolean[] isAddCalled = {false};
-
-        TokenStorage mockTokenStorage = new TokenStorage() {
+    private TokenStorage mockTokenStorage(boolean[] isAddCalled)  {
+        return new TokenStorage() {
             @Override
             public synchronized void add(TokenRecord record) {
                 isAddCalled[0] = true;
             }
         };
+    }
 
-        UserStorage mockUserStorage = new UserStorage() {
+    private UserStorage mockUserStorage(User userFindResult) {
+        return new UserStorage() {
             @Override
             public synchronized Optional<User> find(Login login, String hashedPassword) {
-                return Optional.of(new User(new UserId("qwe"), new Login("login"), "password"));
+                return Optional.ofNullable(userFindResult);
             }
         };
+    }
+
+    @DisplayName("authenticate existent user.")
+    @Test
+    void testSuccessfulLogin() {
+        boolean[] isAddCalled = {false};
+
+        TokenStorage mockTokenStorage = mockTokenStorage(isAddCalled);
+
+        UserStorage mockUserStorage = mockUserStorage(new User(new UserId("qwe"), new Login("login"), "password"));
+
         Authentication process = new Authentication(mockUserStorage, mockTokenStorage);
 
         assertDoesNotThrow(() -> {
@@ -63,25 +71,16 @@ class AuthenticationProcessTest {
     void testUnsuccessfulLogin() {
         boolean[] isAddCalled = {false};
 
-        TokenStorage mockTokenStorage = new TokenStorage() {
-            @Override
-            public synchronized void add(TokenRecord record) {
-                isAddCalled[0] = true;
-            }
-        };
-        UserStorage mockUserStorage = new UserStorage() {
-            @Override
-            public synchronized Optional<User> find(Login login, String hashedPassword) {
-                return empty();
-            }
-        };
+        TokenStorage mockTokenStorage = mockTokenStorage(isAddCalled);
+        UserStorage mockUserStorage = mockUserStorage(null);
+
         Authentication process = new Authentication(mockUserStorage, mockTokenStorage);
 
         assertThrows(UserIsNotAuthenticatedException.class, () ->
                         process.logIn(new AuthenticateUser(new Login("login"), new Password("Password1"))),
                 "Should throw AuthenticationException because user does not exist.");
 
-        assertWithMessage("Token must not be added to storage after unsuccessful authentication.")
+        assertWithMessage("Token was added to token storage after failed authentication.")
                 .that(isAddCalled[0])
                 .isFalse();
     }

@@ -1,8 +1,12 @@
 package io.javaclasses.filehub.web;
 
+import io.javaclasses.filehub.api.user.AuthorizationService;
+import io.javaclasses.filehub.storage.user.TokenStorage;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserStorage;
+import io.javaclasses.filehub.web.routes.AuthenticationRoute;
 import io.javaclasses.filehub.web.routes.RegistrationRoute;
+import spark.Filter;
 
 import static spark.Spark.*;
 
@@ -15,6 +19,10 @@ public class WebApplication {
      * Storage for users {@link User}.
      */
     private final UserStorage userStorage = new UserStorage();
+    /**
+     * Storage for access tokens.
+     */
+    private final TokenStorage tokenStorage = new TokenStorage();
 
     /**
      * Starts application.
@@ -32,9 +40,24 @@ public class WebApplication {
     private void run() {
         port(8080);
         staticFiles.location("/app/");
+        this.filter();
 
         path("/api", () -> {
             post("/register", new RegistrationRoute(userStorage));
+            post("/login", new AuthenticationRoute(userStorage, tokenStorage));
+        });
+    }
+
+    /**
+     * Filters requests.
+     */
+    private void filter() {
+        Filter authorizationFilter = new AuthorizationFilter(tokenStorage);
+        path("/api", () -> {
+            before("/folder/*", authorizationFilter);
+            before("/file/*", authorizationFilter);
+            before("/user", authorizationFilter);
+            before("/logout", authorizationFilter);
         });
     }
 }

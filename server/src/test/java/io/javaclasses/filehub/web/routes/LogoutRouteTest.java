@@ -4,7 +4,7 @@ import com.google.common.testing.NullPointerTester;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-@DisplayName("LogoutRoute test ")
+@DisplayName("LogoutRoute should ")
 class LogoutRouteTest {
 
     @DisplayName("not accept null params to constructor.")

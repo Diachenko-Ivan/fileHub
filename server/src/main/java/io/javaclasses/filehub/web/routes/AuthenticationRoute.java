@@ -14,6 +14,7 @@ import spark.Route;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
+import static org.eclipse.jetty.http.HttpStatus.UNPROCESSABLE_ENTITY_422;
 
 /**
  * Implementation of {@link Route} that handles requests for user authentication.
@@ -64,7 +65,7 @@ public class AuthenticationRoute implements Route {
             response.status(SC_UNAUTHORIZED);
             return "No user with these credentials.";
         } catch (JsonParseException e) {
-            response.status(422);
+            response.status(UNPROCESSABLE_ENTITY_422);
             return "Unable to process request body";
         }
     }

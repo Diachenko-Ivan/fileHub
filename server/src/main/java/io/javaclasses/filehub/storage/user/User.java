@@ -1,62 +1,40 @@
 package io.javaclasses.filehub.storage.user;
 
-import com.google.gson.annotations.Expose;
-import io.javaclasses.filehub.api.user.RegisterUser;
+import com.google.errorprone.annotations.Immutable;
+import com.google.gson.annotations.SerializedName;
+import io.javaclasses.filehub.storage.Record;
 
 import java.util.Objects;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
- * Represent client.
+ * Subject that can executes actions in application.
+ * <p>Saved in {@link UserStorage}.</p>
  */
-public class User {
-    /**
-     * User`s id.
-     */
-    private String id;
+@Immutable
+public final class User extends Record<UserId> {
     /**
      * User name.
      */
-    private String name;
+    @SerializedName("name")
+    private final String login;
     /**
-     * User`s application access token.
+     * User hashed password.
      */
-    @Expose(serialize = false, deserialize = false)
-    private String token;
-    /**
-     * User`s credentials.
-     */
-    @Expose(serialize = false, deserialize = false)
-    private RegisterUser credentials;
+    private final String password;
 
     /**
      * Creates new {@link User} instance.
      *
-     * @param id          user`s id
-     * @param name        username
-     * @param credentials user`s credentials.
+     * @param id       user`s id.
+     * @param login    user name.
+     * @param password user`s password.
      */
-    public User(String id, String name, RegisterUser credentials) {
-        this.id = id;
-        this.name = name;
-        this.credentials = credentials;
-    }
-
-    /**
-     * Used for getting of user id.
-     *
-     * @return user id.
-     */
-    public String id() {
-        return id;
-    }
-
-    /**
-     * Sets user new id.
-     *
-     * @param id user new id.
-     */
-    public void setId(String id) {
-        this.id = id;
+    public User(UserId id, String login, String password) {
+        super(id);
+        this.login = checkNotNull(login);
+        this.password = checkNotNull(password);
     }
 
     /**
@@ -64,57 +42,22 @@ public class User {
      *
      * @return user id.
      */
-    public String name() {
-        return name;
+    public String login() {
+        return login;
     }
 
-    /**
-     * Sets user new name.
-     *
-     * @param name user new name.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
 
     /**
      * Returns user credentials that are used for authentication.
      *
      * @return user credentials.
      */
-    public RegisterUser credentials() {
-        return credentials;
+    public String password() {
+        return password;
     }
 
     /**
-     * Sets user new credentials.
-     *
-     * @param credentials user credentials.
-     */
-    public void setCredentials(RegisterUser credentials) {
-        this.credentials = credentials;
-    }
-
-    /**
-     * Returns user authentication token.
-     *
-     * @return user token.
-     */
-    public String token() {
-        return token;
-    }
-
-    /**
-     * Sets user new authentication token.
-     *
-     * @param token user token.
-     */
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    /**
-     * Compares users their ids.
+     * Compares users by their ids.
      * {@inheritDoc}
      */
     @Override
@@ -122,7 +65,7 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id.equals(user.id);
+        return this.id().equals(user.id());
     }
 
     /**
@@ -130,6 +73,6 @@ public class User {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(this.id());
     }
 }

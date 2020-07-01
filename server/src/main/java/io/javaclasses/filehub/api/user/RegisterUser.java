@@ -1,21 +1,27 @@
 package io.javaclasses.filehub.api.user;
 
+import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.api.Command;
+import io.javaclasses.filehub.storage.user.Login;
+import io.javaclasses.filehub.storage.user.Password;
+import io.javaclasses.filehub.storage.user.User;
 
-import java.util.Objects;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Value object for login and password.
+ * Command that represents client intention to be registered.
+ * <p>Plays role of value object that stores {@link User} login {@link Login} and password {@link Password}.</p>
  */
-public class RegisterUser implements Command {
+@Immutable
+public final class RegisterUser implements Command {
     /**
-     * User login.
+     * User login for registration.
      */
-    private String login;
+    private final Login login;
     /**
-     * User password.
+     * User password for registration.
      */
-    private String password;
+    private final Password password;
 
     /**
      * Creates new {@link RegisterUser} instance.
@@ -23,42 +29,26 @@ public class RegisterUser implements Command {
      * @param login    user login.
      * @param password user password.
      */
-    public RegisterUser(String login, String password) {
-        this.login = login;
-        this.password = password;
-    }
-
-    public String login() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String password() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public RegisterUser(Login login, Password password) {
+        this.login = checkNotNull(login);
+        this.password = checkNotNull(password);
     }
 
     /**
-     * Compares user credentials.
-     * {@inheritDoc}
+     * Returns login credential.
+     *
+     * @return login value.
      */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RegisterUser that = (RegisterUser) o;
-        return Objects.equals(login, that.login) &&
-                Objects.equals(password, that.password);
+    public Login login() {
+        return login;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(login, password);
+    /**
+     * Returns password credential.
+     *
+     * @return password value.
+     */
+    public Password password() {
+        return password;
     }
 }

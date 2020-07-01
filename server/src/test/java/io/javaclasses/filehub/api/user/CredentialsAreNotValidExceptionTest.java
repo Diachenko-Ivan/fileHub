@@ -1,6 +1,7 @@
 package io.javaclasses.filehub.api.user;
 
 import com.google.common.testing.NullPointerTester;
+import io.javaclasses.filehub.storage.user.CredentialsAreNotValidException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -1,15 +1,14 @@
 package io.javaclasses.filehub.storage.user;
 
 import com.google.errorprone.annotations.Immutable;
-import io.javaclasses.filehub.api.user.CredentialsAreNotValidException;
-import io.javaclasses.filehub.api.user.NotValidCredential;
+import io.javaclasses.filehub.api.user.DataValidationError;
 
 import java.util.Objects;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Value object that represents {@link User} password credential.
+ * Value object for password credential.
  */
 @Immutable
 public final class Password {
@@ -32,7 +31,7 @@ public final class Password {
         checkNotNull(value);
         if (!value.matches(PASSWORD_REGEXP)) {
             throw new CredentialsAreNotValidException(
-                    new NotValidCredential[]{new NotValidCredential("password",
+                    new DataValidationError[]{new DataValidationError("password",
                             "Password should not be null and should have at least one uppercase and" +
                                     " lowercase letter and digit, min length is 8 chars.")});
         }

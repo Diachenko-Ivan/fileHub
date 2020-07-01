@@ -10,7 +10,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * and corresponding error message.
  * <p>Used for serialization.
  */
-public class NotValidCredential {
+public class DataValidationError {
     /**
      * Name of credential.
      */
@@ -25,18 +25,18 @@ public class NotValidCredential {
     private final String errorMessage;
 
     /**
-     * Creates new {@link NotValidCredential} instance.
+     * Creates new {@link DataValidationError} instance.
      *
      * @param credentialName credential name.
      * @param message   error message.
      */
-    public NotValidCredential(String credentialName, String message) {
+    public DataValidationError(String credentialName, String message) {
         this.credentialName = checkNotNull(credentialName);
         this.errorMessage = checkNotNull(message);
     }
 
     /**
-     * Returns string representation of {@link NotValidCredential} instance.
+     * Returns string representation of {@link DataValidationError} instance.
      * <p>Used for logging.
      * {@inheritDoc}
      */

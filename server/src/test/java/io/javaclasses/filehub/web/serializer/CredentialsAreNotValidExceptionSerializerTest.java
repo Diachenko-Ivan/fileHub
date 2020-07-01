@@ -1,8 +1,8 @@
 package io.javaclasses.filehub.web.serializer;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.api.user.CredentialsAreNotValidException;
-import io.javaclasses.filehub.api.user.NotValidCredential;
+import io.javaclasses.filehub.storage.user.CredentialsAreNotValidException;
+import io.javaclasses.filehub.api.user.DataValidationError;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -22,9 +22,9 @@ class CredentialsAreNotValidExceptionSerializerTest {
     @Test
     void testCorrectJsonResult() {
         CredentialsAreNotValidExceptionSerializer serializer = new CredentialsAreNotValidExceptionSerializer();
-        NotValidCredential notValidCredential = new NotValidCredential("login", "Wrong length");
+        DataValidationError dataValidationError = new DataValidationError("login", "Wrong length");
 
-        String json = serializer.serialize(new CredentialsAreNotValidException(new NotValidCredential[]{notValidCredential}));
+        String json = serializer.serialize(new CredentialsAreNotValidException(new DataValidationError[]{dataValidationError}));
         String expectedJson = "{\"errors\":[{\"field\":\"login\",\"message\":\"Wrong length\"}]}";
 
         assertWithMessage("JSONs should be equal but they are not.")

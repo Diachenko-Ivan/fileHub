@@ -5,7 +5,7 @@ import java.util.Objects;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Represents unique identifier for {@link Record}.
+ * An identifier for a record {@link Record}.
  */
 public abstract class RecordId {
     /**

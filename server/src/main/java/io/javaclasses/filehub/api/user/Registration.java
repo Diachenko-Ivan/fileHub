@@ -1,20 +1,20 @@
 package io.javaclasses.filehub.api.user;
 
-import io.javaclasses.filehub.api.AbstractProcess;
+import io.javaclasses.filehub.api.Process;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserId;
 import io.javaclasses.filehub.storage.user.UserStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.UUID;
-
 import static com.google.common.base.Preconditions.checkNotNull;
+import static io.javaclasses.filehub.api.IdGenerator.generateId;
+import static io.javaclasses.filehub.api.user.PasswordHasher.hash;
 
 /**
  * Represents registration process that can handle {@link RegisterUser} command.
  */
-public class Registration implements AbstractProcess {
+public class Registration implements Process {
     /**
      * For logging.
      */
@@ -41,20 +41,20 @@ public class Registration implements AbstractProcess {
      */
     public void register(RegisterUser registerUser) throws LoginIsTakenException {
         checkNotNull(registerUser);
-        String hashedPassword = PasswordHashCreator.hashedPassword(registerUser.password().value());
+        String hashedPassword = hash(registerUser.password().value());
 
-        if (storage.findByLogin(registerUser.login().value()).isPresent()) {
+        if (storage.find(registerUser.login()).isPresent()) {
             if (logger.isWarnEnabled()) {
                 logger.warn("Unsuccessful registration. Login " + registerUser.login().value() + " is already taken.");
             }
             throw new LoginIsTakenException("User with this login already exists.");
         }
         User userForRegistration = new User(
-                new UserId(UUID.randomUUID().toString()), registerUser.login().value(), hashedPassword);
+                new UserId(generateId()), registerUser.login(), hashedPassword);
 
         storage.add(userForRegistration);
         if (logger.isInfoEnabled()) {
-            logger.info("User with login " + userForRegistration.login() + " and id: " + userForRegistration.id()
+            logger.info("User with login " + userForRegistration.login().value() + " and id: " + userForRegistration.id()
                     + " is successfully registered.");
         }
     }

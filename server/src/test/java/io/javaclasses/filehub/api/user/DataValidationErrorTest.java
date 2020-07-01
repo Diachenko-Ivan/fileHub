@@ -5,12 +5,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("NotValidCredentialTest should ")
-class NotValidCredentialTest {
+class DataValidationErrorTest {
 
     @DisplayName("test acceptance of null parameters to constructor.")
     @Test
     void testNullConstructorParameters() {
         NullPointerTester tester = new NullPointerTester();
-        tester.testAllPublicConstructors(NotValidCredential.class);
+        tester.testAllPublicConstructors(DataValidationError.class);
     }
 }

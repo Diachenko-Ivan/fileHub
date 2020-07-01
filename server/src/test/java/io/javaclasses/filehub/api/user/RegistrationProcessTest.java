@@ -33,8 +33,6 @@ class RegistrationProcessTest {
             @Override
             public synchronized void add(User user) {
                 isAddCalled[0] = true;
-                assertWithMessage("Should transfer to storage correct user.")
-                        .that(user.login()).isEqualTo(login.value());
             }
         };
         Registration registrationService = new Registration(mockStorage);
@@ -56,7 +54,7 @@ class RegistrationProcessTest {
             }
 
             @Override
-            public synchronized Optional<User> findByLogin(String login) {
+            public synchronized Optional<User> find(Login login) {
                 return Optional.of(new User(new UserId("id"), login, "Password1"));
             }
         };

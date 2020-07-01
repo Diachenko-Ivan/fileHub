@@ -1,10 +1,10 @@
 package io.javaclasses.filehub.web;
 
-import io.javaclasses.filehub.api.user.AuthorizationService;
 import io.javaclasses.filehub.storage.user.TokenStorage;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserStorage;
 import io.javaclasses.filehub.web.routes.AuthenticationRoute;
+import io.javaclasses.filehub.web.routes.LogoutRoute;
 import io.javaclasses.filehub.web.routes.RegistrationRoute;
 import spark.Filter;
 
@@ -45,6 +45,7 @@ public class WebApplication {
         path("/api", () -> {
             post("/register", new RegistrationRoute(userStorage));
             post("/login", new AuthenticationRoute(userStorage, tokenStorage));
+            post("/logout", new LogoutRoute(tokenStorage));
         });
     }
 

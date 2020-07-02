@@ -3,6 +3,8 @@ package io.javaclasses.filehub.storage.item;
 import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Value object for file or folder {@link FolderMetadataRecord} name.
  */
@@ -19,7 +21,7 @@ public final class ItemName {
      * @param value item name.
      */
     public ItemName(String value) {
-        this.value = value;
+        this.value = checkNotNull(value);
     }
 
     /**

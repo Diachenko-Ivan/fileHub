@@ -13,6 +13,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Client intention to create new folder in already existent folder.
+ * <p>If {@code parentFolderId} is null, the created folder is root.</p>
  */
 @Immutable
 public final class CreateFolder implements Command {

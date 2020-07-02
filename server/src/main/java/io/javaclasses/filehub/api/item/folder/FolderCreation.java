@@ -11,7 +11,6 @@ import io.javaclasses.filehub.storage.user.UserId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileNotFoundException;
 import java.util.Optional;
 import java.util.Set;
 
@@ -53,9 +52,10 @@ public class FolderCreation implements Process {
      *
      * @param createFolderCommand command to create a new folder.
      * @return created folder.
-     * @throws FileNotFoundException if folder {@link FolderMetadataRecord} was not found.
+     * @throws ItemIsNotFoundException if parent folder, where new folder is being created in, is not found
+     * or user does not have this folder.
      */
-    public FolderMetadataRecord createFolder(CreateFolder createFolderCommand) throws FileNotFoundException {
+    public FolderMetadataRecord createFolder(CreateFolder createFolderCommand) {
         FolderId parentFolderId = createFolderCommand.parentFolderId();
         UserId ownerId = createFolderCommand.ownerId();
 
@@ -70,7 +70,8 @@ public class FolderCreation implements Process {
             if (logger.isWarnEnabled()) {
                 logger.warn("User with id: %s does not have folder with id: %s", ownerId, parentFolderId);
             }
-            throw new FileNotFoundException("Folder with id " + parentFolderId + " does not exist.");
+            throw new ItemIsNotFoundException("User with id " + ownerId
+                    + " does not have folder with id: " + parentFolderId + " .");
         }
 
         FolderMetadataRecord folderToAdd = new FolderMetadataRecord(
@@ -97,8 +98,7 @@ public class FolderCreation implements Process {
      * @throws IllegalArgumentException if user already has the root folder.
      */
     private FolderMetadataRecord createRootFolder(CreateFolder createFolderCommand) {
-        Set<FolderMetadataRecord> rootFolders =
-                folderMetadataStorage.findAll(null);
+        Set<FolderMetadataRecord> rootFolders = folderMetadataStorage.findAll(null);
 
         rootFolders.stream()
                 .filter((rootFolder) -> rootFolder.ownerId().equals(createFolderCommand.ownerId()))

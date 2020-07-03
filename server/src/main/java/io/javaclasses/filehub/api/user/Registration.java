@@ -37,9 +37,10 @@ public class Registration implements Process {
      * Registers new user in application.
      *
      * @param registerUser value object that contains user credentials for registration.
+     * @return registered user {@link User}.
      * @throws LoginIsTakenException if user with this login already exists.
      */
-    public void register(RegisterUser registerUser) throws LoginIsTakenException {
+    public User register(RegisterUser registerUser) throws LoginIsTakenException {
         checkNotNull(registerUser);
         String hashedPassword = hash(registerUser.password().value());
 
@@ -57,5 +58,6 @@ public class Registration implements Process {
             logger.info("User with login " + userForRegistration.login().value() + " and id: " + userForRegistration.id()
                     + " is successfully registered.");
         }
+        return userForRegistration;
     }
 }

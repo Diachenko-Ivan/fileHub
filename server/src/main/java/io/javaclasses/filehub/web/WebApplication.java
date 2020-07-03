@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.web;
 
+import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
 import io.javaclasses.filehub.storage.user.TokenStorage;
 import io.javaclasses.filehub.storage.user.User;
@@ -25,7 +26,7 @@ public class WebApplication {
      */
     private final TokenStorage tokenStorage = new TokenStorage();
     /**
-     *
+     * Storage for folders {@link FolderMetadataRecord}.
      */
     private final FolderMetadataStorage folderMetadataStorage = new FolderMetadataStorage();
 

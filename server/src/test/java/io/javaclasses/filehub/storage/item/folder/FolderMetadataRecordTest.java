@@ -17,6 +17,7 @@ class FolderMetadataRecordTest {
         tester.setDefault(ItemName.class, new ItemName("id"));
         tester.setDefault(FolderId.class, new FolderId("ksdf"));
         tester.setDefault(FileItemCount.class, new FileItemCount(4));
+        tester.setDefault(UserId.class, new UserId("sdfs"));
         tester.testAllPublicConstructors(FolderMetadataRecord.class);
     }
 

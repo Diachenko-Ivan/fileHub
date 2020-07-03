@@ -30,6 +30,7 @@ public final class FolderMetadataRecord extends Record<FolderId> {
     /**
      * Identifier of parent folder.
      */
+    @Nullable
     private final FolderId parentFolderId;
 
     /**
@@ -42,7 +43,7 @@ public final class FolderMetadataRecord extends Record<FolderId> {
      * @param parentFolderId identifier for a parent folder.
      */
     public FolderMetadataRecord(FolderId id, ItemName folderName,
-                                @Nullable UserId ownerId, FileItemCount fileItemCount, FolderId parentFolderId) {
+                                UserId ownerId, FileItemCount fileItemCount, @Nullable FolderId parentFolderId) {
         super(id);
         this.folderName = checkNotNull(folderName);
         this.ownerId = checkNotNull(ownerId);

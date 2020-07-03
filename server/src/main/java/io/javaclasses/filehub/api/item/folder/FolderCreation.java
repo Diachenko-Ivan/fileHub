@@ -115,7 +115,6 @@ public class FolderCreation implements Process {
                 null
         );
         folderMetadataStorage.add(rootFolder);
-        System.out.println(rootFolder.id());
         if (logger.isInfoEnabled()) {
             logger.info("Root folder for user with id: {} was created. ", createFolderCommand.ownerId().value());
         }

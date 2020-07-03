@@ -1,6 +1,7 @@
 package io.javaclasses.filehub.web.routes;
 
 import com.google.common.testing.NullPointerTester;
+import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
 import io.javaclasses.filehub.storage.user.UserStorage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -71,7 +72,7 @@ class RegistrationRouteTest {
     @ParameterizedTest
     @MethodSource("requestBodiesForParseError")
     void testParseError(String requestBody) {
-        RegistrationRoute registrationRoute = new RegistrationRoute(new UserStorage());
+        RegistrationRoute registrationRoute = new RegistrationRoute(new UserStorage(), new FolderMetadataStorage());
         Request request = mockRequestWithBody(requestBody);
         Response response = mockResponse();
         registrationRoute.handle(request, response);
@@ -82,7 +83,7 @@ class RegistrationRouteTest {
     @ParameterizedTest
     @MethodSource("requestBodiesForSuccess")
     void testSuccessRegistration(String requestBody) {
-        RegistrationRoute registrationRoute = new RegistrationRoute(new UserStorage());
+        RegistrationRoute registrationRoute = new RegistrationRoute(new UserStorage(), new FolderMetadataStorage());
         Request request = mockRequestWithBody(requestBody);
         Response response = mockResponse();
         registrationRoute.handle(request, response);
@@ -93,7 +94,7 @@ class RegistrationRouteTest {
     @Test
     void testRegisterExistentUser() {
         String userCredentials = "{\"login\":\"john\", \"password\":\"Qwerty123\"}";
-        RegistrationRoute registrationRoute = new RegistrationRoute(new UserStorage());
+        RegistrationRoute registrationRoute = new RegistrationRoute(new UserStorage(), new FolderMetadataStorage());
         Request request = mockRequestWithBody(userCredentials);
         Response response = mockResponse();
         registrationRoute.handle(request, response);

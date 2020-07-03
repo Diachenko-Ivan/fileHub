@@ -16,7 +16,6 @@ import java.util.Set;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 import static java.util.Collections.emptySet;
-import static java.util.Set.of;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("FolderCreation should ")
@@ -27,7 +26,7 @@ class FolderCreationTest {
                                                     boolean[] isAddCalled) {
         return new FolderMetadataStorage() {
             @Override
-            public Optional<FolderMetadataRecord> find(FolderId id) {
+            public synchronized Optional<FolderMetadataRecord> find(FolderId id) {
                 return Optional.ofNullable(findResult);
             }
 
@@ -89,7 +88,7 @@ class FolderCreationTest {
         UserId equalOwnerId = new UserId("RandomId");
 
         FolderMetadataStorage mockFolderStorage = mockFolderStorage(null,
-                of(createFolder(new FolderId("123"), equalOwnerId)), isAddCalled);
+                Set.of(createFolder(new FolderId("123"), equalOwnerId)), isAddCalled);
 
         FolderCreation folderCreation = new FolderCreation(mockFolderStorage);
 
@@ -108,7 +107,7 @@ class FolderCreationTest {
         boolean[] isAddCalled = {false};
 
         FolderMetadataStorage mockFolderStorage = mockFolderStorage(null,
-                of(createFolder(new FolderId("123"), new UserId("owner-id"))), isAddCalled);
+                Set.of(createFolder(new FolderId("123"), new UserId("owner-id"))), isAddCalled);
 
         FolderCreation folderCreation = new FolderCreation(mockFolderStorage);
 

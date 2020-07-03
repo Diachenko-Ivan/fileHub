@@ -19,7 +19,7 @@ public class FolderMetadataStorage extends
      * @param parentFolderId identifier of parent folder.
      * @return set of folders whose identifier of parent folder is equal to {@code parentFolderId}.
      */
-    public Set<FolderMetadataRecord> findAll(@Nullable FolderId parentFolderId) {
+    public synchronized Set<FolderMetadataRecord> findAll(@Nullable FolderId parentFolderId) {
         return this.records()
                 .values()
                 .stream()

@@ -32,7 +32,7 @@ class FolderCreationTest {
             }
 
             @Override
-            public Set<FolderMetadataRecord> findAll(@Nullable FolderId parentFolderId) {
+            public synchronized Set<FolderMetadataRecord> findAll(@Nullable FolderId parentFolderId) {
                 return findAllResult;
             }
 

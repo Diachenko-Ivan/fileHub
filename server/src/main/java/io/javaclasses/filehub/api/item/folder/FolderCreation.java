@@ -68,7 +68,7 @@ public class FolderCreation implements Process {
         if (!(folderMetadataRecord.isPresent()
                 && folderMetadataRecord.get().ownerId().equals(ownerId))) {
             if (logger.isWarnEnabled()) {
-                logger.warn("User with id: %s does not have folder with id: %s", ownerId, parentFolderId);
+                logger.warn("User with id: {} does not have folder with id: {}", ownerId, parentFolderId);
             }
             throw new ItemIsNotFoundException("User with id " + ownerId
                     + " does not have folder with id: " + parentFolderId + " .");
@@ -85,7 +85,7 @@ public class FolderCreation implements Process {
         folderMetadataStorage.add(folderToAdd);
 
         if (logger.isInfoEnabled()) {
-            logger.info("New folder was created in the folder with id: %s ", createFolderCommand.parentFolderId());
+            logger.info("New folder was created in the folder with id: {} ", createFolderCommand.parentFolderId());
         }
         return folderToAdd;
     }
@@ -115,9 +115,9 @@ public class FolderCreation implements Process {
                 null
         );
         folderMetadataStorage.add(rootFolder);
-
+        System.out.println(rootFolder.id());
         if (logger.isInfoEnabled()) {
-            logger.info("Root folder for user with id: %s was created. ", createFolderCommand.ownerId());
+            logger.info("Root folder for user with id: {} was created. ", createFolderCommand.ownerId().value());
         }
 
         return rootFolder;

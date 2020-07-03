@@ -1,10 +1,11 @@
 package io.javaclasses.filehub.web;
 
-import io.javaclasses.filehub.api.user.AuthorizationService;
+import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
 import io.javaclasses.filehub.storage.user.TokenStorage;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserStorage;
 import io.javaclasses.filehub.web.routes.AuthenticationRoute;
+import io.javaclasses.filehub.web.routes.FolderCreationRoute;
 import io.javaclasses.filehub.web.routes.RegistrationRoute;
 import spark.Filter;
 
@@ -23,6 +24,10 @@ public class WebApplication {
      * Storage for access tokens.
      */
     private final TokenStorage tokenStorage = new TokenStorage();
+    /**
+     *
+     */
+    private final FolderMetadataStorage folderMetadataStorage = new FolderMetadataStorage();
 
     /**
      * Starts application.
@@ -43,8 +48,9 @@ public class WebApplication {
         this.filter();
 
         path("/api", () -> {
-            post("/register", new RegistrationRoute(userStorage));
+            post("/register", new RegistrationRoute(userStorage, folderMetadataStorage));
             post("/login", new AuthenticationRoute(userStorage, tokenStorage));
+            post("/folder/:folderId/folder", new FolderCreationRoute(folderMetadataStorage, tokenStorage));
         });
     }
 

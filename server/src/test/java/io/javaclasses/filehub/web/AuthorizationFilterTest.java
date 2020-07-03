@@ -104,7 +104,7 @@ class AuthorizationFilterTest {
         };
         TokenStorage mockTokenStorage = new TokenStorage() {
             @Override
-            public Optional<TokenRecord> find(TokenId id) {
+            public synchronized Optional<TokenRecord> find(TokenId id) {
                 return empty();
             }
         };

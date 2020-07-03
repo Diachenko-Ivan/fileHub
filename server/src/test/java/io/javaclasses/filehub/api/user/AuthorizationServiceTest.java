@@ -32,7 +32,7 @@ class AuthorizationServiceTest {
     void testAuthorizedUserByNotFoundToken() {
         TokenStorage mockTokenStorage = new TokenStorage() {
             @Override
-            public Optional<TokenRecord> find(TokenId id) {
+            public synchronized Optional<TokenRecord> find(TokenId id) {
                 return empty();
             }
         };
@@ -50,7 +50,7 @@ class AuthorizationServiceTest {
         final boolean[] isRemoveCalled = {false};
         TokenStorage mockTokenStorage = new TokenStorage() {
             @Override
-            public Optional<TokenRecord> find(TokenId id) {
+            public synchronized Optional<TokenRecord> find(TokenId id) {
                 return Optional.of(new TokenRecord(new TokenId("tokeid"),
                         new UserId("userid"), ofEpochSecond(now().getEpochSecond() - 400)));
             }
@@ -80,7 +80,7 @@ class AuthorizationServiceTest {
 
         TokenStorage mockTokenStorage = new TokenStorage() {
             @Override
-            public Optional<TokenRecord> find(TokenId id) {
+            public synchronized Optional<TokenRecord> find(TokenId id) {
                 if (id.value().equals(tokenId)) {
                     return Optional.of(new TokenRecord(new TokenId(tokenId),
                             userIdInToken, ofEpochSecond(now().getEpochSecond() + 400)));

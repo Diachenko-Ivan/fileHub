@@ -133,14 +133,18 @@ class FolderCreationTest {
 
         FolderCreation folderCreation = new FolderCreation(mockFolderStorage);
 
-        FolderMetadataRecord createdRootFolder =
+        FolderMetadataRecord innerFolder =
                 folderCreation.createFolder(new CreateFolder(equalOwnerId, equalParentFolderId));
 
         assertWithMessage("Created folder is null.")
-                .that(createdRootFolder)
+                .that(innerFolder)
                 .isNotNull();
         assertWithMessage("The add method from folder storage was not called.")
                 .that(isAddCalled[0])
                 .isTrue();
+
+        assertWithMessage("Parent folder identifier is incorrect.")
+                .that(innerFolder.parentFolderId())
+                .isEqualTo(equalParentFolderId);
     }
 }

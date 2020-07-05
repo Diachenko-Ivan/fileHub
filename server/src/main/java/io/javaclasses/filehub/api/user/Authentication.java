@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.api.user;
 
 import io.javaclasses.filehub.api.Process;
-import io.javaclasses.filehub.api.TimeZoneIdentifier;
+import io.javaclasses.filehub.storage.TimeZoneIdentifier;
 import io.javaclasses.filehub.storage.user.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

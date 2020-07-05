@@ -51,12 +51,15 @@ public class AuthorizationFilter implements Filter {
 
         UserId userId = new LoggedInUserId(loggedInUserStorage).get(new Token(authorizationToken));
         if (userId == null) {
-            if (logger.isWarnEnabled()) {
-                logger.warn("User with token " + authorizationToken
+            if (logger.isInfoEnabled()) {
+                logger.info("User with token " + authorizationToken
                         + " failed authorization to " + request.pathInfo() + " request.");
             }
             halt(SC_UNAUTHORIZED);
         }
+
+        CurrentUserIdHolder.set(userId);
+
         if (logger.isDebugEnabled()) {
             logger.debug("User with token " + authorizationToken
                     + " passed authorization to " + request.pathInfo() + " request.");

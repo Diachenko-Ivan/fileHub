@@ -4,7 +4,7 @@ import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.storage.RecordId;
 
 /**
- * Identifier for {@link TokenRecord}.
+ * Identifier for {@link LoggedInUserRecord}.
  */
 @Immutable
 public final class TokenId extends RecordId {

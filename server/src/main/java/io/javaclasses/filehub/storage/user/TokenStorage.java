@@ -3,8 +3,8 @@ package io.javaclasses.filehub.storage.user;
 import io.javaclasses.filehub.storage.InMemoryStorage;
 
 /**
- * Implementation of in-memory application storage for {@link TokenRecord}.
+ * Implementation of in-memory application storage for {@link LoggedInUserRecord}.
  */
-public class TokenStorage extends InMemoryStorage<TokenId, TokenRecord> {
+public class TokenStorage extends InMemoryStorage<TokenId, LoggedInUserRecord> {
 
 }

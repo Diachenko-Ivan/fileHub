@@ -29,7 +29,7 @@ public class AuthenticationRoute implements Route {
      */
     private final UserStorage userStorage;
     /**
-     * Storage for access tokens {@link TokenRecord}
+     * Storage for access tokens {@link LoggedInUserRecord}
      */
     private final TokenStorage tokenStorage;
 
@@ -56,11 +56,11 @@ public class AuthenticationRoute implements Route {
         }
         try {
             AuthenticateUser authenticateUser = new AuthenticateUserDeserializer().deserialize(request.body());
-            TokenRecord tokenRecord = new Authentication(userStorage, tokenStorage).logIn(authenticateUser);
+            LoggedInUserRecord loggedInUserRecord = new Authentication(userStorage, tokenStorage).logIn(authenticateUser);
             if (logger.isInfoEnabled()) {
                 logger.info("User with login " + authenticateUser.login().value() + " was authenticated.");
             }
-            return tokenRecord.id();
+            return loggedInUserRecord.id();
         } catch (UserIsNotAuthenticatedException | CredentialsAreNotValidException e) {
             response.status(SC_UNAUTHORIZED);
             return "No user with these credentials.";

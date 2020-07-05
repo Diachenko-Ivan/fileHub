@@ -1,6 +1,5 @@
 package io.javaclasses.filehub.web;
 
-import io.javaclasses.filehub.api.user.AuthorizationService;
 import io.javaclasses.filehub.storage.user.TokenStorage;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserStorage;
@@ -40,7 +39,7 @@ public class WebApplication {
     private void run() {
         port(8080);
         staticFiles.location("/app/");
-        this.filter();
+        filter();
 
         path("/api", () -> {
             post("/register", new RegistrationRoute(userStorage));

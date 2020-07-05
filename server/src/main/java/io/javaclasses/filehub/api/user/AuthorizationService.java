@@ -2,7 +2,6 @@ package io.javaclasses.filehub.api.user;
 
 import io.javaclasses.filehub.storage.user.*;
 
-import java.time.Instant;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -12,14 +11,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class AuthorizationService {
     /**
-     * Storage for tokens {@link TokenRecord}.
+     * Storage for tokens {@link LoggedInUserRecord}.
      */
     private final TokenStorage tokenStorage;
 
     /**
      * Creates new {@link AuthorizationService} instance.
      *
-     * @param tokenStorage storage for tokens {@link TokenRecord}.
+     * @param tokenStorage storage for tokens {@link LoggedInUserRecord}.
      */
     public AuthorizationService(TokenStorage tokenStorage) {
         this.tokenStorage = checkNotNull(tokenStorage);
@@ -34,16 +33,16 @@ public class AuthorizationService {
      */
     public UserId authorizedUserId(String tokenId) {
         checkNotNull(tokenId);
-        Optional<TokenRecord> token = tokenStorage.find(new TokenId(tokenId));
+        Optional<LoggedInUserRecord> token = tokenStorage.find(new TokenId(tokenId));
 
         if (!token.isPresent()) {
             return null;
         }
-        TokenRecord tokenRecord = token.get();
-        if (Instant.now().isAfter(tokenRecord.expirationDate())) {
-            tokenStorage.remove(tokenRecord.id());
-            return null;
-        }
-        return tokenRecord.userId();
+        LoggedInUserRecord loggedInUserRecord = token.get();
+//        if (Instant.now().isAfter(tokenRecord.expirationDate())) {
+//            tokenStorage.remove(tokenRecord.id());
+//            return null;
+//        }
+        return loggedInUserRecord.userId();
     }
 }

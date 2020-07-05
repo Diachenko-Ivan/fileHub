@@ -32,7 +32,7 @@ public class Authentication implements Process {
      */
     private final UserStorage userStorage;
     /**
-     * Storage for access tokens {@link TokenRecord}.
+     * Storage for access tokens {@link LoggedInUserRecord}.
      */
     private final TokenStorage tokenStorage;
 
@@ -53,7 +53,7 @@ public class Authentication implements Process {
      * @throws UserIsNotAuthenticatedException if user with these credentials {@code authenticateUser.login()}
      *                                         and {@code authenticateUser.password()} is not found.
      */
-    public TokenRecord logIn(AuthenticateUser authenticateUser) throws UserIsNotAuthenticatedException {
+    public LoggedInUserRecord logIn(AuthenticateUser authenticateUser) throws UserIsNotAuthenticatedException {
         checkNotNull(authenticateUser);
         String hashedPassword = hash(authenticateUser.password().value());
 
@@ -66,16 +66,16 @@ public class Authentication implements Process {
             }
             throw new UserIsNotAuthenticatedException();
         }
-        TokenRecord tokenRecord = new TokenRecord(new TokenId(generateId()),
+        LoggedInUserRecord loggedInUserRecord = new LoggedInUserRecord(new TokenId(generateId()),
                 existentUser.get().id(),
                 now(TimeZoneIdentifier.get()).plusMinutes(tokenExpirationInterval()));
 
-        tokenStorage.add(tokenRecord);
+        tokenStorage.add(loggedInUserRecord);
 
         if (logger.isInfoEnabled()) {
-            logger.info("Token with identifier {} was created.", tokenRecord.id());
+            logger.info("Token with identifier {} was created.", loggedInUserRecord.id());
         }
-        return tokenRecord;
+        return loggedInUserRecord;
     }
 
     /**

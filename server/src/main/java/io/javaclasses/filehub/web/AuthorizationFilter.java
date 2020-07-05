@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.web;
 
 import io.javaclasses.filehub.api.user.AuthorizationService;
-import io.javaclasses.filehub.storage.user.TokenRecord;
+import io.javaclasses.filehub.storage.user.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.user.TokenStorage;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserId;
@@ -26,14 +26,14 @@ public class AuthorizationFilter implements Filter {
      */
     private static final Logger logger = LoggerFactory.getLogger(AuthorizationFilter.class);
     /**
-     * Storage for tokens {@link TokenRecord}
+     * Storage for tokens {@link LoggedInUserRecord}
      */
     private final TokenStorage tokenStorage;
 
     /**
      * Creates new {@link AuthorizationFilter} instance.
      *
-     * @param tokenStorage storage for tokens {@link TokenRecord}
+     * @param tokenStorage storage for tokens {@link LoggedInUserRecord}
      */
     public AuthorizationFilter(TokenStorage tokenStorage) {
         this.tokenStorage = checkNotNull(tokenStorage);

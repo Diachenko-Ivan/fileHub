@@ -33,7 +33,7 @@ public class AuthorizationService {
      */
     public UserId authorizedUserId(String tokenId) {
         checkNotNull(tokenId);
-        Optional<LoggedInUserRecord> token = tokenStorage.find(new TokenId(tokenId));
+        Optional<LoggedInUserRecord> token = tokenStorage.find(new Token(tokenId));
 
         if (!token.isPresent()) {
             return null;

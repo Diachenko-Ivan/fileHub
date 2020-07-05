@@ -66,7 +66,7 @@ public class Authentication implements Process {
             }
             throw new UserIsNotAuthenticatedException();
         }
-        LoggedInUserRecord loggedInUserRecord = new LoggedInUserRecord(new TokenId(generateId()),
+        LoggedInUserRecord loggedInUserRecord = new LoggedInUserRecord(new Token(generateId()),
                 existentUser.get().id(),
                 now(TimeZoneIdentifier.get()).plusMinutes(tokenExpirationInterval()));
 

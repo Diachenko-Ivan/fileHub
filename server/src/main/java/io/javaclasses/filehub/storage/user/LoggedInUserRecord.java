@@ -11,7 +11,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Data structure that contains information about authorization session.
  */
 @Immutable
-public final class LoggedInUserRecord extends Record<TokenId> {
+public final class LoggedInUserRecord extends Record<Token> {
     /**
      * User identifier.
      */
@@ -24,12 +24,12 @@ public final class LoggedInUserRecord extends Record<TokenId> {
     /**
      * Creates new {@link LoggedInUserRecord} instance.
      *
-     * @param tokenId        token identifier.
+     * @param token        token identifier.
      * @param userId         user identifier.
      * @param expirationDate token expiration date.
      */
-    public LoggedInUserRecord(TokenId tokenId, UserId userId, LocalDateTime expirationDate) {
-        super(tokenId);
+    public LoggedInUserRecord(Token token, UserId userId, LocalDateTime expirationDate) {
+        super(token);
         this.userId = checkNotNull(userId);
         this.expirationDate = checkNotNull(expirationDate);
     }

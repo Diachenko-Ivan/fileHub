@@ -1,6 +1,7 @@
 package io.javaclasses.filehub.api.user;
 
 import io.javaclasses.filehub.api.Process;
+import io.javaclasses.filehub.api.TimeZoneIdentifier;
 import io.javaclasses.filehub.storage.user.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +13,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static io.javaclasses.filehub.api.IdGenerator.generateId;
 import static io.javaclasses.filehub.api.user.PasswordHasher.hash;
 import static java.time.Duration.ofMinutes;
-import static java.time.Instant.now;
-import static java.time.Instant.ofEpochSecond;
+import static java.time.LocalDateTime.now;
 
 /**
  * The application process that handles {@link AuthenticateUser} command.
@@ -68,7 +68,7 @@ public class Authentication implements Process {
         }
         TokenRecord tokenRecord = new TokenRecord(new TokenId(generateId()),
                 existentUser.get().id(),
-                ofEpochSecond(now().getEpochSecond() + 500));
+                now(TimeZoneIdentifier.get()).plusMinutes(tokenExpirationInterval()));
 
         tokenStorage.add(tokenRecord);
 
@@ -76,5 +76,14 @@ public class Authentication implements Process {
             logger.info("Token with identifier {} was created.", tokenRecord.id());
         }
         return tokenRecord;
+    }
+
+    /**
+     * Returns expiration interval.
+     *
+     * @return expiration interval.
+     */
+    private static synchronized long tokenExpirationInterval() {
+        return TOKEN_EXPIRATION_INTERVAL.toMinutes();
     }
 }

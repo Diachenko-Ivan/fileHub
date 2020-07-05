@@ -2,7 +2,7 @@ package io.javaclasses.filehub.web;
 
 import io.javaclasses.filehub.api.user.AuthorizationService;
 import io.javaclasses.filehub.storage.user.LoggedInUserRecord;
-import io.javaclasses.filehub.storage.user.TokenStorage;
+import io.javaclasses.filehub.storage.user.LoggedInUserStorage;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserId;
 import org.slf4j.Logger;
@@ -28,15 +28,15 @@ public class AuthorizationFilter implements Filter {
     /**
      * Storage for tokens {@link LoggedInUserRecord}
      */
-    private final TokenStorage tokenStorage;
+    private final LoggedInUserStorage loggedInUserStorage;
 
     /**
      * Creates new {@link AuthorizationFilter} instance.
      *
-     * @param tokenStorage storage for tokens {@link LoggedInUserRecord}
+     * @param loggedInUserStorage storage for tokens {@link LoggedInUserRecord}
      */
-    public AuthorizationFilter(TokenStorage tokenStorage) {
-        this.tokenStorage = checkNotNull(tokenStorage);
+    public AuthorizationFilter(LoggedInUserStorage loggedInUserStorage) {
+        this.loggedInUserStorage = checkNotNull(loggedInUserStorage);
     }
 
     /**
@@ -52,7 +52,7 @@ public class AuthorizationFilter implements Filter {
         }
         String authorizationToken = get(on(' ').split(authorizationHeaderValue), 1);
 
-        UserId userId = new AuthorizationService(tokenStorage).authorizedUserId(authorizationToken);
+        UserId userId = new AuthorizationService(loggedInUserStorage).authorizedUserId(authorizationToken);
         if (userId == null) {
             if (logger.isWarnEnabled()) {
                 logger.warn("User with token " + authorizationToken

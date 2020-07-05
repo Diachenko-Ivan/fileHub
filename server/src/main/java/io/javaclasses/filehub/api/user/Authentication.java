@@ -34,16 +34,16 @@ public class Authentication implements Process {
     /**
      * Storage for access tokens {@link LoggedInUserRecord}.
      */
-    private final TokenStorage tokenStorage;
+    private final LoggedInUserStorage loggedInUserStorage;
 
     /**
      * Creates new {@link Authentication} process instance.
      *
      * @param userStorage {@link UserStorage} instance.
      */
-    public Authentication(UserStorage userStorage, TokenStorage tokenStorage) {
+    public Authentication(UserStorage userStorage, LoggedInUserStorage loggedInUserStorage) {
         this.userStorage = checkNotNull(userStorage);
-        this.tokenStorage = checkNotNull(tokenStorage);
+        this.loggedInUserStorage = checkNotNull(loggedInUserStorage);
     }
 
     /**
@@ -70,7 +70,7 @@ public class Authentication implements Process {
                 existentUser.get().id(),
                 now(TimeZoneIdentifier.get()).plusMinutes(tokenExpirationInterval()));
 
-        tokenStorage.add(loggedInUserRecord);
+        loggedInUserStorage.add(loggedInUserRecord);
 
         if (logger.isInfoEnabled()) {
             logger.info("Token with identifier {} was created.", loggedInUserRecord.id());

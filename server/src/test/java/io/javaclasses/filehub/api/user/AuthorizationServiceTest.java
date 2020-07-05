@@ -2,8 +2,8 @@ package io.javaclasses.filehub.api.user;
 
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.storage.user.LoggedInUserRecord;
+import io.javaclasses.filehub.storage.user.LoggedInUserStorage;
 import io.javaclasses.filehub.storage.user.Token;
-import io.javaclasses.filehub.storage.user.TokenStorage;
 import io.javaclasses.filehub.storage.user.UserId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,20 +22,20 @@ class AuthorizationServiceTest {
     void testNullParams() {
         NullPointerTester tester = new NullPointerTester();
         tester.testAllPublicConstructors(AuthorizationService.class);
-        tester.testAllPublicInstanceMethods(new AuthorizationService(new TokenStorage()));
+        tester.testAllPublicInstanceMethods(new AuthorizationService(new LoggedInUserStorage()));
     }
 
 
     @DisplayName("return null from authorizedUserId() method if token is not found.")
     @Test
     void testAuthorizedUserByNotFoundToken() {
-        TokenStorage mockTokenStorage = new TokenStorage() {
+        LoggedInUserStorage mockLoggedInUserStorage = new LoggedInUserStorage() {
             @Override
             public synchronized Optional<LoggedInUserRecord> find(Token id) {
                 return empty();
             }
         };
-        AuthorizationService service = new AuthorizationService(mockTokenStorage);
+        AuthorizationService service = new AuthorizationService(mockLoggedInUserStorage);
         UserId userId = service.authorizedUserId("any_token");
 
         assertWithMessage("User identifier is not null but must be because access token is not found.")
@@ -47,7 +47,7 @@ class AuthorizationServiceTest {
     @Test
     void testAuthorizedUserByExpiredToken() {
         final boolean[] isRemoveCalled = {false};
-        TokenStorage mockTokenStorage = new TokenStorage() {
+        LoggedInUserStorage mockLoggedInUserStorage = new LoggedInUserStorage() {
             @Override
             public synchronized Optional<LoggedInUserRecord> find(Token id) {
                 return Optional.of(new LoggedInUserRecord(new Token("tokeid"),
@@ -60,7 +60,7 @@ class AuthorizationServiceTest {
                 return null;
             }
         };
-        AuthorizationService service = new AuthorizationService(mockTokenStorage);
+        AuthorizationService service = new AuthorizationService(mockLoggedInUserStorage);
         UserId userid = service.authorizedUserId("any_token");
 
         assertWithMessage("User identifier is not null but must be because access token is expired.")
@@ -77,7 +77,7 @@ class AuthorizationServiceTest {
         String tokenId = "any_token";
         UserId userIdInToken = new UserId("userid");
 
-        TokenStorage mockTokenStorage = new TokenStorage() {
+        LoggedInUserStorage mockLoggedInUserStorage = new LoggedInUserStorage() {
             @Override
             public synchronized Optional<LoggedInUserRecord> find(Token id) {
                 if (id.value().equals(tokenId)) {
@@ -87,7 +87,7 @@ class AuthorizationServiceTest {
                 return empty();
             }
         };
-        AuthorizationService service = new AuthorizationService(mockTokenStorage);
+        AuthorizationService service = new AuthorizationService(mockLoggedInUserStorage);
         UserId authorizedUserId = service.authorizedUserId(tokenId);
 
         assertWithMessage("Authorized user identifier is null.")

@@ -31,17 +31,17 @@ public class AuthenticationRoute implements Route {
     /**
      * Storage for access tokens {@link LoggedInUserRecord}
      */
-    private final TokenStorage tokenStorage;
+    private final LoggedInUserStorage loggedInUserStorage;
 
     /**
      * Creates new {@link AuthenticationRoute} instance.
      *
      * @param userStorage  storage for users.
-     * @param tokenStorage storage for tokens.
+     * @param loggedInUserStorage storage for tokens.
      */
-    public AuthenticationRoute(UserStorage userStorage, TokenStorage tokenStorage) {
+    public AuthenticationRoute(UserStorage userStorage, LoggedInUserStorage loggedInUserStorage) {
         this.userStorage = checkNotNull(userStorage);
-        this.tokenStorage = checkNotNull(tokenStorage);
+        this.loggedInUserStorage = checkNotNull(loggedInUserStorage);
     }
 
     /**
@@ -56,7 +56,7 @@ public class AuthenticationRoute implements Route {
         }
         try {
             AuthenticateUser authenticateUser = new AuthenticateUserDeserializer().deserialize(request.body());
-            LoggedInUserRecord loggedInUserRecord = new Authentication(userStorage, tokenStorage).handle(authenticateUser);
+            LoggedInUserRecord loggedInUserRecord = new Authentication(userStorage, loggedInUserStorage).handle(authenticateUser);
             if (logger.isInfoEnabled()) {
                 logger.info("User with login " + authenticateUser.login().value() + " was authenticated.");
             }

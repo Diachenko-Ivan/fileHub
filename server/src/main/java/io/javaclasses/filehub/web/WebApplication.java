@@ -1,6 +1,6 @@
 package io.javaclasses.filehub.web;
 
-import io.javaclasses.filehub.storage.user.TokenStorage;
+import io.javaclasses.filehub.storage.user.LoggedInUserStorage;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserStorage;
 import io.javaclasses.filehub.web.routes.AuthenticationRoute;
@@ -21,7 +21,7 @@ public class WebApplication {
     /**
      * Storage for access tokens.
      */
-    private final TokenStorage tokenStorage = new TokenStorage();
+    private final LoggedInUserStorage loggedInUserStorage = new LoggedInUserStorage();
 
     /**
      * Starts application.
@@ -43,7 +43,7 @@ public class WebApplication {
 
         path("/api", () -> {
             post("/register", new RegistrationRoute(userStorage));
-            post("/login", new AuthenticationRoute(userStorage, tokenStorage));
+            post("/login", new AuthenticationRoute(userStorage, loggedInUserStorage));
         });
     }
 
@@ -51,7 +51,7 @@ public class WebApplication {
      * Filters requests.
      */
     private void filter() {
-        Filter authorizationFilter = new AuthorizationFilter(tokenStorage);
+        Filter authorizationFilter = new AuthorizationFilter(loggedInUserStorage);
         path("/api", () -> {
             before("/folder/*", authorizationFilter);
             before("/file/*", authorizationFilter);

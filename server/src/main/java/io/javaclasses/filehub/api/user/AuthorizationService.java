@@ -13,15 +13,15 @@ public class AuthorizationService {
     /**
      * Storage for tokens {@link LoggedInUserRecord}.
      */
-    private final TokenStorage tokenStorage;
+    private final LoggedInUserStorage loggedInUserStorage;
 
     /**
      * Creates new {@link AuthorizationService} instance.
      *
-     * @param tokenStorage storage for tokens {@link LoggedInUserRecord}.
+     * @param loggedInUserStorage storage for tokens {@link LoggedInUserRecord}.
      */
-    public AuthorizationService(TokenStorage tokenStorage) {
-        this.tokenStorage = checkNotNull(tokenStorage);
+    public AuthorizationService(LoggedInUserStorage loggedInUserStorage) {
+        this.loggedInUserStorage = checkNotNull(loggedInUserStorage);
     }
 
     /**
@@ -33,7 +33,7 @@ public class AuthorizationService {
      */
     public UserId authorizedUserId(String tokenId) {
         checkNotNull(tokenId);
-        Optional<LoggedInUserRecord> loggedInUserRecord = tokenStorage.find(new Token(tokenId));
+        Optional<LoggedInUserRecord> loggedInUserRecord = loggedInUserStorage.find(new Token(tokenId));
 
         return loggedInUserRecord.map(LoggedInUserRecord::userId).orElse(null);
     }

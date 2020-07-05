@@ -19,11 +19,11 @@ class AuthenticationProcessTest {
     void testNullParameters() {
         NullPointerTester tester = new NullPointerTester();
         tester.testAllPublicConstructors(AuthorizationService.class);
-        tester.testAllPublicInstanceMethods(new AuthorizationService(new TokenStorage()));
+        tester.testAllPublicInstanceMethods(new AuthorizationService(new LoggedInUserStorage()));
     }
 
-    private TokenStorage mockTokenStorage(boolean[] isAddCalled)  {
-        return new TokenStorage() {
+    private LoggedInUserStorage mockTokenStorage(boolean[] isAddCalled)  {
+        return new LoggedInUserStorage() {
             @Override
             public synchronized void add(LoggedInUserRecord record) {
                 isAddCalled[0] = true;
@@ -45,11 +45,11 @@ class AuthenticationProcessTest {
     void testSuccessfulLogin() {
         boolean[] isAddCalled = {false};
 
-        TokenStorage mockTokenStorage = mockTokenStorage(isAddCalled);
+        LoggedInUserStorage mockLoggedInUserStorage = mockTokenStorage(isAddCalled);
 
         UserStorage mockUserStorage = mockUserStorage(new User(new UserId("qwe"), new Login("login"), "password"));
 
-        Authentication process = new Authentication(mockUserStorage, mockTokenStorage);
+        Authentication process = new Authentication(mockUserStorage, mockLoggedInUserStorage);
 
         assertDoesNotThrow(() -> {
                     LoggedInUserRecord token = process.handle(
@@ -71,10 +71,10 @@ class AuthenticationProcessTest {
     void testUnsuccessfulLogin() {
         boolean[] isAddCalled = {false};
 
-        TokenStorage mockTokenStorage = mockTokenStorage(isAddCalled);
+        LoggedInUserStorage mockLoggedInUserStorage = mockTokenStorage(isAddCalled);
         UserStorage mockUserStorage = mockUserStorage(null);
 
-        Authentication process = new Authentication(mockUserStorage, mockTokenStorage);
+        Authentication process = new Authentication(mockUserStorage, mockLoggedInUserStorage);
 
         assertThrows(UserIsNotAuthenticatedException.class, () ->
                         process.handle(new AuthenticateUser(new Login("login"), new Password("Password1"))),

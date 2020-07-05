@@ -12,7 +12,7 @@ import static java.util.Optional.of;
 /**
  * Implementation of in-memory application storage for {@link LoggedInUserRecord}.
  */
-public class TokenStorage extends InMemoryStorage<Token, LoggedInUserRecord> {
+public class LoggedInUserStorage extends InMemoryStorage<Token, LoggedInUserRecord> {
 
     /**
      * Returns {@link LoggedInUserRecord} checking token expiration date beforehand.
@@ -22,7 +22,7 @@ public class TokenStorage extends InMemoryStorage<Token, LoggedInUserRecord> {
      * @return logged in user record by {@code id}.
      */
     @Override
-    public Optional<LoggedInUserRecord> find(Token id) {
+    public synchronized Optional<LoggedInUserRecord> find(Token id) {
         Optional<LoggedInUserRecord> loggedInUser = super.find(id);
         if (!loggedInUser.isPresent()) {
             return empty();

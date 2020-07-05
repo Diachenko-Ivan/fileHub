@@ -22,13 +22,21 @@ class AuthenticationProcessTest {
         tester.testAllPublicInstanceMethods(new Authentication(new UserStorage(), new LoggedInUserStorage()));
     }
 
-    private LoggedInUserStorage mockTokenStorage(boolean[] isAddCalled)  {
-        return new LoggedInUserStorage() {
-            @Override
-            public synchronized void add(LoggedInUserRecord record) {
-                isAddCalled[0] = true;
-            }
-        };
+    private static class MockLoggedInUserStorage {
+        private boolean isAddCalled = false;
+
+        private LoggedInUserStorage create() {
+            return new LoggedInUserStorage() {
+                @Override
+                public synchronized void add(LoggedInUserRecord record) {
+                    isAddCalled = true;
+                }
+            };
+        }
+
+        private boolean isAddCalled() {
+            return isAddCalled;
+        }
     }
 
     private UserStorage mockUserStorage(User userFindResult) {
@@ -42,25 +50,25 @@ class AuthenticationProcessTest {
 
     @DisplayName("authenticate existent user.")
     @Test
-    void testSuccessfulLogin() {
-        boolean[] isAddCalled = {false};
+    void testPassedUserLogin() {
+        MockLoggedInUserStorage mockStorage = new MockLoggedInUserStorage();
 
-        LoggedInUserStorage mockLoggedInUserStorage = mockTokenStorage(isAddCalled);
+        LoggedInUserStorage mockLoggedInUserStorage = mockStorage.create();
 
         UserStorage mockUserStorage = mockUserStorage(new User(new UserId("qwe"), new Login("login"), "password"));
 
         Authentication process = new Authentication(mockUserStorage, mockLoggedInUserStorage);
 
         assertDoesNotThrow(() -> {
-                    LoggedInUserRecord token = process.handle(
+                    LoggedInUserRecord loggedInUser = process.handle(
                             new AuthenticateUser(new Login("login"), new Password("Password1")));
 
                     assertWithMessage("Token should not be null but it is.")
-                            .that(token)
+                            .that(loggedInUser)
                             .isNotNull();
 
                     assertWithMessage("The token was not added to the storage.")
-                            .that(isAddCalled[0])
+                            .that(mockStorage.isAddCalled())
                             .isTrue();
                 },
                 "Authentication error was thrown but it should not because user exists.");
@@ -68,10 +76,11 @@ class AuthenticationProcessTest {
 
     @DisplayName("fail authentication of nonexistent user.")
     @Test
-    void testUnsuccessfulLogin() {
-        boolean[] isAddCalled = {false};
+    void testFailedUserLogin() {
+        MockLoggedInUserStorage mockStorageProxy = new MockLoggedInUserStorage();
 
-        LoggedInUserStorage mockLoggedInUserStorage = mockTokenStorage(isAddCalled);
+        LoggedInUserStorage mockLoggedInUserStorage = mockStorageProxy.create();
+
         UserStorage mockUserStorage = mockUserStorage(null);
 
         Authentication process = new Authentication(mockUserStorage, mockLoggedInUserStorage);
@@ -81,7 +90,7 @@ class AuthenticationProcessTest {
                 "Should throw AuthenticationException because user does not exist.");
 
         assertWithMessage("Token was added to token storage after failed authentication.")
-                .that(isAddCalled[0])
+                .that(mockStorageProxy.isAddCalled())
                 .isFalse();
     }
 }

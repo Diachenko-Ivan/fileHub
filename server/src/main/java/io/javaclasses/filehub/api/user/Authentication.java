@@ -73,6 +73,7 @@ public class Authentication implements Process {
         loggedInUserStorage.add(loggedInUserRecord);
 
         if (logger.isInfoEnabled()) {
+            logger.info("User with login {} was authenticated.", authenticateUser.login());
             logger.info("Token with identifier {} was created.", loggedInUserRecord.id());
         }
         return loggedInUserRecord;

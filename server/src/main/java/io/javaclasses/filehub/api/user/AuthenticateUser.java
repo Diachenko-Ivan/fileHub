@@ -12,7 +12,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * <p>Stores user login and password.
  */
 @Immutable
-public class AuthenticateUser implements Command {
+public final class AuthenticateUser implements Command {
     /**
      * User login.
      */

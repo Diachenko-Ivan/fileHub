@@ -5,11 +5,13 @@ import io.javaclasses.filehub.storage.user.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static io.javaclasses.filehub.api.IdGenerator.generateId;
 import static io.javaclasses.filehub.api.user.PasswordHasher.hash;
+import static java.time.Duration.ofMinutes;
 import static java.time.Instant.now;
 import static java.time.Instant.ofEpochSecond;
 
@@ -22,9 +24,9 @@ public class Authentication implements Process {
      */
     private static final Logger logger = LoggerFactory.getLogger(Authentication.class);
     /**
-     * Time in seconds after which token will expire.
+     * Time in minutes after which token will expire.
      */
-    private static final int EXPIRATION_INTERVAL = 900;
+    private static final Duration TOKEN_EXPIRATION_INTERVAL = ofMinutes(15);
     /**
      * Storage for users {@link User}.
      */
@@ -58,18 +60,21 @@ public class Authentication implements Process {
         Optional<User> existentUser = userStorage.find(authenticateUser.login(), hashedPassword);
 
         if (!existentUser.isPresent()) {
-            if (logger.isWarnEnabled()) {
-                logger.warn("User with login " + authenticateUser.login().value()
-                        + " and password " + authenticateUser.password().value() + " was not authenticated.");
+            if (logger.isInfoEnabled()) {
+                logger.info("User with login {} and password {} was not authenticated.", authenticateUser.login().value(),
+                        authenticateUser.password().value());
             }
             throw new UserIsNotAuthenticatedException();
         }
-
         TokenRecord tokenRecord = new TokenRecord(new TokenId(generateId()),
                 existentUser.get().id(),
-                ofEpochSecond(now().getEpochSecond() + EXPIRATION_INTERVAL));
+                ofEpochSecond(now().getEpochSecond() + 500));
 
         tokenStorage.add(tokenRecord);
+
+        if (logger.isInfoEnabled()) {
+            logger.info("Token with identifier {} was created.", tokenRecord.id());
+        }
         return tokenRecord;
     }
 }

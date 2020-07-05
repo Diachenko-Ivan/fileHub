@@ -18,8 +18,8 @@ class AuthenticationProcessTest {
     @Test
     void testNullParameters() {
         NullPointerTester tester = new NullPointerTester();
-        tester.testAllPublicConstructors(AuthorizationService.class);
-        tester.testAllPublicInstanceMethods(new AuthorizationService(new LoggedInUserStorage()));
+        tester.testAllPublicConstructors(Authentication.class);
+        tester.testAllPublicInstanceMethods(new Authentication(new UserStorage(), new LoggedInUserStorage()));
     }
 
     private LoggedInUserStorage mockTokenStorage(boolean[] isAddCalled)  {

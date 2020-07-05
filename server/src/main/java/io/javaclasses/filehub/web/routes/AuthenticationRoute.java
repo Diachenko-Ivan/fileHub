@@ -13,6 +13,7 @@ import spark.Response;
 import spark.Route;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static javax.servlet.http.HttpServletResponse.SC_OK;
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 import static org.eclipse.jetty.http.HttpStatus.UNPROCESSABLE_ENTITY_422;
 
@@ -36,7 +37,7 @@ public class AuthenticationRoute implements Route {
     /**
      * Creates new {@link AuthenticationRoute} instance.
      *
-     * @param userStorage  storage for users.
+     * @param userStorage         storage for users.
      * @param loggedInUserStorage storage for tokens.
      */
     public AuthenticationRoute(UserStorage userStorage, LoggedInUserStorage loggedInUserStorage) {
@@ -54,10 +55,7 @@ public class AuthenticationRoute implements Route {
         try {
             AuthenticateUser authenticateUser = new AuthenticateUserDeserializer().deserialize(request.body());
             LoggedInUserRecord loggedInUserRecord = new Authentication(userStorage, loggedInUserStorage).handle(authenticateUser);
-
-            if (logger.isInfoEnabled()) {
-                logger.info("User with login " + authenticateUser.login().value() + " was authenticated.");
-            }
+            response.status(SC_OK);
             return loggedInUserRecord.id();
         } catch (UserIsNotAuthenticatedException | CredentialsAreNotValidException e) {
 

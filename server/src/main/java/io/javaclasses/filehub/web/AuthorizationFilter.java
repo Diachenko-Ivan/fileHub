@@ -1,10 +1,7 @@
 package io.javaclasses.filehub.web;
 
 import io.javaclasses.filehub.api.user.LoggedInUserId;
-import io.javaclasses.filehub.storage.user.LoggedInUserRecord;
-import io.javaclasses.filehub.storage.user.LoggedInUserStorage;
-import io.javaclasses.filehub.storage.user.User;
-import io.javaclasses.filehub.storage.user.UserId;
+import io.javaclasses.filehub.storage.user.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Filter;
@@ -52,7 +49,7 @@ public class AuthorizationFilter implements Filter {
         }
         String authorizationToken = get(on(' ').split(authorizationHeaderValue), 1);
 
-        UserId userId = new LoggedInUserId(loggedInUserStorage).get(authorizationToken);
+        UserId userId = new LoggedInUserId(loggedInUserStorage).get(new Token(authorizationToken));
         if (userId == null) {
             if (logger.isWarnEnabled()) {
                 logger.warn("User with token " + authorizationToken

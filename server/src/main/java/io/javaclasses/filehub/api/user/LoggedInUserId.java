@@ -31,9 +31,9 @@ public class LoggedInUserId {
      * @param tokenId user access token identifier.
      * @return identifier of authorized user or {@code null} if user is not authorized.
      */
-    public UserId get(String tokenId) {
+    public UserId get(Token tokenId) {
         checkNotNull(tokenId);
-        Optional<LoggedInUserRecord> loggedInUserRecord = loggedInUserStorage.find(new Token(tokenId));
+        Optional<LoggedInUserRecord> loggedInUserRecord = loggedInUserStorage.find(tokenId);
 
         return loggedInUserRecord.map(LoggedInUserRecord::userId).orElse(null);
     }

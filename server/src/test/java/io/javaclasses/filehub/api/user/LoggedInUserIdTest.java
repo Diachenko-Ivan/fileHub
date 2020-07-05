@@ -36,7 +36,7 @@ class LoggedInUserIdTest {
             }
         };
         LoggedInUserId service = new LoggedInUserId(mockLoggedInUserStorage);
-        UserId userId = service.get("any_token");
+        UserId userId = service.get(new Token("any_token"));
 
         assertWithMessage("User identifier is not null but must be because access token is not found.")
                 .that(userId)
@@ -61,7 +61,7 @@ class LoggedInUserIdTest {
             }
         };
         LoggedInUserId service = new LoggedInUserId(mockLoggedInUserStorage);
-        UserId userid = service.get("any_token");
+        UserId userid = service.get(new Token("any_token"));
 
         assertWithMessage("User identifier is not null but must be because access token is expired.")
                 .that(userid)
@@ -88,7 +88,7 @@ class LoggedInUserIdTest {
             }
         };
         LoggedInUserId service = new LoggedInUserId(mockLoggedInUserStorage);
-        UserId authorizedUserId = service.get(tokenId);
+        UserId authorizedUserId = service.get(new Token(tokenId));
 
         assertWithMessage("Authorized user identifier is null.")
                 .that(authorizedUserId)

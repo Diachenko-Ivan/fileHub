@@ -25,7 +25,7 @@ class AuthenticationProcessTest {
     private TokenStorage mockTokenStorage(boolean[] isAddCalled)  {
         return new TokenStorage() {
             @Override
-            public synchronized void add(TokenRecord record) {
+            public synchronized void add(LoggedInUserRecord record) {
                 isAddCalled[0] = true;
             }
         };
@@ -52,7 +52,7 @@ class AuthenticationProcessTest {
         Authentication process = new Authentication(mockUserStorage, mockTokenStorage);
 
         assertDoesNotThrow(() -> {
-                    TokenRecord token = process.logIn(
+                    LoggedInUserRecord token = process.logIn(
                             new AuthenticateUser(new Login("login"), new Password("Password1")));
 
                     assertWithMessage("Token should not be null but it is.")

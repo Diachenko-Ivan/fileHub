@@ -1,18 +1,17 @@
 package io.javaclasses.filehub.api.user;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.storage.user.TokenId;
-import io.javaclasses.filehub.storage.user.TokenRecord;
+import io.javaclasses.filehub.storage.user.LoggedInUserRecord;
+import io.javaclasses.filehub.storage.user.Token;
 import io.javaclasses.filehub.storage.user.TokenStorage;
 import io.javaclasses.filehub.storage.user.UserId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static com.google.common.truth.Truth.assertWithMessage;
-import static java.time.Instant.now;
-import static java.time.Instant.ofEpochSecond;
 import static java.util.Optional.empty;
 
 @DisplayName("AuthorizationService should ")
@@ -32,7 +31,7 @@ class AuthorizationServiceTest {
     void testAuthorizedUserByNotFoundToken() {
         TokenStorage mockTokenStorage = new TokenStorage() {
             @Override
-            public Optional<TokenRecord> find(TokenId id) {
+            public Optional<LoggedInUserRecord> find(Token id) {
                 return empty();
             }
         };
@@ -50,13 +49,13 @@ class AuthorizationServiceTest {
         final boolean[] isRemoveCalled = {false};
         TokenStorage mockTokenStorage = new TokenStorage() {
             @Override
-            public Optional<TokenRecord> find(TokenId id) {
-                return Optional.of(new TokenRecord(new TokenId("tokeid"),
-                        new UserId("userid"), ofEpochSecond(now().getEpochSecond() - 400)));
+            public Optional<LoggedInUserRecord> find(Token id) {
+                return Optional.of(new LoggedInUserRecord(new Token("tokeid"),
+                        new UserId("userid"), LocalDateTime.now().minusMinutes(400)));
             }
 
             @Override
-            public synchronized TokenRecord remove(TokenId id) {
+            public synchronized LoggedInUserRecord remove(Token id) {
                 isRemoveCalled[0] = true;
                 return null;
             }
@@ -80,10 +79,10 @@ class AuthorizationServiceTest {
 
         TokenStorage mockTokenStorage = new TokenStorage() {
             @Override
-            public Optional<TokenRecord> find(TokenId id) {
+            public Optional<LoggedInUserRecord> find(Token id) {
                 if (id.value().equals(tokenId)) {
-                    return Optional.of(new TokenRecord(new TokenId(tokenId),
-                            userIdInToken, ofEpochSecond(now().getEpochSecond() + 400)));
+                    return Optional.of(new LoggedInUserRecord(new Token(tokenId),
+                            userIdInToken, LocalDateTime.now().plusMinutes(400)));
                 }
                 return empty();
             }

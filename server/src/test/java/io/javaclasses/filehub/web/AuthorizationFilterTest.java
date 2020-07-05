@@ -1,8 +1,8 @@
 package io.javaclasses.filehub.web;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.storage.user.TokenId;
-import io.javaclasses.filehub.storage.user.TokenRecord;
+import io.javaclasses.filehub.storage.user.LoggedInUserRecord;
+import io.javaclasses.filehub.storage.user.Token;
 import io.javaclasses.filehub.storage.user.TokenStorage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -104,7 +104,7 @@ class AuthorizationFilterTest {
         };
         TokenStorage mockTokenStorage = new TokenStorage() {
             @Override
-            public Optional<TokenRecord> find(TokenId id) {
+            public Optional<LoggedInUserRecord> find(Token id) {
                 return empty();
             }
         };

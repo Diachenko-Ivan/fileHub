@@ -4,7 +4,7 @@ import com.google.common.testing.NullPointerTester;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
@@ -22,15 +22,15 @@ class TokenStorageTest {
     @Test
     void testTokenRemove() {
         TokenStorage tokenStorage = new TokenStorage();
-        TokenId tokenId = new TokenId("qwewerte");
-        TokenRecord tokenRecord = new TokenRecord(tokenId, new UserId("asdsdf"), Instant.now());
+        Token token = new Token("qwewerte");
+        LoggedInUserRecord loggedInUserRecord = new LoggedInUserRecord(token, new UserId("asdsdf"), LocalDateTime.now());
 
-        tokenStorage.add(tokenRecord);
+        tokenStorage.add(loggedInUserRecord);
 
-        tokenStorage.remove(tokenId);
+        tokenStorage.remove(token);
 
         assertWithMessage("Removed token record still exists in the storage.")
-                .that(tokenStorage.find(tokenId).orElse(null))
+                .that(tokenStorage.find(token).orElse(null))
                 .isNull();
 
 

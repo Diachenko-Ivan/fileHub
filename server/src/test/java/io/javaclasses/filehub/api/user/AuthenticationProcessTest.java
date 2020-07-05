@@ -50,7 +50,7 @@ class AuthenticationProcessTest {
 
     @DisplayName("authenticate existent user.")
     @Test
-    void testPassedUserLogin() {
+    void testPassedUserAuthentication() {
         MockLoggedInUserStorage mockStorage = new MockLoggedInUserStorage();
 
         LoggedInUserStorage mockLoggedInUserStorage = mockStorage.create();
@@ -76,7 +76,7 @@ class AuthenticationProcessTest {
 
     @DisplayName("fail authentication of nonexistent user.")
     @Test
-    void testFailedUserLogin() {
+    void testFailedUserAuthentication() {
         MockLoggedInUserStorage mockStorageProxy = new MockLoggedInUserStorage();
 
         LoggedInUserStorage mockLoggedInUserStorage = mockStorageProxy.create();

@@ -8,7 +8,6 @@ import io.javaclasses.filehub.storage.user.UserId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -26,75 +25,20 @@ class LoggedInUserIdTest {
     }
 
 
-    @DisplayName("return null from authorizedUserId() method if token is not found.")
+    @DisplayName("not authorize user because of not found token.")
     @Test
-    void testAuthorizedUserByNotFoundToken() {
+    void testFailedUserAuthorization() {
         LoggedInUserStorage mockLoggedInUserStorage = new LoggedInUserStorage() {
             @Override
             public synchronized Optional<LoggedInUserRecord> find(Token id) {
                 return empty();
             }
         };
-        LoggedInUserId service = new LoggedInUserId(mockLoggedInUserStorage);
-        UserId userId = service.get(new Token("any_token"));
+        LoggedInUserId loggedInUserId = new LoggedInUserId(mockLoggedInUserStorage);
+        UserId userId = loggedInUserId.get(new Token("any_token"));
 
         assertWithMessage("User identifier is not null but must be because access token is not found.")
                 .that(userId)
                 .isNull();
-    }
-
-    @DisplayName("return null from authorizedUserId() method if token is expired.")
-    @Test
-    void testAuthorizedUserByExpiredToken() {
-        final boolean[] isRemoveCalled = {false};
-        LoggedInUserStorage mockLoggedInUserStorage = new LoggedInUserStorage() {
-            @Override
-            public synchronized Optional<LoggedInUserRecord> find(Token id) {
-                return Optional.of(new LoggedInUserRecord(new Token("tokeid"),
-                        new UserId("userid"), LocalDateTime.now().minusMinutes(400)));
-            }
-
-            @Override
-            public synchronized LoggedInUserRecord remove(Token id) {
-                isRemoveCalled[0] = true;
-                return null;
-            }
-        };
-        LoggedInUserId service = new LoggedInUserId(mockLoggedInUserStorage);
-        UserId userid = service.get(new Token("any_token"));
-
-        assertWithMessage("User identifier is not null but must be because access token is expired.")
-                .that(userid)
-                .isNull();
-        assertWithMessage("Token removing should be called but it was not.")
-                .that(isRemoveCalled[0])
-                .isTrue();
-    }
-
-    @DisplayName("return authorized user identifier.")
-    @Test
-    void testSuccessfulUserAuthorization() {
-        String tokenId = "any_token";
-        UserId userIdInToken = new UserId("userid");
-
-        LoggedInUserStorage mockLoggedInUserStorage = new LoggedInUserStorage() {
-            @Override
-            public synchronized Optional<LoggedInUserRecord> find(Token id) {
-                if (id.value().equals(tokenId)) {
-                    return Optional.of(new LoggedInUserRecord(new Token(tokenId),
-                            userIdInToken, LocalDateTime.now().plusMinutes(400)));
-                }
-                return empty();
-            }
-        };
-        LoggedInUserId service = new LoggedInUserId(mockLoggedInUserStorage);
-        UserId authorizedUserId = service.get(new Token(tokenId));
-
-        assertWithMessage("Authorized user identifier is null.")
-                .that(authorizedUserId)
-                .isNotNull();
-        assertWithMessage("Authorized user identifier is not equal to user identifier from token record.")
-                .that(authorizedUserId)
-                .isEqualTo(userIdInToken);
     }
 }

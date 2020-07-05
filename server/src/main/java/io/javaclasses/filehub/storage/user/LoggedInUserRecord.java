@@ -8,7 +8,8 @@ import java.time.LocalDateTime;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Data structure that contains information about authorization session.
+ * Data structure that contains information about logged in {@link User}, his access token {@link Token}
+ * and token expiration time.
  */
 @Immutable
 public final class LoggedInUserRecord extends Record<Token> {
@@ -24,7 +25,7 @@ public final class LoggedInUserRecord extends Record<Token> {
     /**
      * Creates new {@link LoggedInUserRecord} instance.
      *
-     * @param token        token identifier.
+     * @param token          token identifier.
      * @param userId         user identifier.
      * @param expirationDate token expiration date.
      */

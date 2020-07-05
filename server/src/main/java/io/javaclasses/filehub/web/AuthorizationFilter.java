@@ -1,6 +1,6 @@
 package io.javaclasses.filehub.web;
 
-import io.javaclasses.filehub.api.user.AuthorizationService;
+import io.javaclasses.filehub.api.user.LoggedInUserId;
 import io.javaclasses.filehub.storage.user.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.user.LoggedInUserStorage;
 import io.javaclasses.filehub.storage.user.User;
@@ -52,7 +52,7 @@ public class AuthorizationFilter implements Filter {
         }
         String authorizationToken = get(on(' ').split(authorizationHeaderValue), 1);
 
-        UserId userId = new AuthorizationService(loggedInUserStorage).authorizedUserId(authorizationToken);
+        UserId userId = new LoggedInUserId(loggedInUserStorage).get(authorizationToken);
         if (userId == null) {
             if (logger.isWarnEnabled()) {
                 logger.warn("User with token " + authorizationToken

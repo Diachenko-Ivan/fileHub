@@ -9,18 +9,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Service for getting of identifier of authorized user {@link User}.
  */
-public class AuthorizationService {
+public class LoggedInUserId {
     /**
      * Storage for tokens {@link LoggedInUserRecord}.
      */
     private final LoggedInUserStorage loggedInUserStorage;
 
     /**
-     * Creates new {@link AuthorizationService} instance.
+     * Creates new {@link LoggedInUserId} instance.
      *
      * @param loggedInUserStorage storage for tokens {@link LoggedInUserRecord}.
      */
-    public AuthorizationService(LoggedInUserStorage loggedInUserStorage) {
+    public LoggedInUserId(LoggedInUserStorage loggedInUserStorage) {
         this.loggedInUserStorage = checkNotNull(loggedInUserStorage);
     }
 
@@ -31,7 +31,7 @@ public class AuthorizationService {
      * @param tokenId user access token identifier.
      * @return identifier of authorized user or {@code null} if user is not authorized.
      */
-    public UserId authorizedUserId(String tokenId) {
+    public UserId get(String tokenId) {
         checkNotNull(tokenId);
         Optional<LoggedInUserRecord> loggedInUserRecord = loggedInUserStorage.find(new Token(tokenId));
 

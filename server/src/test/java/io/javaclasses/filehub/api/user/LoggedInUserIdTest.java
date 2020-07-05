@@ -15,14 +15,14 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import static java.util.Optional.empty;
 
 @DisplayName("AuthorizationService should ")
-class AuthorizationServiceTest {
+class LoggedInUserIdTest {
 
     @DisplayName("not accept null parameters to constructor and method.")
     @Test
     void testNullParams() {
         NullPointerTester tester = new NullPointerTester();
-        tester.testAllPublicConstructors(AuthorizationService.class);
-        tester.testAllPublicInstanceMethods(new AuthorizationService(new LoggedInUserStorage()));
+        tester.testAllPublicConstructors(LoggedInUserId.class);
+        tester.testAllPublicInstanceMethods(new LoggedInUserId(new LoggedInUserStorage()));
     }
 
 
@@ -35,8 +35,8 @@ class AuthorizationServiceTest {
                 return empty();
             }
         };
-        AuthorizationService service = new AuthorizationService(mockLoggedInUserStorage);
-        UserId userId = service.authorizedUserId("any_token");
+        LoggedInUserId service = new LoggedInUserId(mockLoggedInUserStorage);
+        UserId userId = service.get("any_token");
 
         assertWithMessage("User identifier is not null but must be because access token is not found.")
                 .that(userId)
@@ -60,8 +60,8 @@ class AuthorizationServiceTest {
                 return null;
             }
         };
-        AuthorizationService service = new AuthorizationService(mockLoggedInUserStorage);
-        UserId userid = service.authorizedUserId("any_token");
+        LoggedInUserId service = new LoggedInUserId(mockLoggedInUserStorage);
+        UserId userid = service.get("any_token");
 
         assertWithMessage("User identifier is not null but must be because access token is expired.")
                 .that(userid)
@@ -87,8 +87,8 @@ class AuthorizationServiceTest {
                 return empty();
             }
         };
-        AuthorizationService service = new AuthorizationService(mockLoggedInUserStorage);
-        UserId authorizedUserId = service.authorizedUserId(tokenId);
+        LoggedInUserId service = new LoggedInUserId(mockLoggedInUserStorage);
+        UserId authorizedUserId = service.get(tokenId);
 
         assertWithMessage("Authorized user identifier is null.")
                 .that(authorizedUserId)

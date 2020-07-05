@@ -1,4 +1,4 @@
-package io.javaclasses.filehub;
+package io.javaclasses.filehub.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ public class LogRequestInfoFilter implements Filter {
     @Override
     public void handle(Request request, Response response) {
         if (logger.isInfoEnabled()) {
-            logger.info("Request to {} with body {} and authorization header {}",
+            logger.info("Request to '{}' with body '{}' and authorization header '{}'",
                     request.pathInfo(), request.body(), request.headers("Authorization"));
         }
     }

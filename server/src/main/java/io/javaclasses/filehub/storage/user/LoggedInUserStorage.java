@@ -5,6 +5,7 @@ import io.javaclasses.filehub.storage.TimeZoneIdentifier;
 
 import java.util.Optional;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static java.time.LocalDateTime.now;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -23,7 +24,7 @@ public class LoggedInUserStorage extends InMemoryStorage<Token, LoggedInUserReco
      */
     @Override
     public synchronized Optional<LoggedInUserRecord> find(Token id) {
-        Optional<LoggedInUserRecord> loggedInUser = super.find(id);
+        Optional<LoggedInUserRecord> loggedInUser = super.find(checkNotNull(id));
         if (!loggedInUser.isPresent()) {
             return empty();
         }

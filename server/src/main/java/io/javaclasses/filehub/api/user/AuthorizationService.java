@@ -33,16 +33,8 @@ public class AuthorizationService {
      */
     public UserId authorizedUserId(String tokenId) {
         checkNotNull(tokenId);
-        Optional<LoggedInUserRecord> token = tokenStorage.find(new Token(tokenId));
+        Optional<LoggedInUserRecord> loggedInUserRecord = tokenStorage.find(new Token(tokenId));
 
-        if (!token.isPresent()) {
-            return null;
-        }
-        LoggedInUserRecord loggedInUserRecord = token.get();
-//        if (Instant.now().isAfter(tokenRecord.expirationDate())) {
-//            tokenStorage.remove(tokenRecord.id());
-//            return null;
-//        }
-        return loggedInUserRecord.userId();
+        return loggedInUserRecord.map(LoggedInUserRecord::userId).orElse(null);
     }
 }

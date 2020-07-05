@@ -51,20 +51,20 @@ public class AuthenticationRoute implements Route {
     @Override
     public Object handle(Request request, Response response) {
         response.type("application/json");
-        if (logger.isInfoEnabled()) {
-            logger.info("Request to '/api/login' url.");
-        }
         try {
             AuthenticateUser authenticateUser = new AuthenticateUserDeserializer().deserialize(request.body());
             LoggedInUserRecord loggedInUserRecord = new Authentication(userStorage, loggedInUserStorage).handle(authenticateUser);
+
             if (logger.isInfoEnabled()) {
                 logger.info("User with login " + authenticateUser.login().value() + " was authenticated.");
             }
             return loggedInUserRecord.id();
         } catch (UserIsNotAuthenticatedException | CredentialsAreNotValidException e) {
+
             response.status(SC_UNAUTHORIZED);
             return "No user with these credentials.";
         } catch (JsonParseException e) {
+
             response.status(UNPROCESSABLE_ENTITY_422);
             return "Unable to process request body";
         }

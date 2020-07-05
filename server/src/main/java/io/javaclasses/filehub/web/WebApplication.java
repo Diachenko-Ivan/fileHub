@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.web;
 
+import io.javaclasses.filehub.LogRequestInfoFilter;
 import io.javaclasses.filehub.storage.user.LoggedInUserStorage;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserStorage;
@@ -52,6 +53,7 @@ public class WebApplication {
      */
     private void filter() {
         Filter authorizationFilter = new AuthorizationFilter(loggedInUserStorage);
+        before("/api", new LogRequestInfoFilter());
         path("/api", () -> {
             before("/folder/*", authorizationFilter);
             before("/file/*", authorizationFilter);

@@ -52,7 +52,7 @@ class AuthenticationProcessTest {
         Authentication process = new Authentication(mockUserStorage, mockTokenStorage);
 
         assertDoesNotThrow(() -> {
-                    LoggedInUserRecord token = process.logIn(
+                    LoggedInUserRecord token = process.handle(
                             new AuthenticateUser(new Login("login"), new Password("Password1")));
 
                     assertWithMessage("Token should not be null but it is.")
@@ -77,7 +77,7 @@ class AuthenticationProcessTest {
         Authentication process = new Authentication(mockUserStorage, mockTokenStorage);
 
         assertThrows(UserIsNotAuthenticatedException.class, () ->
-                        process.logIn(new AuthenticateUser(new Login("login"), new Password("Password1"))),
+                        process.handle(new AuthenticateUser(new Login("login"), new Password("Password1"))),
                 "Should throw AuthenticationException because user does not exist.");
 
         assertWithMessage("Token was added to token storage after failed authentication.")

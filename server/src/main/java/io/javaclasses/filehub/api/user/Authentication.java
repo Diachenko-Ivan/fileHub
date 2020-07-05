@@ -53,7 +53,7 @@ public class Authentication implements Process {
      * @throws UserIsNotAuthenticatedException if user with these credentials {@code authenticateUser.login()}
      *                                         and {@code authenticateUser.password()} is not found.
      */
-    public LoggedInUserRecord logIn(AuthenticateUser authenticateUser) throws UserIsNotAuthenticatedException {
+    public LoggedInUserRecord handle(AuthenticateUser authenticateUser) throws UserIsNotAuthenticatedException {
         checkNotNull(authenticateUser);
         String hashedPassword = hash(authenticateUser.password().value());
 
@@ -83,7 +83,7 @@ public class Authentication implements Process {
      *
      * @return expiration interval.
      */
-    private static synchronized long tokenExpirationInterval() {
+    private long tokenExpirationInterval() {
         return TOKEN_EXPIRATION_INTERVAL.toMinutes();
     }
 }

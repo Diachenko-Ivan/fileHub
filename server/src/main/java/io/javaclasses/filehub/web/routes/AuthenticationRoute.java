@@ -56,7 +56,7 @@ public class AuthenticationRoute implements Route {
         }
         try {
             AuthenticateUser authenticateUser = new AuthenticateUserDeserializer().deserialize(request.body());
-            LoggedInUserRecord loggedInUserRecord = new Authentication(userStorage, tokenStorage).logIn(authenticateUser);
+            LoggedInUserRecord loggedInUserRecord = new Authentication(userStorage, tokenStorage).handle(authenticateUser);
             if (logger.isInfoEnabled()) {
                 logger.info("User with login " + authenticateUser.login().value() + " was authenticated.");
             }

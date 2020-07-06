@@ -1,6 +1,7 @@
 package io.javaclasses.filehub.api.user;
 
 import com.google.common.testing.NullPointerTester;
+import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
 import io.javaclasses.filehub.storage.user.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ class RegistrationProcessTest {
         tester.setDefault(Login.class, new Login("asdff"));
         tester.setDefault(Password.class, new Password("Qwerty123"));
         tester.testAllPublicConstructors(RegisterUser.class);
-        tester.testAllPublicInstanceMethods(new Registration(new UserStorage()));
+        tester.testAllPublicInstanceMethods(new Registration(new UserStorage(), new FolderMetadataStorage()));
     }
 
     @Test
@@ -35,7 +36,7 @@ class RegistrationProcessTest {
                 isAddCalled[0] = true;
             }
         };
-        Registration registrationService = new Registration(mockStorage);
+        Registration registrationService = new Registration(mockStorage, new FolderMetadataStorage());
         assertDoesNotThrow(() -> registrationService.register(new RegisterUser(login, password)),
                 "Should not throw LoginIsTakenException since user with such login does not exist.");
         assertWithMessage("Should call add method from UserStorage.")
@@ -58,7 +59,7 @@ class RegistrationProcessTest {
                 return Optional.of(new User(new UserId("id"), login, "Password1"));
             }
         };
-        Registration registration = new Registration(mockStorage);
+        Registration registration = new Registration(mockStorage, new FolderMetadataStorage());
         assertThrows(LoginIsTakenException.class,
                 () -> registration.register(new RegisterUser(repeatedLogin, new Password("Password2"))),
                 "Should throw LoginIsTakenException because user with such login is already registered.");

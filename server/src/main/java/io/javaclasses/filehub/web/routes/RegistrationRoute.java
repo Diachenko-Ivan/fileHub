@@ -58,7 +58,7 @@ public class RegistrationRoute implements Route {
         response.type("application/json");
         try {
             RegisterUser registerUserCommand = new RegisterUserDeserializer().deserialize(request.body());
-            new Registration(userStorage).register(registerUserCommand);
+            new Registration(userStorage, folderMetadataStorage).register(registerUserCommand);
             response.status(SC_OK);
             return "User is registered";
         } catch (CredentialsAreNotValidException e) {

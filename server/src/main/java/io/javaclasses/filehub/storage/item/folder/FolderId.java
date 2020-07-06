@@ -4,7 +4,7 @@ import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.storage.RecordId;
 
 /**
- * Identifier for {@link FolderMetadataRecord}.
+ * An identifier for {@link FolderMetadataRecord}.
  */
 @Immutable
 public final class FolderId extends RecordId {

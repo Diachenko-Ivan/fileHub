@@ -13,6 +13,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Data structure that contains information about folder. Stored in {@link FolderMetadataStorage}.
  * <p>If {@code parentFolderId} is <i>null</i> then folder is root.
+ * <p>The root folder is a unique, high-level folder for every {@link User}.
  */
 public final class FolderMetadataRecord extends Record<FolderId> {
     /**

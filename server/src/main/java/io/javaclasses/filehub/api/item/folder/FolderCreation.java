@@ -43,7 +43,7 @@ public class FolderCreation implements Process {
     }
 
     /**
-     * Creates new folder handling {@link CreateFolder} command.
+     * Creates a new folder handling {@link CreateFolder} command.
      *
      * @param createFolderCommand a command to create a new folder.
      * @return created folder.

@@ -8,7 +8,7 @@ import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Client intention to create a new folder in already existent folder.
+ * Client intention to create a new folder in already existing one.
  */
 @Immutable
 public final class CreateFolder implements Command {

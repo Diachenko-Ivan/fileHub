@@ -36,7 +36,7 @@ class FolderMetadataStorageTest {
         return folderMetadataStorage;
     }
 
-    @DisplayName("not accept null parameters to methods.")
+    @DisplayName("find folders by parent folder identifier.")
     @Test
     void testFindFoldersByParentId() {
         FolderMetadataStorage folderMetadataStorage = prepareFolderStorage();

@@ -1,7 +1,9 @@
-package io.javaclasses.filehub.storage.item.folder;
+package io.javaclasses.filehub.api.item.folder;
 
 import com.google.errorprone.annotations.Immutable;
 import com.google.gson.annotations.SerializedName;
+import io.javaclasses.filehub.storage.item.folder.FolderId;
+import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

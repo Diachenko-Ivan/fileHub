@@ -18,19 +18,19 @@ class FileItemCountTest {
         tester.testAllPublicConstructors(FileItemCount.class);
     }
 
-    @DisplayName("not accept null parameters to constructor.")
+    @DisplayName("not accept negative value to constructor.")
     @Test
     void testNegativeNumberOfItems() {
         assertThrows(IllegalArgumentException.class, () -> new FileItemCount(-2),
-                "Constructor did not throw exception because of incorrect number");
+                "Constructor did not throw exception because of incorrect value.");
     }
 
-    @DisplayName("not accept null parameters to constructor.")
+    @DisplayName("accept positive value to constructor.")
     @Test
     void testPositiveNumberOfItems() {
         assertDoesNotThrow(() -> assertWithMessage("Number of files is incorrect.")
                         .that(new FileItemCount(2).value())
                         .isEqualTo(2),
-                "Constructor threw exception but value is correct.");
+                "Constructor threw an exception but value is correct.");
     }
 }

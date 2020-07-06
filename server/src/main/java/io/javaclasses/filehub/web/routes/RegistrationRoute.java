@@ -1,8 +1,6 @@
 package io.javaclasses.filehub.web.routes;
 
 import com.google.gson.JsonParseException;
-import io.javaclasses.filehub.api.item.folder.CreateFolder;
-import io.javaclasses.filehub.api.item.folder.FolderCreation;
 import io.javaclasses.filehub.api.user.LoginIsTakenException;
 import io.javaclasses.filehub.api.user.RegisterUser;
 import io.javaclasses.filehub.api.user.Registration;
@@ -49,9 +47,6 @@ public class RegistrationRoute implements Route {
     public RegistrationRoute(UserStorage userStorage, FolderMetadataStorage folderMetadataStorage) {
         this.userStorage = checkNotNull(userStorage);
         this.folderMetadataStorage = checkNotNull(folderMetadataStorage);
-        if (logger.isInfoEnabled()) {
-            logger.info("RegistrationRoute is registered.");
-        }
     }
 
     /**
@@ -60,20 +55,15 @@ public class RegistrationRoute implements Route {
      */
     @Override
     public Object handle(Request request, Response response) {
-        if (logger.isInfoEnabled()) {
-            logger.info("Request to '/api/register' url.");
-        }
         response.type("application/json");
         try {
             RegisterUser registerUserCommand = new RegisterUserDeserializer().deserialize(request.body());
-            User registeredUser = new Registration(userStorage).register(registerUserCommand);
-
-            new FolderCreation(folderMetadataStorage).createFolder(new CreateFolder(registeredUser.id(), null));
+            new Registration(userStorage).register(registerUserCommand);
             response.status(SC_OK);
             return "User is registered";
         } catch (CredentialsAreNotValidException e) {
-            if (logger.isWarnEnabled()) {
-                logger.warn("User credentials are not validated:" + Arrays.toString(e.failedCredentials()));
+            if (logger.isInfoEnabled()) {
+                logger.info("User credentials are not validated:" + Arrays.toString(e.failedCredentials()));
             }
             response.status(422);
             return new CredentialsAreNotValidExceptionSerializer().serialize(e);
@@ -81,8 +71,8 @@ public class RegistrationRoute implements Route {
             response.status(SC_BAD_REQUEST);
             return "User with this login already exists.";
         } catch (JsonParseException e) {
-            if (logger.isWarnEnabled()) {
-                logger.warn("Failed to parse request body: " +
+            if (logger.isInfoEnabled()) {
+                logger.info("Failed to parse request body: " +
                         request.body() + " for incoming request for registration.");
             }
             response.status(422);

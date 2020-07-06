@@ -18,17 +18,25 @@ class AuthenticationProcessTest {
     @Test
     void testNullParameters() {
         NullPointerTester tester = new NullPointerTester();
-        tester.testAllPublicConstructors(AuthorizationService.class);
-        tester.testAllPublicInstanceMethods(new AuthorizationService(new TokenStorage()));
+        tester.testAllPublicConstructors(Authentication.class);
+        tester.testAllPublicInstanceMethods(new Authentication(new UserStorage(), new LoggedInUserStorage()));
     }
 
-    private TokenStorage mockTokenStorage(boolean[] isAddCalled)  {
-        return new TokenStorage() {
-            @Override
-            public synchronized void add(TokenRecord record) {
-                isAddCalled[0] = true;
-            }
-        };
+    private static class MockLoggedInUserStorage {
+        private boolean isAddCalled = false;
+
+        private LoggedInUserStorage create() {
+            return new LoggedInUserStorage() {
+                @Override
+                public synchronized void add(LoggedInUserRecord record) {
+                    isAddCalled = true;
+                }
+            };
+        }
+
+        private boolean isAddCalled() {
+            return isAddCalled;
+        }
     }
 
     private UserStorage mockUserStorage(User userFindResult) {
@@ -42,25 +50,25 @@ class AuthenticationProcessTest {
 
     @DisplayName("authenticate existent user.")
     @Test
-    void testSuccessfulLogin() {
-        boolean[] isAddCalled = {false};
+    void testPassedUserAuthentication() {
+        MockLoggedInUserStorage mockStorage = new MockLoggedInUserStorage();
 
-        TokenStorage mockTokenStorage = mockTokenStorage(isAddCalled);
+        LoggedInUserStorage mockLoggedInUserStorage = mockStorage.create();
 
         UserStorage mockUserStorage = mockUserStorage(new User(new UserId("qwe"), new Login("login"), "password"));
 
-        Authentication process = new Authentication(mockUserStorage, mockTokenStorage);
+        Authentication process = new Authentication(mockUserStorage, mockLoggedInUserStorage);
 
         assertDoesNotThrow(() -> {
-                    TokenRecord token = process.logIn(
+                    LoggedInUserRecord loggedInUser = process.handle(
                             new AuthenticateUser(new Login("login"), new Password("Password1")));
 
                     assertWithMessage("Token should not be null but it is.")
-                            .that(token)
+                            .that(loggedInUser)
                             .isNotNull();
 
                     assertWithMessage("The token was not added to the storage.")
-                            .that(isAddCalled[0])
+                            .that(mockStorage.isAddCalled())
                             .isTrue();
                 },
                 "Authentication error was thrown but it should not because user exists.");
@@ -68,20 +76,21 @@ class AuthenticationProcessTest {
 
     @DisplayName("fail authentication of nonexistent user.")
     @Test
-    void testUnsuccessfulLogin() {
-        boolean[] isAddCalled = {false};
+    void testFailedUserAuthentication() {
+        MockLoggedInUserStorage mockStorageProxy = new MockLoggedInUserStorage();
 
-        TokenStorage mockTokenStorage = mockTokenStorage(isAddCalled);
+        LoggedInUserStorage mockLoggedInUserStorage = mockStorageProxy.create();
+
         UserStorage mockUserStorage = mockUserStorage(null);
 
-        Authentication process = new Authentication(mockUserStorage, mockTokenStorage);
+        Authentication process = new Authentication(mockUserStorage, mockLoggedInUserStorage);
 
         assertThrows(UserIsNotAuthenticatedException.class, () ->
-                        process.logIn(new AuthenticateUser(new Login("login"), new Password("Password1"))),
+                        process.handle(new AuthenticateUser(new Login("login"), new Password("Password1"))),
                 "Should throw AuthenticationException because user does not exist.");
 
         assertWithMessage("Token was added to token storage after failed authentication.")
-                .that(isAddCalled[0])
+                .that(mockStorageProxy.isAddCalled())
                 .isFalse();
     }
 }

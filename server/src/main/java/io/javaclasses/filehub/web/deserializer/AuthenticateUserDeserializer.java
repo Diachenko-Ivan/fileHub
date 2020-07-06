@@ -25,11 +25,13 @@ public class AuthenticateUserDeserializer implements JsonDeserializer<Authentica
         checkNotNull(context);
         checkNotNull(json);
         JsonObject object = json.getAsJsonObject();
-
-        String login = object.getAsJsonPrimitive("login").getAsString();
-        String password = object.getAsJsonPrimitive("password").getAsString();
-
-        return new AuthenticateUser(new Login(login), new Password(password));
+        try {
+            String login = object.getAsJsonPrimitive("login").getAsString();
+            String password = object.getAsJsonPrimitive("password").getAsString();
+            return new AuthenticateUser(new Login(login), new Password(password));
+        } catch (NullPointerException e) {
+            throw new JsonParseException("Failed to parse json string.");
+        }
     }
 
     /**

@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.web;
 
+import io.javaclasses.filehub.storage.user.LoggedInUserStorage;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
 import io.javaclasses.filehub.storage.user.TokenStorage;
@@ -24,7 +25,7 @@ public class WebApplication {
     /**
      * Storage for access tokens.
      */
-    private final TokenStorage tokenStorage = new TokenStorage();
+    private final LoggedInUserStorage loggedInUserStorage = new LoggedInUserStorage();
     /**
      * Storage for folders {@link FolderMetadataRecord}.
      */
@@ -46,11 +47,11 @@ public class WebApplication {
     private void run() {
         port(8080);
         staticFiles.location("/app/");
-        this.filter();
+        filter();
 
         path("/api", () -> {
             post("/register", new RegistrationRoute(userStorage, folderMetadataStorage));
-            post("/login", new AuthenticationRoute(userStorage, tokenStorage));
+            post("/login", new AuthenticationRoute(userStorage, loggedInUserStorage));
             post("/folder/:folderId/folder", new FolderCreationRoute(folderMetadataStorage, tokenStorage));
         });
     }
@@ -59,7 +60,8 @@ public class WebApplication {
      * Filters requests.
      */
     private void filter() {
-        Filter authorizationFilter = new AuthorizationFilter(tokenStorage);
+        Filter authorizationFilter = new AuthorizationFilter(loggedInUserStorage);
+        before("/api/*", new LogRequestInfoFilter());
         path("/api", () -> {
             before("/folder/*", authorizationFilter);
             before("/file/*", authorizationFilter);

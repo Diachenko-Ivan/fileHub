@@ -1,10 +1,8 @@
 package io.javaclasses.filehub.web;
 
-import io.javaclasses.filehub.api.user.AuthorizationService;
-import io.javaclasses.filehub.storage.user.TokenRecord;
-import io.javaclasses.filehub.storage.user.TokenStorage;
-import io.javaclasses.filehub.storage.user.User;
-import io.javaclasses.filehub.storage.user.UserId;
+import io.javaclasses.filehub.api.user.CurrentUserIdHolder;
+import io.javaclasses.filehub.api.user.LoggedInUserId;
+import io.javaclasses.filehub.storage.user.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Filter;
@@ -26,17 +24,17 @@ public class AuthorizationFilter implements Filter {
      */
     private static final Logger logger = LoggerFactory.getLogger(AuthorizationFilter.class);
     /**
-     * Storage for tokens {@link TokenRecord}
+     * Storage for tokens {@link LoggedInUserRecord}
      */
-    private final TokenStorage tokenStorage;
+    private final LoggedInUserStorage loggedInUserStorage;
 
     /**
      * Creates new {@link AuthorizationFilter} instance.
      *
-     * @param tokenStorage storage for tokens {@link TokenRecord}
+     * @param loggedInUserStorage storage for tokens {@link LoggedInUserRecord}
      */
-    public AuthorizationFilter(TokenStorage tokenStorage) {
-        this.tokenStorage = checkNotNull(tokenStorage);
+    public AuthorizationFilter(LoggedInUserStorage loggedInUserStorage) {
+        this.loggedInUserStorage = checkNotNull(loggedInUserStorage);
     }
 
     /**
@@ -52,14 +50,17 @@ public class AuthorizationFilter implements Filter {
         }
         String authorizationToken = get(on(' ').split(authorizationHeaderValue), 1);
 
-        UserId userId = new AuthorizationService(tokenStorage).authorizedUserId(authorizationToken);
+        UserId userId = new LoggedInUserId(loggedInUserStorage).get(new Token(authorizationToken));
         if (userId == null) {
-            if (logger.isWarnEnabled()) {
-                logger.warn("User with token " + authorizationToken
+            if (logger.isInfoEnabled()) {
+                logger.info("User with token " + authorizationToken
                         + " failed authorization to " + request.pathInfo() + " request.");
             }
             halt(SC_UNAUTHORIZED);
         }
+
+        CurrentUserIdHolder.set(userId);
+
         if (logger.isDebugEnabled()) {
             logger.debug("User with token " + authorizationToken
                     + " passed authorization to " + request.pathInfo() + " request.");

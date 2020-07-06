@@ -104,7 +104,7 @@ class FolderCreationRouteTest {
 
         authenticationRoute.handle(mockRequest, mockResponse);
 
-        assertWithMessage("Response status is not 422.")
+        assertWithMessage("Response status is not 200.")
                 .that(mockResponse.status())
                 .isEqualTo(200);
     }
@@ -127,7 +127,7 @@ class FolderCreationRouteTest {
 
         authenticationRoute.handle(mockRequest, mockResponse);
 
-        assertWithMessage("Response status is not 422.")
+        assertWithMessage("Response status is not 404.")
                 .that(mockResponse.status())
                 .isEqualTo(404);
     }

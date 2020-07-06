@@ -6,8 +6,6 @@ import io.javaclasses.filehub.api.user.Authentication;
 import io.javaclasses.filehub.api.user.UserIsNotAuthenticatedException;
 import io.javaclasses.filehub.storage.user.*;
 import io.javaclasses.filehub.web.deserializer.AuthenticateUserDeserializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -21,10 +19,6 @@ import static org.eclipse.jetty.http.HttpStatus.UNPROCESSABLE_ENTITY_422;
  * Implementation of {@link Route} that handles requests for user authentication.
  */
 public class AuthenticationRoute implements Route {
-    /**
-     * For logging.
-     */
-    private static final Logger logger = LoggerFactory.getLogger(AuthenticationRoute.class);
     /**
      * Storage for users {@link User}.
      */

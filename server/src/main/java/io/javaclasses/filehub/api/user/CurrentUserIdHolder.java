@@ -1,6 +1,8 @@
-package io.javaclasses.filehub.web;
+package io.javaclasses.filehub.api.user;
 
 import io.javaclasses.filehub.storage.user.UserId;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Holder for authorized user identifier {@link UserId}.
@@ -17,8 +19,8 @@ public class CurrentUserIdHolder {
      *
      * @param currentUserId an identifier of authorized user {@link io.javaclasses.filehub.storage.user.User}.
      */
-    public static void set(UserId currentUserId) {
-        USER_THREAD_SCOPE.set(currentUserId);
+    public static synchronized void set(UserId currentUserId) {
+        USER_THREAD_SCOPE.set(checkNotNull(currentUserId));
     }
 
     /**
@@ -26,7 +28,7 @@ public class CurrentUserIdHolder {
      *
      * @return current user identifier.
      */
-    public static UserId get() {
+    public static synchronized UserId get() {
         return USER_THREAD_SCOPE.get();
     }
 }

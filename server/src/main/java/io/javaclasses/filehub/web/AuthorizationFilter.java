@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.web;
 
+import io.javaclasses.filehub.api.user.CurrentUserIdHolder;
 import io.javaclasses.filehub.api.user.LoggedInUserId;
 import io.javaclasses.filehub.storage.user.*;
 import org.slf4j.Logger;

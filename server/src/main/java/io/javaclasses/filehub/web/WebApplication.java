@@ -1,9 +1,8 @@
 package io.javaclasses.filehub.web;
 
-import io.javaclasses.filehub.storage.user.LoggedInUserStorage;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
-import io.javaclasses.filehub.storage.user.TokenStorage;
+import io.javaclasses.filehub.storage.user.LoggedInUserStorage;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserStorage;
 import io.javaclasses.filehub.web.routes.AuthenticationRoute;
@@ -52,7 +51,7 @@ public class WebApplication {
         path("/api", () -> {
             post("/register", new RegistrationRoute(userStorage, folderMetadataStorage));
             post("/login", new AuthenticationRoute(userStorage, loggedInUserStorage));
-            post("/folder/:folderId/folder", new FolderCreationRoute(folderMetadataStorage, tokenStorage));
+            post("/folder/:folderId/folder", new FolderCreationRoute(folderMetadataStorage));
         });
     }
 

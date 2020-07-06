@@ -2,7 +2,6 @@ package io.javaclasses.filehub.storage.item.folder;
 
 import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.storage.RecordId;
-import io.javaclasses.filehub.storage.user.TokenId;
 
 /**
  * Identifier for {@link FolderMetadataRecord}.
@@ -11,7 +10,7 @@ import io.javaclasses.filehub.storage.user.TokenId;
 public final class FolderId extends RecordId {
 
     /**
-     * Creates new {@link TokenId} instance.
+     * Creates new {@link FolderId} instance.
      *
      * @param value folder identifier value.
      */

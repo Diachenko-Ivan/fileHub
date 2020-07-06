@@ -1,6 +1,7 @@
 package io.javaclasses.filehub.storage.item.folder;
 
 import com.google.common.testing.NullPointerTester;
+import io.javaclasses.filehub.api.item.folder.FolderDto;
 import io.javaclasses.filehub.storage.item.ItemName;
 import io.javaclasses.filehub.storage.user.UserId;
 import org.junit.jupiter.api.DisplayName;
@@ -18,29 +19,33 @@ class FolderDtoTest {
         tester.testAllPublicConstructors(FolderDto.class);
     }
 
-    private FolderDto createFolderDto(FolderId parentFolderId) {
-        return new FolderDto(new FolderMetadataRecord(
+    private FolderMetadataRecord createFolderMetadataWithParentId(FolderId parentFolderId) {
+        return new FolderMetadataRecord(
                 new FolderId("id"),
                 new ItemName("name"),
                 new UserId("asf"),
                 new FileItemCount(4),
                 parentFolderId
-        ));
+        );
     }
 
-    @DisplayName("set parent folder identifier to null.")
+    @DisplayName("accept non existing parent folder identifier.")
     @Test
-    void testParentFolderIdNullValue() {
-        FolderDto folderDto = createFolderDto(null);
+    void testInstanceCreationWithNoParentId() {
+        FolderMetadataRecord folderMetadata = createFolderMetadataWithParentId(null);
+
+        FolderDto folderDto = new FolderDto(folderMetadata);
         assertWithMessage("Parent folder identifier is not null.")
                 .that(folderDto.parentId())
                 .isNull();
     }
 
-    @DisplayName("set parent folder identifier to concrete folder id.")
+    @DisplayName("accept existing parent folder identifier.")
     @Test
-    void testParentFolderIdNotNullValue() {
-        FolderDto folderDto = createFolderDto(new FolderId("asdasd"));
+    void testInstanceCreationWithParentId() {
+        FolderMetadataRecord folderMetadata = createFolderMetadataWithParentId(new FolderId("asdasd"));
+
+        FolderDto folderDto = new FolderDto(folderMetadata);
         assertWithMessage("Parent folder identifier is null.")
                 .that(folderDto.parentId())
                 .isNotNull();

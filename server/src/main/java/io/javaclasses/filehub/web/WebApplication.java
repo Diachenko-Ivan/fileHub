@@ -7,7 +7,11 @@ import io.javaclasses.filehub.web.routes.AuthenticationRoute;
 import io.javaclasses.filehub.web.routes.RegistrationRoute;
 import spark.Filter;
 
-import static spark.Spark.*;
+import static spark.Spark.before;
+import static spark.Spark.path;
+import static spark.Spark.port;
+import static spark.Spark.post;
+import static spark.Spark.staticFiles;
 
 /**
  * Represents File Hub application, configs server which based on {@link spark.Spark}

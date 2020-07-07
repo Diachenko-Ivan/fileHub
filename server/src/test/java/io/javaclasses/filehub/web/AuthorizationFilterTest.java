@@ -1,9 +1,9 @@
 package io.javaclasses.filehub.web;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.storage.user.TokenId;
-import io.javaclasses.filehub.storage.user.TokenRecord;
-import io.javaclasses.filehub.storage.user.TokenStorage;
+import io.javaclasses.filehub.storage.user.LoggedInUserRecord;
+import io.javaclasses.filehub.storage.user.LoggedInUserStorage;
+import io.javaclasses.filehub.storage.user.Token;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import spark.HaltException;
@@ -50,7 +50,7 @@ class AuthorizationFilterTest {
                 return null;
             }
         };
-        AuthorizationFilter filter = new AuthorizationFilter(new TokenStorage());
+        AuthorizationFilter filter = new AuthorizationFilter(new LoggedInUserStorage());
         Response mockResponse = mockResponse();
 
         try {
@@ -73,7 +73,7 @@ class AuthorizationFilterTest {
                 return "wrong_format_authorization_token";
             }
         };
-        AuthorizationFilter filter = new AuthorizationFilter(new TokenStorage());
+        AuthorizationFilter filter = new AuthorizationFilter(new LoggedInUserStorage());
         Response mockResponse = mockResponse();
 
         try {
@@ -102,13 +102,13 @@ class AuthorizationFilterTest {
                 return "/api/request-path";
             }
         };
-        TokenStorage mockTokenStorage = new TokenStorage() {
+        LoggedInUserStorage mockLoggedInUserStorage = new LoggedInUserStorage() {
             @Override
-            public synchronized Optional<TokenRecord> find(TokenId id) {
+            public synchronized Optional<LoggedInUserRecord> find(Token id) {
                 return empty();
             }
         };
-        AuthorizationFilter filter = new AuthorizationFilter(mockTokenStorage);
+        AuthorizationFilter filter = new AuthorizationFilter(mockLoggedInUserStorage);
         Response mockResponse = mockResponse();
 
         try {

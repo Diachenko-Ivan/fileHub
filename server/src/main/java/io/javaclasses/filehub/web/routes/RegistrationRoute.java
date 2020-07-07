@@ -1,10 +1,10 @@
 package io.javaclasses.filehub.web.routes;
 
 import com.google.gson.JsonParseException;
-import io.javaclasses.filehub.storage.user.CredentialsAreNotValidException;
 import io.javaclasses.filehub.api.user.LoginIsTakenException;
 import io.javaclasses.filehub.api.user.RegisterUser;
 import io.javaclasses.filehub.api.user.Registration;
+import io.javaclasses.filehub.storage.user.CredentialsAreNotValidException;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserStorage;
 import io.javaclasses.filehub.web.deserializer.RegisterUserDeserializer;
@@ -41,9 +41,6 @@ public class RegistrationRoute implements Route {
      */
     public RegistrationRoute(UserStorage userStorage) {
         this.userStorage = checkNotNull(userStorage);
-        if (logger.isInfoEnabled()) {
-            logger.info("RegistrationRoute is registered.");
-        }
     }
 
     /**
@@ -52,9 +49,6 @@ public class RegistrationRoute implements Route {
      */
     @Override
     public Object handle(Request request, Response response) {
-        if (logger.isInfoEnabled()) {
-            logger.info("Request to '/api/register' url.");
-        }
         response.type("application/json");
         try {
             RegisterUser registerUserCommand = new RegisterUserDeserializer().deserialize(request.body());
@@ -71,8 +65,8 @@ public class RegistrationRoute implements Route {
             response.status(SC_BAD_REQUEST);
             return "User with this login already exists.";
         } catch (JsonParseException e) {
-            if (logger.isWarnEnabled()) {
-                logger.warn("Failed to parse request body: " +
+            if (logger.isInfoEnabled()) {
+                logger.info("Failed to parse request body: " +
                         request.body() + " for incoming request for registration.");
             }
             response.status(422);

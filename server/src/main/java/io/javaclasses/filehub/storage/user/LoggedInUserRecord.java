@@ -3,15 +3,16 @@ package io.javaclasses.filehub.storage.user;
 import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.storage.Record;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Data structure that contains information about authorization session.
+ * Data structure that contains information about logged in {@link User}, his access token {@link Token}
+ * and token expiration time.
  */
 @Immutable
-public final class TokenRecord extends Record<TokenId> {
+public final class LoggedInUserRecord extends Record<Token> {
     /**
      * User identifier.
      */
@@ -19,17 +20,17 @@ public final class TokenRecord extends Record<TokenId> {
     /**
      * Token expiration date.
      */
-    private final Instant expirationDate;
+    private final LocalDateTime expirationDate;
 
     /**
-     * Creates new {@link TokenRecord} instance.
+     * Creates new {@link LoggedInUserRecord} instance.
      *
-     * @param tokenId        token identifier.
+     * @param token          token identifier.
      * @param userId         user identifier.
      * @param expirationDate token expiration date.
      */
-    public TokenRecord(TokenId tokenId, UserId userId, Instant expirationDate) {
-        super(tokenId);
+    public LoggedInUserRecord(Token token, UserId userId, LocalDateTime expirationDate) {
+        super(token);
         this.userId = checkNotNull(userId);
         this.expirationDate = checkNotNull(expirationDate);
     }
@@ -48,8 +49,7 @@ public final class TokenRecord extends Record<TokenId> {
      *
      * @return token value.
      */
-    public Instant expirationDate() {
+    public LocalDateTime expirationDate() {
         return expirationDate;
     }
-
 }

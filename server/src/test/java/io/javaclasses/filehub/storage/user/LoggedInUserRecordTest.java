@@ -5,14 +5,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("TokenRecord should ")
-class TokenRecordTest {
+class LoggedInUserRecordTest {
 
     @DisplayName("not accept null params")
     @Test
     void testNullParams() {
         NullPointerTester tester = new NullPointerTester();
-        tester.setDefault(TokenId.class, new TokenId("dgshsdryf"));
+        tester.setDefault(Token.class, new Token("dgshsdryf"));
         tester.setDefault(UserId.class, new UserId("ajoassddsfsf"));
-        tester.testAllPublicConstructors(TokenRecord.class);
+        tester.testAllPublicConstructors(LoggedInUserRecord.class);
     }
 }

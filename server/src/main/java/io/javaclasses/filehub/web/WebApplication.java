@@ -1,6 +1,7 @@
 package io.javaclasses.filehub.web;
 
 import io.javaclasses.filehub.storage.user.TokenStorage;
+import io.javaclasses.filehub.storage.user.LoggedInUserStorage;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserStorage;
 import io.javaclasses.filehub.web.routes.AuthenticationRoute;
@@ -8,7 +9,11 @@ import io.javaclasses.filehub.web.routes.LogoutRoute;
 import io.javaclasses.filehub.web.routes.RegistrationRoute;
 import spark.Filter;
 
-import static spark.Spark.*;
+import static spark.Spark.before;
+import static spark.Spark.path;
+import static spark.Spark.port;
+import static spark.Spark.post;
+import static spark.Spark.staticFiles;
 
 /**
  * Represents File Hub application, configs server which based on {@link spark.Spark}
@@ -22,7 +27,7 @@ public class WebApplication {
     /**
      * Storage for access tokens.
      */
-    private final TokenStorage tokenStorage = new TokenStorage();
+    private final LoggedInUserStorage loggedInUserStorage = new LoggedInUserStorage();
 
     /**
      * Starts application.
@@ -40,10 +45,11 @@ public class WebApplication {
     private void run() {
         port(8080);
         staticFiles.location("/app/");
-        this.filter();
+        filter();
 
         path("/api", () -> {
             post("/register", new RegistrationRoute(userStorage));
+            post("/login", new AuthenticationRoute(userStorage, loggedInUserStorage));
             post("/login", new AuthenticationRoute(userStorage, tokenStorage));
             post("/logout", new LogoutRoute(tokenStorage));
         });
@@ -53,7 +59,8 @@ public class WebApplication {
      * Filters requests.
      */
     private void filter() {
-        Filter authorizationFilter = new AuthorizationFilter(tokenStorage);
+        Filter authorizationFilter = new AuthorizationFilter(loggedInUserStorage);
+        before("/api/*", new LogRequestInfoFilter());
         path("/api", () -> {
             before("/folder/*", authorizationFilter);
             before("/file/*", authorizationFilter);

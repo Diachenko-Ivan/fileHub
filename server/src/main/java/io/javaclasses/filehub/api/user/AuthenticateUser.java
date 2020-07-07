@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.api.user;
 
+import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.api.Command;
 import io.javaclasses.filehub.storage.user.Login;
 import io.javaclasses.filehub.storage.user.Password;
@@ -7,10 +8,11 @@ import io.javaclasses.filehub.storage.user.Password;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Command to authenticate user in the application.
+ * The command {@link Command} to authenticate a user in the FileHub application.
  * <p>Stores user login and password.
  */
-public class AuthenticateUser implements Command {
+@Immutable
+public final class AuthenticateUser implements Command {
     /**
      * User login.
      */

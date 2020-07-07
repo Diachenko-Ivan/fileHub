@@ -1,8 +1,10 @@
-package io.javaclasses.filehub.storage.item.folder;
+package io.javaclasses.filehub.api.item.folder;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.api.item.folder.FolderDto;
 import io.javaclasses.filehub.storage.item.ItemName;
+import io.javaclasses.filehub.storage.item.folder.FileItemCount;
+import io.javaclasses.filehub.storage.item.folder.FolderId;
+import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.user.UserId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

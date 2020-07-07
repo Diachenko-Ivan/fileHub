@@ -4,6 +4,7 @@ import io.javaclasses.filehub.storage.user.LoggedInUserStorage;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserStorage;
 import io.javaclasses.filehub.web.routes.AuthenticationRoute;
+import io.javaclasses.filehub.web.routes.LogoutRoute;
 import io.javaclasses.filehub.web.routes.RegistrationRoute;
 import spark.Filter;
 
@@ -48,6 +49,8 @@ public class WebApplication {
         path("/api", () -> {
             post("/register", new RegistrationRoute(userStorage));
             post("/login", new AuthenticationRoute(userStorage, loggedInUserStorage));
+            post("/login", new AuthenticationRoute(userStorage, loggedInUserStorage));
+            post("/logout", new LogoutRoute(loggedInUserStorage));
         });
     }
 

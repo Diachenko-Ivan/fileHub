@@ -2,9 +2,9 @@ package io.javaclasses.filehub.web.routes;
 
 import io.javaclasses.filehub.api.user.LogOutUser;
 import io.javaclasses.filehub.api.user.LogoutProcess;
-import io.javaclasses.filehub.storage.user.TokenId;
-import io.javaclasses.filehub.storage.user.TokenRecord;
-import io.javaclasses.filehub.storage.user.TokenStorage;
+import io.javaclasses.filehub.storage.user.LoggedInUserRecord;
+import io.javaclasses.filehub.storage.user.LoggedInUserStorage;
+import io.javaclasses.filehub.storage.user.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -16,7 +16,7 @@ import static com.google.common.base.Splitter.on;
 import static com.google.common.collect.Iterables.get;
 
 /**
- * Implementation of {@link Route} that handles request for user logout.
+ * Implementation of {@link Route} that handles requests for user logout.
  */
 public class LogoutRoute implements Route {
     /**
@@ -25,17 +25,17 @@ public class LogoutRoute implements Route {
     private static final Logger logger = LoggerFactory.getLogger(LogoutRoute.class);
 
     /**
-     * Storage for {@link TokenRecord}.
+     * Storage for {@link LoggedInUserRecord}.
      */
-    private final TokenStorage tokenStorage;
+    private final LoggedInUserStorage storage;
 
     /**
      * Creates new {@link RegistrationRoute} instance.
      *
-     * @param tokenStorage storage for {@link TokenRecord}.
+     * @param storage storage for {@link LoggedInUserRecord}.
      */
-    public LogoutRoute(TokenStorage tokenStorage) {
-        this.tokenStorage = checkNotNull(tokenStorage);
+    public LogoutRoute(LoggedInUserStorage storage) {
+        this.storage = checkNotNull(storage);
     }
 
     /**
@@ -44,13 +44,10 @@ public class LogoutRoute implements Route {
      */
     @Override
     public Object handle(Request request, Response response) {
-        if (logger.isInfoEnabled()) {
-            logger.info("Request to '/api/logout'.");
-        }
         String authorizationToken = get(on(' ').split(request.headers("Authorization")), 1);
-        TokenId tokenId = new TokenId(authorizationToken);
+        Token tokenId = new Token(authorizationToken);
 
-        new LogoutProcess(tokenStorage).logOut(new LogOutUser(tokenId));
+        new LogoutProcess(storage).logOut(new LogOutUser(tokenId));
 
         if (logger.isInfoEnabled()) {
             logger.info("User with access token: " + authorizationToken + " was logged out.");

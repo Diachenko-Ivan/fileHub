@@ -1,6 +1,5 @@
 package io.javaclasses.filehub.web;
 
-import io.javaclasses.filehub.storage.user.TokenStorage;
 import io.javaclasses.filehub.storage.user.LoggedInUserStorage;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserStorage;
@@ -50,8 +49,8 @@ public class WebApplication {
         path("/api", () -> {
             post("/register", new RegistrationRoute(userStorage));
             post("/login", new AuthenticationRoute(userStorage, loggedInUserStorage));
-            post("/login", new AuthenticationRoute(userStorage, tokenStorage));
-            post("/logout", new LogoutRoute(tokenStorage));
+            post("/login", new AuthenticationRoute(userStorage, loggedInUserStorage));
+            post("/logout", new LogoutRoute(loggedInUserStorage));
         });
     }
 

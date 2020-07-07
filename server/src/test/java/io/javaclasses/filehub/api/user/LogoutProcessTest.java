@@ -1,9 +1,9 @@
 package io.javaclasses.filehub.api.user;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.storage.user.TokenId;
-import io.javaclasses.filehub.storage.user.TokenRecord;
-import io.javaclasses.filehub.storage.user.TokenStorage;
+import io.javaclasses.filehub.storage.user.LoggedInUserRecord;
+import io.javaclasses.filehub.storage.user.LoggedInUserStorage;
+import io.javaclasses.filehub.storage.user.Token;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,19 +17,19 @@ class LogoutProcessTest {
     void testNullParameters() {
         NullPointerTester tester = new NullPointerTester();
         tester.testAllPublicConstructors(LogoutProcess.class);
-        tester.testAllPublicInstanceMethods(new LogoutProcess(new TokenStorage()));
+        tester.testAllPublicInstanceMethods(new LogoutProcess(new LoggedInUserStorage()));
     }
 
     @DisplayName("call remove method with correct parameter from TokenStorage.")
     @Test
     void testTokenRemove() {
         boolean[] isRemoveCalled = {false};
-        TokenId logoutTokenId = new TokenId("qwertyuiop");
+        Token logoutTokenId = new Token("qwertyuiop");
         LogOutUser logOutUserCommand = new LogOutUser(logoutTokenId);
 
-        TokenStorage mockTokenStorage = new TokenStorage() {
+        LoggedInUserStorage mockTokenStorage = new LoggedInUserStorage() {
             @Override
-            public synchronized TokenRecord remove(TokenId id) {
+            public synchronized LoggedInUserRecord remove(Token id) {
                 if (id.equals(logoutTokenId)) {
                     isRemoveCalled[0] = true;
                 }

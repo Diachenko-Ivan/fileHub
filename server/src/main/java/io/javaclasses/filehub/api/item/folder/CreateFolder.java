@@ -26,7 +26,8 @@ public final class CreateFolder implements Command {
     /**
      * Creates new {@link CreateFolder} instance.
      *
-     * @param parentFolderId identifier of parent folder.
+     * @param parentFolderId an identifier of parent folder.
+     * @param ownerId an identifier of the owner.
      */
     public CreateFolder(FolderId parentFolderId, UserId ownerId) {
         this.parentFolderId = checkNotNull(parentFolderId);

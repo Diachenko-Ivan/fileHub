@@ -2,7 +2,11 @@ package io.javaclasses.filehub.api.user;
 
 import io.javaclasses.filehub.api.Process;
 import io.javaclasses.filehub.storage.TimeZoneIdentifier;
-import io.javaclasses.filehub.storage.user.*;
+import io.javaclasses.filehub.storage.user.LoggedInUserRecord;
+import io.javaclasses.filehub.storage.user.LoggedInUserStorage;
+import io.javaclasses.filehub.storage.user.Token;
+import io.javaclasses.filehub.storage.user.User;
+import io.javaclasses.filehub.storage.user.UserStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,12 +72,12 @@ public class Authentication implements Process {
         }
         LoggedInUserRecord loggedInUserRecord = new LoggedInUserRecord(new Token(generateId()),
                 existentUser.get().id(),
-                now(TimeZoneIdentifier.get()).plusMinutes(tokenExpirationInterval()));
+                now(TimeZoneIdentifier.get()).plus(tokenExpirationInterval()));
 
         loggedInUserStorage.add(loggedInUserRecord);
 
         if (logger.isInfoEnabled()) {
-            logger.info("User with login {} was authenticated.", authenticateUser.login());
+            logger.info("User with login {} was authenticated.", authenticateUser.login().value());
             logger.info("Token with identifier {} was created.", loggedInUserRecord.id());
         }
         return loggedInUserRecord;
@@ -84,7 +88,7 @@ public class Authentication implements Process {
      *
      * @return expiration interval.
      */
-    private long tokenExpirationInterval() {
-        return TOKEN_EXPIRATION_INTERVAL.toMinutes();
+    private Duration tokenExpirationInterval() {
+        return TOKEN_EXPIRATION_INTERVAL;
     }
 }

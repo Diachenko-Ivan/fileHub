@@ -12,7 +12,7 @@ public class CurrentUserIdHolder {
     /**
      * Container for an identifier of authorized user within one thread.
      */
-    private static final ThreadLocal<UserId> USER_THREAD_SCOPE = new ThreadLocal<>();
+    private static final ThreadLocal<UserId> userThreadScope = new ThreadLocal<>();
 
     /**
      * Sets authorized user identifier to thread-local variables.
@@ -20,7 +20,7 @@ public class CurrentUserIdHolder {
      * @param currentUserId an identifier of authorized user {@link io.javaclasses.filehub.storage.user.User}.
      */
     public static synchronized void set(UserId currentUserId) {
-        USER_THREAD_SCOPE.set(checkNotNull(currentUserId));
+        userThreadScope.set(checkNotNull(currentUserId));
     }
 
     /**
@@ -29,6 +29,6 @@ public class CurrentUserIdHolder {
      * @return current user identifier.
      */
     public static synchronized UserId get() {
-        return USER_THREAD_SCOPE.get();
+        return userThreadScope.get();
     }
 }

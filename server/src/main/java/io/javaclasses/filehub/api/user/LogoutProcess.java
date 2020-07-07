@@ -39,7 +39,7 @@ public class LogoutProcess implements Process {
      *
      * @param logOutCommand command to log out user.
      */
-    public void logOut(LogOutUser logOutCommand) {
+    public void handle(LogOutUser logOutCommand) {
         checkNotNull(logOutCommand);
         Token token = logOutCommand.tokenId();
         storage.remove(token);

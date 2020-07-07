@@ -38,7 +38,7 @@ class LogoutProcessTest {
         };
         LogoutProcess process = new LogoutProcess(mockTokenStorage);
 
-        process.logOut(logOutUserCommand);
+        process.handle(logOutUserCommand);
 
         assertWithMessage("Token removing was not called or transferred token identifier is incorrect.")
                 .that(isRemoveCalled[0])

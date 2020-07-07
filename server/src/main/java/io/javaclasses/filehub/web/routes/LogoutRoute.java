@@ -5,8 +5,6 @@ import io.javaclasses.filehub.api.user.LogoutProcess;
 import io.javaclasses.filehub.storage.user.LoggedInUserRecord;
 import io.javaclasses.filehub.storage.user.LoggedInUserStorage;
 import io.javaclasses.filehub.storage.user.Token;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -14,18 +12,14 @@ import spark.Route;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Splitter.on;
 import static com.google.common.collect.Iterables.get;
+import static javax.servlet.http.HttpServletResponse.SC_OK;
 
 /**
  * Implementation of {@link Route} that handles requests for user logout.
  */
 public class LogoutRoute implements Route {
     /**
-     * For logging.
-     */
-    private static final Logger logger = LoggerFactory.getLogger(LogoutRoute.class);
-
-    /**
-     * Storage for {@link LoggedInUserRecord}.
+     * Storage for {@link LoggedInUserRecord}s.
      */
     private final LoggedInUserStorage storage;
 
@@ -44,14 +38,33 @@ public class LogoutRoute implements Route {
      */
     @Override
     public Object handle(Request request, Response response) {
+        LogOutUser logOutCommand = readCommand(request);
+        LogoutProcess logoutProcess = getProcess();
+
+        logoutProcess.handle(logOutCommand);
+        response.status(SC_OK);
+        return "User is logged out.";
+    }
+
+    /**
+     * Returns the LogOutUser command parsing {@code request} headers.
+     *
+     * @param request object with {@code authorizationToken} value.
+     * @return command.
+     */
+    private LogOutUser readCommand(Request request) {
         String authorizationToken = get(on(' ').split(request.headers("Authorization")), 1);
         Token tokenId = new Token(authorizationToken);
 
-        new LogoutProcess(storage).logOut(new LogOutUser(tokenId));
+        return new LogOutUser(tokenId);
+    }
 
-        if (logger.isInfoEnabled()) {
-            logger.info("User with access token: " + authorizationToken + " was logged out.");
-        }
-        return "User is logged out";
+    /**
+     * Returns a new LogoutProcess instance.
+     *
+     * @return process.
+     */
+    private LogoutProcess getProcess() {
+        return new LogoutProcess(storage);
     }
 }

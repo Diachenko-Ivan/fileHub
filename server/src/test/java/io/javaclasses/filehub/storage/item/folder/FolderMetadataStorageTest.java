@@ -18,28 +18,46 @@ class FolderMetadataStorageTest {
         tester.testAllPublicInstanceMethods(new FolderMetadataStorage());
     }
 
-    private FolderMetadataRecord createFolder(String folderIdValue, String parentFolderIdValue) {
-        return new FolderMetadataRecord(
-                new FolderId(folderIdValue),
-                new ItemName("sdg"),
-                new UserId("sdfsdg"),
-                new FileItemCount(0),
-                new FolderId(parentFolderIdValue));
+    private FolderId folderId(String value) {
+        return new FolderId(value);
     }
 
-    private FolderMetadataStorage prepareFolderStorage() {
+    private UserId ownerId(String value) {
+        return new UserId(value);
+    }
+
+    private FolderMetadataRecord createFolderWithFolderIdAndParentIdAndOwnerId(FolderId folderId,
+                                                                               FolderId parentId,
+                                                                               UserId ownerId) {
+        return new FolderMetadataRecord(
+                folderId,
+                new ItemName("sdg"),
+                ownerId,
+                new FileItemCount(0),
+                parentId);
+    }
+
+    private FolderMetadataStorage prepareFolderStorage(FolderMetadataRecord... records) {
         FolderMetadataStorage folderMetadataStorage = new FolderMetadataStorage();
-        folderMetadataStorage.add(createFolder("1", "2"));
-        folderMetadataStorage.add(createFolder("3", "5"));
-        folderMetadataStorage.add(createFolder("5", "2"));
-        folderMetadataStorage.add(createFolder("2", "3"));
+        for (FolderMetadataRecord record : records) {
+            folderMetadataStorage.add(record);
+        }
         return folderMetadataStorage;
+    }
+
+
+    private FolderMetadataStorage prepareFolderStorageForFindByParentIdTest() {
+        return prepareFolderStorage(
+                createFolderWithFolderIdAndParentIdAndOwnerId(folderId("1"), folderId("2"), ownerId("1")),
+                createFolderWithFolderIdAndParentIdAndOwnerId(folderId("3"), folderId("5"), ownerId("1")),
+                createFolderWithFolderIdAndParentIdAndOwnerId(folderId("5"), folderId("2"), ownerId("1"))
+        );
     }
 
     @DisplayName("find folders by parent folder identifier.")
     @Test
     void testFindFoldersByParentId() {
-        FolderMetadataStorage folderMetadataStorage = prepareFolderStorage();
+        FolderMetadataStorage folderMetadataStorage = prepareFolderStorageForFindByParentIdTest();
         FolderId parentFolderId = new FolderId("2");
 
         assertWithMessage("The set size of found folders is incorrect.")

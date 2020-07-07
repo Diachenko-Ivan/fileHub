@@ -42,7 +42,7 @@ public class FolderMetadataStorage extends
         return this.records()
                 .values()
                 .stream()
-                .filter((folder) -> folder.ownerId().equals(ownerId))
+                .filter((folder) -> folder.ownerId().equals(ownerId) && folder.parentFolderId() == null)
                 .findAny();
     }
 }

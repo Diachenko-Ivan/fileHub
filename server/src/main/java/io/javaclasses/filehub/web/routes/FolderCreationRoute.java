@@ -18,7 +18,7 @@ import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static javax.servlet.http.HttpServletResponse.SC_OK;
 
 /**
- * Implementation of {@link Route} that handles requests for folder creation.
+ * An implementation of {@link Route} that handles requests for folder creation.
  */
 public class FolderCreationRoute implements Route {
     /**
@@ -58,7 +58,7 @@ public class FolderCreationRoute implements Route {
     }
 
     /**
-     * Returns {@link CreateFolder} instance parsing {@code request} path parameter.
+     * Returns new {@link CreateFolder} instance parsing {@code request} path parameter.
      *
      * @param request object with information from request.
      * @return command with information from request.

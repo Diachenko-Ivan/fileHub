@@ -5,17 +5,17 @@ import com.google.errorprone.annotations.Immutable;
 import static com.google.common.base.Preconditions.checkArgument;
 
 /**
- * Value object that represents a number of file items in folder {@link FolderMetadataRecord}.
+ * A value object that represents a number of file items in folder {@link FolderMetadataRecord}.
  */
 @Immutable
 public final class FileItemCount {
     /**
-     * Contains a number that is a file count.
+     * Contains a number of items.
      */
     private final long value;
 
     /**
-     * Contains new {@link FileItemCount} validating {@code value}.
+     * Creates new {@link FileItemCount} instance validating {@code value}.
      *
      * @param value number of file items.
      */

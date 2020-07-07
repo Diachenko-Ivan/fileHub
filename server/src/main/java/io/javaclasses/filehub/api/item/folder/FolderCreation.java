@@ -23,7 +23,7 @@ public class FolderCreation implements Process {
      */
     private static final Logger logger = LoggerFactory.getLogger(FolderCreation.class);
     /**
-     * The name of newly created folder.
+     * The name of the newly created folder.
      */
     private static final String NEW_FOLDER_NAME = "New Folder";
     /**
@@ -46,7 +46,7 @@ public class FolderCreation implements Process {
      * @param createFolderCommand a command to create a new folder.
      * @return created folder.
      * @throws ItemIsNotFoundException if parent folder, where new folder is being created in, is not found
-     *                                 or user does not have this folder.
+     *                                 or the user does not have this folder.
      */
     public FolderMetadataRecord handle(CreateFolder createFolderCommand) {
         checkNotNull(createFolderCommand);
@@ -74,7 +74,7 @@ public class FolderCreation implements Process {
     }
 
     /**
-     * Returns the new {@link FolderMetadataStorage}
+     * Returns the new {@link FolderMetadataRecord}.
      *
      * @param parentFolderId an identifier of the parent folder.
      * @param ownerId        an identifier of the folder owner {@link User}.

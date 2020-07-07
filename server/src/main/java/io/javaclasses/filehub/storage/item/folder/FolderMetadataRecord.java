@@ -12,8 +12,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Data structure that contains information about folder. Stored in {@link FolderMetadataStorage}.
- * <p>If {@code parentFolderId} is <i>null</i> then folder is root.
- * <p>The root folder is a unique, high-level folder for every {@link User}.
+ * <p>If {@code parentFolderId} is <i>null</i> then the folder is root.
+ * <p>The root folder is unique, high-level folder for every {@link User}.
  */
 public final class FolderMetadataRecord extends Record<FolderId> {
     /**
@@ -21,15 +21,15 @@ public final class FolderMetadataRecord extends Record<FolderId> {
      */
     private ItemName folderName;
     /**
-     * Identifier of folder owner.
+     * An identifier of the folder owner.
      */
     private final UserId ownerId;
     /**
-     * Number of items in folder.
+     * A number of items in the folder.
      */
     private FileItemCount fileItemCount;
     /**
-     * Identifier of parent folder.
+     * An identifier of the parent folder.
      */
     @Nullable
     private final FolderId parentFolderId;
@@ -37,11 +37,11 @@ public final class FolderMetadataRecord extends Record<FolderId> {
     /**
      * Creates new {@link FolderMetadataRecord} instance.
      *
-     * @param id             identifier of the folder.
-     * @param folderName     name of folder.
-     * @param ownerId        identifier of folder owner {@link User}.
-     * @param fileItemCount  number of items in the folder.
-     * @param parentFolderId identifier for a parent folder.
+     * @param id             an identifier of the folder.
+     * @param folderName     a name of folder.
+     * @param ownerId        an identifier of folder owner {@link User}.
+     * @param fileItemCount  a number of items in the folder.
+     * @param parentFolderId an identifier for a parent folder.
      */
     public FolderMetadataRecord(FolderId id, ItemName folderName,
                                 UserId ownerId, FileItemCount fileItemCount, @Nullable FolderId parentFolderId) {
@@ -53,7 +53,7 @@ public final class FolderMetadataRecord extends Record<FolderId> {
     }
 
     /**
-     * Getter for folder name.
+     * Getter for the folder name.
      *
      * @return folder name.
      */
@@ -62,7 +62,7 @@ public final class FolderMetadataRecord extends Record<FolderId> {
     }
 
     /**
-     * Setter for folder name.
+     * Setter for the folder name.
      *
      * @param folderName new folder name.
      */
@@ -71,18 +71,18 @@ public final class FolderMetadataRecord extends Record<FolderId> {
     }
 
     /**
-     * Getter for folder name.
+     * Getter for the folder owner identifier.
      *
-     * @return folder name.
+     * @return the owner identifier.
      */
     public UserId ownerId() {
         return ownerId;
     }
 
     /**
-     * Getter for folder name.
+     * Getter for the folder name.
      *
-     * @return folder name.
+     * @return a number of file items in the folder.
      */
     public FileItemCount fileItemCount() {
         return fileItemCount;
@@ -98,9 +98,9 @@ public final class FolderMetadataRecord extends Record<FolderId> {
     }
 
     /**
-     * Getter for folder name.
+     * Getter for the folder parent identifier.
      *
-     * @return folder name.
+     * @return an identifier of the parent folder.
      */
     public FolderId parentFolderId() {
         return parentFolderId;

@@ -8,28 +8,28 @@ import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Value object that contains information about folder {@link FolderMetadataRecord}.
+ * A value object that contains information about folder {@link FolderMetadataRecord}.
  * <p>Used for serialization into JSON.</p>
  */
 @Immutable
 public final class FolderDto {
     /**
-     * Identifier of folder.
+     * An identifier of the folder.
      */
     @SerializedName("id")
     private final String id;
     /**
-     * Name of folder.
+     * A name of the folder.
      */
     @SerializedName("name")
     private final String name;
     /**
-     * Identifier of parent folder.
+     * An identifier of the parent folder.
      */
     @SerializedName("parentId")
     private final String parentId;
     /**
-     * Number of file items in folder.
+     * A number of file items in the folder.
      */
     @SerializedName("filesCount")
     private final long fileItemCount;
@@ -56,7 +56,7 @@ public final class FolderDto {
     }
 
     /**
-     * Getter for folder identifier.
+     * Getter for the folder identifier.
      *
      * @return folder identifier.
      */
@@ -65,7 +65,7 @@ public final class FolderDto {
     }
 
     /**
-     * Getter for folder name.
+     * Getter for the folder name.
      *
      * @return folder name.
      */
@@ -74,7 +74,7 @@ public final class FolderDto {
     }
 
     /**
-     * Getter for identifier of the parent folder.
+     * Getter for the identifier of the parent folder.
      *
      * @return folder identifier.
      */

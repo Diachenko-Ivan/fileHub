@@ -17,7 +17,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * The application view that processes {@link GetRootFolderId} command.
  * <p>Each user has a root folder. Method {@link #process(GetRootFolderId)} never returns <i>null</i>.
  * The scenario when the method throws an {@link NullPointerException} exception
- * indicates that an error has occurred in the FileHub application itself.
+ * indicates that an error has occurred in the FileHub application itself and
+ * registered user does not have the root folder.
  */
 public class RootFolderIdView implements View<GetRootFolderId, FolderId> {
     /**
@@ -55,6 +56,12 @@ public class RootFolderIdView implements View<GetRootFolderId, FolderId> {
 
             throw new NullPointerException("The user with id " + ownerId.value() + " does not have the root folder.");
         }
-        return rootFolderMetadata.get().id();
+
+        FolderId rootFolderId = rootFolderMetadata.get().id();
+
+        if (logger.isInfoEnabled()) {
+            logger.info("User with id: {} received root folder with id: {}", ownerId.value(), rootFolderId.value());
+        }
+        return rootFolderId;
     }
 }

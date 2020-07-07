@@ -1,7 +1,6 @@
 package io.javaclasses.filehub.api.item.folder;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.api.user.CurrentUserIdHolder;
 import io.javaclasses.filehub.storage.item.ItemName;
 import io.javaclasses.filehub.storage.item.folder.FileItemCount;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
@@ -67,8 +66,11 @@ class FolderCreationTest {
 
         FolderCreation folderCreation = new FolderCreation(mockFolderStorage);
 
+        CreateFolder createFolderCommand =
+                new CreateFolder(new FolderId("nonexistent-folder-id"), new UserId("defaultId"));
+
         assertThrows(ItemIsNotFoundException.class,
-                () -> folderCreation.handle(new CreateFolder(new FolderId("nonexistent-folder-id"))),
+                () -> folderCreation.handle(createFolderCommand),
                 "The ItemIsNotFoundException was not thrown bust must, because parent folder was not found.");
 
         assertWithMessage("The add method from folder storage was called but must not.")
@@ -82,8 +84,6 @@ class FolderCreationTest {
         UserId equalOwnerId = new UserId("RandomId");
         FolderId equalParentFolderId = new FolderId("folder-id");
 
-        CurrentUserIdHolder.set(equalOwnerId);
-
         MockFolderMetadataStorageCreator mockCreator = new MockFolderMetadataStorageCreator();
         FolderMetadataStorage mockFolderStorage = mockCreator
                 .createWithFindResult(createFolderWithFolderIdAndOwnerId(equalParentFolderId, equalOwnerId));
@@ -91,7 +91,7 @@ class FolderCreationTest {
         FolderCreation folderCreation = new FolderCreation(mockFolderStorage);
 
         FolderMetadataRecord innerFolder =
-                folderCreation.handle(new CreateFolder(equalParentFolderId));
+                folderCreation.handle(new CreateFolder(equalParentFolderId, equalOwnerId));
 
         assertWithMessage("Created folder is null.")
                 .that(innerFolder)

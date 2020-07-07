@@ -5,6 +5,7 @@ import io.javaclasses.filehub.api.item.folder.CreateFolder;
 import io.javaclasses.filehub.api.item.folder.FolderCreation;
 import io.javaclasses.filehub.api.item.folder.FolderDto;
 import io.javaclasses.filehub.api.item.folder.ItemIsNotFoundException;
+import io.javaclasses.filehub.api.user.CurrentUserIdHolder;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
@@ -64,7 +65,7 @@ public class FolderCreationRoute implements Route {
      */
     private CreateFolder readCommand(Request request) {
         String parentFolderIdParam = request.params(":folderId");
-        return new CreateFolder(new FolderId(parentFolderIdParam));
+        return new CreateFolder(new FolderId(parentFolderIdParam), CurrentUserIdHolder.get());
     }
 
     /**

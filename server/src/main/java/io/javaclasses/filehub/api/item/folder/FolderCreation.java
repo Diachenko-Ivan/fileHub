@@ -1,17 +1,15 @@
 package io.javaclasses.filehub.api.item.folder;
 
 import io.javaclasses.filehub.api.Process;
-import io.javaclasses.filehub.api.user.CurrentUserIdHolder;
 import io.javaclasses.filehub.storage.item.ItemName;
 import io.javaclasses.filehub.storage.item.folder.FileItemCount;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
+import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static io.javaclasses.filehub.api.IdGenerator.generateId;
@@ -53,7 +51,7 @@ public class FolderCreation implements Process {
     public FolderMetadataRecord handle(CreateFolder createFolderCommand) {
         checkNotNull(createFolderCommand);
         FolderId parentFolderId = createFolderCommand.parentFolderId();
-        UserId ownerId = CurrentUserIdHolder.get();
+        UserId ownerId = createFolderCommand.ownerId();
 
         Optional<FolderMetadataRecord> folderMetadataRecord = folderMetadataStorage.find(parentFolderId);
 

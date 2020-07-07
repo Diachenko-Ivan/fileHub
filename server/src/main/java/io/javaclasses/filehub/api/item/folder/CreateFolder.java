@@ -4,26 +4,33 @@ import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.api.Command;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
+import io.javaclasses.filehub.storage.user.User;
+import io.javaclasses.filehub.storage.user.UserId;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Client intention to create a new folder in already existing one.
+ * An intention of the client to create a new folder in already existing one.
  */
 @Immutable
 public final class CreateFolder implements Command {
     /**
-     * An identifier of folder where new folder is being created.
+     * An identifier of the folder where new folder is being created.
      */
     private final FolderId parentFolderId;
+    /**
+     * An identifier of the owner {@link User} of the parent folder.
+     */
+    private final UserId ownerId;
 
     /**
      * Creates new {@link CreateFolder} instance.
      *
      * @param parentFolderId identifier of parent folder.
      */
-    public CreateFolder(FolderId parentFolderId) {
+    public CreateFolder(FolderId parentFolderId, UserId ownerId) {
         this.parentFolderId = checkNotNull(parentFolderId);
+        this.ownerId = checkNotNull(ownerId);
     }
 
     /**
@@ -33,5 +40,14 @@ public final class CreateFolder implements Command {
      */
     public FolderId parentFolderId() {
         return parentFolderId;
+    }
+
+    /**
+     * Getter for the parent folder owner identifier.
+     *
+     * @return owner identifier.
+     */
+    public UserId ownerId() {
+        return ownerId;
     }
 }

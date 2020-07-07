@@ -64,4 +64,25 @@ class FolderMetadataStorageTest {
                 .that(folderMetadataStorage.findAll(parentFolderId).size())
                 .isEqualTo(2);
     }
+
+    @DisplayName("find the root folder for the owner.")
+    @Test
+    void testFindRootFolder() {
+        FolderId rootFolderId = folderId("jsgndfndnobdnfo");
+        UserId ownerId = ownerId("jksgdfjngod");
+
+        FolderMetadataStorage folderMetadataStorage = prepareFolderStorage(
+                createFolderWithFolderIdAndParentIdAndOwnerId(rootFolderId, null, ownerId)
+        );
+
+        FolderMetadataRecord rootFolder = folderMetadataStorage.findRoot(ownerId).orElse(null);
+
+        assertWithMessage("The root folder is not found.")
+                .that(rootFolder)
+                .isNotNull();
+
+        assertWithMessage("The root folder owner identifier is not equal.")
+                .that(rootFolder.ownerId())
+                .isEqualTo(ownerId);
+    }
 }

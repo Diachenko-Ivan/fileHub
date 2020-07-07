@@ -11,7 +11,7 @@ import java.util.Objects;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Data structure that contains information about folder. Stored in {@link FolderMetadataStorage}.
+ * A data structure that contains information about folder. Stored in {@link FolderMetadataStorage}.
  * <p>If {@code parentFolderId} is <i>null</i> then the folder is root.
  * <p>The root folder is unique, high-level folder for every {@link User}.
  */

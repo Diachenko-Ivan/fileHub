@@ -37,7 +37,7 @@ public class FolderCreationRoute implements Route {
 
     /**
      * Handles request for creation of a new folder.
-     * <p>Sets {@code response.status()} 404 if folder where new folder is being created is not found.
+     * <p>Sets 404 to {@code response.status()} if folder where new folder is being created is not found.
      * {@inheritDoc}
      */
     @Override

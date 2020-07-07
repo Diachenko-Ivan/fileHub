@@ -51,6 +51,7 @@ public class FolderCreation implements Process {
      *                                 or user does not have this folder.
      */
     public FolderMetadataRecord handle(CreateFolder createFolderCommand) {
+        checkNotNull(createFolderCommand);
         FolderId parentFolderId = createFolderCommand.parentFolderId();
         UserId ownerId = CurrentUserIdHolder.get();
 

@@ -66,7 +66,7 @@ public class GetRootFolderRoute implements Route {
     }
 
     /**
-     * Creates the response using {@code rootFolderId}.
+     * Creates the response string using an identifier of the root folder.
      *
      * @param rootFolderId received identifier of the root folder from processing of {@link GetRootFolderId} query.
      * @return identifier value.

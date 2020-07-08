@@ -6,19 +6,19 @@ import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Value object for file or folder {@link FolderMetadataRecord} name.
+ * A value object for file or folder {@link FolderMetadataRecord} name.
  */
 @Immutable
 public final class ItemName {
     /**
-     * Contains name of item.
+     * Contains the name of the item.
      */
     private final String value;
 
     /**
      * Create new {@link ItemName} instance.
      *
-     * @param value item name.
+     * @param value an item name.
      */
     public ItemName(String value) {
         this.value = checkNotNull(value);

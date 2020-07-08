@@ -1,9 +1,7 @@
 package io.javaclasses.filehub.api.item.folder;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.api.user.CurrentUserIdHolder;
 import io.javaclasses.filehub.storage.item.ItemName;
-import io.javaclasses.filehub.storage.item.folder.FileItemCount;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
@@ -46,7 +44,6 @@ class FolderCreationTest {
                 folderId,
                 new ItemName("sdg"),
                 folderOwnerId,
-                new FileItemCount(0),
                 new FolderId("sijgiojodf"));
     }
 
@@ -67,8 +64,11 @@ class FolderCreationTest {
 
         FolderCreation folderCreation = new FolderCreation(mockFolderStorage);
 
+        CreateFolder createFolderCommand =
+                new CreateFolder(new FolderId("nonexistent-folder-id"), new UserId("defaultId"));
+
         assertThrows(ItemIsNotFoundException.class,
-                () -> folderCreation.handle(new CreateFolder(new FolderId("nonexistent-folder-id"))),
+                () -> folderCreation.handle(createFolderCommand),
                 "The ItemIsNotFoundException was not thrown bust must, because parent folder was not found.");
 
         assertWithMessage("The add method from folder storage was called but must not.")
@@ -82,16 +82,14 @@ class FolderCreationTest {
         UserId equalOwnerId = new UserId("RandomId");
         FolderId equalParentFolderId = new FolderId("folder-id");
 
-        CurrentUserIdHolder.set(equalOwnerId);
-
         MockFolderMetadataStorageCreator mockCreator = new MockFolderMetadataStorageCreator();
         FolderMetadataStorage mockFolderStorage = mockCreator
                 .createWithFindResult(createFolderWithFolderIdAndOwnerId(equalParentFolderId, equalOwnerId));
 
         FolderCreation folderCreation = new FolderCreation(mockFolderStorage);
 
-        FolderMetadataRecord innerFolder =
-                folderCreation.handle(new CreateFolder(equalParentFolderId));
+        FolderDto innerFolder =
+                folderCreation.handle(new CreateFolder(equalParentFolderId, equalOwnerId));
 
         assertWithMessage("Created folder is null.")
                 .that(innerFolder)
@@ -102,7 +100,7 @@ class FolderCreationTest {
                 .isTrue();
 
         assertWithMessage("Parent folder identifier is incorrect.")
-                .that(innerFolder.parentFolderId())
-                .isEqualTo(equalParentFolderId);
+                .that(innerFolder.parentId())
+                .isEqualTo(equalParentFolderId.value());
     }
 }

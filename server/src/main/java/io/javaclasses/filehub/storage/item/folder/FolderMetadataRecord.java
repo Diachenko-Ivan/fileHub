@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.storage.item.folder;
 
+import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.storage.Record;
 import io.javaclasses.filehub.storage.item.ItemName;
 import io.javaclasses.filehub.storage.user.User;
@@ -11,25 +12,22 @@ import java.util.Objects;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Data structure that contains information about folder. Stored in {@link FolderMetadataStorage}.
- * <p>If {@code parentFolderId} is <i>null</i> then folder is root.
- * <p>The root folder is a unique, high-level folder for every {@link User}.
+ * A data structure that contains information about folder. Stored in {@link FolderMetadataStorage}.
+ * <p>If {@code parentFolderId} is <i>null</i> then the folder is root.
+ * <p>The root folder is unique, high-level folder for every {@link User}.
  */
+@Immutable
 public final class FolderMetadataRecord extends Record<FolderId> {
     /**
      * Folder name.
      */
-    private ItemName folderName;
+    private final ItemName folderName;
     /**
-     * Identifier of folder owner.
+     * An identifier of the folder owner.
      */
     private final UserId ownerId;
     /**
-     * Number of items in folder.
-     */
-    private FileItemCount fileItemCount;
-    /**
-     * Identifier of parent folder.
+     * An identifier of the parent folder.
      */
     @Nullable
     private final FolderId parentFolderId;
@@ -37,23 +35,21 @@ public final class FolderMetadataRecord extends Record<FolderId> {
     /**
      * Creates new {@link FolderMetadataRecord} instance.
      *
-     * @param id             identifier of the folder.
-     * @param folderName     name of folder.
-     * @param ownerId        identifier of folder owner {@link User}.
-     * @param fileItemCount  number of items in the folder.
-     * @param parentFolderId identifier for a parent folder.
+     * @param id             an identifier of the folder.
+     * @param folderName     a name of folder.
+     * @param ownerId        an identifier of folder owner {@link User}.
+     * @param parentFolderId an identifier for a parent folder.
      */
     public FolderMetadataRecord(FolderId id, ItemName folderName,
-                                UserId ownerId, FileItemCount fileItemCount, @Nullable FolderId parentFolderId) {
+                                UserId ownerId, @Nullable FolderId parentFolderId) {
         super(id);
         this.folderName = checkNotNull(folderName);
         this.ownerId = checkNotNull(ownerId);
-        this.fileItemCount = checkNotNull(fileItemCount);
         this.parentFolderId = parentFolderId;
     }
 
     /**
-     * Getter for folder name.
+     * Getter for the folder name.
      *
      * @return folder name.
      */
@@ -62,45 +58,18 @@ public final class FolderMetadataRecord extends Record<FolderId> {
     }
 
     /**
-     * Setter for folder name.
+     * Getter for the folder owner identifier.
      *
-     * @param folderName new folder name.
-     */
-    public void setFolderName(ItemName folderName) {
-        this.folderName = folderName;
-    }
-
-    /**
-     * Getter for folder name.
-     *
-     * @return folder name.
+     * @return the owner identifier.
      */
     public UserId ownerId() {
         return ownerId;
     }
 
     /**
-     * Getter for folder name.
+     * Getter for the folder parent identifier.
      *
-     * @return folder name.
-     */
-    public FileItemCount fileItemCount() {
-        return fileItemCount;
-    }
-
-    /**
-     * Setter for number of items in the folder.
-     *
-     * @param fileItemCount new number of file items.
-     */
-    public void setFileItemCount(FileItemCount fileItemCount) {
-        this.fileItemCount = fileItemCount;
-    }
-
-    /**
-     * Getter for folder name.
-     *
-     * @return folder name.
+     * @return an identifier of the parent folder.
      */
     public FolderId parentFolderId() {
         return parentFolderId;

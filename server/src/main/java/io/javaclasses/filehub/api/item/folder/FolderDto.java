@@ -5,31 +5,32 @@ import com.google.gson.annotations.SerializedName;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Value object that contains information about folder {@link FolderMetadataRecord}.
+ * A value object that contains information about folder {@link FolderMetadataRecord}.
  * <p>Used for serialization into JSON.</p>
  */
 @Immutable
 public final class FolderDto {
     /**
-     * Identifier of folder.
+     * An identifier of the folder.
      */
     @SerializedName("id")
     private final String id;
     /**
-     * Name of folder.
+     * A name of the folder.
      */
     @SerializedName("name")
     private final String name;
     /**
-     * Identifier of parent folder.
+     * An identifier of the parent folder.
      */
     @SerializedName("parentId")
     private final String parentId;
     /**
-     * Number of file items in folder.
+     * A number of file items in the folder.
      */
     @SerializedName("filesCount")
     private final long fileItemCount;
@@ -43,20 +44,22 @@ public final class FolderDto {
      * Creates new {@link FolderDto} instance retrieving data from {@code folderMetadataRecord}.
      *
      * @param folderMetadataRecord folder record on the basis of which a folder DTO is created.
+     * @param fileItemCount number of file items in the folder.
      */
-    public FolderDto(FolderMetadataRecord folderMetadataRecord) {
+    public FolderDto(FolderMetadataRecord folderMetadataRecord, long fileItemCount) {
         checkNotNull(folderMetadataRecord);
+        checkArgument(fileItemCount >= 0, "Number of items can not be negative.");
 
         this.id = folderMetadataRecord.id().value();
         this.name = folderMetadataRecord.folderName().value();
 
         FolderId parentId = folderMetadataRecord.parentFolderId();
         this.parentId = parentId != null ? parentId.value() : null;
-        this.fileItemCount = folderMetadataRecord.fileItemCount().value();
+        this.fileItemCount = fileItemCount;
     }
 
     /**
-     * Getter for folder identifier.
+     * Getter for the folder identifier.
      *
      * @return folder identifier.
      */
@@ -65,7 +68,7 @@ public final class FolderDto {
     }
 
     /**
-     * Getter for folder name.
+     * Getter for the folder name.
      *
      * @return folder name.
      */
@@ -74,7 +77,7 @@ public final class FolderDto {
     }
 
     /**
-     * Getter for identifier of the parent folder.
+     * Getter for the identifier of the parent folder.
      *
      * @return folder identifier.
      */

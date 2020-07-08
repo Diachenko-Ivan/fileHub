@@ -44,7 +44,7 @@ class LoggedInUserStorageTest {
 
     @DisplayName("not find user by non existent token.")
     @Test
-    void testNotFoundUserBy() {
+    void testWithNonexistentToken() {
         LoggedInUserStorage loggedInUserStorage = prepareLoggedInUserStorageWithExistingUsers(
                 new LoggedInUserRecord(new Token("safdgsfhgff"), new UserId("asdsdf"),
                         LocalDateTime.now(TimeZoneIdentifier.get()).plusMinutes(5)));

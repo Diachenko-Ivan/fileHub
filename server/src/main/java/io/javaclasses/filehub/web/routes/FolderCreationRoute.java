@@ -5,6 +5,7 @@ import io.javaclasses.filehub.api.item.folder.CreateFolder;
 import io.javaclasses.filehub.api.item.folder.FolderCreation;
 import io.javaclasses.filehub.api.item.folder.FolderDto;
 import io.javaclasses.filehub.api.item.folder.ItemIsNotFoundException;
+import io.javaclasses.filehub.api.user.CurrentUserIdHolder;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
@@ -17,7 +18,7 @@ import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static javax.servlet.http.HttpServletResponse.SC_OK;
 
 /**
- * Implementation of {@link Route} that handles requests for folder creation.
+ * An implementation of {@link Route} that handles requests for folder creation.
  */
 public class FolderCreationRoute implements Route {
     /**
@@ -36,7 +37,7 @@ public class FolderCreationRoute implements Route {
 
     /**
      * Handles request for creation of a new folder.
-     * <p>Sets {@code response.status()} 404 if folder where new folder is being created is not found.
+     * <p>Sets 404 to {@code response.status()} if folder where new folder is being created is not found.
      * {@inheritDoc}
      */
     @Override
@@ -46,10 +47,10 @@ public class FolderCreationRoute implements Route {
             CreateFolder createFolderCommand = readCommand(request);
             FolderCreation folderCreationProcess = getFolderCreationProcess();
 
-            FolderMetadataRecord createdFolder = folderCreationProcess.handle(createFolderCommand);
+            FolderDto createdFolder = folderCreationProcess.handle(createFolderCommand);
 
             response.status(SC_OK);
-            return createJsonResponseBody(new FolderDto(createdFolder));
+            return createJsonResponseBody(createdFolder);
         } catch (ItemIsNotFoundException e) {
             response.status(SC_NOT_FOUND);
             return "Folder was not found";
@@ -57,14 +58,14 @@ public class FolderCreationRoute implements Route {
     }
 
     /**
-     * Returns {@link CreateFolder} instance parsing {@code request} path parameter.
+     * Returns new {@link CreateFolder} instance parsing {@code request} path parameter.
      *
      * @param request object with information from request.
      * @return command with information from request.
      */
     private CreateFolder readCommand(Request request) {
         String parentFolderIdParam = request.params(":folderId");
-        return new CreateFolder(new FolderId(parentFolderIdParam));
+        return new CreateFolder(new FolderId(parentFolderIdParam), CurrentUserIdHolder.get());
     }
 
     /**

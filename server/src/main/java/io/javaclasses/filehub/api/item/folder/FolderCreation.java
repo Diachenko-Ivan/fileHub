@@ -1,17 +1,14 @@
 package io.javaclasses.filehub.api.item.folder;
 
 import io.javaclasses.filehub.api.Process;
-import io.javaclasses.filehub.api.user.CurrentUserIdHolder;
 import io.javaclasses.filehub.storage.item.ItemName;
-import io.javaclasses.filehub.storage.item.folder.FileItemCount;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
+import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static io.javaclasses.filehub.api.IdGenerator.generateId;
@@ -25,7 +22,7 @@ public class FolderCreation implements Process {
      */
     private static final Logger logger = LoggerFactory.getLogger(FolderCreation.class);
     /**
-     * The name of newly created folder.
+     * The name of the newly created folder.
      */
     private static final String NEW_FOLDER_NAME = "New Folder";
     /**
@@ -48,16 +45,16 @@ public class FolderCreation implements Process {
      * @param createFolderCommand a command to create a new folder.
      * @return created folder.
      * @throws ItemIsNotFoundException if parent folder, where new folder is being created in, is not found
-     *                                 or user does not have this folder.
+     *                                 or the user does not have this folder.
      */
-    public FolderMetadataRecord handle(CreateFolder createFolderCommand) {
+    public FolderDto handle(CreateFolder createFolderCommand) {
         checkNotNull(createFolderCommand);
         FolderId parentFolderId = createFolderCommand.parentFolderId();
-        UserId ownerId = CurrentUserIdHolder.get();
+        UserId ownerId = createFolderCommand.ownerId();
 
-        Optional<FolderMetadataRecord> folderMetadataRecord = folderMetadataStorage.find(parentFolderId);
+        FolderMetadataRecord parentFolderMetadata = folderMetadataStorage.find(parentFolderId).orElse(null);
 
-        if (!(folderMetadataRecord.isPresent() && folderMetadataRecord.get().ownerId().equals(ownerId))) {
+        if (folderExists(ownerId, parentFolderMetadata)) {
             if (logger.isInfoEnabled()) {
                 logger.info("User with id: {} does not have folder with id: {}", ownerId, parentFolderId);
             }
@@ -65,19 +62,42 @@ public class FolderCreation implements Process {
                     + " does not have folder with id: " + parentFolderId + ".");
         }
 
-        FolderMetadataRecord folderToAdd = new FolderMetadataRecord(
-                new FolderId(generateId()),
-                new ItemName(NEW_FOLDER_NAME),
-                ownerId,
-                new FileItemCount(0),
-                parentFolderId
-        );
+        FolderMetadataRecord createdFolder = newFolderWithParentIdAndOwnerId(parentFolderId, ownerId);
 
-        folderMetadataStorage.add(folderToAdd);
+        folderMetadataStorage.add(createdFolder);
 
         if (logger.isInfoEnabled()) {
             logger.info("New folder was created in the folder with id: {} ", parentFolderId);
         }
-        return folderToAdd;
+
+        return new FolderDto(createdFolder, 0);
     }
+
+    /**
+     * Returns the new {@link FolderMetadataRecord}.
+     *
+     * @param parentFolderId an identifier of the parent folder.
+     * @param ownerId        an identifier of the folder owner {@link User}.
+     * @return new {@link FolderMetadataRecord} instance.
+     */
+    private FolderMetadataRecord newFolderWithParentIdAndOwnerId(FolderId parentFolderId, UserId ownerId) {
+        return new FolderMetadataRecord(
+                new FolderId(generateId()),
+                new ItemName(NEW_FOLDER_NAME),
+                ownerId,
+                parentFolderId
+        );
+    }
+
+    /**
+     * Checks the existence of {@code parentFolderMetadata} and its possessiveness to {@link User} with {@code ownerId}.
+     *
+     * @param ownerId              an identifier of the owner.
+     * @param parentFolderMetadata an identifier of the parent folder.
+     * @return true if conditions are met.
+     */
+    private boolean folderExists(UserId ownerId, FolderMetadataRecord parentFolderMetadata) {
+        return !(parentFolderMetadata != null && parentFolderMetadata.ownerId().equals(ownerId));
+    }
+
 }

@@ -65,6 +65,6 @@ class RootFolderIdViewTest {
 
         assertThrows(NullPointerException.class,
                 () -> rootFolderIdView.process(new GetRootFolderId(new UserId("isdgiufgiu"))),
-                "An exception was not thrown although thr root folder was not found.");
+                "An exception was not thrown although the root folder was not found.");
     }
 }

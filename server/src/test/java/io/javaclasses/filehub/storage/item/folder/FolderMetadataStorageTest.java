@@ -6,6 +6,8 @@ import io.javaclasses.filehub.storage.user.UserId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Set;
+
 import static com.google.common.truth.Truth.assertWithMessage;
 
 @DisplayName("FolderMetadataStorage should ")
@@ -56,11 +58,22 @@ class FolderMetadataStorageTest {
     @DisplayName("find folders by parent folder identifier.")
     @Test
     void testFindFoldersByParentId() {
+        FolderMetadataRecord firstFoundFolder =
+                createFolderWithFolderIdAndParentIdAndOwnerId(folderId("1"), folderId("2"), ownerId("1"));
+        FolderMetadataRecord secondFoundFolder =
+                createFolderWithFolderIdAndParentIdAndOwnerId(folderId("5"), folderId("2"), ownerId("1"));
+
         FolderMetadataStorage folderMetadataStorage = prepareFolderStorageForFindByParentIdTest();
         FolderId parentFolderId = new FolderId("2");
 
+        Set<FolderMetadataRecord> foundFolders = folderMetadataStorage.findAll(parentFolderId);
+
         assertWithMessage("The set size of found folders is incorrect.")
-                .that(folderMetadataStorage.findAll(parentFolderId).size())
+                .that(foundFolders.size())
                 .isEqualTo(2);
+
+        assertWithMessage("The set contains incorrect records.")
+                .that(foundFolders)
+                .containsExactly(firstFoundFolder, secondFoundFolder);
     }
 }

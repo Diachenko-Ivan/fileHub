@@ -33,7 +33,7 @@ public class GetRootFolderRoute implements Route {
     }
 
     /**
-     * Handles request for getting of root folder identifier.
+     * Handles a get root folder identifier request.
      * {@inheritDoc}
      */
     @Override

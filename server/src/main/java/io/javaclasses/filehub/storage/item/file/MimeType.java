@@ -1,4 +1,4 @@
-package io.javaclasses.filehub.storage.item.folder;
+package io.javaclasses.filehub.storage.item.file;
 
 /**
  * The enumeration of all possible mime-types of {@link FileMetadataRecord}.

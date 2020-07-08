@@ -1,4 +1,4 @@
-package io.javaclasses.filehub.storage.item.folder;
+package io.javaclasses.filehub.storage.item.file;
 
 import com.google.errorprone.annotations.Immutable;
 

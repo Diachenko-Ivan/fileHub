@@ -26,7 +26,7 @@ class GetRootFolderRouteTest {
                 new ItemName("sdg"),
                 folderOwnerId,
                 new FileItemCount(0),
-                new FolderId("sijgiojodf"));
+                null);
     }
 
     private FolderMetadataStorage mockFolderMetadataStorageWithFindRootResult(FolderMetadataRecord record) {
@@ -73,9 +73,10 @@ class GetRootFolderRouteTest {
         String rootFolderIdentifier = "uioshsoehfgedior";
         CurrentUserIdHolder.set(currentUserId);
 
-        FolderMetadataStorage mockFolderStorage =
-                mockFolderMetadataStorageWithFindRootResult(
-                        createFolderWithFolderIdAndOwnerId(new FolderId(rootFolderIdentifier), currentUserId));
+        FolderMetadataRecord rootFolder =
+                createFolderWithFolderIdAndOwnerId(new FolderId(rootFolderIdentifier), currentUserId);
+
+        FolderMetadataStorage mockFolderStorage = mockFolderMetadataStorageWithFindRootResult(rootFolder);
 
         GetRootFolderRoute authenticationRoute = new GetRootFolderRoute(mockFolderStorage);
 

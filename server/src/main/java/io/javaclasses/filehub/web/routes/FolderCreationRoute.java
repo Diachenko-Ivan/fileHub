@@ -47,10 +47,10 @@ public class FolderCreationRoute implements Route {
             CreateFolder createFolderCommand = readCommand(request);
             FolderCreation folderCreationProcess = getFolderCreationProcess();
 
-            FolderMetadataRecord createdFolder = folderCreationProcess.handle(createFolderCommand);
+            FolderDto createdFolder = folderCreationProcess.handle(createFolderCommand);
 
             response.status(SC_OK);
-            return createJsonResponseBody(new FolderDto(createdFolder));
+            return createJsonResponseBody(createdFolder);
         } catch (ItemIsNotFoundException e) {
             response.status(SC_NOT_FOUND);
             return "Folder was not found";

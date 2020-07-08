@@ -2,7 +2,6 @@ package io.javaclasses.filehub.api.item.folder;
 
 import io.javaclasses.filehub.api.Process;
 import io.javaclasses.filehub.storage.item.ItemName;
-import io.javaclasses.filehub.storage.item.folder.FileItemCount;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
@@ -48,7 +47,7 @@ public class FolderCreation implements Process {
      * @throws ItemIsNotFoundException if parent folder, where new folder is being created in, is not found
      *                                 or the user does not have this folder.
      */
-    public FolderMetadataRecord handle(CreateFolder createFolderCommand) {
+    public FolderDto handle(CreateFolder createFolderCommand) {
         checkNotNull(createFolderCommand);
         FolderId parentFolderId = createFolderCommand.parentFolderId();
         UserId ownerId = createFolderCommand.ownerId();
@@ -70,7 +69,8 @@ public class FolderCreation implements Process {
         if (logger.isInfoEnabled()) {
             logger.info("New folder was created in the folder with id: {} ", parentFolderId);
         }
-        return createdFolder;
+
+        return new FolderDto(createdFolder, 0);
     }
 
     /**
@@ -99,4 +99,5 @@ public class FolderCreation implements Process {
     private boolean folderExists(UserId ownerId, FolderMetadataRecord parentFolderMetadata) {
         return !(parentFolderMetadata != null && parentFolderMetadata.ownerId().equals(ownerId));
     }
+
 }

@@ -85,7 +85,6 @@ public class FolderCreation implements Process {
                 new FolderId(generateId()),
                 new ItemName(NEW_FOLDER_NAME),
                 ownerId,
-                new FileItemCount(0),
                 parentFolderId
         );
     }

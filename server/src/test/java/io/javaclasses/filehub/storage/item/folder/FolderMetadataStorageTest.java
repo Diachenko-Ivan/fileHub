@@ -33,7 +33,6 @@ class FolderMetadataStorageTest {
                 folderId,
                 new ItemName("sdg"),
                 ownerId,
-                new FileItemCount(0),
                 parentId);
     }
 

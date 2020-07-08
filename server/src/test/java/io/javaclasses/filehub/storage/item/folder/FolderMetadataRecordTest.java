@@ -35,7 +35,6 @@ class FolderMetadataRecordTest {
                 new FolderId(folderIdValue),
                 new ItemName("sdg"),
                 new UserId("sdfsdg"),
-                new FileItemCount(0),
                 new FolderId("sijgiojodf"));
     }
 

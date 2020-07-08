@@ -2,7 +2,6 @@ package io.javaclasses.filehub.api.item.folder;
 
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.storage.item.ItemName;
-import io.javaclasses.filehub.storage.item.folder.FileItemCount;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
@@ -45,7 +44,6 @@ class FolderCreationTest {
                 folderId,
                 new ItemName("sdg"),
                 folderOwnerId,
-                new FileItemCount(0),
                 new FolderId("sijgiojodf"));
     }
 
@@ -90,7 +88,7 @@ class FolderCreationTest {
 
         FolderCreation folderCreation = new FolderCreation(mockFolderStorage);
 
-        FolderMetadataRecord innerFolder =
+        FolderDto innerFolder =
                 folderCreation.handle(new CreateFolder(equalParentFolderId, equalOwnerId));
 
         assertWithMessage("Created folder is null.")
@@ -102,7 +100,7 @@ class FolderCreationTest {
                 .isTrue();
 
         assertWithMessage("Parent folder identifier is incorrect.")
-                .that(innerFolder.parentFolderId())
-                .isEqualTo(equalParentFolderId);
+                .that(innerFolder.parentId())
+                .isEqualTo(equalParentFolderId.value());
     }
 }

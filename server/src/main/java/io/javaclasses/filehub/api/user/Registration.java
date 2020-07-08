@@ -2,7 +2,6 @@ package io.javaclasses.filehub.api.user;
 
 import io.javaclasses.filehub.api.Process;
 import io.javaclasses.filehub.storage.item.ItemName;
-import io.javaclasses.filehub.storage.item.folder.FileItemCount;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
@@ -72,7 +71,6 @@ public class Registration implements Process {
                 new FolderId(generateId()),
                 new ItemName(ROOT_FOLDER_NAME),
                 userForRegistration.id(),
-                new FileItemCount(0),
                 null
         );
 

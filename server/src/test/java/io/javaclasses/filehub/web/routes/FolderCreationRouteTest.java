@@ -3,7 +3,6 @@ package io.javaclasses.filehub.web.routes;
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.user.CurrentUserIdHolder;
 import io.javaclasses.filehub.storage.item.ItemName;
-import io.javaclasses.filehub.storage.item.folder.FileItemCount;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
@@ -36,7 +35,6 @@ class FolderCreationRouteTest {
                 folderId,
                 new ItemName("sdg"),
                 folderOwnerId,
-                new FileItemCount(0),
                 new FolderId("sijgiojodf"));
     }
 

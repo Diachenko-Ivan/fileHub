@@ -10,21 +10,21 @@ import io.javaclasses.filehub.storage.user.UserId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Set;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 import static io.javaclasses.filehub.api.IdGenerator.generateId;
+import static io.javaclasses.filehub.api.item.folder.NewFolderNameGenerator.generateName;
+import static java.util.stream.Collectors.toSet;
 
 /**
- * The application process that handles {@link CreateFolder} command and provides folder creation functionality.
+ * The application process that handles {@link CreateFolder} command and performs folder creation functionality.
  */
 public class FolderCreation implements Process {
     /**
      * For logging.
      */
     private static final Logger logger = LoggerFactory.getLogger(FolderCreation.class);
-    /**
-     * The name of the newly created folder.
-     */
-    private static final String NEW_FOLDER_NAME = "New Folder";
     /**
      * Storage for {@link FolderMetadataRecord}.
      */
@@ -83,7 +83,7 @@ public class FolderCreation implements Process {
     private FolderMetadataRecord newFolderWithParentIdAndOwnerId(FolderId parentFolderId, UserId ownerId) {
         return new FolderMetadataRecord(
                 new FolderId(generateId()),
-                new ItemName(NEW_FOLDER_NAME),
+                createNewFolderName(parentFolderId),
                 ownerId,
                 parentFolderId
         );
@@ -100,4 +100,17 @@ public class FolderCreation implements Process {
         return !(parentFolderMetadata != null && parentFolderMetadata.ownerId().equals(ownerId));
     }
 
+    /**
+     * Creates a unique name of the new folder from the set of folders with {@code parentId}.
+     *
+     * @param parentId an identifier of the parent folder.
+     * @return new generated name.
+     */
+    private ItemName createNewFolderName(FolderId parentId) {
+        Set<String> existingFolderNames = folderMetadataStorage.findAll(parentId)
+                .stream()
+                .map((folder) -> folder.folderName().value())
+                .collect(toSet());
+        return new ItemName(generateName(existingFolderNames));
+    }
 }

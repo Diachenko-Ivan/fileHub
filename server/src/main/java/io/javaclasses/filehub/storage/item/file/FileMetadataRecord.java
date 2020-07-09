@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.storage.item.file;
 
 import io.javaclasses.filehub.storage.Record;
-import io.javaclasses.filehub.storage.item.ItemName;
+import io.javaclasses.filehub.storage.item.FileSystemItemName;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.user.UserId;
 
@@ -16,7 +16,7 @@ public final class FileMetadataRecord extends Record<FileId> {
     /**
      * The name of file.
      */
-    private final ItemName fileName;
+    private final FileSystemItemName fileName;
     /**
      * An identifier of the parent folder {@link io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord}.
      */
@@ -34,7 +34,7 @@ public final class FileMetadataRecord extends Record<FileId> {
      */
     private final FileSize fileSize;
 
-    public FileMetadataRecord(FileId id, ItemName fileName,
+    public FileMetadataRecord(FileId id, FileSystemItemName fileName,
                               FolderId parentFolderId, UserId ownerId,
                               MimeType mimeType, FileSize fileSize) {
         super(id);
@@ -50,7 +50,7 @@ public final class FileMetadataRecord extends Record<FileId> {
      *
      * @return file name.
      */
-    public ItemName fileName() {
+    public FileSystemItemName fileName() {
         return fileName;
     }
 

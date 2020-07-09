@@ -2,7 +2,7 @@ package io.javaclasses.filehub.web.routes;
 
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.user.CurrentUserIdHolder;
-import io.javaclasses.filehub.storage.item.ItemName;
+import io.javaclasses.filehub.storage.item.FileSystemItemName;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
@@ -33,7 +33,7 @@ class FolderCreationRouteTest {
     private FolderMetadataRecord createFolderWithFolderIdAndOwnerId(FolderId folderId, UserId folderOwnerId) {
         return new FolderMetadataRecord(
                 folderId,
-                new ItemName("sdg"),
+                new FileSystemItemName("sdg"),
                 folderOwnerId,
                 new FolderId("sijgiojodf"));
     }
@@ -41,7 +41,7 @@ class FolderCreationRouteTest {
     private FolderMetadataStorage mockFolderMetadataStorageWithFindResult(FolderMetadataRecord record) {
         return new FolderMetadataStorage() {
             @Override
-            public synchronized Optional<FolderMetadataRecord> find(FolderId id) {
+            public synchronized Optional<FolderMetadataRecord> find(FolderId id, UserId ownerId) {
                 return Optional.ofNullable(record);
             }
         };
@@ -83,7 +83,7 @@ class FolderCreationRouteTest {
         tester.testAllPublicConstructors(FolderCreationRoute.class);
     }
 
-    @DisplayName("return 200 status.")
+    @DisplayName("manage call of folder creation process and return 200 status.")
     @ParameterizedTest
     @MethodSource("requestFolderIdParams")
     void testFolderCreation(String requestParam) {
@@ -107,7 +107,7 @@ class FolderCreationRouteTest {
                 .isEqualTo(200);
     }
 
-    @DisplayName("return 404 status.")
+    @DisplayName("return 404 status because of not found parent folder.")
     @ParameterizedTest
     @MethodSource("requestFolderIdParams")
     void testNotFoundStatusReturn(String requestParam) {
@@ -118,12 +118,12 @@ class FolderCreationRouteTest {
         FolderMetadataStorage mockFolderStorage =
                 mockFolderMetadataStorageWithFindResult(null);
 
-        FolderCreationRoute authenticationRoute = new FolderCreationRoute(mockFolderStorage);
+        FolderCreationRoute folderCreationRoute = new FolderCreationRoute(mockFolderStorage);
 
         Request mockRequest = mockRequestWithParam(requestParam);
         Response mockResponse = mockResponse();
 
-        authenticationRoute.handle(mockRequest, mockResponse);
+        folderCreationRoute.handle(mockRequest, mockResponse);
 
         assertWithMessage("Response status is not 404.")
                 .that(mockResponse.status())

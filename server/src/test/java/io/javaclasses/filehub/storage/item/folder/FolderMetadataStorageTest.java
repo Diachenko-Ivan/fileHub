@@ -95,7 +95,7 @@ class FolderMetadataStorageTest {
 
     @DisplayName("not find folder by its identifier and identifier of the owner if one of the parameters is incorrect.")
     @Test
-    void testNotFoundFolderByWrongOwnerId() {
+    void testFindFolderByWrongOwnerId() {
         FolderMetadataStorage folderMetadataStorage = prepareFolderStorageSearchTests();
 
         Optional<FolderMetadataRecord> actualFolder = folderMetadataStorage.find(new FolderId("1"), new UserId("another"));

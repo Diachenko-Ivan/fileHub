@@ -86,10 +86,10 @@ class FolderCreationTest {
         FolderMetadataStorage mockFolderStorage = mockFolderStorageCreator
                 .withRecord(createFolderWith(expectedParentFolderId, expectedOwnerId));
 
-        FolderCreation folderCreation = new FolderCreation(mockFolderStorage);
+        FolderCreation process = new FolderCreation(mockFolderStorage);
 
         FolderDto subFolder =
-                folderCreation.handle(new CreateFolder(expectedParentFolderId, expectedOwnerId));
+                process.handle(new CreateFolder(expectedParentFolderId, expectedOwnerId));
 
         assertWithMessage("Cannot create folder.")
                 .that(subFolder)

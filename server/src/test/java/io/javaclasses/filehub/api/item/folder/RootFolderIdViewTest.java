@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.api.item.folder;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.storage.item.ItemName;
+import io.javaclasses.filehub.storage.item.FileSystemItemName;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
@@ -37,7 +37,7 @@ class RootFolderIdViewTest {
     private FolderMetadataRecord createDefaultFolderMetadata() {
         return new FolderMetadataRecord(
                 new FolderId("afsdfas"),
-                new ItemName("sdg"),
+                new FileSystemItemName("sdg"),
                 new UserId("isdgiufgiu"),
                 new FolderId("sijgiojodf"));
     }

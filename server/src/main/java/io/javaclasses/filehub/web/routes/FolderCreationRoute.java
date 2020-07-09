@@ -37,7 +37,7 @@ public class FolderCreationRoute implements Route {
 
     /**
      * Handles request for creation of a new folder.
-     * <p>Sets 404 to {@code response.status()} if folder where new folder is being created is not found.
+     * <p>Sets 404 to {@code response.status()} if If the parent folder does not exist.
      * {@inheritDoc}
      */
     @Override
@@ -45,7 +45,7 @@ public class FolderCreationRoute implements Route {
         response.type("application/json");
         try {
             CreateFolder createFolderCommand = readCommand(request);
-            FolderCreation folderCreationProcess = getFolderCreationProcess();
+            FolderCreation folderCreationProcess = createFolderCreationProcess();
 
             FolderDto createdFolder = folderCreationProcess.handle(createFolderCommand);
 
@@ -73,7 +73,7 @@ public class FolderCreationRoute implements Route {
      *
      * @return {@link FolderCreation} instance.
      */
-    private FolderCreation getFolderCreationProcess() {
+    private FolderCreation createFolderCreationProcess() {
         return new FolderCreation(folderMetadataStorage);
     }
 

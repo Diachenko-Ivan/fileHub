@@ -1,15 +1,14 @@
 package io.javaclasses.filehub.storage.item.file;
 
-/**
- * The enumeration of all possible mime-types of {@link FileMetadataRecord}.
- */
-public enum MimeType {
+import com.google.errorprone.annotations.Immutable;
 
-    IMAGE("image"),
-    AUDIO("audio"),
-    VIDEO("video"),
-    TEXT("text"),
-    UNKNOWN("unknown");
+import static com.google.common.base.Preconditions.checkNotNull;
+
+/**
+ * The value object for the mime type of {@link FileMetadataRecord}.
+ */
+@Immutable
+public final class MimeType {
 
     /**
      * The mime type value.
@@ -21,8 +20,8 @@ public enum MimeType {
      *
      * @param value the mime type value.
      */
-    MimeType(String value) {
-        this.value = value;
+    public MimeType(String value) {
+        this.value = checkNotNull(value);
     }
 
     /**

@@ -71,7 +71,7 @@ public class FolderCreation implements Process {
             logger.info("New folder was created in the folder with id: {} ", parentFolderId);
         }
 
-        return new FolderDto(createdFolder, 0);
+        return new FolderDto(createdFolder);
     }
 
     /**

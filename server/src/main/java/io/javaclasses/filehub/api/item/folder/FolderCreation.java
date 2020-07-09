@@ -10,6 +10,7 @@ import io.javaclasses.filehub.storage.user.UserId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -52,9 +53,9 @@ public class FolderCreation implements Process {
         FolderId parentFolderId = createFolderCommand.parentFolderId();
         UserId ownerId = createFolderCommand.ownerId();
 
-        FolderMetadataRecord parentFolderMetadata = folderMetadataStorage.find(parentFolderId).orElse(null);
+        Optional<FolderMetadataRecord> parentFolderMetadata = folderMetadataStorage.find(parentFolderId, ownerId);
 
-        if (folderExists(ownerId, parentFolderMetadata)) {
+        if (!parentFolderMetadata.isPresent()) {
             if (logger.isInfoEnabled()) {
                 logger.info("User with id: {} does not have folder with id: {}", ownerId, parentFolderId);
             }
@@ -87,17 +88,6 @@ public class FolderCreation implements Process {
                 ownerId,
                 parentFolderId
         );
-    }
-
-    /**
-     * Checks the existence of {@code parentFolderMetadata} and its possessiveness to {@link User} with {@code ownerId}.
-     *
-     * @param ownerId              an identifier of the owner.
-     * @param parentFolderMetadata an identifier of the parent folder.
-     * @return true if conditions are met.
-     */
-    private boolean folderExists(UserId ownerId, FolderMetadataRecord parentFolderMetadata) {
-        return !(parentFolderMetadata != null && parentFolderMetadata.ownerId().equals(ownerId));
     }
 
     /**

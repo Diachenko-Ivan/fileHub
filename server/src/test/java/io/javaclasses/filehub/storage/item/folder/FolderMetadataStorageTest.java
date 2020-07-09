@@ -6,6 +6,7 @@ import io.javaclasses.filehub.storage.user.UserId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
 import java.util.Set;
 
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -28,11 +29,11 @@ class FolderMetadataStorageTest {
         return new UserId(value);
     }
 
-    private FolderMetadataRecord createFolderWithFolderIdAndParentIdAndOwnerId(FolderId folderId,
-                                                                               FolderId parentId,
-                                                                               UserId ownerId) {
+    private FolderMetadataRecord createFolderWith(FolderId id,
+                                                  FolderId parentId,
+                                                  UserId ownerId) {
         return new FolderMetadataRecord(
-                folderId,
+                id,
                 new ItemName("sdg"),
                 ownerId,
                 parentId);
@@ -47,11 +48,11 @@ class FolderMetadataStorageTest {
     }
 
 
-    private FolderMetadataStorage prepareFolderStorageForFindByParentIdTest() {
+    private FolderMetadataStorage prepareFolderStorageSearchTests() {
         return prepareFolderStorage(
-                createFolderWithFolderIdAndParentIdAndOwnerId(folderId("1"), folderId("2"), ownerId("1")),
-                createFolderWithFolderIdAndParentIdAndOwnerId(folderId("3"), folderId("5"), ownerId("1")),
-                createFolderWithFolderIdAndParentIdAndOwnerId(folderId("5"), folderId("2"), ownerId("1"))
+                createFolderWith(folderId("1"), folderId("2"), ownerId("1")),
+                createFolderWith(folderId("3"), folderId("5"), ownerId("1")),
+                createFolderWith(folderId("5"), folderId("2"), ownerId("1"))
         );
     }
 
@@ -59,11 +60,11 @@ class FolderMetadataStorageTest {
     @Test
     void testFindFoldersByParentId() {
         FolderMetadataRecord firstFoundFolder =
-                createFolderWithFolderIdAndParentIdAndOwnerId(folderId("1"), folderId("2"), ownerId("1"));
+                createFolderWith(folderId("1"), folderId("2"), ownerId("1"));
         FolderMetadataRecord secondFoundFolder =
-                createFolderWithFolderIdAndParentIdAndOwnerId(folderId("5"), folderId("2"), ownerId("1"));
+                createFolderWith(folderId("5"), folderId("2"), ownerId("1"));
 
-        FolderMetadataStorage folderMetadataStorage = prepareFolderStorageForFindByParentIdTest();
+        FolderMetadataStorage folderMetadataStorage = prepareFolderStorageSearchTests();
         FolderId parentFolderId = new FolderId("2");
 
         Set<FolderMetadataRecord> foundFolders = folderMetadataStorage.findAll(parentFolderId);
@@ -75,5 +76,30 @@ class FolderMetadataStorageTest {
         assertWithMessage("The set contains incorrect records.")
                 .that(foundFolders)
                 .containsExactly(firstFoundFolder, secondFoundFolder);
+    }
+
+    @DisplayName("find folder by its identifier and identifier of the owner.")
+    @Test
+    void testFindFolderByIdAndOwnerId() {
+        FolderMetadataRecord expectedFolder = createFolderWith(folderId("1"), folderId("2"), ownerId("1"));
+        FolderMetadataStorage folderMetadataStorage = prepareFolderStorageSearchTests();
+
+        Optional<FolderMetadataRecord> actualFolder = folderMetadataStorage.find(new FolderId("1"), new UserId("1"));
+
+        assertWithMessage("Found folder is wrong.")
+                .that(actualFolder.orElse(null))
+                .isEqualTo(expectedFolder);
+    }
+
+    @DisplayName("not find folder by its identifier and identifier of the owner if one of the parameters is incorrect.")
+    @Test
+    void testNotFoundFolderByWrongOwnerId() {
+        FolderMetadataStorage folderMetadataStorage = prepareFolderStorageSearchTests();
+
+        Optional<FolderMetadataRecord> actualFolder = folderMetadataStorage.find(new FolderId("1"), new UserId("another"));
+
+        assertWithMessage("The folder was found although the identifier of the owner is wrong.")
+                .that(actualFolder.orElse(null))
+                .isNull();
     }
 }

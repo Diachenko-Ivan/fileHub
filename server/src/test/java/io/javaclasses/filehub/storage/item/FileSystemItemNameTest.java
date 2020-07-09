@@ -5,12 +5,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("ItemName should ")
-class ItemNameTest {
+class FileSystemItemNameTest {
 
     @DisplayName("not accept null parameters to constructor.")
     @Test
     void testNullConstructorParameters() {
         NullPointerTester tester = new NullPointerTester();
-        tester.testAllPublicConstructors(ItemName.class);
+        tester.testAllPublicConstructors(FileSystemItemName.class);
     }
 }

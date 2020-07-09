@@ -2,7 +2,7 @@ package io.javaclasses.filehub.storage.item.folder;
 
 import com.google.common.testing.EqualsTester;
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.storage.item.ItemName;
+import io.javaclasses.filehub.storage.item.FileSystemItemName;
 import io.javaclasses.filehub.storage.user.UserId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,9 +14,8 @@ class FolderMetadataRecordTest {
     @Test
     void testNullConstructorParameters() {
         NullPointerTester tester = new NullPointerTester();
-        tester.setDefault(ItemName.class, new ItemName("id"));
+        tester.setDefault(FileSystemItemName.class, new FileSystemItemName("id"));
         tester.setDefault(FolderId.class, new FolderId("ksdf"));
-        tester.setDefault(FileItemCount.class, new FileItemCount(4));
         tester.setDefault(UserId.class, new UserId("sdfs"));
         tester.testAllPublicConstructors(FolderMetadataRecord.class);
     }
@@ -33,7 +32,7 @@ class FolderMetadataRecordTest {
     private FolderMetadataRecord createFolder(String folderIdValue) {
         return new FolderMetadataRecord(
                 new FolderId(folderIdValue),
-                new ItemName("sdg"),
+                new FileSystemItemName("sdg"),
                 new UserId("sdfsdg"),
                 new FolderId("sijgiojodf"));
     }

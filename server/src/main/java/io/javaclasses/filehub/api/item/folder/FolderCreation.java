@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.api.item.folder;
 
 import io.javaclasses.filehub.api.Process;
-import io.javaclasses.filehub.storage.item.ItemName;
+import io.javaclasses.filehub.storage.item.FileSystemItemName;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
@@ -96,11 +96,11 @@ public class FolderCreation implements Process {
      * @param parentId an identifier of the parent folder.
      * @return new generated name.
      */
-    private ItemName createNewFolderName(FolderId parentId) {
+    private FileSystemItemName createNewFolderName(FolderId parentId) {
         Set<String> existingFolderNames = folderMetadataStorage.findAll(parentId)
                 .stream()
                 .map((folder) -> folder.folderName().value())
                 .collect(toSet());
-        return new ItemName(generateName(existingFolderNames));
+        return new FileSystemItemName(generateName(existingFolderNames));
     }
 }

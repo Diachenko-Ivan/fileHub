@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import io.javaclasses.filehub.api.item.folder.CreateFolder;
 import io.javaclasses.filehub.api.item.folder.FolderCreation;
 import io.javaclasses.filehub.api.item.folder.FolderDto;
-import io.javaclasses.filehub.api.item.folder.ItemIsNotFoundException;
+import io.javaclasses.filehub.api.item.folder.NotFoundException;
 import io.javaclasses.filehub.api.user.CurrentUserIdHolder;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
@@ -51,7 +51,7 @@ public class FolderCreationRoute implements Route {
 
             response.status(SC_OK);
             return createJsonResponseBody(createdFolder);
-        } catch (ItemIsNotFoundException e) {
+        } catch (NotFoundException e) {
             response.status(SC_NOT_FOUND);
             return "Folder was not found";
         }

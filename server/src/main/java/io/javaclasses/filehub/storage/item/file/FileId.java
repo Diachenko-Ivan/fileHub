@@ -1,8 +1,7 @@
 package io.javaclasses.filehub.storage.item.file;
 
+import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.storage.RecordId;
-
-import javax.annotation.concurrent.Immutable;
 
 /**
  * An identifier for {@link FileMetadataRecord}.

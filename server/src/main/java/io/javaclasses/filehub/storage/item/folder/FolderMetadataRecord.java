@@ -2,7 +2,7 @@ package io.javaclasses.filehub.storage.item.folder;
 
 import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.storage.Record;
-import io.javaclasses.filehub.storage.item.ItemName;
+import io.javaclasses.filehub.storage.item.FileSystemItemName;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserId;
 
@@ -21,7 +21,7 @@ public final class FolderMetadataRecord extends Record<FolderId> {
     /**
      * Folder name.
      */
-    private final ItemName folderName;
+    private final FileSystemItemName folderName;
     /**
      * An identifier of the folder owner.
      */
@@ -40,7 +40,7 @@ public final class FolderMetadataRecord extends Record<FolderId> {
      * @param ownerId        an identifier of folder owner {@link User}.
      * @param parentFolderId an identifier for a parent folder.
      */
-    public FolderMetadataRecord(FolderId id, ItemName folderName,
+    public FolderMetadataRecord(FolderId id, FileSystemItemName folderName,
                                 UserId ownerId, @Nullable FolderId parentFolderId) {
         super(id);
         this.folderName = checkNotNull(folderName);
@@ -53,7 +53,7 @@ public final class FolderMetadataRecord extends Record<FolderId> {
      *
      * @return folder name.
      */
-    public ItemName folderName() {
+    public FileSystemItemName folderName() {
         return folderName;
     }
 

@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -29,33 +28,20 @@ public final class FolderDto {
      */
     @SerializedName("parentId")
     private final String parentId;
-    /**
-     * A number of file items in the folder.
-     */
-    @SerializedName("filesCount")
-    private final long fileItemCount;
-    /**
-     * Defines item type.
-     */
-    @SerializedName("type")
-    private final String type = "folder";
 
     /**
      * Creates new {@link FolderDto} instance retrieving data from {@code folderMetadataRecord}.
      *
      * @param folderMetadataRecord folder record on the basis of which a folder DTO is created.
-     * @param fileItemCount number of file items in the folder.
      */
-    public FolderDto(FolderMetadataRecord folderMetadataRecord, long fileItemCount) {
+    public FolderDto(FolderMetadataRecord folderMetadataRecord) {
         checkNotNull(folderMetadataRecord);
-        checkArgument(fileItemCount >= 0, "Number of items can not be negative.");
 
         this.id = folderMetadataRecord.id().value();
         this.name = folderMetadataRecord.folderName().value();
 
         FolderId parentId = folderMetadataRecord.parentFolderId();
         this.parentId = parentId != null ? parentId.value() : null;
-        this.fileItemCount = fileItemCount;
     }
 
     /**
@@ -85,12 +71,4 @@ public final class FolderDto {
         return parentId;
     }
 
-    /**
-     * Getter for number or items in folder.
-     *
-     * @return number or items.
-     */
-    public long fileItemCount() {
-        return fileItemCount;
-    }
 }

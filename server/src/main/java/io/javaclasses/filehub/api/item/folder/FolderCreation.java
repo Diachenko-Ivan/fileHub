@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.api.item.folder;
 
 import io.javaclasses.filehub.api.Process;
-import io.javaclasses.filehub.storage.item.ItemName;
+import io.javaclasses.filehub.storage.item.FileSystemItemName;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
@@ -10,21 +10,22 @@ import io.javaclasses.filehub.storage.user.UserId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
+import java.util.Set;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 import static io.javaclasses.filehub.api.IdGenerator.generateId;
+import static io.javaclasses.filehub.api.item.folder.NewFolderNameGenerator.generateName;
+import static java.util.stream.Collectors.toSet;
 
 /**
- * The application process that handles {@link CreateFolder} command and provides folder creation functionality.
+ * The application process that handles {@link CreateFolder} command and performs folder creation functionality.
  */
 public class FolderCreation implements Process {
     /**
      * For logging.
      */
     private static final Logger logger = LoggerFactory.getLogger(FolderCreation.class);
-    /**
-     * The name of the newly created folder.
-     */
-    private static final String NEW_FOLDER_NAME = "New Folder";
     /**
      * Storage for {@link FolderMetadataRecord}.
      */
@@ -44,7 +45,7 @@ public class FolderCreation implements Process {
      *
      * @param createFolderCommand a command to create a new folder.
      * @return created folder.
-     * @throws ItemIsNotFoundException if parent folder, where new folder is being created in, is not found
+     * @throws NotFoundException if parent folder, where new folder is being created in, is not found
      *                                 or the user does not have this folder.
      */
     public FolderDto handle(CreateFolder createFolderCommand) {
@@ -52,13 +53,13 @@ public class FolderCreation implements Process {
         FolderId parentFolderId = createFolderCommand.parentFolderId();
         UserId ownerId = createFolderCommand.ownerId();
 
-        FolderMetadataRecord parentFolderMetadata = folderMetadataStorage.find(parentFolderId).orElse(null);
+        Optional<FolderMetadataRecord> parentFolderMetadata = folderMetadataStorage.find(parentFolderId, ownerId);
 
-        if (folderExists(ownerId, parentFolderMetadata)) {
+        if (!parentFolderMetadata.isPresent()) {
             if (logger.isInfoEnabled()) {
                 logger.info("User with id: {} does not have folder with id: {}", ownerId, parentFolderId);
             }
-            throw new ItemIsNotFoundException("User with id " + ownerId
+            throw new NotFoundException("User with id " + ownerId
                     + " does not have folder with id: " + parentFolderId + ".");
         }
 
@@ -70,7 +71,7 @@ public class FolderCreation implements Process {
             logger.info("New folder was created in the folder with id: {} ", parentFolderId);
         }
 
-        return new FolderDto(createdFolder, 0);
+        return new FolderDto(createdFolder);
     }
 
     /**
@@ -83,21 +84,23 @@ public class FolderCreation implements Process {
     private FolderMetadataRecord newFolderWithParentIdAndOwnerId(FolderId parentFolderId, UserId ownerId) {
         return new FolderMetadataRecord(
                 new FolderId(generateId()),
-                new ItemName(NEW_FOLDER_NAME),
+                createNewFolderName(parentFolderId),
                 ownerId,
                 parentFolderId
         );
     }
 
     /**
-     * Checks the existence of {@code parentFolderMetadata} and its possessiveness to {@link User} with {@code ownerId}.
+     * Creates a unique name of the new folder from the set of folders with {@code parentId}.
      *
-     * @param ownerId              an identifier of the owner.
-     * @param parentFolderMetadata an identifier of the parent folder.
-     * @return true if conditions are met.
+     * @param parentId an identifier of the parent folder.
+     * @return new generated name.
      */
-    private boolean folderExists(UserId ownerId, FolderMetadataRecord parentFolderMetadata) {
-        return !(parentFolderMetadata != null && parentFolderMetadata.ownerId().equals(ownerId));
+    private FileSystemItemName createNewFolderName(FolderId parentId) {
+        Set<String> existingFolderNames = folderMetadataStorage.findAll(parentId)
+                .stream()
+                .map((folder) -> folder.folderName().value())
+                .collect(toSet());
+        return new FileSystemItemName(generateName(existingFolderNames));
     }
-
 }

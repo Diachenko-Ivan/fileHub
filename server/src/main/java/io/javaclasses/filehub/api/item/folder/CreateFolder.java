@@ -10,7 +10,7 @@ import io.javaclasses.filehub.storage.user.UserId;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * An intention of the client to create a new folder in already existing one.
+ * An intention of the client to create a new folder in given parent folder.
  */
 @Immutable
 public final class CreateFolder implements Command {
@@ -46,7 +46,7 @@ public final class CreateFolder implements Command {
     /**
      * Getter for the parent folder owner identifier.
      *
-     * @return owner identifier.
+     * @return an identifier of the owner.
      */
     public UserId ownerId() {
         return ownerId;

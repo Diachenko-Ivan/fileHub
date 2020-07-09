@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.api.item.folder;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.storage.item.ItemName;
+import io.javaclasses.filehub.storage.item.FileSystemItemName;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
@@ -20,11 +20,11 @@ class FolderCreationTest {
     private static class MockFolderMetadataStorageCreator {
         private boolean isAddCalled = false;
 
-        private FolderMetadataStorage createWithFindResult(FolderMetadataRecord findResult) {
+        private FolderMetadataStorage withRecord(FolderMetadataRecord recordToBeFoundAlways) {
             return new FolderMetadataStorage() {
                 @Override
-                public synchronized Optional<FolderMetadataRecord> find(FolderId id) {
-                    return Optional.ofNullable(findResult);
+                public synchronized Optional<FolderMetadataRecord> find(FolderId id, UserId ownerId) {
+                    return Optional.ofNullable(recordToBeFoundAlways);
                 }
 
                 @Override
@@ -39,10 +39,10 @@ class FolderCreationTest {
         }
     }
 
-    private FolderMetadataRecord createFolderWithFolderIdAndOwnerId(FolderId folderId, UserId folderOwnerId) {
+    private FolderMetadataRecord createFolderWith(FolderId folderId, UserId folderOwnerId) {
         return new FolderMetadataRecord(
                 folderId,
-                new ItemName("sdg"),
+                new FileSystemItemName("sdg"),
                 folderOwnerId,
                 new FolderId("sijgiojodf"));
     }
@@ -56,51 +56,51 @@ class FolderCreationTest {
     }
 
 
-    @DisplayName("fail the creation of inner folder because parent folder is not found.")
+    @DisplayName("fail the creation of sub-folder because parent folder is not found.")
     @Test
-    void testAddToNonExistingFolder() {
-        MockFolderMetadataStorageCreator mockCreator = new MockFolderMetadataStorageCreator();
-        FolderMetadataStorage mockFolderStorage = mockCreator.createWithFindResult(null);
+    void testCreationToNotExistingFolder() {
+        MockFolderMetadataStorageCreator mockFolderStorageCreator = new MockFolderMetadataStorageCreator();
+        FolderMetadataStorage mockFolderStorage = mockFolderStorageCreator.withRecord(null);
 
         FolderCreation folderCreation = new FolderCreation(mockFolderStorage);
 
         CreateFolder createFolderCommand =
                 new CreateFolder(new FolderId("nonexistent-folder-id"), new UserId("defaultId"));
 
-        assertThrows(ItemIsNotFoundException.class,
+        assertThrows(NotFoundException.class,
                 () -> folderCreation.handle(createFolderCommand),
                 "The ItemIsNotFoundException was not thrown bust must, because parent folder was not found.");
 
         assertWithMessage("The add method from folder storage was called but must not.")
-                .that(mockCreator.isAddCalled())
+                .that(mockFolderStorageCreator.isAddCalled())
                 .isFalse();
     }
 
-    @DisplayName("create inner folder.")
+    @DisplayName("create sub-folder.")
     @Test
-    void testInnerFolderCreation() {
-        UserId equalOwnerId = new UserId("RandomId");
-        FolderId equalParentFolderId = new FolderId("folder-id");
+    void testSubfolderCreation() {
+        UserId expectedOwnerId = new UserId("RandomId");
+        FolderId expectedParentFolderId = new FolderId("folder-id");
 
-        MockFolderMetadataStorageCreator mockCreator = new MockFolderMetadataStorageCreator();
-        FolderMetadataStorage mockFolderStorage = mockCreator
-                .createWithFindResult(createFolderWithFolderIdAndOwnerId(equalParentFolderId, equalOwnerId));
+        MockFolderMetadataStorageCreator mockFolderStorageCreator = new MockFolderMetadataStorageCreator();
+        FolderMetadataStorage mockFolderStorage = mockFolderStorageCreator
+                .withRecord(createFolderWith(expectedParentFolderId, expectedOwnerId));
 
-        FolderCreation folderCreation = new FolderCreation(mockFolderStorage);
+        FolderCreation process = new FolderCreation(mockFolderStorage);
 
-        FolderDto innerFolder =
-                folderCreation.handle(new CreateFolder(equalParentFolderId, equalOwnerId));
+        FolderDto subFolder =
+                process.handle(new CreateFolder(expectedParentFolderId, expectedOwnerId));
 
-        assertWithMessage("Created folder is null.")
-                .that(innerFolder)
+        assertWithMessage("Cannot create folder.")
+                .that(subFolder)
                 .isNotNull();
 
-        assertWithMessage("The add method from folder storage was not called.")
-                .that(mockCreator.isAddCalled())
+        assertWithMessage("The contract between process and folder storage is broken.")
+                .that(mockFolderStorageCreator.isAddCalled())
                 .isTrue();
 
-        assertWithMessage("Parent folder identifier is incorrect.")
-                .that(innerFolder.parentId())
-                .isEqualTo(equalParentFolderId.value());
+        assertWithMessage("Parent folder identifier is not set.")
+                .that(subFolder.parentId())
+                .isEqualTo(expectedParentFolderId.value());
     }
 }

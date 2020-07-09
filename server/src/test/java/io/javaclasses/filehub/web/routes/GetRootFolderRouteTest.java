@@ -2,7 +2,7 @@ package io.javaclasses.filehub.web.routes;
 
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.user.CurrentUserIdHolder;
-import io.javaclasses.filehub.storage.item.ItemName;
+import io.javaclasses.filehub.storage.item.FileSystemItemName;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
@@ -22,7 +22,7 @@ class GetRootFolderRouteTest {
     private FolderMetadataRecord createFolderWithFolderIdAndOwnerId(FolderId folderId, UserId folderOwnerId) {
         return new FolderMetadataRecord(
                 folderId,
-                new ItemName("sdg"),
+                new FileSystemItemName("sdg"),
                 folderOwnerId,
                 null);
     }

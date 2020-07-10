@@ -83,7 +83,7 @@ class GetFolderRouteTest {
         tester.testAllPublicConstructors(GetFolderRoute.class);
     }
 
-    @DisplayName("manage call of folder view and return status 200.")
+    @DisplayName("manage folder view and return status 200.")
     @ParameterizedTest
     @MethodSource("requestFolderIdParams")
     void testGetOfFolder(String folderIdParam) {

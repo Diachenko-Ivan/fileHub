@@ -15,7 +15,7 @@ class FileSizeTest {
     void testNegativeNumberOfItems() {
         assertThrows(IllegalArgumentException.class, () ->
                         new FileSize(-4),
-                "Constructor did not throw an exception because of negative size.");
+                "Constructor did not throw an exception because of negative size, but should.");
     }
 
     @DisplayName("accept positive file size to constructor.")

@@ -57,7 +57,7 @@ class FolderViewTest {
                 .isNotNull();
     }
 
-    @DisplayName("fail to receive not existing folder.")
+    @DisplayName("fail to retrieve not existing folder.")
     @Test
     void testReceiveOfNotExistingFolder() {
         FolderMetadataStorage mockStorage = mockFolderStorageWith(null);

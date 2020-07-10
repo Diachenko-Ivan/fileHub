@@ -93,7 +93,7 @@ class FolderMetadataStorageTest {
                 .isEqualTo(expectedFolder);
     }
 
-    @DisplayName("not find folder by its identifier and identifier of the owner if one of the parameters is incorrect.")
+    @DisplayName("retrieve empty folder if no folder matched the provided parameters.")
     @Test
     void testFindFolderByWrongOwnerId() {
         FolderMetadataStorage folderMetadataStorage = prepareFolderStorageSearchTests();

@@ -4,6 +4,8 @@ import com.google.errorprone.annotations.Immutable;
 import com.google.gson.annotations.SerializedName;
 import io.javaclasses.filehub.storage.item.file.FileMetadataRecord;
 
+import java.util.Objects;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -80,5 +82,31 @@ public final class FileDto {
      */
     public String mimeType() {
         return mimeType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FileDto fileDto = (FileDto) o;
+        return size == fileDto.size &&
+                Objects.equals(id, fileDto.id) &&
+                Objects.equals(fileName, fileDto.fileName) &&
+                Objects.equals(mimeType, fileDto.mimeType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, fileName, size, mimeType);
+    }
+
+    @Override
+    public String toString() {
+        return "FileDto{" +
+                "id='" + id + '\'' +
+                ", fileName='" + fileName + '\'' +
+                ", size=" + size +
+                ", mimeType='" + mimeType + '\'' +
+                '}';
     }
 }

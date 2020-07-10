@@ -15,7 +15,7 @@ import static java.lang.String.format;
 
 /**
  * The application view that processes {@link GetFolder} query and performs retrieving of
- * folder {@link FolderMetadataRecord} by its identifier
+ * folder {@link FolderMetadataRecord} by its identifier.
  */
 public class FolderView implements View<GetFolder, FolderDto> {
     /**
@@ -60,6 +60,9 @@ public class FolderView implements View<GetFolder, FolderDto> {
                     format("User with id: %s does not have folder with id: %s", folderId.value(), ownerId.value()));
         }
 
+        if (logger.isInfoEnabled()) {
+            logger.info("User with id: {} retrieved folder with id: {} ", ownerId.value(), folderId.value());
+        }
         return new FolderDto(foundFolder.get());
     }
 }

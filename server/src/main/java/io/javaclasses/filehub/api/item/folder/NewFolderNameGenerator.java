@@ -19,16 +19,13 @@ public class NewFolderNameGenerator {
         long counter = 0;
         int numberOfFolders = checkNotNull(existingNames).size();
 
-        String newFolderName = "";
-
         while (counter <= numberOfFolders) {
             String possibleFolderName = "New Folder" + '(' + counter + ')';
             if (!existingNames.contains(possibleFolderName)) {
-                newFolderName = possibleFolderName;
-                break;
+                return possibleFolderName;
             }
             counter++;
         }
-        return newFolderName;
+        return null;
     }
 }

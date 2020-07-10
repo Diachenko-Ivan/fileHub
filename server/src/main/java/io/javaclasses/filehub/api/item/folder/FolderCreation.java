@@ -63,7 +63,7 @@ public class FolderCreation implements Process {
                     + " does not have folder with id: " + parentFolderId + ".");
         }
 
-        FolderMetadataRecord createdFolder = newFolderWithParentIdAndOwnerId(parentFolderId, ownerId);
+        FolderMetadataRecord createdFolder = newFolderWith(parentFolderId, ownerId);
 
         folderMetadataStorage.add(createdFolder);
 
@@ -81,7 +81,7 @@ public class FolderCreation implements Process {
      * @param ownerId        an identifier of the folder owner {@link User}.
      * @return new {@link FolderMetadataRecord} instance.
      */
-    private FolderMetadataRecord newFolderWithParentIdAndOwnerId(FolderId parentFolderId, UserId ownerId) {
+    private FolderMetadataRecord newFolderWith(FolderId parentFolderId, UserId ownerId) {
         return new FolderMetadataRecord(
                 new FolderId(generateId()),
                 createNewFolderName(parentFolderId),

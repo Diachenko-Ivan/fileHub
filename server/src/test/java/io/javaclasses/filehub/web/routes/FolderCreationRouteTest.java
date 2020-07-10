@@ -83,7 +83,7 @@ class FolderCreationRouteTest {
         tester.testAllPublicConstructors(FolderCreationRoute.class);
     }
 
-    @DisplayName("manage call of folder creation process and return 200 status.")
+    @DisplayName("manage folder creation process and return 200 status.")
     @ParameterizedTest
     @MethodSource("requestFolderIdParams")
     void testFolderCreation(String requestParam) {

@@ -39,7 +39,7 @@ public class GetRootFolderRoute implements Route {
     @Override
     public Object handle(Request request, Response response) {
         GetRootFolderId getRootQuery = readQuery();
-        RootFolderIdView rootIdView = getRootIdView();
+        RootFolderIdView rootIdView = createRootIdView();
 
         FolderId rootFolderId = rootIdView.process(getRootQuery);
 
@@ -61,7 +61,7 @@ public class GetRootFolderRoute implements Route {
      *
      * @return RootFolderIdView instance.
      */
-    private RootFolderIdView getRootIdView() {
+    private RootFolderIdView createRootIdView() {
         return new RootFolderIdView(folderMetadataStorage);
     }
 

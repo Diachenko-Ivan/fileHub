@@ -11,7 +11,7 @@ import static java.util.stream.Collectors.toSet;
 
 /**
  * An application storage for folders {@link FolderMetadataRecord}.
- * <p>An implementation of in-memory storage.</p>
+ * <p>Based on implementation of in-memory storage.</p>
  */
 public class FolderMetadataStorage extends
         InMemoryStorage<FolderId, FolderMetadataRecord> {
@@ -27,7 +27,7 @@ public class FolderMetadataStorage extends
         return this.records()
                 .values()
                 .stream()
-                .filter((folder) -> folder.parentFolderId().equals(parentFolderId))
+                .filter((folder) -> parentFolderId.equals(folder.parentFolderId()))
                 .collect(toSet());
     }
 

@@ -1,6 +1,10 @@
 package io.javaclasses.filehub.api.user;
 
 import io.javaclasses.filehub.api.Process;
+import io.javaclasses.filehub.storage.item.FileSystemItemName;
+import io.javaclasses.filehub.storage.item.folder.FolderId;
+import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
+import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserId;
 import io.javaclasses.filehub.storage.user.UserStorage;
@@ -20,17 +24,26 @@ public class Registration implements Process {
      */
     private static final Logger logger = LoggerFactory.getLogger(Registration.class);
     /**
+     * The name of root folder for each registered user {@link User}.
+     */
+    private static final String ROOT_FOLDER_NAME = "Root";
+    /**
      * Storage for users {@link User}.
      */
-    private final UserStorage storage;
+    private final UserStorage userStorage;
+    /**
+     * Storage for folders {@link FolderMetadataRecord}
+     */
+    private final FolderMetadataStorage folderMetadataStorage;
 
     /**
      * Creates new {@link Registration} process instance.
      *
-     * @param storage {@link UserStorage} instance.
+     * @param userStorage {@link UserStorage} instance.
      */
-    public Registration(UserStorage storage) {
-        this.storage = checkNotNull(storage);
+    public Registration(UserStorage userStorage, FolderMetadataStorage folderMetadataStorage) {
+        this.userStorage = checkNotNull(userStorage);
+        this.folderMetadataStorage = checkNotNull(folderMetadataStorage);
     }
 
     /**
@@ -43,19 +56,28 @@ public class Registration implements Process {
         checkNotNull(registerUser);
         String hashedPassword = hash(registerUser.password().value());
 
-        if (storage.find(registerUser.login()).isPresent()) {
-            if (logger.isWarnEnabled()) {
-                logger.warn("Unsuccessful registration. Login " + registerUser.login().value() + " is already taken.");
+        if (userStorage.find(registerUser.login()).isPresent()) {
+            if (logger.isInfoEnabled()) {
+                logger.info("Unsuccessful registration. Login " + registerUser.login().value() + " is already taken.");
             }
             throw new LoginIsTakenException("User with this login already exists.");
         }
         User userForRegistration = new User(
                 new UserId(generateId()), registerUser.login(), hashedPassword);
 
-        storage.add(userForRegistration);
+        userStorage.add(userForRegistration);
+
+        FolderMetadataRecord rootFolder = new FolderMetadataRecord(
+                new FolderId(generateId()),
+                new FileSystemItemName(ROOT_FOLDER_NAME),
+                userForRegistration.id(),
+                null
+        );
+
+        folderMetadataStorage.add(rootFolder);
         if (logger.isInfoEnabled()) {
-            logger.info("User with login " + userForRegistration.login().value() + " and id: " + userForRegistration.id()
-                    + " is successfully registered.");
+            logger.info("User with login {}  is registered. Root folder id: {}",
+                    userForRegistration.login().value(), rootFolder.id());
         }
     }
 }

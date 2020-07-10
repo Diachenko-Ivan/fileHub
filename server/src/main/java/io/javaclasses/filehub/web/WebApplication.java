@@ -1,10 +1,13 @@
 package io.javaclasses.filehub.web;
 
+import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
+import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
 import io.javaclasses.filehub.storage.user.LoggedInUserStorage;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserStorage;
 import io.javaclasses.filehub.web.routes.AuthenticationRoute;
 import io.javaclasses.filehub.web.routes.LogoutRoute;
+import io.javaclasses.filehub.web.routes.FolderCreationRoute;
 import io.javaclasses.filehub.web.routes.RegistrationRoute;
 import spark.Filter;
 
@@ -27,6 +30,10 @@ public class WebApplication {
      * Storage for access tokens.
      */
     private final LoggedInUserStorage loggedInUserStorage = new LoggedInUserStorage();
+    /**
+     * Storage for folders {@link FolderMetadataRecord}.
+     */
+    private final FolderMetadataStorage folderMetadataStorage = new FolderMetadataStorage();
 
     /**
      * Starts application.
@@ -47,8 +54,9 @@ public class WebApplication {
         filter();
 
         path("/api", () -> {
-            post("/register", new RegistrationRoute(userStorage));
+            post("/register", new RegistrationRoute(userStorage, folderMetadataStorage));
             post("/login", new AuthenticationRoute(userStorage, loggedInUserStorage));
+            post("/folder/:folderId/folder", new FolderCreationRoute(folderMetadataStorage));
             post("/login", new AuthenticationRoute(userStorage, loggedInUserStorage));
             post("/logout", new LogoutRoute(loggedInUserStorage));
         });

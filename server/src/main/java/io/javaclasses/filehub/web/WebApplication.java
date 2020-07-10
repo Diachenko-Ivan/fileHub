@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.web;
 
+import io.javaclasses.filehub.storage.item.file.FileMetadataStorage;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
 import io.javaclasses.filehub.storage.user.LoggedInUserStorage;
@@ -7,6 +8,7 @@ import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserStorage;
 import io.javaclasses.filehub.web.routes.AuthenticationRoute;
 import io.javaclasses.filehub.web.routes.FolderCreationRoute;
+import io.javaclasses.filehub.web.routes.GetFolderContentRoute;
 import io.javaclasses.filehub.web.routes.GetFolderRoute;
 import io.javaclasses.filehub.web.routes.GetRootFolderRoute;
 import io.javaclasses.filehub.web.routes.LogoutRoute;
@@ -37,6 +39,10 @@ public class WebApplication {
      * Storage for folders {@link FolderMetadataRecord}.
      */
     private final FolderMetadataStorage folderMetadataStorage = new FolderMetadataStorage();
+    /**
+     * Storage for files {@link FileMetadataStorage}.
+     */
+    private final FileMetadataStorage fileMetadataStorage = new FileMetadataStorage();
 
     /**
      * Starts application.
@@ -63,7 +69,7 @@ public class WebApplication {
             post("/logout", new LogoutRoute(loggedInUserStorage));
             get("/folder/root", new GetRootFolderRoute(folderMetadataStorage));
             get("/folder/:folderId", new GetFolderRoute(folderMetadataStorage));
-            get("/folder/:folderId/content", (request, response) -> "[]");
+            get("/folder/:folderId/content", new GetFolderContentRoute(fileMetadataStorage, folderMetadataStorage));
         });
     }
 

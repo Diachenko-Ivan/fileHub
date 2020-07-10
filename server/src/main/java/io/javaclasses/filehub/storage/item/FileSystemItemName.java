@@ -9,18 +9,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * A value object for file or folder {@link FolderMetadataRecord} name.
  */
 @Immutable
-public final class ItemName {
+public final class FileSystemItemName {
     /**
      * Contains the name of the item.
      */
     private final String value;
 
     /**
-     * Create new {@link ItemName} instance.
+     * Create new {@link FileSystemItemName} instance.
      *
      * @param value an item name.
      */
-    public ItemName(String value) {
+    public FileSystemItemName(String value) {
         this.value = checkNotNull(value);
     }
 

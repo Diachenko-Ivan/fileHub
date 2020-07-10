@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import io.javaclasses.filehub.api.item.folder.CreateFolder;
 import io.javaclasses.filehub.api.item.folder.FolderCreation;
 import io.javaclasses.filehub.api.item.folder.FolderDto;
-import io.javaclasses.filehub.api.item.folder.ItemIsNotFoundException;
+import io.javaclasses.filehub.api.item.folder.NotFoundException;
 import io.javaclasses.filehub.api.user.CurrentUserIdHolder;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
@@ -37,7 +37,8 @@ public class FolderCreationRoute implements Route {
 
     /**
      * Handles request for creation of a new folder.
-     * <p>Sets 404 to {@code response.status()} if folder where new folder is being created is not found.
+     * <p>Sets 404 to {@code response.status()} if the parent folder does not exist.
+     * <p>The status code 200 is for the case when folder was created in the parent folder.</p>
      * {@inheritDoc}
      */
     @Override
@@ -45,13 +46,13 @@ public class FolderCreationRoute implements Route {
         response.type("application/json");
         try {
             CreateFolder createFolderCommand = readCommand(request);
-            FolderCreation folderCreationProcess = getFolderCreationProcess();
+            FolderCreation folderCreationProcess = createFolderCreationProcess();
 
             FolderDto createdFolder = folderCreationProcess.handle(createFolderCommand);
 
             response.status(SC_OK);
             return createJsonResponseBody(createdFolder);
-        } catch (ItemIsNotFoundException e) {
+        } catch (NotFoundException e) {
             response.status(SC_NOT_FOUND);
             return "Folder was not found";
         }
@@ -73,7 +74,7 @@ public class FolderCreationRoute implements Route {
      *
      * @return {@link FolderCreation} instance.
      */
-    private FolderCreation getFolderCreationProcess() {
+    private FolderCreation createFolderCreationProcess() {
         return new FolderCreation(folderMetadataStorage);
     }
 

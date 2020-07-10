@@ -94,4 +94,11 @@ public final class FolderMetadataRecord extends Record<FolderId> {
     public int hashCode() {
         return Objects.hash(this.id());
     }
+
+    @Override
+    public String toString() {
+        return "FolderMetadataRecord{" + "id=" + id() +
+                ", folderName=" + folderName +
+                '}';
+    }
 }

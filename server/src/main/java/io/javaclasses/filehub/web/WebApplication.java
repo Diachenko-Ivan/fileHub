@@ -6,9 +6,10 @@ import io.javaclasses.filehub.storage.user.LoggedInUserStorage;
 import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserStorage;
 import io.javaclasses.filehub.web.routes.AuthenticationRoute;
-import io.javaclasses.filehub.web.routes.LogoutRoute;
 import io.javaclasses.filehub.web.routes.FolderCreationRoute;
+import io.javaclasses.filehub.web.routes.GetFolderRoute;
 import io.javaclasses.filehub.web.routes.GetRootFolderRoute;
+import io.javaclasses.filehub.web.routes.LogoutRoute;
 import io.javaclasses.filehub.web.routes.RegistrationRoute;
 import spark.Filter;
 
@@ -61,6 +62,8 @@ public class WebApplication {
             post("/folder/:folderId/folder", new FolderCreationRoute(folderMetadataStorage));
             post("/logout", new LogoutRoute(loggedInUserStorage));
             get("/folder/root", new GetRootFolderRoute(folderMetadataStorage));
+            get("/folder/:folderId", new GetFolderRoute(folderMetadataStorage));
+            get("/folder/:folderId/content", (request, response) -> "[]");
         });
     }
 

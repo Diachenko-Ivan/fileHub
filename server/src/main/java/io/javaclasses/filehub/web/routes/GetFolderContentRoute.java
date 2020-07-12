@@ -20,15 +20,15 @@ import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static javax.servlet.http.HttpServletResponse.SC_OK;
 
 /**
- * An implementation for {@link Route} for handling requests for retrieving folder content.
+ * An implementation of the {@link Route} that handles requests to retrieve folder content.
  */
 public class GetFolderContentRoute implements Route {
     /**
-     * Storage for files {@link FileMetadataRecord}.
+     * Storage for {@link FileMetadataRecord}.
      */
     private final FileMetadataStorage fileMetadataStorage;
     /**
-     * Storage for folders {@link FolderMetadataRecord}.
+     * Storage for {@link FolderMetadataRecord}.
      */
     private final FolderMetadataStorage folderMetadataStorage;
 
@@ -45,6 +45,7 @@ public class GetFolderContentRoute implements Route {
 
     /**
      * Handles requests to retrieve folder content.
+     * {@inheritDoc}
      */
     @Override
     public Object handle(Request request, Response response) {

@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.web;
 
+import io.javaclasses.filehub.storage.item.file.FileMetadataRecord;
 import io.javaclasses.filehub.storage.item.file.FileMetadataStorage;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
@@ -36,11 +37,11 @@ public class WebApplication {
      */
     private final LoggedInUserStorage loggedInUserStorage = new LoggedInUserStorage();
     /**
-     * Storage for folders {@link FolderMetadataRecord}.
+     * Storage for {@link FolderMetadataRecord}.
      */
     private final FolderMetadataStorage folderMetadataStorage = new FolderMetadataStorage();
     /**
-     * Storage for files {@link FileMetadataStorage}.
+     * Storage for {@link FileMetadataRecord}.
      */
     private final FileMetadataStorage fileMetadataStorage = new FileMetadataStorage();
 

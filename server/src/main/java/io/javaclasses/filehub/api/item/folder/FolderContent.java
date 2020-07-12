@@ -9,8 +9,8 @@ import static java.util.Arrays.stream;
 import static java.util.Comparator.comparing;
 
 /**
- * The value object that contains the content of a folder {@link FolderMetadataRecord}.
- * Content means files and folders that belong to a concrete folder.
+ * The value object that contains the content of the folder {@link FolderMetadataRecord}.
+ * Content means files and folders that belong to the concrete folder.
  * <p>Used for serialization into JSON.</p>
  */
 public final class FolderContent {
@@ -27,7 +27,8 @@ public final class FolderContent {
     private final FileDto[] childFiles;
 
     /**
-     * Creates new FolderContent instance sorting {@code childFolders} and {@code childFiles}.
+     * Creates new FolderContent instance.
+     * <p>Sorts {@code childFolders} and {@code childFiles}.
      *
      * @param childFolders an array of child files in the folder.
      * @param childFiles   an array of sub-folders.

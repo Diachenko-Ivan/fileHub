@@ -9,7 +9,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.stream.Collectors.toSet;
 
 /**
- * An application storage for files {@link FileMetadataRecord}.
+ * An application storage for {@link FileMetadataRecord}.
  * <p>Based on implementation of in-memory storage.</p>
  */
 public class FileMetadataStorage extends InMemoryStorage<FileId, FileMetadataRecord> {
@@ -25,7 +25,7 @@ public class FileMetadataStorage extends InMemoryStorage<FileId, FileMetadataRec
         return this.records()
                 .values()
                 .stream()
-                .filter((file) -> parentFolderId.equals(file .parentFolderId()))
+                .filter((file) -> parentFolderId.equals(file.parentFolderId()))
                 .collect(toSet());
     }
 }

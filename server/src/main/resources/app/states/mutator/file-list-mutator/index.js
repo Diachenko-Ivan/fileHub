@@ -20,7 +20,6 @@ export class FileListMutator extends Mutator {
    * @inheritdoc
    */
   apply(state) {
-  debugger
     state.fileList = this.fileList;
   }
 }

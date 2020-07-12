@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.api.item.folder;
 
+import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.api.Query;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
@@ -10,7 +11,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * The intention of the client to receive the content of one folder {@link FolderMetadataRecord}.
  */
-public class GetFolderContent implements Query {
+@Immutable
+public final class GetFolderContent implements Query {
     /**
      * An identifier of the folder from which the content is taken.
      */

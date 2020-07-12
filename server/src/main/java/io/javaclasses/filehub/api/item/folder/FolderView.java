@@ -50,7 +50,7 @@ public class FolderView implements View<GetFolder, FolderDto> {
         FolderId folderId = query.folderId();
         UserId ownerId = query.ownerId();
 
-        Optional<FolderMetadataRecord> foundFolder = findFolder(folderId, ownerId);
+        Optional<FolderMetadataRecord> foundFolder = getFolder(folderId, ownerId);
 
         if (foundFolder.isEmpty()) {
             notFoundFolderScenario(folderId, ownerId);
@@ -89,13 +89,13 @@ public class FolderView implements View<GetFolder, FolderDto> {
     }
 
     /**
-     * Searches folder by its identifier and identifier of the owner and returns result of the search.
+     * Returns a folder that is found by its identifier and identifier of the owner.
      *
      * @param folderId an identifier of the folder.
      * @param ownerId  an identifier of the owner.
      * @return found folder of {@link Optional#empty()}.
      */
-    private Optional<FolderMetadataRecord> findFolder(FolderId folderId, UserId ownerId) {
+    private Optional<FolderMetadataRecord> getFolder(FolderId folderId, UserId ownerId) {
         return folderMetadataStorage.find(folderId, ownerId);
     }
 }

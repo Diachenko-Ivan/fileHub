@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
+import static nl.jqno.equalsverifier.EqualsVerifier.forClass;
 
 @DisplayName("FolderDto should ")
 class FolderDtoTest {
@@ -50,4 +51,11 @@ class FolderDtoTest {
                 .that(folderDto.parentId())
                 .isNotNull();
     }
+
+    @DisplayName("implement correct equal and hashcode methods.")
+    @Test
+    public void testEqualsContract() {
+        forClass(FolderDto.class).verify();
+    }
+
 }

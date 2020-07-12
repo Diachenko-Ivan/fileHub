@@ -20,7 +20,7 @@ export class FileListMutator extends Mutator {
    * @inheritdoc
    */
   apply(state) {
-    state.fileList = this.fileList.map((item) => item.type === 'folder' ? new FolderModel(item) : new FileModel(item));
+    state.fileList = this.fileList;
   }
 }
 

@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 
+import java.util.Objects;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -71,4 +73,27 @@ public final class FolderDto {
         return parentId;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FolderDto folderDto = (FolderDto) o;
+        return Objects.equals(id, folderDto.id) &&
+                Objects.equals(name, folderDto.name) &&
+                Objects.equals(parentId, folderDto.parentId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, parentId);
+    }
+
+    @Override
+    public String toString() {
+        return "FolderDto{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", parentId='" + parentId + '\'' +
+                '}';
+    }
 }

@@ -29,14 +29,14 @@ export class FolderComponent extends AbstractItemComponent {
                 <td class="cell-file-name" data-element="item-name">
                     <i class="glyphicon glyphicon-folder-close"></i>
                     <span class="name" data-test="name">
-                        <a data-test="folder-name" title="${this.model.name}" data-element="folder-link" 
+                        <a data-test="folder-name" title="${this.model.name}" data-element="folder-link"
                         href="#/folder/${this.model.id}">${this.model.name}</a>
                     </span>
                     <input data-element="input" class="input"/>
                     <div data-element="loader" class="item-loader"></div>
                     <div class="rename-loader"><div></div><div></div><div></div></div>
                 </td>
-                <td data-test="file-count" class="cell-count">${this._numberOfItems()}</td>
+                <td data-test="file-count" class="cell-count"></td>
                 <td data-element="file-action-icons" class="cell-action-icons">
                 </td>
             </tr>`;

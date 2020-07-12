@@ -11,17 +11,22 @@ import org.junit.jupiter.api.Test;
 @DisplayName("FileMetadataRecord should ")
 class FileMetadataRecordTest {
 
+
     @DisplayName("not accept null parameters to constructor.")
     @Test
     void testNullConstructorParameters() {
-        NullPointerTester tester = new NullPointerTester();
-        tester.setDefault(FileSystemItemName.class, new FileSystemItemName("id"));
-        tester.setDefault(FolderId.class, new FolderId("ksdf"));
-        tester.setDefault(UserId.class, new UserId("sdfs"));
-        tester.setDefault(FileId.class, new FileId("sdfgfgh"));
-        tester.setDefault(MimeType.class, new MimeType("image/png"));
-        tester.setDefault(FileSize.class, new FileSize(34));
+        NullPointerTester tester = getNullPointerTester();
         tester.testAllPublicConstructors(FileMetadataRecord.class);
+    }
+
+    private NullPointerTester getNullPointerTester() {
+        return new NullPointerTester()
+                .setDefault(FileSystemItemName.class, new FileSystemItemName("id"))
+                .setDefault(FolderId.class, new FolderId("ksdf"))
+                .setDefault(UserId.class, new UserId("sdfs"))
+                .setDefault(FileId.class, new FileId("sdfgfgh"))
+                .setDefault(MimeType.class, new MimeType("image/png"))
+                .setDefault(FileSize.class, new FileSize(34));
     }
 
     @DisplayName("implement correct equal and hashcode methods.")

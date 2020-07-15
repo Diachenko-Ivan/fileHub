@@ -6,6 +6,8 @@ import spark.Filter;
 import spark.Request;
 import spark.Response;
 
+import javax.servlet.MultipartConfigElement;
+
 /**
  * The implementation of {@link Filter} that logs common info about request.
  */
@@ -21,9 +23,11 @@ public class LogRequestInfoFilter implements Filter {
      */
     @Override
     public void handle(Request request, Response response) {
+        request.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement(""));
+
         if (logger.isInfoEnabled()) {
-            logger.info("Request to '{}' with body '{}' and authorization header '{}'",
-                    request.pathInfo(), request.body(), request.headers("Authorization"));
+            logger.info("Request to '{}' with authorization header '{}'",
+                    request.pathInfo(), request.headers("Authorization"));
         }
     }
 }

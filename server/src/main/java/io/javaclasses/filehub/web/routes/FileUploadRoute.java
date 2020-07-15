@@ -1,36 +1,145 @@
 package io.javaclasses.filehub.web.routes;
 
+import com.google.gson.Gson;
+import io.javaclasses.filehub.api.item.file.FileDto;
+import io.javaclasses.filehub.api.item.file.FileUploading;
+import io.javaclasses.filehub.api.item.file.UploadFile;
+import io.javaclasses.filehub.api.item.file.UploadingFileInfo;
+import io.javaclasses.filehub.api.item.folder.NotFoundException;
+import io.javaclasses.filehub.api.user.CurrentUserIdHolder;
+import io.javaclasses.filehub.storage.item.file.FileContentRecord;
+import io.javaclasses.filehub.storage.item.file.FileContentStorage;
+import io.javaclasses.filehub.storage.item.file.FileMetadataRecord;
+import io.javaclasses.filehub.storage.item.file.FileMetadataStorage;
+import io.javaclasses.filehub.storage.item.folder.FolderId;
+import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
+import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
+import org.slf4j.Logger;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
-import javax.servlet.MultipartConfigElement;
-import javax.servlet.ServletInputStream;
+import javax.servlet.ServletException;
 import javax.servlet.http.Part;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.IOException;
+import java.io.InputStream;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+import static javax.servlet.http.HttpServletResponse.SC_OK;
+import static org.slf4j.LoggerFactory.getLogger;
+
+/**
+ * The implementation of the {@link Route} that handles requests for file uploading.
+ */
 public class FileUploadRoute implements Route {
+    /**
+     * The instance of {@link Logger} for FileUploadRoute class.
+     */
+    private static final Logger logger = getLogger(FileUploadRoute.class);
+    /**
+     * The name of the path parameter for the folder identifier.
+     */
+    private static final String FOLDER_ID_PARAM = "folderId";
+    /**
+     * The name of the {@link Part} that is received in the upload request body.
+     */
+    private static final String PART_NAME = "file";
+    /**
+     * Storage for {@link FileMetadataRecord}.
+     */
+    private final FileMetadataStorage fileMetadataStorage;
+    /**
+     * Storage for {@link FileContentRecord}.
+     */
+    private final FileContentStorage fileContentStorage;
+    /**
+     * Storage for {@link FolderMetadataRecord}.
+     */
+    private final FolderMetadataStorage folderMetadataStorage;
 
+    /**
+     * Creates new FileUploadRoute instance.
+     *
+     * @param fileMetadataStorage   storage for file metadata.
+     * @param fileContentStorage    storage for file content.
+     * @param folderMetadataStorage storage for folder metadata.
+     */
+    public FileUploadRoute(FileMetadataStorage fileMetadataStorage,
+                           FileContentStorage fileContentStorage,
+                           FolderMetadataStorage folderMetadataStorage) {
+        this.fileMetadataStorage = checkNotNull(fileMetadataStorage);
+        this.fileContentStorage = checkNotNull(fileContentStorage);
+        this.folderMetadataStorage = checkNotNull(folderMetadataStorage);
+    }
+
+    /**
+     * Handles requests for file uploading.
+     * <p>Sets the {@code response} status 200 if file was uploaded in the folder.
+     * <p>Sets the {@code response} status 404 if destination folder was not found.
+     * {@inheritDoc}
+     */
     @Override
     public Object handle(Request request, Response response) throws Exception {
-        System.out.println(request.body());
-        request.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("/uploads"));
-        ServletInputStream parts = request.raw().getInputStream();
-        byte[] buffer = new byte[parts.available()];
-        int read = parts.read(buffer);
-        String file1 = request.body();
-        Part inputStream = request.raw().getPart("file");
-//        byte[] buffer = new byte[inputStream.available()];
-//        inputStream.read(buffer);
-        Path file = new File(inputStream.getSubmittedFileName()).toPath();
-        try(FileOutputStream fileOutputStream = new FileOutputStream(file.toFile())){
-//            fileOutputStream.write(buffer);
+        response.type("application/json");
+        try {
+            UploadFile command = readCommand(request);
+
+            FileUploading process = createProcess();
+
+            FileDto file = process.handle(command);
+
+            response.status(SC_OK);
+            return createResponseJson(file);
+        } catch (NotFoundException e) {
+
+            response.status(SC_NOT_FOUND);
+            return "Folder was not found";
         }
-        System.out.println(Files.probeContentType(file));
-//        inputStream.close();
-        return "null";
+    }
+
+    /**
+     * Returns new {@link UploadFile} command parsing {@code request} body and path parameters.
+     *
+     * @param request an object with the information from the request.
+     * @return a command to upload the file.
+     * @throws IOException      if an I/O error occurred during the retrieval of the requested {@code part}.
+     * @throws ServletException if {@code request} type is not {@code multipart/form-data}.
+     */
+    private static UploadFile readCommand(Request request) throws IOException, ServletException {
+        Part part = request.raw().getPart(PART_NAME);
+        InputStream inputStream = part.getInputStream();
+        if (logger.isInfoEnabled()) {
+            logger.info("File with name {} was received from request body.", part.getSubmittedFileName());
+        }
+
+        byte[] content = new byte[inputStream.available()];
+
+        inputStream.read(content);
+
+        UploadingFileInfo fileInfo =
+                new UploadingFileInfo(part.getSubmittedFileName(), part.getSize(), part.getContentType(), content);
+
+        inputStream.close();
+        return new UploadFile(fileInfo, new FolderId(request.params(FOLDER_ID_PARAM)), CurrentUserIdHolder.get());
+    }
+
+    /**
+     * Returns FileUploading process instance.
+     *
+     * @return FileUploading process.
+     */
+    private FileUploading createProcess() {
+        return new FileUploading(fileMetadataStorage, folderMetadataStorage, fileContentStorage);
+    }
+
+    /**
+     * Creates JSON string from {@code file} for response body.
+     *
+     * @param file the object for serialization into JSON.
+     * @return JSON string for response body.
+     */
+    private static String createResponseJson(FileDto file) {
+        return new Gson().toJson(file);
     }
 }

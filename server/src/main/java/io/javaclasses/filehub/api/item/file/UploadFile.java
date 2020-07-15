@@ -1,34 +1,66 @@
 package io.javaclasses.filehub.api.item.file;
 
+import io.javaclasses.filehub.storage.item.file.FileMetadataRecord;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
+import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
+import io.javaclasses.filehub.storage.user.User;
 import io.javaclasses.filehub.storage.user.UserId;
-
-import java.io.InputStream;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- *
+ * An intention of the client to upload file {@link FileMetadataRecord} in a folder {@link FolderMetadataRecord}.
  */
 public final class UploadFile {
-    private final InputStream content;
+    /**
+     * An object that contains information about the uploading file(name, size, content, content-type, etc.).
+     */
+    private final UploadingFileInfo fileInfo;
+    /**
+     * An identifier of the parent folder for the uploading file.
+     */
     private final FolderId parentFolderId;
+    /**
+     * An identifier of the {@link User} who is uploading the file.
+     */
     private final UserId ownerId;
 
-    public UploadFile(InputStream content, FolderId parentFolderId, UserId ownerId) {
-        this.content = checkNotNull(content);
+    /**
+     * Creates new UploadFile command instance.
+     *
+     * @param fileInfo       the information about uploading file.
+     * @param parentFolderId an identifier of the parent folder.
+     * @param ownerId        an identifier of the user who is uploading the file.
+     */
+    public UploadFile(UploadingFileInfo fileInfo, FolderId parentFolderId, UserId ownerId) {
+        this.fileInfo = checkNotNull(fileInfo);
         this.parentFolderId = checkNotNull(parentFolderId);
         this.ownerId = checkNotNull(ownerId);
     }
 
-    public InputStream content() {
-        return content;
+    /**
+     * Returns the information about the uploading file.
+     *
+     * @return the information about file.
+     */
+    public UploadingFileInfo fileInfo() {
+        return fileInfo;
     }
 
+    /**
+     * Returns an identifier of the parent folder.
+     *
+     * @return an identifier of the parent folder.
+     */
     public FolderId parentFolderId() {
         return parentFolderId;
     }
 
+    /**
+     * Returns an identifier of the user who is uploading the file.
+     *
+     * @return an identifier of the user who is uploading the file.
+     */
     public UserId ownerId() {
         return ownerId;
     }

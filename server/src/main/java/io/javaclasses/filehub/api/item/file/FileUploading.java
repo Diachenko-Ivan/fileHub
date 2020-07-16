@@ -78,7 +78,7 @@ public class FileUploading implements Process {
 
             FolderMetadataRecord parentFolder = getFolder(parentFolderId);
 
-            checkFolderOwner(parentFolder, ownerId);
+            verifyFolderOwner(parentFolder, ownerId);
 
             return saveFile(fileInfo, parentFolderId, ownerId);
         }
@@ -109,7 +109,7 @@ public class FileUploading implements Process {
      * @param ownerId an identifier of the folder owner.
      * @throws FolderNotFoundException if folder does not belong to user with {@code ownerId}.
      */
-    private static void checkFolderOwner(FolderMetadataRecord folder, UserId ownerId) {
+    private static void verifyFolderOwner(FolderMetadataRecord folder, UserId ownerId) {
         if (!folder.ownerId().equals(ownerId)) {
             if (logger.isInfoEnabled()) {
                 logger.info("User with id: {} does not have folder with id: {}.", ownerId, folder.id());

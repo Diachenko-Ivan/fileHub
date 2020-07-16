@@ -93,7 +93,7 @@ public class FileUploadRoute implements Route {
             FileDto file = process.handle(command);
 
             response.status(SC_OK);
-            return createResponseJson(file);
+            return sendResponseJson(file);
         } catch (FolderNotFoundException e) {
 
             response.status(SC_NOT_FOUND);
@@ -143,7 +143,7 @@ public class FileUploadRoute implements Route {
      * @param file the object for serialization into JSON.
      * @return JSON string for response body.
      */
-    private static String createResponseJson(FileDto file) {
+    private static String sendResponseJson(FileDto file) {
         return new Gson().toJson(file);
     }
 }

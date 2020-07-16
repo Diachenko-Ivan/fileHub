@@ -90,7 +90,7 @@ class FileUploadingTest {
 
         FileDto uploadedFile = process.handle(command);
 
-        assertWithMessage("DTO of the created file can not be null.")
+        assertWithMessage("The DTO of the created file was not returned.")
                 .that(uploadedFile)
                 .isNotNull();
 
@@ -114,7 +114,7 @@ class FileUploadingTest {
 
         assertThrows(FolderNotFoundException.class,
                 () -> process.handle(command),
-                "The exception was not thrown although destination folder is not found.");
+                "The uploading did not failed although destination folder is not found.");
 
         assertWithMessage("File is added to not existing folder, but should not have been.")
                 .that(mockFileStorageCreator.isAddCalled())
@@ -138,7 +138,7 @@ class FileUploadingTest {
 
         assertThrows(FolderNotFoundException.class,
                 () -> process.handle(command),
-                "The exception was not thrown although destination folder does not belong to user.");
+                "The uploading did not failed although destination folder does not belong to the user.");
 
         assertWithMessage("File is added to folder of another user, but should not have been.")
                 .that(mockFileStorageCreator.isAddCalled())

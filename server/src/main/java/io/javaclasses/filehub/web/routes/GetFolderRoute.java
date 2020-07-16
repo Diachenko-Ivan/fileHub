@@ -2,9 +2,9 @@ package io.javaclasses.filehub.web.routes;
 
 import com.google.gson.Gson;
 import io.javaclasses.filehub.api.item.folder.FolderDto;
+import io.javaclasses.filehub.api.item.folder.FolderNotFoundException;
 import io.javaclasses.filehub.api.item.folder.FolderView;
 import io.javaclasses.filehub.api.item.folder.GetFolder;
-import io.javaclasses.filehub.api.item.folder.NotFoundException;
 import io.javaclasses.filehub.api.user.CurrentUserIdHolder;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
@@ -50,7 +50,7 @@ public class GetFolderRoute implements Route {
             FolderDto folder = view.process(query);
             response.status(SC_OK);
             return createJsonResponseBody(folder);
-        } catch (NotFoundException e) {
+        } catch (FolderNotFoundException e) {
 
             response.status(SC_NOT_FOUND);
             return "Folder is not found.";

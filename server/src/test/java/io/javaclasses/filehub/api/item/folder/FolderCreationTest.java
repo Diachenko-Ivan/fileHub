@@ -67,7 +67,7 @@ class FolderCreationTest {
         CreateFolder createFolderCommand =
                 new CreateFolder(new FolderId("nonexistent-folder-id"), new UserId("defaultId"));
 
-        assertThrows(NotFoundException.class,
+        assertThrows(FolderNotFoundException.class,
                 () -> folderCreation.handle(createFolderCommand),
                 "The ItemIsNotFoundException was not thrown bust must, because parent folder was not found.");
 

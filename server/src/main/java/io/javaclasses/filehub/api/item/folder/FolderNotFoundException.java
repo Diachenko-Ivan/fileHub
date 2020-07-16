@@ -7,13 +7,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * An exception that is thrown when file or folder {@link FolderMetadataRecord} is not found.
  */
-public class NotFoundException extends RuntimeException {
+public class FolderNotFoundException extends RuntimeException {
     /**
-     * Creates new ItemIsNotFoundException instance.
+     * Creates new FolderNotFoundException instance.
      *
      * @param message provided error message.
      */
-    public NotFoundException(String message) {
+    public FolderNotFoundException(String message) {
         super(checkNotNull(message));
     }
 }

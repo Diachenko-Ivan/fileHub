@@ -64,7 +64,7 @@ class FolderContentViewTest {
 
         FolderContentView view = new FolderContentView(mockFolderStorage, new FileMetadataStorage());
 
-        assertThrows(NotFoundException.class,
+        assertThrows(FolderNotFoundException.class,
                 () -> view.process(new GetFolderContent(new FolderId("sdf"), new UserId("jsdf"))),
                 "The exception was not thrown although folder does not exist.");
     }

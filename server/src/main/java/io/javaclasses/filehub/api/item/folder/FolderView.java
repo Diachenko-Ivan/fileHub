@@ -42,7 +42,7 @@ public class FolderView implements View<GetFolder, FolderDto> {
      *
      * @param query client`s query to get a folder.
      * @return DTO of the found folder.
-     * @throws NotFoundException if a folder is not found by identifier or current user does not have this folder.
+     * @throws FolderNotFoundException if a folder is not found by identifier or current user does not have this folder.
      */
     @Override
     public FolderDto process(GetFolder query) {
@@ -68,13 +68,13 @@ public class FolderView implements View<GetFolder, FolderDto> {
      *
      * @param folderId an identifier of not found folder.
      * @param ownerId  an identifier of the owner of the not found folder.
-     * @throws NotFoundException the exception for the not found folder.
+     * @throws FolderNotFoundException the exception for the not found folder.
      */
-    private void notFoundFolderScenario(FolderId folderId, UserId ownerId) throws NotFoundException {
+    private void notFoundFolderScenario(FolderId folderId, UserId ownerId) throws FolderNotFoundException {
         if (logger.isInfoEnabled()) {
             logger.info("User with id: {} does not have folder with id: {}", ownerId, folderId);
         }
-        throw new NotFoundException(
+        throw new FolderNotFoundException(
                 format("User with id: %s does not have folder with id: %s", folderId.value(), ownerId.value()));
     }
 

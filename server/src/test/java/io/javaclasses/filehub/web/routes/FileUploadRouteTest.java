@@ -16,13 +16,9 @@ import org.junit.jupiter.api.Test;
 import spark.Request;
 import spark.Response;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.Part;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
 import java.util.Optional;
 
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -43,24 +39,24 @@ class FileUploadRouteTest {
 
                     @Override
                     public int read(byte[] b) {
-                        return 0;
+                        return 30;
                     }
                 };
             }
 
             @Override
             public String getContentType() {
-                return "";
+                return "image.png";
             }
 
             @Override
             public String getSubmittedFileName() {
-                return "";
+                return "photo.png";
             }
 
             @Override
             public long getSize() {
-                return 0;
+                return 100;
             }
         };
     }
@@ -82,25 +78,21 @@ class FileUploadRouteTest {
         };
     }
 
-    private Request mockRequestWithParam(String folderId) {
+    private Request mockRequestWith(String pathParam) {
         return new Request() {
             @Override
             public String params(String param) {
-                return folderId;
+                return pathParam;
             }
 
             @Override
             public HttpServletRequest raw() {
-                try {
-                    HttpServletRequestWrapper httpServletRequestWrapper = new HttpServletRequestWrapper(null) {
-                        @Override
-                        public Part getPart(String name) throws IOException, ServletException {
-                            return mockPart();
-                        }
-                    };
-                    return httpServletRequestWrapper;
-                } catch (IllegalArgumentException ignored){}
-                return null;
+                return new MockHttpRequest() {
+                    @Override
+                    public Part getPart(String name) {
+                        return mockPart();
+                    }
+                };
             }
         };
     }
@@ -143,56 +135,49 @@ class FileUploadRouteTest {
         FolderMetadataStorage mockFolderStorage =
                 mockFolderMetadataStorageWith(createFolderWith(new FolderId(requestParamId), expectedUserId));
 
-        FileMetadataStorage fileMetadataStorage = new FileMetadataStorage();
-        FileUploadRoute route = new FileUploadRoute(fileMetadataStorage, new FileContentStorage(), mockFolderStorage);
+        FileUploadRoute route = new FileUploadRoute(new FileMetadataStorage(), new FileContentStorage(), mockFolderStorage);
 
-        Request mockRequest = mockRequestWithParam(requestParamId);
+        Request mockRequest = mockRequestWith(requestParamId);
         Response mockResponse = mockResponse();
 
         try {
             String responseJson = (String) route.handle(mockRequest, mockResponse);
 
             assertDoesNotThrow(() -> new Gson().fromJson(responseJson, FileDto.class),
-                    "Response body is not a JSON of uploaded file, bu should have been.");
+                    "Response body is not a JSON of uploaded file, but it should have been.");
 
             assertWithMessage("Response status is incorrect.")
                     .that(mockResponse.status())
                     .isEqualTo(200);
+
         } catch (Exception e) {
-            e.printStackTrace();
-            assertWithMessage("File uploading failed.").fail();
+            assertWithMessage("Failed to parse request.").fail();
         }
     }
-}
 
-abstract class MockPart implements Part {
+    @DisplayName("return 'Not Found' error if destination folder is not found.")
+    @Test
+    void testUploadRequestToNotExistingFolder() {
+        UserId expectedUserId = new UserId("qwerwer");
+        CurrentUserIdHolder.set(expectedUserId);
 
-    @Override
-    public String getName() {
-        return null;
-    }
+        FolderMetadataStorage mockFolderStorage = mockFolderMetadataStorageWith(null);
 
-    @Override
-    public void write(String fileName) throws IOException {
-    }
+        FileUploadRoute route = new FileUploadRoute(new FileMetadataStorage(), new FileContentStorage(), mockFolderStorage);
 
-    @Override
-    public void delete() throws IOException {
-    }
+        Request mockRequest = mockRequestWith("ssdfsdfs");
+        Response mockResponse = mockResponse();
 
-    @Override
-    public String getHeader(String name) {
-        return null;
-    }
+        try {
+            route.handle(mockRequest, mockResponse);
 
-    @Override
-    public Collection<String> getHeaders(String name) {
-        return null;
-    }
+            assertWithMessage("Response status is incorrect.")
+                    .that(mockResponse.status())
+                    .isEqualTo(404);
 
-    @Override
-    public Collection<String> getHeaderNames() {
-        return null;
+        } catch (Exception e) {
+            assertWithMessage("Failed to parse request.").fail();
+        }
     }
 }
 

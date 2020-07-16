@@ -7,10 +7,13 @@ import io.javaclasses.filehub.api.item.file.UploadFile;
 import io.javaclasses.filehub.api.item.file.UploadingFileInfo;
 import io.javaclasses.filehub.api.item.folder.FolderNotFoundException;
 import io.javaclasses.filehub.api.user.CurrentUserIdHolder;
+import io.javaclasses.filehub.storage.item.FileSystemItemName;
 import io.javaclasses.filehub.storage.item.file.FileContentRecord;
 import io.javaclasses.filehub.storage.item.file.FileContentStorage;
 import io.javaclasses.filehub.storage.item.file.FileMetadataRecord;
 import io.javaclasses.filehub.storage.item.file.FileMetadataStorage;
+import io.javaclasses.filehub.storage.item.file.FileSize;
+import io.javaclasses.filehub.storage.item.file.MimeType;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
@@ -117,8 +120,9 @@ public class FileUploadRoute implements Route {
 
         inputStream.read(content);
 
-        UploadingFileInfo fileInfo =
-                new UploadingFileInfo(part.getSubmittedFileName(), part.getSize(), part.getContentType(), content);
+        UploadingFileInfo fileInfo = new UploadingFileInfo(
+                new FileSystemItemName(part.getSubmittedFileName()),
+                new FileSize(part.getSize()), new MimeType(part.getContentType()), content);
 
         inputStream.close();
         return new UploadFile(fileInfo, new FolderId(request.params(FOLDER_ID_PARAM)), CurrentUserIdHolder.get());

@@ -6,6 +6,8 @@ import io.javaclasses.filehub.storage.item.FileSystemItemName;
 import io.javaclasses.filehub.storage.item.file.FileContentStorage;
 import io.javaclasses.filehub.storage.item.file.FileMetadataRecord;
 import io.javaclasses.filehub.storage.item.file.FileMetadataStorage;
+import io.javaclasses.filehub.storage.item.file.FileSize;
+import io.javaclasses.filehub.storage.item.file.MimeType;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
@@ -57,7 +59,8 @@ class FileUploadingTest {
 
     private UploadFile createCommandWith(FolderId parentFolderId, UserId ownerId) {
         return new UploadFile(
-                new UploadingFileInfo("fsad", 30, "image/png", new byte[]{}),
+                new UploadingFileInfo(new FileSystemItemName("fsad"),
+                        new FileSize(30), new MimeType("image/png"), new byte[]{}),
                 parentFolderId,
                 ownerId);
     }

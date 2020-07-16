@@ -2,14 +2,11 @@ package io.javaclasses.filehub.api.item.file;
 
 import io.javaclasses.filehub.api.Process;
 import io.javaclasses.filehub.api.item.folder.FolderNotFoundException;
-import io.javaclasses.filehub.storage.item.FileSystemItemName;
 import io.javaclasses.filehub.storage.item.file.FileContentRecord;
 import io.javaclasses.filehub.storage.item.file.FileContentStorage;
 import io.javaclasses.filehub.storage.item.file.FileId;
 import io.javaclasses.filehub.storage.item.file.FileMetadataRecord;
 import io.javaclasses.filehub.storage.item.file.FileMetadataStorage;
-import io.javaclasses.filehub.storage.item.file.FileSize;
-import io.javaclasses.filehub.storage.item.file.MimeType;
 import io.javaclasses.filehub.storage.item.folder.FolderId;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
@@ -134,11 +131,11 @@ public class FileUploading implements Process {
         FileId fileId = new FileId(generateId());
         FileMetadataRecord fileMetadata = new FileMetadataRecord(
                 fileId,
-                new FileSystemItemName(fileInfo.name()),
+                fileInfo.name(),
                 parentFolderId,
                 ownerId,
-                new MimeType(fileInfo.mimeType()),
-                new FileSize(fileInfo.size()));
+                fileInfo.mimeType(),
+                fileInfo.size());
 
         FileContentRecord fileContent = new FileContentRecord(
                 fileId,

@@ -1,8 +1,10 @@
 package io.javaclasses.filehub.api.item.file;
 
+import io.javaclasses.filehub.storage.item.FileSystemItemName;
 import io.javaclasses.filehub.storage.item.file.FileMetadataRecord;
+import io.javaclasses.filehub.storage.item.file.FileSize;
+import io.javaclasses.filehub.storage.item.file.MimeType;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -13,15 +15,15 @@ public final class UploadingFileInfo {
     /**
      * A name of the file.
      */
-    private final String name;
+    private final FileSystemItemName name;
     /**
      * File size in the bytes.
      */
-    private final long size;
+    private final FileSize size;
     /**
      * Mime type for the file.
      */
-    private final String mimeType;
+    private final MimeType mimeType;
     /**
      * Content of the file in the byte array.
      */
@@ -35,10 +37,9 @@ public final class UploadingFileInfo {
      * @param mimeType mime type of the file.
      * @param content  file content.
      */
-    public UploadingFileInfo(String name, long size, String mimeType, byte[] content) {
-        checkArgument(size >= 0, "File size can not be negative.");
+    public UploadingFileInfo(FileSystemItemName name, FileSize size, MimeType mimeType, byte[] content) {
         this.name = checkNotNull(name);
-        this.size = size;
+        this.size = checkNotNull(size);
         this.mimeType = checkNotNull(mimeType);
         this.content = checkNotNull(content);
     }
@@ -48,7 +49,7 @@ public final class UploadingFileInfo {
      *
      * @return file name.
      */
-    public String name() {
+    public FileSystemItemName name() {
         return name;
     }
 
@@ -57,7 +58,7 @@ public final class UploadingFileInfo {
      *
      * @return file size.
      */
-    public long size() {
+    public FileSize size() {
         return size;
     }
 
@@ -66,7 +67,7 @@ public final class UploadingFileInfo {
      *
      * @return mime type.
      */
-    public String mimeType() {
+    public MimeType mimeType() {
         return mimeType;
     }
 

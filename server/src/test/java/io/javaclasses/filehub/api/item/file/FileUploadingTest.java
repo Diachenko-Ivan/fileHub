@@ -118,7 +118,7 @@ class FileUploadingTest {
                 .isFalse();
     }
 
-    @DisplayName("fail file uploading because the user is not the owner destination folder.")
+    @DisplayName("fail file uploading because the user is not the owner of the destination folder.")
     @Test
     void testUploadToFolderOfAnotherUser() {
         FolderId destinationFolderId = new FolderId("qwerty123");

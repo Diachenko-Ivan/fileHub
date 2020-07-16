@@ -150,7 +150,7 @@ public class FileUploading implements Process {
         fileContentStorage.add(fileContent);
 
         if (logger.isInfoEnabled()) {
-            logger.info("User with id: {} uploaded file with id: {} and name: {} was saved in the storage.",
+            logger.info("User with id: {} uploaded file with id: {} and name: {}.",
                     fileMetadata.ownerId(), fileMetadata.id(), fileMetadata.fileName());
         }
 

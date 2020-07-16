@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.api.item.file;
 
 import io.javaclasses.filehub.api.Process;
-import io.javaclasses.filehub.api.item.folder.NotFoundException;
+import io.javaclasses.filehub.api.item.folder.FolderNotFoundException;
 import io.javaclasses.filehub.storage.item.FileSystemItemName;
 import io.javaclasses.filehub.storage.item.file.FileContentRecord;
 import io.javaclasses.filehub.storage.item.file.FileContentStorage;
@@ -92,7 +92,7 @@ public class FileUploading implements Process {
      *
      * @param folderId an identifier of the requested folder.
      * @return found folder.
-     * @throws NotFoundException if folder with {@code folderId} does not exist.
+     * @throws FolderNotFoundException if folder with {@code folderId} does not exist.
      */
     private FolderMetadataRecord getFolder(FolderId folderId) {
         Optional<FolderMetadataRecord> folderMetadataRecord = folderMetadataStorage.find(folderId);
@@ -100,7 +100,7 @@ public class FileUploading implements Process {
             if (logger.isInfoEnabled()) {
                 logger.info("Folder with id: {} does not exist.", folderId);
             }
-            throw new NotFoundException(format("Folder with id: %s does not exist.", folderId));
+            throw new FolderNotFoundException(format("Folder with id: %s does not exist.", folderId));
         }
         return folderMetadataRecord.get();
     }
@@ -110,14 +110,14 @@ public class FileUploading implements Process {
      *
      * @param folder  an object with information about the folder.
      * @param ownerId an identifier of the folder owner.
-     * @throws NotFoundException if folder does not belong to user with {@code ownerId}.
+     * @throws FolderNotFoundException if folder does not belong to user with {@code ownerId}.
      */
     private static void checkFolderOwner(FolderMetadataRecord folder, UserId ownerId) {
         if (!folder.ownerId().equals(ownerId)) {
             if (logger.isInfoEnabled()) {
                 logger.info("User with id: {} does not have folder with id: {}.", ownerId, folder.id());
             }
-            throw new NotFoundException(
+            throw new FolderNotFoundException(
                     format("User with id: %s does not have folder with id: %s.", ownerId, folder.id()));
         }
     }

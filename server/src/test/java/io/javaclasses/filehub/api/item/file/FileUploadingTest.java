@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.api.item.file;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.api.item.folder.NotFoundException;
+import io.javaclasses.filehub.api.item.folder.FolderNotFoundException;
 import io.javaclasses.filehub.storage.item.FileSystemItemName;
 import io.javaclasses.filehub.storage.item.file.FileContentStorage;
 import io.javaclasses.filehub.storage.item.file.FileMetadataRecord;
@@ -109,7 +109,7 @@ class FileUploadingTest {
 
         FileUploading process = new FileUploading(mockFileStorageCreator.create(), mockFolderStorage, new FileContentStorage());
 
-        assertThrows(NotFoundException.class,
+        assertThrows(FolderNotFoundException.class,
                 () -> process.handle(command),
                 "The exception was not thrown although destination folder is not found.");
 
@@ -133,7 +133,7 @@ class FileUploadingTest {
 
         FileUploading process = new FileUploading(mockFileStorageCreator.create(), mockFolderStorage, new FileContentStorage());
 
-        assertThrows(NotFoundException.class,
+        assertThrows(FolderNotFoundException.class,
                 () -> process.handle(command),
                 "The exception was not thrown although destination folder does not belong to user.");
 

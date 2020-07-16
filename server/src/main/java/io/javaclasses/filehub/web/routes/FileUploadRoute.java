@@ -5,7 +5,7 @@ import io.javaclasses.filehub.api.item.file.FileDto;
 import io.javaclasses.filehub.api.item.file.FileUploading;
 import io.javaclasses.filehub.api.item.file.UploadFile;
 import io.javaclasses.filehub.api.item.file.UploadingFileInfo;
-import io.javaclasses.filehub.api.item.folder.NotFoundException;
+import io.javaclasses.filehub.api.item.folder.FolderNotFoundException;
 import io.javaclasses.filehub.api.user.CurrentUserIdHolder;
 import io.javaclasses.filehub.storage.item.file.FileContentRecord;
 import io.javaclasses.filehub.storage.item.file.FileContentStorage;
@@ -91,7 +91,7 @@ public class FileUploadRoute implements Route {
 
             response.status(SC_OK);
             return createResponseJson(file);
-        } catch (NotFoundException e) {
+        } catch (FolderNotFoundException e) {
 
             response.status(SC_NOT_FOUND);
             return "Folder was not found";

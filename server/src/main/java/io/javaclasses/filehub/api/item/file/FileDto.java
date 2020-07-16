@@ -1,38 +1,82 @@
 package io.javaclasses.filehub.api.item.file;
 
-import io.javaclasses.filehub.api.item.ItemDto;
+import com.google.errorprone.annotations.Immutable;
+import com.google.gson.annotations.SerializedName;
+import io.javaclasses.filehub.storage.item.file.FileMetadataRecord;
+
+import java.util.Objects;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Represents file and used for further serialization into JSON.
+ * A value object that contains information about file {@link FileMetadataRecord}.
+ * <p>Used for serialization into JSON.</p>
  */
-public class FileDto extends ItemDto {
+@Immutable
+public final class FileDto {
     /**
-     * File mime type.
+     * An identifier of the file.
      */
-    private String mimeType;
+    @SerializedName("id")
+    private final String id;
+    /**
+     * A name of the file.
+     */
+    @SerializedName("name")
+    private final String fileName;
     /**
      * File size.
      */
-    private long size;
+    @SerializedName("size")
+    private final long size;
+    /**
+     * A type of content in the file.
+     */
+    @SerializedName("mimeType")
+    private final String mimeType;
 
     /**
-     * Creates new {@link FileDto} instance.
+     * * Creates new {@link FileDto} instance retrieving data from {@code fileMetadata}.
      *
-     * @param id       file id.
-     * @param name     file name.
-     * @param parentId id of parent folder.
-     * @param mimeType file mime type.
-     * @param size     file size.
+     * @param fileMetadata file record on the basis of which a folder DTO is created.
      */
-    public FileDto(String id, String name, String parentId, String mimeType, long size) {
-        super(id, name, parentId);
-        this.mimeType = mimeType;
-        this.size = size;
-        this.type = "file";
+    public FileDto(FileMetadataRecord fileMetadata) {
+        checkNotNull(fileMetadata);
+        this.id = fileMetadata.id().value();
+        this.fileName = fileMetadata.fileName().value();
+        this.size = fileMetadata.fileSize().value();
+        this.mimeType = fileMetadata.mimeType().value();
     }
 
     /**
-     * Returns file mime type.
+     * Getter for an identifier of the file.
+     *
+     * @return an identifier of the file.
+     */
+    public String id() {
+        return id;
+    }
+
+    /**
+     * Getter for a name of the file.
+     *
+     * @return file name.
+     */
+    public String fileName() {
+        return fileName;
+    }
+
+    /**
+     * Getter for a size of the file.
+     *
+     * @return file size.
+     */
+    public long size() {
+        return size;
+    }
+
+    /**
+     * Getter for a type of content of the file.
      *
      * @return file mime type.
      */
@@ -40,30 +84,29 @@ public class FileDto extends ItemDto {
         return mimeType;
     }
 
-    /**
-     * Sets new mime type.
-     *
-     * @param mimeType mime type value.
-     */
-    public void setMimeType(String mimeType) {
-        this.mimeType = mimeType;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FileDto fileDto = (FileDto) o;
+        return size == fileDto.size &&
+                Objects.equals(id, fileDto.id) &&
+                Objects.equals(fileName, fileDto.fileName) &&
+                Objects.equals(mimeType, fileDto.mimeType);
     }
 
-    /**
-     * Returns file size.
-     *
-     * @return file size in bytes.
-     */
-    public long size() {
-        return size;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, fileName, size, mimeType);
     }
 
-    /**
-     * Sets new file size.
-     *
-     * @param size number of bytes.
-     */
-    public void setSize(long size) {
-        this.size = size;
+    @Override
+    public String toString() {
+        return "FileDto{" +
+                "id='" + id + '\'' +
+                ", fileName='" + fileName + '\'' +
+                ", size=" + size +
+                ", mimeType='" + mimeType + '\'' +
+                '}';
     }
 }

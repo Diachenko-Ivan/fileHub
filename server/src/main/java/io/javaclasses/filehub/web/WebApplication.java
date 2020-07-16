@@ -1,46 +1,49 @@
 package io.javaclasses.filehub.web;
 
-import io.javaclasses.filehub.api.user.*;
-import io.javaclasses.filehub.storage.user.*;
-import io.javaclasses.filehub.web.deserializer.AuthenticateUserDeserializer;
-import io.javaclasses.filehub.web.deserializer.RegisterUserDeserializer;
-import io.javaclasses.filehub.web.serializer.BusyLoginExceptionSerializer;
-import io.javaclasses.filehub.web.serializer.CredentialValidationExceptionSerializer;
-import io.javaclasses.filehub.web.serializer.TokenSerializer;
-import io.javaclasses.filehub.web.serializer.UserSerializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.javaclasses.filehub.storage.item.file.FileMetadataRecord;
+import io.javaclasses.filehub.storage.item.file.FileMetadataStorage;
+import io.javaclasses.filehub.storage.item.folder.FolderMetadataRecord;
+import io.javaclasses.filehub.storage.item.folder.FolderMetadataStorage;
+import io.javaclasses.filehub.storage.user.LoggedInUserStorage;
+import io.javaclasses.filehub.storage.user.User;
+import io.javaclasses.filehub.storage.user.UserStorage;
+import io.javaclasses.filehub.web.routes.AuthenticationRoute;
+import io.javaclasses.filehub.web.routes.FolderCreationRoute;
+import io.javaclasses.filehub.web.routes.GetFolderContentRoute;
+import io.javaclasses.filehub.web.routes.GetFolderRoute;
+import io.javaclasses.filehub.web.routes.GetRootFolderRoute;
+import io.javaclasses.filehub.web.routes.LogoutRoute;
+import io.javaclasses.filehub.web.routes.RegistrationRoute;
 import spark.Filter;
 
-import java.util.Arrays;
-import java.util.HashMap;
-
-import static spark.Spark.*;
+import static spark.Spark.before;
+import static spark.Spark.get;
+import static spark.Spark.path;
+import static spark.Spark.port;
+import static spark.Spark.post;
+import static spark.Spark.staticFiles;
 
 /**
- * Represents application server that can catch client requests.
+ * Represents File Hub application, configs server which based on {@link spark.Spark}
+ * and registers routes {@link spark.Route} for client requests.
  */
 public class WebApplication {
     /**
-     * For logging.
+     * Storage for users {@link User}.
      */
-    private static final Logger logger = LoggerFactory.getLogger(WebApplication.class);
+    private final UserStorage userStorage = new UserStorage();
     /**
-     * Name of header where access token must be stored.
+     * Storage for access tokens.
      */
-    private static final String AUTHORIZATION_HEADER = "Authorization";
+    private final LoggedInUserStorage loggedInUserStorage = new LoggedInUserStorage();
     /**
-     * Storage for operations with user {@link User}.
+     * Storage for {@link FolderMetadataRecord}.
      */
-    private final UserStorage userStorage = new UserStorage(new HashMap<>());
+    private final FolderMetadataStorage folderMetadataStorage = new FolderMetadataStorage();
     /**
-     * Storage for operations with token. Used by {@link AuthorizationService}.
+     * Storage for {@link FileMetadataRecord}.
      */
-    private final TokenStorage tokenStorage = new TokenStorage(new HashMap<>());
-    /**
-     * Service that works with authorization session.
-     */
-    private final AuthorizationService authorizationService = new AuthorizationService(tokenStorage, userStorage);
+    private final FileMetadataStorage fileMetadataStorage = new FileMetadataStorage();
 
     /**
      * Starts application.
@@ -53,75 +56,31 @@ public class WebApplication {
     }
 
     /**
-     * Starts server.
+     * Starts and configures server.
      */
     private void run() {
         port(8080);
         staticFiles.location("/app/");
-        this.filter();
+        filter();
 
-        post("/api/register", (request, response) -> {
-            logger.info("Request to '/api/register' url.");
-            response.type("application/json");
-            try {
-                RegisterUser registerUserCommand = new RegisterUserDeserializer().deserialize(request.body());
-                new Registration(userStorage).register(registerUserCommand);
-                response.status(200);
-                logger.info("User with login " + registerUserCommand.login()
-                        + " and password " + registerUserCommand.password() + " was registered.");
-                return "User is registered";
-            } catch (CredentialValidationException e) {
-                logger.warn("User credentials are not validated:" + Arrays.toString(e.failedCredentials()));
-                response.status(422);
-                return new CredentialValidationExceptionSerializer().serialize(e);
-            } catch (BusyLoginException e) {
-                logger.warn("Unsuccessful registration. Login is already busy.");
-                response.status(422);
-                return new BusyLoginExceptionSerializer().serialize(e);
-            }
-        });
-
-        post("/api/login", (request, response) -> {
-            response.type("application/json");
-            logger.info("Request to '/api/login' url.");
-            try {
-                AuthenticateUser authenticateUser = new AuthenticateUserDeserializer().deserialize(request.body());
-                TokenRecord tokenRecord = new Authentication(userStorage).logIn(authenticateUser);
-                authorizationService.createSession(tokenRecord);
-                logger.info("User with login " + authenticateUser.login() + " was authenticated.");
-                return new TokenSerializer().serialize(tokenRecord);
-            } catch (AuthenticationException e) {
-                logger.warn("User was not authenticated.");
-                response.status(401);
-                return "No user with these credentials.";
-            }
-        });
-
-        get("/api/user", (request, response) -> {
-            response.type("application/json");
-            String accessToken = request.headers(AUTHORIZATION_HEADER).split(" ")[1];
-            User authorizedUser = authorizationService.authorizedUser(accessToken);
-            UserDto userToSerialize = new UserDto(authorizedUser.id().value(), authorizedUser.login());
-            return new UserSerializer().serialize(userToSerialize);
+        path("/api", () -> {
+            post("/register", new RegistrationRoute(userStorage, folderMetadataStorage));
+            post("/login", new AuthenticationRoute(userStorage, loggedInUserStorage));
+            post("/folder/:folderId/folder", new FolderCreationRoute(folderMetadataStorage));
+            post("/logout", new LogoutRoute(loggedInUserStorage));
+            get("/folder/root", new GetRootFolderRoute(folderMetadataStorage));
+            get("/folder/:folderId", new GetFolderRoute(folderMetadataStorage));
+            get("/folder/:folderId/content", new GetFolderContentRoute(fileMetadataStorage, folderMetadataStorage));
         });
     }
 
     /**
-     * Filters incoming requests.
+     * Filters requests.
      */
     private void filter() {
+        Filter authorizationFilter = new AuthorizationFilter(loggedInUserStorage);
+        before("/api/*", new LogRequestInfoFilter());
         path("/api", () -> {
-            Filter authorizationFilter = (request, response) -> {
-                String authorizationToken = request.headers(AUTHORIZATION_HEADER).split(" ")[1];
-                logger.debug("Authorization process. Token: " + authorizationToken);
-                User user = authorizationService.authorizedUser(authorizationToken);
-                if (user == null) {
-                    logger.warn("User with token " + authorizationToken
-                            + " failed authorization to " + request.pathInfo() + " request.");
-                    halt(401);
-                }
-                logger.debug("User " + user.login() + " passed authorization to " + request.pathInfo() + " request.");
-            };
             before("/folder/*", authorizationFilter);
             before("/file/*", authorizationFilter);
             before("/user", authorizationFilter);

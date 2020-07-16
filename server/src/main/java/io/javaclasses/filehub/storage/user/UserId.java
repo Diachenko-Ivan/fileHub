@@ -1,14 +1,16 @@
 package io.javaclasses.filehub.storage.user;
 
-import io.javaclasses.filehub.storage.Id;
+import com.google.errorprone.annotations.Immutable;
+import io.javaclasses.filehub.storage.RecordId;
 
 /**
- * Represents id for {@link User} record.
+ * Identifier for {@link User} record.
  */
-public class UserId extends Id {
+@Immutable
+public final class UserId extends RecordId {
     /**
      * Creates new {@link UserId} instance.
-     * {@inheritDoc}
+     * @param id user id value.
      */
     public UserId(String id) {
         super(id);

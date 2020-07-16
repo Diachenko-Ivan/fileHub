@@ -45,7 +45,7 @@ public class FolderCreation implements Process {
      *
      * @param createFolderCommand a command to create a new folder.
      * @return created folder.
-     * @throws NotFoundException if parent folder, where new folder is being created in, is not found
+     * @throws FolderNotFoundException if parent folder, where new folder is being created in, is not found
      *                                 or the user does not have this folder.
      */
     public FolderDto handle(CreateFolder createFolderCommand) {
@@ -59,7 +59,7 @@ public class FolderCreation implements Process {
             if (logger.isInfoEnabled()) {
                 logger.info("User with id: {} does not have folder with id: {}", ownerId, parentFolderId);
             }
-            throw new NotFoundException("User with id " + ownerId
+            throw new FolderNotFoundException("User with id " + ownerId
                     + " does not have folder with id: " + parentFolderId + ".");
         }
 

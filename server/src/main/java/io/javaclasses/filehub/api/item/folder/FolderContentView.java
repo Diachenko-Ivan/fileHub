@@ -51,7 +51,7 @@ public class FolderContentView implements View<GetFolderContent, FolderContent> 
      *
      * @param query client query to retrieve content from folder.
      * @return folder content.
-     * @throws NotFoundException if the folder is not found by an identifier or current user does not have this folder.
+     * @throws FolderNotFoundException if the folder is not found by an identifier or current user does not have this folder.
      */
     @Override
     public FolderContent process(GetFolderContent query) {
@@ -65,7 +65,7 @@ public class FolderContentView implements View<GetFolderContent, FolderContent> 
             if (logger.isInfoEnabled()) {
                 logger.info("User with id: {} does not have folder with id: {}", ownerId, parentFolderId);
             }
-            throw new NotFoundException(
+            throw new FolderNotFoundException(
                     format("User with id: %s does not have folder with id: %s", parentFolderId.value(), ownerId.value()));
         }
 

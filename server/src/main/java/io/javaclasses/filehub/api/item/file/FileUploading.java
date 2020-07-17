@@ -23,13 +23,17 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * The application process that handles {@link UploadFile} command.
- * <p>Uploads file in the folder.
+ * <p>Uploads file in the existing folder. If the destination folder does not exist, the uploading is failed.
  */
 public class FileUploading implements Process {
     /**
      * The instance of {@link Logger} for FileUploading class.
      */
     private static final Logger logger = getLogger(FileUploading.class);
+    /**
+     * The object to block access to {@link FileUploading#handle(UploadFile)} method.
+     */
+    private static final Object LOCK = new Object();
     /**
      * Storage for {@link FileMetadataRecord}.
      */
@@ -42,10 +46,6 @@ public class FileUploading implements Process {
      * Storage for {@link FileContentRecord}.
      */
     private final FileContentStorage fileContentStorage;
-    /**
-     * The object to block access to {@link FileUploading#handle(UploadFile)} method.
-     */
-    private static final Object lock = new Object();
 
     /**
      * Creates new FileUploading instance.
@@ -64,20 +64,21 @@ public class FileUploading implements Process {
 
     /**
      * Uploads new file in the folder handling {@link UploadFile} command.
-     * <p>Method is synchronized.
+     * <p>The method is thread-safe because it should be invoked by only one thread
+     * whatever the FileUploading instance is to avoid data conflicts.
      *
      * @param command a command to upload the file in the folder.
      * @return DTO of the uploaded file.
      */
     public FileDto handle(UploadFile command) {
-        synchronized (lock) {
+        synchronized (LOCK) {
             checkNotNull(command);
 
             FolderId parentFolderId = command.parentFolderId();
             UserId ownerId = command.ownerId();
             UploadingFileInfo fileInfo = command.fileInfo();
 
-            FolderMetadataRecord parentFolder = getFolder(parentFolderId);
+            FolderMetadataRecord parentFolder = findFolder(parentFolderId);
 
             verifyFolderOwner(parentFolder, ownerId);
 
@@ -86,13 +87,13 @@ public class FileUploading implements Process {
     }
 
     /**
-     * Returns folder by its identifier.
+     * Looks up for the folder with {@code folderId} in {@link FolderMetadataStorage}.
      *
      * @param folderId an identifier of the requested folder.
      * @return found folder.
      * @throws FolderNotFoundException if folder with {@code folderId} does not exist.
      */
-    private FolderMetadataRecord getFolder(FolderId folderId) {
+    private FolderMetadataRecord findFolder(FolderId folderId) {
         Optional<FolderMetadataRecord> folderMetadataRecord = folderMetadataStorage.find(folderId);
         if (folderMetadataRecord.isEmpty()) {
             if (logger.isInfoEnabled()) {
@@ -108,7 +109,7 @@ public class FileUploading implements Process {
      *
      * @param folder  an object with information about the folder.
      * @param ownerId an identifier of the folder owner.
-     * @throws FolderNotFoundException if folder does not belong to user with {@code ownerId}.
+     * @throws ForbiddenAccessToFolderException if folder does not belong to user with {@code ownerId}.
      */
     private static void verifyFolderOwner(FolderMetadataRecord folder, UserId ownerId) {
         if (!folder.ownerId().equals(ownerId)) {
@@ -121,7 +122,8 @@ public class FileUploading implements Process {
     }
 
     /**
-     * Saves file metadata and file content.
+     * Saves file metadata in the {@linkplain FileMetadataStorage} and file content
+     * in the {@linkplain FileContentStorage} and returns the DTO of the uploaded file.
      *
      * @param fileInfo       an object with information about the file.
      * @param parentFolderId an identifier of the parent folder.

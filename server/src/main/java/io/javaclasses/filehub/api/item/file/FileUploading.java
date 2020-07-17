@@ -2,6 +2,7 @@ package io.javaclasses.filehub.api.item.file;
 
 import io.javaclasses.filehub.api.Process;
 import io.javaclasses.filehub.api.item.folder.FolderNotFoundException;
+import io.javaclasses.filehub.api.item.folder.ForbiddenAccessToFolderException;
 import io.javaclasses.filehub.storage.item.file.FileContentRecord;
 import io.javaclasses.filehub.storage.item.file.FileContentStorage;
 import io.javaclasses.filehub.storage.item.file.FileId;
@@ -114,7 +115,7 @@ public class FileUploading implements Process {
             if (logger.isInfoEnabled()) {
                 logger.info("User with id: {} does not have folder with id: {}.", ownerId, folder.id());
             }
-            throw new FolderNotFoundException(
+            throw new ForbiddenAccessToFolderException(
                     format("User with id: %s does not have folder with id: %s.", ownerId, folder.id()));
         }
     }

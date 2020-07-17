@@ -2,6 +2,7 @@ package io.javaclasses.filehub.api.item.file;
 
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.item.folder.FolderNotFoundException;
+import io.javaclasses.filehub.api.item.folder.ForbiddenAccessToFolderException;
 import io.javaclasses.filehub.storage.item.FileSystemItemName;
 import io.javaclasses.filehub.storage.item.file.FileContentStorage;
 import io.javaclasses.filehub.storage.item.file.FileMetadataRecord;
@@ -136,7 +137,7 @@ class FileUploadingTest {
 
         FileUploading process = new FileUploading(mockFolderStorage, mockFileStorageCreator.create(), new FileContentStorage());
 
-        assertThrows(FolderNotFoundException.class,
+        assertThrows(ForbiddenAccessToFolderException.class,
                 () -> process.handle(command),
                 "The uploading did not failed although destination folder does not belong to the user.");
 

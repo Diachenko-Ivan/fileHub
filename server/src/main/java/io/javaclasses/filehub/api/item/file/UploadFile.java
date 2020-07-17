@@ -9,7 +9,7 @@ import io.javaclasses.filehub.storage.user.UserId;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * An intention of the client to upload file {@link FileMetadataRecord} in a folder {@link FolderMetadataRecord}.
+ * An intention of the client to upload file {@linkplain FileMetadataRecord} in a folder {@linkplain FolderMetadataRecord}.
  */
 public final class UploadFile {
     /**

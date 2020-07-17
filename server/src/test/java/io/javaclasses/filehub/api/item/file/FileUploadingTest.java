@@ -71,7 +71,7 @@ class FileUploadingTest {
         NullPointerTester tester = new NullPointerTester();
         tester.testAllPublicConstructors(FileUploading.class);
         tester.testAllPublicInstanceMethods(
-                new FileUploading(new FileMetadataStorage(), new FolderMetadataStorage(), new FileContentStorage()));
+                new FileUploading(new FolderMetadataStorage(), new FileMetadataStorage(), new FileContentStorage()));
     }
 
     @DisplayName("upload file.")
@@ -86,7 +86,7 @@ class FileUploadingTest {
         FileMetadataStorage mockFileMetadataStorage = mockFileStorageCreator.create();
         FolderMetadataStorage mockFolderStorage = mockFolderStorageWith(destinationFolder);
 
-        FileUploading process = new FileUploading(mockFileMetadataStorage, mockFolderStorage, new FileContentStorage());
+        FileUploading process = new FileUploading(mockFolderStorage, mockFileMetadataStorage, new FileContentStorage());
 
         FileDto uploadedFile = process.handle(command);
 
@@ -110,7 +110,7 @@ class FileUploadingTest {
 
         FolderMetadataStorage mockFolderStorage = mockFolderStorageWith(null);
 
-        FileUploading process = new FileUploading(mockFileStorageCreator.create(), mockFolderStorage, new FileContentStorage());
+        FileUploading process = new FileUploading(mockFolderStorage, mockFileStorageCreator.create(), new FileContentStorage());
 
         assertThrows(FolderNotFoundException.class,
                 () -> process.handle(command),
@@ -134,7 +134,7 @@ class FileUploadingTest {
 
         FolderMetadataStorage mockFolderStorage = mockFolderStorageWith(destinationFolder);
 
-        FileUploading process = new FileUploading(mockFileStorageCreator.create(), mockFolderStorage, new FileContentStorage());
+        FileUploading process = new FileUploading(mockFolderStorage, mockFileStorageCreator.create(), new FileContentStorage());
 
         assertThrows(FolderNotFoundException.class,
                 () -> process.handle(command),

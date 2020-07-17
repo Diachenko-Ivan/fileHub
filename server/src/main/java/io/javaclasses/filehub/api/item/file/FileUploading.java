@@ -53,8 +53,8 @@ public class FileUploading implements Process {
      * @param folderMetadataStorage storage for folders.
      * @param fileContentStorage    storage for file content.
      */
-    public FileUploading(FileMetadataStorage fileMetadataStorage,
-                         FolderMetadataStorage folderMetadataStorage,
+    public FileUploading(FolderMetadataStorage folderMetadataStorage,
+                         FileMetadataStorage fileMetadataStorage,
                          FileContentStorage fileContentStorage) {
         this.fileMetadataStorage = checkNotNull(fileMetadataStorage);
         this.folderMetadataStorage = checkNotNull(folderMetadataStorage);

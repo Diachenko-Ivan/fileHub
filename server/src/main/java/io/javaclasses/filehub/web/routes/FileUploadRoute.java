@@ -134,7 +134,7 @@ public class FileUploadRoute implements Route {
      * @return FileUploading process.
      */
     private FileUploading createProcess() {
-        return new FileUploading(fileMetadataStorage, folderMetadataStorage, fileContentStorage);
+        return new FileUploading(folderMetadataStorage, fileMetadataStorage, fileContentStorage);
     }
 
     /**

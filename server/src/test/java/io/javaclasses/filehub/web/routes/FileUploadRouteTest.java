@@ -135,7 +135,7 @@ class FileUploadRouteTest {
         FolderMetadataStorage mockFolderStorage =
                 mockFolderMetadataStorageWith(createFolderWith(new FolderId(requestParamId), expectedUserId));
 
-        FileUploadRoute route = new FileUploadRoute(new FileMetadataStorage(), new FileContentStorage(), mockFolderStorage);
+        FileUploadRoute route = new FileUploadRoute(mockFolderStorage, new FileMetadataStorage(), new FileContentStorage());
 
         Request mockRequest = mockRequestWith(requestParamId);
         Response mockResponse = mockResponse();
@@ -163,7 +163,7 @@ class FileUploadRouteTest {
 
         FolderMetadataStorage mockFolderStorage = mockFolderMetadataStorageWith(null);
 
-        FileUploadRoute route = new FileUploadRoute(new FileMetadataStorage(), new FileContentStorage(), mockFolderStorage);
+        FileUploadRoute route = new FileUploadRoute(mockFolderStorage, new FileMetadataStorage(), new FileContentStorage());
 
         Request mockRequest = mockRequestWith("ssdfsdfs");
         Response mockResponse = mockResponse();

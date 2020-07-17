@@ -76,7 +76,7 @@ public class WebApplication {
             post("/folder/:folderId/folder", new FolderCreationRoute(folderMetadataStorage));
             post("/logout", new LogoutRoute(loggedInUserStorage));
             post("/folder/:folderId/file", "multipart/form-data",
-                    new FileUploadRoute(fileMetadataStorage, fileContentStorage, folderMetadataStorage ));
+                    new FileUploadRoute(folderMetadataStorage, fileMetadataStorage, fileContentStorage));
             get("/folder/root", new GetRootFolderRoute(folderMetadataStorage));
             get("/folder/:folderId", new GetFolderRoute(folderMetadataStorage));
             get("/folder/:folderId/content", new GetFolderContentRoute(fileMetadataStorage, folderMetadataStorage));

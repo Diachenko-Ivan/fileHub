@@ -65,13 +65,13 @@ public class FileUploadRoute implements Route {
     /**
      * Creates new FileUploadRoute instance.
      *
+     * @param folderMetadataStorage storage for folder metadata.
      * @param fileMetadataStorage   storage for file metadata.
      * @param fileContentStorage    storage for file content.
-     * @param folderMetadataStorage storage for folder metadata.
      */
-    public FileUploadRoute(FileMetadataStorage fileMetadataStorage,
-                           FileContentStorage fileContentStorage,
-                           FolderMetadataStorage folderMetadataStorage) {
+    public FileUploadRoute(FolderMetadataStorage folderMetadataStorage,
+                           FileMetadataStorage fileMetadataStorage,
+                           FileContentStorage fileContentStorage) {
         this.fileMetadataStorage = checkNotNull(fileMetadataStorage);
         this.fileContentStorage = checkNotNull(fileContentStorage);
         this.folderMetadataStorage = checkNotNull(folderMetadataStorage);
